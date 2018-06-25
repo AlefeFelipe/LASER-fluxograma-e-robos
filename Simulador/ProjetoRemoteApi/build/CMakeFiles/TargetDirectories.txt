@@ -1,0 +1,7 @@
+/home/laser/Desktop/Simulador/ProjetoRemoteApi/build/CMakeFiles/install/strip.dir
+/home/laser/Desktop/Simulador/ProjetoRemoteApi/build/CMakeFiles/install/local.dir
+/home/laser/Desktop/Simulador/ProjetoRemoteApi/build/CMakeFiles/cppremoteapi.dir
+/home/laser/Desktop/Simulador/ProjetoRemoteApi/build/CMakeFiles/edit_cache.dir
+/home/laser/Desktop/Simulador/ProjetoRemoteApi/build/CMakeFiles/rebuild_cache.dir
+/home/laser/Desktop/Simulador/ProjetoRemoteApi/build/CMakeFiles/install.dir
+/home/laser/Desktop/Simulador/ProjetoRemoteApi/build/CMakeFiles/list_install_components.dir
