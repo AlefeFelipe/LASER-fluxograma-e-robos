@@ -135,7 +135,7 @@ int main(int argc, char **argv)
 
     al_start_timer(temporizador);
 
-    uint_8 n_ciclos_0_5_s = 0;
+
 	while (!sair_do_programa) {
         caractere_pressionado[0] = '\0';
         caractere_pressionado[1] = '\0';
@@ -242,7 +242,7 @@ int main(int argc, char **argv)
                     else if (eventos_teclado.keyboard.keycode == 85) caractere_pressionado[0] = '2';
                 }
 
-                cout << caractere_pressionado << endl;
+                //cout << caractere_pressionado << endl;
 
                 if (!lista->ativo) switch (eventos_teclado.keyboard.keycode) {
 					case ALLEGRO_KEY_ESCAPE :
@@ -292,14 +292,12 @@ int main(int argc, char **argv)
 			ALLEGRO_EVENT eventos_tempo;
 			al_wait_for_event(fila_tempo, &eventos_tempo);
 			if (eventos_tempo.type == ALLEGRO_EVENT_TIMER) {
-                if (n_ciclos_0_5_s >= 0.5/intervalo_eventos_temporizador) {
-                    n_ciclos_0_5_s = 0;
+                ciclos_tempo++;
+                if (tempo_max_clique_duplo >= tempo_maximo_clique_duplo/intervalo_eventos_temporizador) {
+                    tempo_max_clique_duplo = 0;
                     possibilidade_clique_duplo = false;
                 }
-                else n_ciclos_0_5_s++;
-
-                n_ciclos_0_5_s = ((n_ciclos_0_5_s = 0.5/intervalo_eventos_temporizador) ? ())
-                ciclos_tempo++;
+                else tempo_max_clique_duplo++;
 			}
 
 		}

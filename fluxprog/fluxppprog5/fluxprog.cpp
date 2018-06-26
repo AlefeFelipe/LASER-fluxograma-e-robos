@@ -16,7 +16,8 @@ int* command_var, *feedback;
 float posicao_y;
 float monitor_comprimento, monitor_altura;
 char caractere_pressionado[2];
-bool possibilidade_clique_duplo = false;
+bool possibilidade_clique_duplo;
+uint8_t tempo_max_clique_duplo;
 //std::pair<int*, managed_shared_memory::size_type> feedback;
 std::pair<float*, managed_shared_memory::size_type> posicao_plana, posicao_angular, distancias_ultrassom;
 std::pair<unsigned char*, managed_shared_memory::size_type> sensores_fita, sensores_ultrassom;
@@ -1077,7 +1078,6 @@ int bloco::atualizar(lista_blocos* l) {
 	}
 	// tratamento dos blocos de trava
 	else {
-        bool ativado_nesse_ciclo = false;
 		if (ativo) {
             if (!col[0] && !mouse_segurar[mouse_esq]) {
                 ativo = false;
@@ -1163,10 +1163,17 @@ int bloco::atualizar(lista_blocos* l) {
 			}
 		}
 		bool clique_duplo = false;
+
         if (col[0] && bloco_topo == this) {
             if (mouse_clicar[mouse_esq]) {
-                if (possibilidade_clique_duplo) clique_duplo = true;
-                if (!ativo) possibilidade_clique_duplo = true;
+                if (possibilidade_clique_duplo) {
+                    clique_duplo = true;
+                    possibilidade_clique_duplo = false;
+                }
+                else {
+                    possibilidade_clique_duplo = true;
+                    tempo_max_clique_duplo = 0;
+                }
                 ativo = true;
                 dmouse_x = mouse_x - pos_x;
 				dmouse_y = mouse_y_ajustado - pos_y;
@@ -1177,6 +1184,9 @@ int bloco::atualizar(lista_blocos* l) {
                 }
 
             }
+            cout << possibilidade_clique_duplo << endl;
+            cout << clique_duplo << endl;
+            cout << "---" << endl;
             if (mouse_clicar[mouse_dir]) marcado_para_destruir = 1;
             if (mouse_clicar[mouse_meio]) ativo = true;
         }
@@ -1229,8 +1239,8 @@ int bloco::atualizar(lista_blocos* l) {
 			var_int[2] = var_int[1]; // faz com que o numero de iterações a ser feitas sempre seja igual ao número de iterações a fazer quando o fluxograma não estiver rodando
 			break;
 
-		case bloco_VF: //apertar/rolar a roda do mouse troca entre verdadeiro e falso
-			if (clique_duplo || ((caractere_pressionado[0] = '8' || caractere_pressionado[0] == '2') && caractere_pressionado[1] != 'n')) VF_estado *= -1;
+		case bloco_VF:
+			if (clique_duplo /*|| ((caractere_pressionado[0] = '8' || caractere_pressionado[0] == '2') && caractere_pressionado[1] != 'n')*/) VF_estado *= -1;
 			break;
 		}
 	}

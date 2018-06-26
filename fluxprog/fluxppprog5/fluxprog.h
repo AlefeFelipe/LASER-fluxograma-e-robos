@@ -42,7 +42,8 @@ extern char caractere_pressionado[2];
 extern std::pair<float*, managed_shared_memory::size_type> posicao_plana, posicao_angular, distancias_ultrassom;
 extern std::pair<unsigned char*, managed_shared_memory::size_type> sensores_fita, sensores_ultrassom;
 extern float posicao_plana_inical[3], posicao_angular_inicial[3];
-extern bool possibilidade_clique_duplo = false;
+extern bool possibilidade_clique_duplo;
+extern uint8_t tempo_max_clique_duplo;
 #define desenhando -1
 #define pausado 0
 #define rodando 1
@@ -59,6 +60,7 @@ extern bool possibilidade_clique_duplo = false;
 #define velocidade_rolagem 0.4
 
 #define intervalo_eventos_temporizador 0.04 //dado em segundos
+#define tempo_maximo_clique_duplo 0.5
 
 #define MAX(X, Y) ((X>=Y) ? X : Y)
 #define MIN(X, Y) ((X<=Y) ? X : Y)
@@ -262,7 +264,7 @@ extern bool possibilidade_clique_duplo = false;
 #define resetar_lista_blocos() {lista->ativo = false; lista->bloco_ativo->ativo = false; lista->bloco_ativo = NULL;}
 
 //macro para inicializar as variáveis globais
-#define inic_fluxprog() dmouse_x = 0; dmouse_y = 0; blocos_inicio = 0; modo = desenhando; escala = 1; mouse_clicar[0] = false; mouse_clicar[1] = false; mouse_clicar[2] = false; mouse_segurar[0] = false; mouse_segurar[1] = false; mouse_segurar[2] = false; mouse_soltar[0] = false; mouse_soltar[1] = false; mouse_soltar[2] = false; posicao_y = 0;
+#define inic_fluxprog() dmouse_x = 0; dmouse_y = 0; blocos_inicio = 0; modo = desenhando; escala = 1; mouse_clicar[0] = false; mouse_clicar[1] = false; mouse_clicar[2] = false; mouse_segurar[0] = false; mouse_segurar[1] = false; mouse_segurar[2] = false; mouse_soltar[0] = false; mouse_soltar[1] = false; mouse_soltar[2] = false; posicao_y = 0;possibilidade_clique_duplo = false;tempo_max_clique_duplo = 0;
 
 //macros que definem os nomes das memorias compartilhadas e suas variáveis (necessário para o funcionamento da memória)
 #define SENDER_MEMORY_NAME "memoria"
