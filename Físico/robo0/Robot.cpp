@@ -235,7 +235,6 @@ void Robot::stop()
 void Robot::moveStraight(long *timeold)
 {
     int* readingRPM = new int [2];
-    //long timeold = millis();
     readingRPM[0] = motor[0]->getRPM(*timeold);
     readingRPM[1] = motor[1]->getRPM(*timeold);
     if(millis()-*timeold>=ENCODER_UPDATE_TIME)
