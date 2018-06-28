@@ -15,4 +15,5 @@ V-REP - baixe a versão mais recente deste site: http://www.coppeliarobotics.com
 Arduíno - baixe a versão mais recente deste site: https://www.arduino.cc/en/Main/Software?
 
 Allegro 5 - Tente sudo add-apt-repository ppa:allegro/5.2
-	          sudo apt-get install liballegro5-dev
+	          
+		  sudo apt-get install liballegro5-dev
