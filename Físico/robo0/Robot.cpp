@@ -26,7 +26,7 @@ Robot::Robot()
 void Robot::moveFoward()
 {
     int i, turnright, turnleft;
-    long time = millis(),  time_stop;
+    long time = millis(), timeold = millis(), time_stop;
     int* readingBTS = new int [N_BLACK_TAPE_SENSOR];
         //while(1)
     //{
@@ -44,7 +44,7 @@ void Robot::moveFoward()
         
         motor[0]->move(true, lm_speed);
         motor[1]->move(true, rm_speed);
-        moveStraight();
+        moveStraight(&timeold);
         
      
         delay(UPDATE_DELAY);
@@ -59,7 +59,7 @@ void Robot::moveFoward()
         {
             motor[0]->move(true, lm_speed);
             motor[1]->move(true, rm_speed);
-            moveStraight();
+            moveStraight(&timeold);
             delay(UPDATE_DELAY);
             for(i=0; i<N_BLACK_TAPE_SENSOR; i++)
             {
@@ -70,7 +70,7 @@ void Robot::moveFoward()
         {
             motor[0]->move(true, lm_speed);
             motor[1]->move(true, rm_speed);
-            moveStraight();
+            moveStraight(&timeold);
             for(i=0; i<N_BLACK_TAPE_SENSOR; i++)
             {
                 readingBTS[i] = black_tape_sensor[i]->getReading();
@@ -165,7 +165,7 @@ void Robot::moveFoward()
         {
             motor[0]->move(true, lm_speed);
             motor[1]->move(true, rm_speed);
-            moveStraight();
+            moveStraight(&timeold);
         }
 }
 
@@ -232,13 +232,13 @@ void Robot::stop()
     motor[1]->stop();
 }
 
-void Robot::moveStraight()
+void Robot::moveStraight(long *timeold)
 {
     int* readingRPM = new int [2];
-    long timeold = millis();
-    readingRPM[0] = motor[0]->getRPM(timeold);
-    readingRPM[1] = motor[1]->getRPM(timeold);
-    if(millis()-timeold>=ENCODER_UPDATE_TIME)
+    //long timeold = millis();
+    readingRPM[0] = motor[0]->getRPM(*timeold);
+    readingRPM[1] = motor[1]->getRPM(*timeold);
+    if(millis()-*timeold>=ENCODER_UPDATE_TIME)
     {
         if(readingRPM[0]>SPEED_TO_UPDATE_TIME)
         {
@@ -264,9 +264,9 @@ void Robot::moveStraight()
         {
             rm_speed += D_SPEED;
         }
-        readingRPM[0] = motor[0]->getRPM(timeold);
-        readingRPM[1] = motor[1]->getRPM(timeold);
-        timeold = millis();
+        readingRPM[0] = motor[0]->getRPM(*timeold);
+        readingRPM[1] = motor[1]->getRPM(*timeold);
+        *timeold = millis();
     }
 }
 

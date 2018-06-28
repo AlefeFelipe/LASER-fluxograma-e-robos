@@ -18,7 +18,7 @@ public:
     void turnLeft();
     void turnRight();
     void stop();
-    void moveStraight();
+    void moveStraight(long* timeold);
     ~Robot(){}
 };
 
