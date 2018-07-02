@@ -5,9 +5,9 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_C
-  "/home/laser/Desktop/Simulador/ProjetoRemoteApi/remoteApi/extApi.c" "/home/laser/Desktop/Simulador/ProjetoRemoteApi/build/CMakeFiles/cppremoteapi.dir/remoteApi/extApi.c.o"
-  "/home/laser/Desktop/Simulador/ProjetoRemoteApi/remoteApi/extApiPlatform.c" "/home/laser/Desktop/Simulador/ProjetoRemoteApi/build/CMakeFiles/cppremoteapi.dir/remoteApi/extApiPlatform.c.o"
-  "/home/laser/Desktop/Simulador/ProjetoRemoteApi/rs232.c" "/home/laser/Desktop/Simulador/ProjetoRemoteApi/build/CMakeFiles/cppremoteapi.dir/rs232.c.o"
+  "/home/laser/Desktop/LASER-fluxograma-e-robos/Simulador/ProjetoRemoteApi/remoteApi/extApi.c" "/home/laser/Desktop/LASER-fluxograma-e-robos/Simulador/ProjetoRemoteApi/build/CMakeFiles/cppremoteapi.dir/remoteApi/extApi.c.o"
+  "/home/laser/Desktop/LASER-fluxograma-e-robos/Simulador/ProjetoRemoteApi/remoteApi/extApiPlatform.c" "/home/laser/Desktop/LASER-fluxograma-e-robos/Simulador/ProjetoRemoteApi/build/CMakeFiles/cppremoteapi.dir/remoteApi/extApiPlatform.c.o"
+  "/home/laser/Desktop/LASER-fluxograma-e-robos/Simulador/ProjetoRemoteApi/rs232.c" "/home/laser/Desktop/LASER-fluxograma-e-robos/Simulador/ProjetoRemoteApi/build/CMakeFiles/cppremoteapi.dir/rs232.c.o"
   )
 set(CMAKE_C_COMPILER_ID "GNU")
 
@@ -23,7 +23,7 @@ set(CMAKE_C_TARGET_INCLUDE_PATH
   "../remoteApi"
   )
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/laser/Desktop/Simulador/ProjetoRemoteApi/main.cpp" "/home/laser/Desktop/Simulador/ProjetoRemoteApi/build/CMakeFiles/cppremoteapi.dir/main.cpp.o"
+  "/home/laser/Desktop/LASER-fluxograma-e-robos/Simulador/ProjetoRemoteApi/main.cpp" "/home/laser/Desktop/LASER-fluxograma-e-robos/Simulador/ProjetoRemoteApi/build/CMakeFiles/cppremoteapi.dir/main.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 

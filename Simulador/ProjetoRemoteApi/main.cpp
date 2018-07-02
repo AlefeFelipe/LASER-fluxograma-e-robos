@@ -82,11 +82,13 @@ void setup()
 
 }
 
-void sendCommand(unsigned char comando)
+void sendCommand(unsigned char* comando)
 {
     stringstream buffer;
     string sendVariable;
-    RS232_SendByte(CPORT_NR, comando);
+    //RS232_SendByte(CPORT_NR, comando);
+    RS232_SendBuf(CPORT_NR, (unsigned char*) comando, 1);
+    cout<<"enviei o "<<comando<<endl;
 }
 
 
@@ -189,11 +191,18 @@ int main(int argc, char **argv)
     ///Fechamento
     bluetooth = abrindo_memoria->find<int>(BLUETOOTH_ENABLE);
     setup();
+    unsigned char oi[1];
     while(*(bluetooth.first))
     {
         comando1 = abrindo_memoria->find<int>(NOME_DO_INT_NA_MEMORIA1);
-        sendCommand(char(*(comando1.first)));
-        *(comando1.first) = 0;
+        oi[0] = char(*(comando1.first)+'0');
+        //sendCommand(char(*(comando1.first)+'0'));
+        sendCommand(oi);
+        if(*(comando1.first))
+            cout<<"mandei o comando "<<char(*(comando1.first)+'0')<<endl;
+        //*(comando1.first) = 0;
+        usleep(1000);
+        
     }
 
 
