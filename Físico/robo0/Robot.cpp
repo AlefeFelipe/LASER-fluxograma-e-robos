@@ -36,8 +36,8 @@ void Robot::moveFoward()
             Serial.print("ultrasonic ");
             Serial.print(i);
             Serial.print(": ");
-            readingU[i] = (ultrasonic[i]->getDistance() > OBSTACLE_DIS ? 0 : 1);
-            Serial.println(readingU[i]);
+            //readingU[i] = (ultrasonic[i]->getDistance() > OBSTACLE_DIS ? 0 : 1);
+            Serial.println(//readingU[i]);
             
         }
         Serial.println();
@@ -47,9 +47,9 @@ void Robot::moveFoward()
 //    while(1)//(millis()-time<=5000))
 //    {
         
-        motor[0]->move(true, lm_speed);
-        motor[1]->move(true, rm_speed);
-        moveStraight(&timeold);
+        //motor[0]->move(false, lm_speed);
+        //motor[1]->move(false, rm_speed);
+        //moveStraight(&timeold);
         
      
         delay(UPDATE_DELAY);
@@ -57,53 +57,57 @@ void Robot::moveFoward()
         {
             readingBTS[i] = black_tape_sensor[i]->getReading();
         }
-        for(i=0; i<N_ULTRASONIC; i++)
-        {
-            readingU[i] = (ultrasonic[i]->getDistance() > OBSTACLE_DIS ? 0 : 1);    
-        }
-        Serial.println(!readingU[2]);
+        //for(i=0; i<N_ULTRASONIC; i++)
+        //{
+            //readingU[i] = (ultrasonic[i]->getDistance() > OBSTACLE_DIS ? 0 : 1);    
+        //}
+        readingU[2] = (ultrasonic[2]->getDistance() > OBSTACLE_DIS ? 0 : 1);
+        //Serial.println(!//readingU[2]);
         
 
     //}
         while(((readingBTS[0]&&readingBTS[2])||(readingBTS[2]&&readingBTS[4])) && !readingU[2])//verificar se ta no mesmo estado, tecnicamente inutil devido a funcao acima
         {
-            motor[0]->move(true, lm_speed);
-            motor[1]->move(true, rm_speed);
-            moveStraight(&timeold);
+            motor[0]->move(false, lm_speed);
+            motor[1]->move(false, rm_speed);
+            //moveStraight(&timeold);
             delay(UPDATE_DELAY);
             for(i=0; i<N_BLACK_TAPE_SENSOR; i++)
             {
                 readingBTS[i] = black_tape_sensor[i]->getReading();
             }
-            for(i=0; i<N_ULTRASONIC; i++)
-            {
-                readingU[i] = (ultrasonic[i]->getDistance() > OBSTACLE_DIS ? 0 : 1);
-                //Serial.print(readingU[i]);    
-            }
+            //for(i=0; i<N_ULTRASONIC; i++)
+            //{
+            //    //readingU[i] = (ultrasonic[i]->getDistance() > OBSTACLE_DIS ? 0 : 1);
+                //Serial.print(//readingU[i]);    
+            //}
+            readingU[2] = (ultrasonic[2]->getDistance() > OBSTACLE_DIS ? 0 : 1);
             //Serial.println("to lendo todo mundo!!");
             
         }
         while(!((readingBTS[0]&&readingBTS[2])||(readingBTS[2]&&readingBTS[4])) && !readingU[2])//anda ate os sensores captarem a linha ou obstaculo
         {
-            motor[0]->move(true, lm_speed);
-            motor[1]->move(true, rm_speed);
-            moveStraight(&timeold);
+            motor[0]->move(false, lm_speed);
+            motor[1]->move(false, rm_speed);
+            //moveStraight(&timeold);
             for(i=0; i<N_BLACK_TAPE_SENSOR; i++)
             {
                 readingBTS[i] = black_tape_sensor[i]->getReading();
             }
-            for(i=0; i<N_ULTRASONIC; i++)
-            {
-                readingU[i] = (ultrasonic[i]->getDistance() > OBSTACLE_DIS ? 0 : 1);    
-            }
+            //for(i=0; i<N_ULTRASONIC; i++)
+            //{
+            //    //readingU[i] = (ultrasonic[i]->getDistance() > OBSTACLE_DIS ? 0 : 1);    
+            //}
+            readingU[2] = (ultrasonic[2]->getDistance() > OBSTACLE_DIS ? 0 : 1);
             //Serial.println("to achando o caminho!!");
                 
             if(readingBTS[4]&&!readingBTS[2])
             {
-                motor[0]->move(true, lm_speed);
-                //motor[1]->move(false, rm_speed);
-                //motor[1]->move(true, rm_speed/4);
-                motor[1]->stop();
+                //Serial.println("vou parar o motor 1");
+                motor[0]->move(false, lm_speed);
+                motor[1]->move(false, rm_speed);
+                //motor[1]->move(false, rm_speed/4);
+                //motor[1]->stop();
                 delay(UPDATE_DELAY);
                 for(i=0; i<N_BLACK_TAPE_SENSOR; i++)
                 {
@@ -114,10 +118,10 @@ void Robot::moveFoward()
             }
             else if(readingBTS[3]&&!readingBTS[2])
             {
-                motor[0]->move(true, lm_speed);
-                //motor[1]->move(false, rm_speed);
-                //motor[1]->move(true, rm_speed/2);
-                motor[1]->stop();
+                motor[0]->move(false, lm_speed);
+                motor[1]->move(false, rm_speed);
+                //motor[1]->move(false, rm_speed/2);
+                //motor[1]->stop();
                 delay(UPDATE_DELAY);
                 for(i=0; i<N_BLACK_TAPE_SENSOR; i++)
                 {
@@ -128,10 +132,10 @@ void Robot::moveFoward()
             }
             else if(readingBTS[1]&&!readingBTS[2])//robo ta desviando para a direita, gira esquerda
             {
-                //motor[0]->move(false, lm_speed);
-                //motor[0]->move(true, lm_speed/2);
-                motor[0]->stop();
-                motor[1]->move(true, rm_speed);
+                motor[0]->move(false, lm_speed);
+                //motor[0]->move(false, lm_speed/2);
+                //motor[0]->stop();
+                motor[1]->move(false, rm_speed);
                 delay(UPDATE_DELAY);
                 for(i=0; i<N_BLACK_TAPE_SENSOR; i++)
                 {
@@ -142,10 +146,10 @@ void Robot::moveFoward()
             }
             else if(readingBTS[0]&&!readingBTS[2])//robo ta desviando para a direita, gira esquerda
             {
-                //motor[0]->move(false, lm_speed);
-                //motor[0]->move(true, lm_speed/4);
-                motor[0]->stop();
-                motor[1]->move(true, rm_speed);
+                motor[0]->move(false, lm_speed);
+                //motor[0]->move(false, lm_speed/4);
+                //motor[0]->stop();
+                motor[1]->move(false, rm_speed);
                 delay(UPDATE_DELAY);
                 for(i=0; i<N_BLACK_TAPE_SENSOR; i++)
                 {
@@ -158,8 +162,8 @@ void Robot::moveFoward()
             {
                 if(turnright)
                 {
-                    motor[0]->move(true, lm_speed);
-                    //motor[1]->move(true, rm_speed/8);
+                    motor[0]->move(false, lm_speed);
+                    //motor[1]->move(false, rm_speed/8);
                     motor[1]->stop();
                     delay(UPDATE_DELAY);
                     for(i=0; i<N_BLACK_TAPE_SENSOR; i++)
@@ -169,9 +173,9 @@ void Robot::moveFoward()
                 }
                 else if(turnleft)
                 {
-                    //motor[0]->move(true, lm_speed/8);
+                    //motor[0]->move(false, lm_speed/8);
                     motor[0]->stop();
-                    motor[1]->move(true, rm_speed);
+                    motor[1]->move(false, rm_speed);
                     delay(UPDATE_DELAY);
                     for(i=0; i<N_BLACK_TAPE_SENSOR; i++)
                     {
@@ -185,13 +189,14 @@ void Robot::moveFoward()
         time = millis();
         while(millis()-time <= TIMETURNING && !readingU[2])
         {
-            motor[0]->move(true, lm_speed);
-            motor[1]->move(true, rm_speed);
-            moveStraight(&timeold);
-            for(i=0; i<N_ULTRASONIC; i++)
-            {
-                readingU[i] = (ultrasonic[i]->getDistance() > OBSTACLE_DIS ? 0 : 1);    
-            }
+            motor[0]->move(false, lm_speed);
+            motor[1]->move(false, rm_speed);
+            //moveStraight(&timeold);
+            //for(i=0; i<N_ULTRASONIC; i++)
+            //{
+            //    //readingU[i] = (ultrasonic[i]->getDistance() > OBSTACLE_DIS ? 0 : 1);    
+            //}
+            readingU[2] = (ultrasonic[2]->getDistance() > OBSTACLE_DIS ? 0 : 1);
             //Serial.println("to chegando");
         }
 }
@@ -204,7 +209,7 @@ void Robot::turnLeft()
     while(millis()-time<=TIMETURNING*2)
     {
         motor[0]->move(false, MOTORSPEED/1.2);
-        motor[1]->move(true, (MOTORSPEED*SCALE)/1.2);
+        motor[1]->move(false, (MOTORSPEED*SCALE)/1.2);
     }
     for(i=0; i<N_BLACK_TAPE_SENSOR; i++)
     {
@@ -213,13 +218,13 @@ void Robot::turnLeft()
     while(readingBTS[3])
     {
         motor[0]->move(false, MOTORSPEED/1.2);
-        motor[1]->move(true, (MOTORSPEED*SCALE)/1.2);
+        motor[1]->move(false, (MOTORSPEED*SCALE)/1.2);
         readingBTS[3] = black_tape_sensor[3]->getReading();
     }
     while(!readingBTS[3])
     {
         motor[0]->move(false, MOTORSPEED/1.2);
-        motor[1]->move(true, (MOTORSPEED*SCALE)/1.2);
+        motor[1]->move(false, (MOTORSPEED*SCALE)/1.2);
         readingBTS[3] = black_tape_sensor[3]->getReading();
     }
 }
@@ -232,7 +237,7 @@ void Robot::turnRight()
     int* readingBTS = new int [N_BLACK_TAPE_SENSOR];
     while(millis()-time<=TIMETURNING*2)
     {
-        motor[0]->move(true, MOTORSPEED/1.2);
+        motor[0]->move(false, MOTORSPEED/1.2);
         motor[1]->move(false, (MOTORSPEED*SCALE)/1.2);
     }
     for(i=0; i<N_BLACK_TAPE_SENSOR; i++)
@@ -241,13 +246,13 @@ void Robot::turnRight()
     }
     while(readingBTS[1])
     {
-        motor[0]->move(true, MOTORSPEED/1.2);
+        motor[0]->move(false, MOTORSPEED/1.2);
         motor[1]->move(false, (MOTORSPEED*SCALE)/1.2);
         readingBTS[1] = black_tape_sensor[1]->getReading();
     }
     while(!readingBTS[1])
     {
-        motor[0]->move(true, MOTORSPEED/1.2);
+        motor[0]->move(false, MOTORSPEED/1.2);
         motor[1]->move(false, (MOTORSPEED*SCALE)/1.2);
         readingBTS[1] = black_tape_sensor[1]->getReading();
     }

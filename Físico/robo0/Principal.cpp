@@ -14,8 +14,8 @@ void Principal::start()
     command = bluetooth->getCommand();
     if(command == 8)
     {
-        Serial.println("andando pra frente");
-        //robot->moveFoward();
+        //Serial.println("andando pra frente");
+        robot->moveFoward();
     }
     else if(command == 4)
     {

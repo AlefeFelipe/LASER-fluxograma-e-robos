@@ -88,7 +88,6 @@ void sendCommand(char comando)
     string sendVariable;
     RS232_SendByte(CPORT_NR, comando);
     //RS232_SendBuf(CPORT_NR, (unsigned char*) comando, 1);
-    cout<<"enviei o "<<comando<<endl;
 }
 
 
