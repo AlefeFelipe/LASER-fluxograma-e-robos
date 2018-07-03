@@ -52,4 +52,5 @@
 #define ENCODER_UPDATE_TIME 100//tempo em milissigundos para leitura dos encoders
 #define SPEED_TO_UPDATE_TIME 2//velocidade em relacao ao update time. Formula: N_VOLTAS*RESOLUTION_ENCODER/(1000/ENCODER_UPDATE_TIME) N_VOLTAS é o numero de voltas por segundo
 #define D_SPEED 5//delta para correcao da velocidade
+#define OBSTACLE_DIS 10.0
 #endif

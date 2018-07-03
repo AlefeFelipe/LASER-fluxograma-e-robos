@@ -7,8 +7,12 @@ Bluetooth::Bluetooth()
 
 uint8_t Bluetooth::getCommand()
 {
-    command = Serial1.read();
-    return command;
+    if(Serial1.available())
+    {
+        command = Serial1.read();
+        return command;
+    }
+    return 0;
 }
 
 void Bluetooth::sendPacket(uint8_t* readingBTS, float* readingU)

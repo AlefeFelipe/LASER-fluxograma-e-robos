@@ -28,15 +28,20 @@ void Robot::moveFoward()
     int i, turnright, turnleft;
     long time = millis(), timeold = millis(), time_stop;
     int* readingBTS = new int [N_BLACK_TAPE_SENSOR];
-        //while(1)
-    //{
-        for(i=0; i<N_BLACK_TAPE_SENSOR; i++)
+    int* readingU = new int [N_ULTRASONIC];
+    /*while(1)
+    {
+        for(i=0; i<N_ULTRASONIC; i++)
         {
-            readingBTS[i] = (black_tape_sensor[i])->getReading();
-            Serial.print(readingBTS[i]);
+            Serial.print("ultrasonic ");
+            Serial.print(i);
+            Serial.print(": ");
+            readingU[i] = (ultrasonic[i]->getDistance() > OBSTACLE_DIS ? 0 : 1);
+            Serial.println(readingU[i]);
+            
         }
         Serial.println();
-    //}
+    }*/
 
 
 //    while(1)//(millis()-time<=5000))
@@ -52,10 +57,15 @@ void Robot::moveFoward()
         {
             readingBTS[i] = black_tape_sensor[i]->getReading();
         }
+        for(i=0; i<N_ULTRASONIC; i++)
+        {
+            readingU[i] = (ultrasonic[i]->getDistance() > OBSTACLE_DIS ? 0 : 1);    
+        }
+        Serial.println(!readingU[2]);
         
 
     //}
-        while(((readingBTS[0]&&readingBTS[2])||(readingBTS[2]&&readingBTS[4])))//verificar se ta no mesmo estado, tecnicamente inutil devido a funcao acima
+        while(((readingBTS[0]&&readingBTS[2])||(readingBTS[2]&&readingBTS[4])) && !readingU[2])//verificar se ta no mesmo estado, tecnicamente inutil devido a funcao acima
         {
             motor[0]->move(true, lm_speed);
             motor[1]->move(true, rm_speed);
@@ -65,8 +75,15 @@ void Robot::moveFoward()
             {
                 readingBTS[i] = black_tape_sensor[i]->getReading();
             }
+            for(i=0; i<N_ULTRASONIC; i++)
+            {
+                readingU[i] = (ultrasonic[i]->getDistance() > OBSTACLE_DIS ? 0 : 1);
+                //Serial.print(readingU[i]);    
+            }
+            //Serial.println("to lendo todo mundo!!");
+            
         }
-        while(!((readingBTS[0]&&readingBTS[2])||(readingBTS[2]&&readingBTS[4])))//anda ate os sensores captarem a linha ou obstaculo
+        while(!((readingBTS[0]&&readingBTS[2])||(readingBTS[2]&&readingBTS[4])) && !readingU[2])//anda ate os sensores captarem a linha ou obstaculo
         {
             motor[0]->move(true, lm_speed);
             motor[1]->move(true, rm_speed);
@@ -75,7 +92,12 @@ void Robot::moveFoward()
             {
                 readingBTS[i] = black_tape_sensor[i]->getReading();
             }
-            
+            for(i=0; i<N_ULTRASONIC; i++)
+            {
+                readingU[i] = (ultrasonic[i]->getDistance() > OBSTACLE_DIS ? 0 : 1);    
+            }
+            //Serial.println("to achando o caminho!!");
+                
             if(readingBTS[4]&&!readingBTS[2])
             {
                 motor[0]->move(true, lm_speed);
@@ -161,11 +183,16 @@ void Robot::moveFoward()
             delay(UPDATE_DELAY);
         }
         time = millis();
-        while(millis()-time <= TIMETURNING)
+        while(millis()-time <= TIMETURNING && !readingU[2])
         {
             motor[0]->move(true, lm_speed);
             motor[1]->move(true, rm_speed);
             moveStraight(&timeold);
+            for(i=0; i<N_ULTRASONIC; i++)
+            {
+                readingU[i] = (ultrasonic[i]->getDistance() > OBSTACLE_DIS ? 0 : 1);    
+            }
+            //Serial.println("to chegando");
         }
 }
 
