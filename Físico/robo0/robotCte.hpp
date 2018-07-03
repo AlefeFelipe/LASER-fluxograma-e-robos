@@ -50,7 +50,7 @@
 #define N_ULTRASONIC 5
 #define PACKETSIZE 25//5 fita, 20 ultrassom
 #define ENCODER_UPDATE_TIME 200//tempo em milissigundos para leitura dos encoders
-#define SPEED_TO_UPDATE_TIME 4//velocidade em relacao ao update time. Formula: N_VOLTAS*RESOLUTION_ENCODER/(1000/ENCODER_UPDATE_TIME) N_VOLTAS é o numero de voltas por segundo
+#define SPEED_TO_UPDATE_TIME 10//velocidade em relacao ao update time. Formula: N_VOLTAS*RESOLUTION_ENCODER/(1000/ENCODER_UPDATE_TIME) N_VOLTAS é o numero de voltas por segundo
 #define D_SPEED 5//delta para correcao da velocidade
-#define OBSTACLE_DIS 8.0
+#define OBSTACLE_DIS -1.0
 #endif

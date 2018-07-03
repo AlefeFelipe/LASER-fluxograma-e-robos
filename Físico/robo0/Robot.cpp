@@ -100,7 +100,7 @@ void Robot::moveFoward()
             motor[0]->move(true, lm_speed);
             motor[1]->move(true, rm_speed);
                 
-            if(readingBTS[4]&&!readingBTS[2])
+            if(readingBTS[4])//&&!readingBTS[2])
             {
                 //Serial.println("vou parar o motor 1");
                 //motor[0]->move(true, lm_speed);
@@ -116,13 +116,13 @@ void Robot::moveFoward()
                 turnright = 1;
                 turnleft = 0;
             }
-            else if(readingBTS[3]&&!readingBTS[2])
+            else if(readingBTS[3])//&&!readingBTS[2])
             {
                 //motor[0]->move(true, lm_speed);
                 //motor[1]->move(false, rm_speed);
                 //motor[1]->move(true, rm_speed/1.5);
                 //motor[1]->stop();
-                reduceSpeed(&timeold, 1, 1.3);
+                reduceSpeed(&timeold, 1, 1);
                 delay(UPDATE_DELAY);
                 for(i=0; i<N_BLACK_TAPE_SENSOR; i++)
                 {
@@ -131,13 +131,13 @@ void Robot::moveFoward()
                 turnright = 1;
                 turnleft = 0;
             }
-            else if(readingBTS[1]&&!readingBTS[2])//robo ta desviando para a direita, gira esquerda
+            else if(readingBTS[1])//&&!readingBTS[2])//robo ta desviando para a direita, gira esquerda
             {
                 //motor[0]->move(false, lm_speed);
                 //motor[0]->move(true, lm_speed/1.5);
                 //motor[0]->stop();
                 //motor[1]->move(true, rm_speed);
-                reduceSpeed(&timeold, 0, 1.3);
+                reduceSpeed(&timeold, 0, 1);
                 delay(UPDATE_DELAY);
                 for(i=0; i<N_BLACK_TAPE_SENSOR; i++)
                 {
@@ -146,7 +146,7 @@ void Robot::moveFoward()
                 turnright = 0;
                 turnleft = 1;
             }
-            else if(readingBTS[0]&&!readingBTS[2])//robo ta desviando para a direita, gira esquerda
+            else if(readingBTS[0])//&&!readingBTS[2])//robo ta desviando para a direita, gira esquerda
             {
                 //motor[0]->move(false, lm_speed);
                // motor[0]->move(true, lm_speed/2);
@@ -334,9 +334,9 @@ void Robot::reduceSpeed(long *timeold, int motor_num, float reason)
             {
                 lm_speed += D_SPEED;
             }
-            if(readingRPM[1]>(SPEED_TO_UPDATE_TIME/reason))
+            if(readingRPM[1]>(SPEED_TO_UPDATE_TIME-reason))
             {
-                rm_speed -= D_SPEED/2;
+                rm_speed -= D_SPEED;
                 if(rm_speed < 0)
                 {
                     rm_speed = 0;
@@ -344,14 +344,14 @@ void Robot::reduceSpeed(long *timeold, int motor_num, float reason)
             }
             else
             {
-                rm_speed += D_SPEED/2;
+                rm_speed += D_SPEED;
             }
         }
         else
         {
-            if(readingRPM[0]>(SPEED_TO_UPDATE_TIME/reason))
+            if(readingRPM[0]>(SPEED_TO_UPDATE_TIME-reason))
             {
-                lm_speed -= D_SPEED/2;
+                lm_speed -= D_SPEED;
                 if(lm_speed < 0)
                 {
                     lm_speed = 0;
@@ -359,7 +359,7 @@ void Robot::reduceSpeed(long *timeold, int motor_num, float reason)
             }
             else
             {
-                lm_speed += D_SPEED/2;
+                lm_speed += D_SPEED;
             }
             if(readingRPM[1]>SPEED_TO_UPDATE_TIME)
             {
@@ -379,5 +379,4 @@ void Robot::reduceSpeed(long *timeold, int motor_num, float reason)
         *timeold = millis();
     }
 }
-
 
