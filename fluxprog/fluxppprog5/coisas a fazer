@@ -1,3 +1,4 @@
+
 back-end:
 	verificar se blocos de decisão funcionam
 	usar threads ao invés de memória compartilhada?
@@ -8,19 +9,18 @@ back-end:
 	usar fonte ao invés de bitmaps para os numeros do bloco de repetição
 	fazer programa gerar outros bitmaps e bitmasks a partir do inicial
 	usar vector?
+	adicionar marcações nos bitmaps para que o programa possa achar as constantes sozinho
 front-end:
 	refazer bloco de repetição
 	alterar bloco de trava
 	barra lateral com o programa distanciado
-	fazer linhas que podem ter nós ou curvas (abandonar bloco de junção)
+	fazer linhas que podem ter nós ou curvas (abandonar bloco de junção)?
 	programa em portugol
 	contemplar sensor usado no bloco de ultrassom
 	selecionar área*
 	interface/estética:		
 		tooltips*
 limpeza e organização do código:
-	transformar defines em variáveis constantes*
-
 
 
 

@@ -18,6 +18,7 @@ float monitor_comprimento, monitor_altura;
 char caractere_pressionado[2];
 bool possibilidade_clique_duplo;
 uint8_t tempo_max_clique_duplo;
+cord coord;
 //std::pair<int*, managed_shared_memory::size_type> feedback;
 std::pair<float*, managed_shared_memory::size_type> posicao_plana, posicao_angular, distancias_ultrassom;
 std::pair<unsigned char*, managed_shared_memory::size_type> sensores_fita, sensores_ultrassom;
@@ -49,7 +50,6 @@ void lista_blocos::atualizar() {
 	//último e por isso fique por cima. Essa variavel é usada para "arrumar" a lista quando o bloco ativo é jogado para o fim.
 	bool varaux;//armazena se o bloco sendo atualizado é ativo ou não
 	while (aux != NULL) {
-
 		if (!aux->marcado_para_destruir) {
 			varaux = aux->atualizar(this);
 			//se o bloco atualizado é o ativo, guarda o endereço dele e o do anterior para atualizar a lista
@@ -289,19 +289,19 @@ void lista_blocos::checar_colisoes(int x, int y) {
 
 			switch (aux->tipo) {
                 case bloco_decisao:
-                    if (mouse_sobre(aux->pos_x + pnt_log1_x, aux->pos_y + pnt_log1_y, PONTO[0])) {
+                    if (mouse_sobre(aux->pos_x + coord.pontos_x(dec_E), aux->pos_y + coord.pontos_y(dec_E), PONTO[0])) {
                         bloco_topo = aux;
                         aux->col[1] = true;
                     }
                     else aux->col[1] = false;
 
-                    if (mouse_sobre(aux->pos_x + pnt_log2_x, aux->pos_y + pnt_log2_y, PONTO[0])) {
+                    if (mouse_sobre(aux->pos_x + coord.pontos_x(dec_S_nao), aux->pos_y + coord.pontos_y(dec_S_nao), PONTO[0])) {
                         bloco_topo = aux;
                         aux->col[2] = true;
                     }
                     else aux->col[2] = false;
 
-                    if (mouse_sobre(aux->pos_x + pnt_log3_x, aux->pos_y + pnt_log3_y, PONTO[0])) {
+                    if (mouse_sobre(aux->pos_x + coord.pontos_x(dec_S_sim), aux->pos_y + coord.pontos_y(dec_S_sim), PONTO[0])) {
                         bloco_topo = aux;
                         aux->col[3] = true;
                     }
@@ -309,27 +309,27 @@ void lista_blocos::checar_colisoes(int x, int y) {
                     break;
                 case bloco_acao:
 
-                    if (mouse_sobre(aux->pos_x + pnt_acao1_x, aux->pos_y + pnt_acao1_y, PONTO[0])) {
+                    if (mouse_sobre(aux->pos_x + coord.pontos_x(acao_E), aux->pos_y + coord.pontos_y(acao_E), PONTO[0])) {
                         bloco_topo = aux;
                         aux->col[1] = true;
                     }
                     else aux->col[1] = false;
 
-                    if (mouse_sobre(aux->pos_x + pnt_acao2_x, aux->pos_y + pnt_acao2_y, PONTO[0])) {
+                    if (mouse_sobre(aux->pos_x + coord.pontos_x(acao_S), aux->pos_y + coord.pontos_y(acao_S), PONTO[0])) {
                         bloco_topo = aux;
                         aux->col[2] = true;
                     }
                     else aux->col[2] = false;
                     break;
                 case bloco_inicio:
-                    if (mouse_sobre(aux->pos_x + pnt_ini1_x, aux->pos_y + pnt_ini1_y, PONTO[0])) {
+                    if (mouse_sobre(aux->pos_x + coord.pontos_x(ini_S), aux->pos_y + coord.pontos_y(ini_S), PONTO[0])) {
                         bloco_topo = aux;
                         aux->col[1] = true;
                     }
                     else aux->col[1] = false;
                     break;
                 case bloco_fim:
-                    if (mouse_sobre(aux->pos_x + pnt_fim1_x, aux->pos_y + pnt_fim1_y, PONTO[0])) {
+                    if (mouse_sobre(aux->pos_x + coord.pontos_x(fim_E), aux->pos_y + coord.pontos_y(fim_E), PONTO[0])) {
                         bloco_topo = aux;
                         aux->col[1] = true;
                     }
@@ -337,39 +337,39 @@ void lista_blocos::checar_colisoes(int x, int y) {
                     break;
 
                 case bloco_juncao:
-                    if (mouse_sobre(aux->pos_x + pnt_jun1_x, aux->pos_y + pnt_jun1_y, PONTO[0])) {
+                    if (mouse_sobre(aux->pos_x + coord.pontos_x(jun_E_esq), aux->pos_y + coord.pontos_y(jun_E_esq), PONTO[0])) {
                         bloco_topo = aux;
                         aux->col[1] = true;
                     }
                     else aux->col[1] = false;
-                    if (mouse_sobre(aux->pos_x + pnt_jun2_x, aux->pos_y + pnt_jun2_y, PONTO[0])) {
+                    if (mouse_sobre(aux->pos_x + coord.pontos_x(jun_E_dir), aux->pos_y + coord.pontos_y(jun_E_dir), PONTO[0])) {
                         bloco_topo = aux;
                         aux->col[2] = true;
                     }
                     else aux->col[2] = false;
-                    if (mouse_sobre(aux->pos_x + pnt_jun3_x, aux->pos_y + pnt_jun3_y, PONTO[0])) {
+                    if (mouse_sobre(aux->pos_x + coord.pontos_x(jun_S), aux->pos_y + coord.pontos_y(jun_S), PONTO[0])) {
                         bloco_topo = aux;
                         aux->col[3] = true;
                     }
                     else aux->col[3] = false;
                     break;
                 case bloco_repeticao:
-                    if (mouse_sobre(aux->pos_x + pnt_rep1_x, aux->pos_y + pnt_rep1_y, PONTO[0])) {
+                    if (mouse_sobre(aux->pos_x + coord.pontos_x(rep_E), aux->pos_y + coord.pontos_y(rep_E), PONTO[0])) {
                         bloco_topo = aux;
                         aux->col[1] = true;
                     }
                     else aux->col[1] = false;
-                    if (mouse_sobre(aux->pos_x + pnt_rep2_x, aux->pos_y + pnt_rep2_y, PONTO[0])) {
+                    if (mouse_sobre(aux->pos_x + coord.pontos_x(rep_loop_ini), aux->pos_y + coord.pontos_y(rep_loop_ini), PONTO[0])) {
                         bloco_topo = aux;
                         aux->col[2] = true;
                     }
                     else aux->col[2] = false;
-                    if (mouse_sobre(aux->pos_x + pnt_rep3_x, aux->pos_y + pnt_rep3_y, PONTO[0])) {
+                    if (mouse_sobre(aux->pos_x + coord.pontos_x(rep_loop_fim), aux->pos_y + coord.pontos_y(rep_loop_fim), PONTO[0])) {
                         bloco_topo = aux;
                         aux->col[3] = true;
                     }
                     else aux->col[3] = false;
-                    if (mouse_sobre(aux->pos_x + pnt_rep4_x, aux->pos_y + pnt_rep4_y, PONTO[0])) {
+                    if (mouse_sobre(aux->pos_x + coord.pontos_x(rep_S), aux->pos_y + coord.pontos_y(rep_S), PONTO[0])) {
                         bloco_topo = aux;
                         aux->col[4] = true;
                     }
@@ -712,65 +712,10 @@ bloco::bloco(int tipo_novo_bloco, int x, int y, bool esta_ativo) {
 bloco::bloco(int ponto, bloco* xbloco) {
 	ativo = true;
 	marcado_para_destruir = false;
-	switch (ponto) { //coloca as coordenadas do bloco de acordo com o bloco e juncao na qual esta conectado
-		case ponto_dec_entrada:
-			pos_x = xbloco->pos_x + lin_11_x;
-			pos_y = xbloco->pos_y + lin_11_y;
-			break;
-		case ponto_dec_saida_nao:
-			pos_x = xbloco->pos_x + lin_12_x;
-			pos_y = xbloco->pos_y + lin_12_y;
-			break;
-		case ponto_dec_saida_sim:
-			pos_x = xbloco->pos_x + lin_14_x;
-			pos_y = xbloco->pos_y + lin_14_y;
-			break;
-		case ponto_acao_entrada:
-			pos_x = xbloco->pos_x + lin_21_x;
-			pos_y = xbloco->pos_y + lin_21_y;
-			break;
-		case ponto_acao_saida:
-			pos_x = xbloco->pos_x + lin_22_x;
-			pos_y = xbloco->pos_y + lin_22_y;
-			break;
-		case ponto_ini_saida:
-			pos_x = xbloco->pos_x + lin_32_x;
-			pos_y = xbloco->pos_y + lin_32_y;
-			break;
-		case ponto_fim_entrada:
-			pos_x = xbloco->pos_x + lin_41_x;
-			pos_y = xbloco->pos_y + lin_41_y;
-			break;
-		case ponto_jun_entrada_esq:
-			pos_x = xbloco->pos_x + lin_51_x;
-			pos_y = xbloco->pos_y + lin_51_y;
-			break;
-		case ponto_jun_entrada_dir:
-			pos_x = xbloco->pos_x + lin_53_x;
-			pos_y = xbloco->pos_y + lin_53_y;
-			break;
-		case ponto_jun_saida:
-			pos_x = xbloco->pos_x + lin_52_x;
-			pos_y = xbloco->pos_y + lin_52_y;
-			break;
-        case ponto_rep_entrada:
-			pos_x = xbloco->pos_x + lin_61_x;
-			pos_y = xbloco->pos_y + lin_61_y;
-			break;
-		case ponto_rep_loop_inicio:
-			pos_x = xbloco->pos_x + lin_62_x;
-			pos_y = xbloco->pos_y + lin_62_y;
-			break;
-		case ponto_rep_loop_fim:
-			pos_x = xbloco->pos_x + lin_63_x;
-			pos_y = xbloco->pos_y + lin_63_y;
-			break;
-		case ponto_rep_saida:
-			pos_x = xbloco->pos_x + lin_64_x;
-			pos_y = xbloco->pos_y + lin_64_y;
-			break;
-	}
 
+	//coloca as coordenadas do bloco de acordo com o bloco e juncao na qual esta conectado
+	pos_x = xbloco->pos_x + coord.linhas_x(ponto);
+	pos_y = xbloco->pos_y + coord.linhas_y(ponto);
 	col = new bool[cols_linha];
 	col[0] = false;
 	var_pont = new bloco*[ponts_linha];
@@ -789,9 +734,18 @@ bloco::bloco() {}
 int bloco::atualizar(lista_blocos* l) {
 	int a_tipo = -1;
 	if (l->bloco_ativo != NULL) a_tipo = l->bloco_ativo->tipo;
-
 //tratamento dos blocos que representam linhas
-	if (tipo == linha) { // para explicacoes sobre as variaveis que controlam as linhas, ver a sua funcao criadora
+	if (tipo == linha) {
+	 // para explicacoes sobre as variaveis que controlam as linhas, ver a sua funcao criadora
+	 		// se o bloco estiver ativo, coloca o segundo ponto no mouse. Do contrario, faz o mesmo que o switch anterior para o outro ponto
+		if (ativo) {
+			lin_pos2_x = mouse_x;
+			lin_pos2_y = mouse_y_ajustado;
+		}
+		else {
+            lin_pos2_x = var_pont[1]->pos_x + coord.linhas_x(lin_ponto2);
+            lin_pos2_y = var_pont[1]->pos_y + coord.linhas_y(lin_ponto2);
+		}
 //se o botão direito for pressionado sobre a linha ou enquanto ela está selecionada, ela é destruida
 		if (mouse_clicar[mouse_dir] && (col[0] || ativo)) {
 			marcado_para_destruir = true;
@@ -827,129 +781,11 @@ int bloco::atualizar(lista_blocos* l) {
 
 		}
 		//atualiza as coordenadas do primeiro ponto de acordo com as coordenadas da juncao do bloco a qual esta ligado
-		switch (lin_ponto1) {
-            case ponto_dec_entrada:
-                pos_x = var_pont[0]->pos_x + lin_11_x;
-                pos_y = var_pont[0]->pos_y + lin_11_y;
-                break;
-            case ponto_dec_saida_nao:
-                pos_x = var_pont[0]->pos_x + lin_12_x;
-                pos_y = var_pont[0]->pos_y + lin_12_y;
-                break;
-            case ponto_dec_saida_sim:
-                pos_x = var_pont[0]->pos_x + lin_14_x;
-                pos_y = var_pont[0]->pos_y + lin_14_y;
-                break;
-            case ponto_acao_entrada:
-                pos_x = var_pont[0]->pos_x + lin_21_x;
-                pos_y = var_pont[0]->pos_y + lin_21_y;
-                break;
-            case ponto_acao_saida:
-                pos_x = var_pont[0]->pos_x + lin_22_x;
-                pos_y = var_pont[0]->pos_y + lin_22_y;
-                break;
-            case ponto_ini_saida:
-                pos_x = var_pont[0]->pos_x + lin_32_x;
-                pos_y = var_pont[0]->pos_y + lin_32_y;
-                break;
-            case ponto_fim_entrada:
-                pos_x = var_pont[0]->pos_x + lin_41_x;
-                pos_y = var_pont[0]->pos_y + lin_41_y;
-                break;
-            case ponto_jun_entrada_esq:
-                pos_x = var_pont[0]->pos_x + lin_51_x;
-                pos_y = var_pont[0]->pos_y + lin_51_y;
-                break;
-            case ponto_jun_entrada_dir:
-                pos_x = var_pont[0]->pos_x + lin_53_x;
-                pos_y = var_pont[0]->pos_y + lin_53_y;
-                break;
-            case ponto_jun_saida:
-                pos_x = var_pont[0]->pos_x + lin_52_x;
-                pos_y = var_pont[0]->pos_y + lin_52_y;
-                break;
-            case ponto_rep_entrada:
-                pos_x = var_pont[0]->pos_x + lin_61_x;
-                pos_y = var_pont[0]->pos_y + lin_61_y;
-                break;
-            case ponto_rep_loop_inicio:
-                pos_x = var_pont[0]->pos_x + lin_62_x;
-                pos_y = var_pont[0]->pos_y + lin_62_y;
-                break;
-            case ponto_rep_loop_fim:
-                pos_x = var_pont[0]->pos_x + lin_63_x;
-                pos_y = var_pont[0]->pos_y + lin_63_y;
-                break;
-            case ponto_rep_saida:
-                pos_x = var_pont[0]->pos_x + lin_64_x;
-                pos_y = var_pont[0]->pos_y + lin_64_y;
-                break;
-		}
-		// se o bloco estiver ativo, coloca o segundo ponto no mouse. Do contrario, faz o mesmo que o switch anterior para o outro ponto
-		if (ativo) {
-			lin_pos2_x = mouse_x;
-			lin_pos2_y = mouse_y_ajustado;
-		}
-		else switch (lin_ponto2) {
-            case ponto_dec_entrada:
-                lin_pos2_x = var_pont[1]->pos_x + lin_11_x;
-                lin_pos2_y = var_pont[1]->pos_y + lin_11_y;
-                break;
-            case ponto_dec_saida_nao:
-                lin_pos2_x = var_pont[1]->pos_x + lin_12_x;
-                lin_pos2_y = var_pont[1]->pos_y + lin_12_y;
-                break;
-            case ponto_dec_saida_sim:
-                lin_pos2_x = var_pont[1]->pos_x + lin_14_x;
-                lin_pos2_y = var_pont[1]->pos_y + lin_14_y;
-                break;
-            case ponto_acao_entrada:
-                lin_pos2_x = var_pont[1]->pos_x + lin_21_x;
-                lin_pos2_y = var_pont[1]->pos_y + lin_21_y;
-                break;
-            case ponto_acao_saida:
-                lin_pos2_x = var_pont[1]->pos_x + lin_22_x;
-                lin_pos2_y = var_pont[1]->pos_y + lin_22_y;
-                break;
-            case ponto_ini_saida:
-                lin_pos2_x = var_pont[1]->pos_x + lin_32_x;
-                lin_pos2_y = var_pont[1]->pos_y + lin_32_y;
-                break;
-            case ponto_fim_entrada:
-                lin_pos2_x = var_pont[1]->pos_x + lin_41_x;
-                lin_pos2_y = var_pont[1]->pos_y + lin_41_y;
-                break;
-            case ponto_jun_entrada_esq:
-                lin_pos2_x = var_pont[1]->pos_x + lin_51_x;
-                lin_pos2_y = var_pont[1]->pos_y + lin_51_y;
-                break;
-            case ponto_jun_entrada_dir:
-                lin_pos2_x = var_pont[1]->pos_x + lin_53_x;
-                lin_pos2_y = var_pont[1]->pos_y + lin_53_y;
-                break;
-            case ponto_jun_saida:
-                lin_pos2_x = var_pont[1]->pos_x + lin_52_x;
-                lin_pos2_y = var_pont[1]->pos_y + lin_52_y;
-                break;
-            case ponto_rep_entrada:
-                lin_pos2_x = var_pont[1]->pos_x + lin_61_x;
-                lin_pos2_y = var_pont[1]->pos_y + lin_61_y;
-                break;
-            case ponto_rep_loop_inicio:
-                lin_pos2_x = var_pont[1]->pos_x + lin_62_x;
-                lin_pos2_y = var_pont[1]->pos_y + lin_62_y;
-                break;
-            case ponto_rep_loop_fim:
-                lin_pos2_x = var_pont[1]->pos_x + lin_63_x;
-                lin_pos2_y = var_pont[1]->pos_y + lin_63_y;
-                break;
-            case ponto_rep_saida:
-                lin_pos2_x = var_pont[1]->pos_x + lin_64_x;
-                lin_pos2_y = var_pont[1]->pos_y + lin_64_y;
-                break;
-		}
-	}
+        pos_x = var_pont[0]->pos_x + coord.linhas_x(lin_ponto1);
+        pos_y = var_pont[0]->pos_y + coord.linhas_y(lin_ponto1);
 
+
+	}
 	//Tratamento para blocos normais
 	else if (tipo < primeiro_bloco_trava) {
 
@@ -976,17 +812,17 @@ int bloco::atualizar(lista_blocos* l) {
 		case bloco_decisao:
             if (mouse_clicar[mouse_esq] && bloco_topo == this) {
                 if (col[1]) {
-                    if (a_tipo == linha) prender(l, ponto_dec_entrada); // se o bloco ativo for uma linha, a liga ao ponto
-                    else if (!l->ativo && var_pont[0] == NULL) var_pont[0] = l->criar_bloco(ponto_dec_entrada, this);
+                    if (a_tipo == linha) prender(l, dec_E); // se o bloco ativo for uma linha, a liga ao ponto
+                    else if (!l->ativo && var_pont[0] == NULL) var_pont[0] = l->criar_bloco(dec_E, this);
                     //se nao houver bloco ativo e o ponto sobre o qual o mouse esta nao tem nada ligado nele, cria uma nova linha
                 }
                 else if (col[2]) {
-                    if (a_tipo == linha) prender(l, ponto_dec_saida_nao);
-                    else if (!l->ativo && var_pont[1] == NULL) var_pont[1] = l->criar_bloco(ponto_dec_saida_nao, this);
+                    if (a_tipo == linha) prender(l, dec_S_nao);
+                    else if (!l->ativo && var_pont[1] == NULL) var_pont[1] = l->criar_bloco(dec_S_nao, this);
                 }
                 else if (col[3]) {
-                    if (a_tipo == linha) prender(l, ponto_dec_saida_sim);
-                    else if (!l->ativo && var_pont[2] == NULL) var_pont[2] = l->criar_bloco(ponto_dec_saida_sim, this);
+                    if (a_tipo == linha) prender(l, dec_S_sim);
+                    else if (!l->ativo && var_pont[2] == NULL) var_pont[2] = l->criar_bloco(dec_S_sim, this);
                 }
             }
             break;
@@ -995,13 +831,13 @@ int bloco::atualizar(lista_blocos* l) {
             if (mouse_clicar[mouse_esq] && bloco_topo == this){
 
                 if (col[1]) {
-                    if (a_tipo == linha) prender(l, ponto_acao_entrada);
-                    else if (!l->ativo && var_pont[0] == NULL) var_pont[0] = l->criar_bloco(ponto_acao_entrada, this);
+                    if (a_tipo == linha) prender(l, acao_E);
+                    else if (!l->ativo && var_pont[0] == NULL) var_pont[0] = l->criar_bloco(acao_E, this);
                 }
 
                 if (col[2]) {
-                    if (a_tipo == linha) prender(l, ponto_acao_saida);
-                    else if (!l->ativo && var_pont[1] == NULL) var_pont[1] = l->criar_bloco(ponto_acao_saida, this);
+                    if (a_tipo == linha) prender(l, acao_S);
+                    else if (!l->ativo && var_pont[1] == NULL) var_pont[1] = l->criar_bloco(acao_S, this);
                 }
             }
 			break;
@@ -1009,34 +845,34 @@ int bloco::atualizar(lista_blocos* l) {
 		case bloco_inicio:
 
 			if (col[1] && mouse_clicar[mouse_esq] && bloco_topo == this) {
-				if (a_tipo == linha) prender(l, ponto_ini_saida);
-				else if (!l->ativo && var_pont[0] == NULL) var_pont[0] = l->criar_bloco(ponto_ini_saida, this);
+				if (a_tipo == linha) prender(l, ini_S);
+				else if (!l->ativo && var_pont[0] == NULL) var_pont[0] = l->criar_bloco(ini_S, this);
 			}
 
 			break;
 		case bloco_fim:
 
 			if (col[1] && mouse_clicar[mouse_esq] && bloco_topo == this) {
-				if (a_tipo == linha) prender(l, ponto_fim_entrada);
-				else if (!l->ativo && var_pont[0] == NULL) var_pont[0] = l->criar_bloco(ponto_fim_entrada, this);
+				if (a_tipo == linha) prender(l, fim_E);
+				else if (!l->ativo && var_pont[0] == NULL) var_pont[0] = l->criar_bloco(fim_E, this);
 			}
 
 			break;
 		case bloco_juncao:
             if (mouse_clicar[mouse_esq] && bloco_topo == this) {
                 if (col[1]) {
-                    if (a_tipo == linha) prender(l, ponto_jun_entrada_esq);
-                    else if (!l->ativo && var_pont[0] == NULL) var_pont[0] = l->criar_bloco(ponto_jun_entrada_esq, this);
+                    if (a_tipo == linha) prender(l, jun_E_esq);
+                    else if (!l->ativo && var_pont[0] == NULL) var_pont[0] = l->criar_bloco(jun_E_esq, this);
                 }
 
                 if (col[2]) {
-                    if (a_tipo == linha) prender(l, ponto_jun_entrada_dir);
-                    else if (!l->ativo && var_pont[1] == NULL) var_pont[1] = l->criar_bloco(ponto_jun_entrada_dir, this);
+                    if (a_tipo == linha) prender(l, jun_E_dir);
+                    else if (!l->ativo && var_pont[1] == NULL) var_pont[1] = l->criar_bloco(jun_E_dir, this);
                 }
 
                 if (col[3]) {
-                    if (a_tipo == linha) prender(l, ponto_jun_saida);
-                    else if (!l->ativo && var_pont[2] == NULL) var_pont[2] = l->criar_bloco(ponto_jun_saida, this);
+                    if (a_tipo == linha) prender(l, jun_S);
+                    else if (!l->ativo && var_pont[2] == NULL) var_pont[2] = l->criar_bloco(jun_S, this);
                 }
             }
 			break;
@@ -1053,23 +889,23 @@ int bloco::atualizar(lista_blocos* l) {
             rep_it_faltando = rep_it_total;
             if (mouse_clicar[mouse_esq] && bloco_topo == this) {
                 if (col[1]) {
-                    if (a_tipo == linha) prender(l, ponto_rep_entrada);
-                    else if (!l->ativo && var_pont[0] == NULL) var_pont[0] = l->criar_bloco(ponto_rep_entrada, this);
+                    if (a_tipo == linha) prender(l, rep_E);
+                    else if (!l->ativo && var_pont[0] == NULL) var_pont[0] = l->criar_bloco(rep_E, this);
                 }
 
                 if (col[2]) {
-                    if (a_tipo == linha) prender(l, ponto_rep_loop_inicio);
-                    else if (!l->ativo && var_pont[1] == NULL) var_pont[1] = l->criar_bloco(ponto_rep_loop_inicio, this);
+                    if (a_tipo == linha) prender(l, rep_loop_ini);
+                    else if (!l->ativo && var_pont[1] == NULL) var_pont[1] = l->criar_bloco(rep_loop_ini, this);
                 }
 
                 if (col[3]) {
-                    if (a_tipo == linha) prender(l, ponto_rep_loop_fim);
-                    else if (!l->ativo && var_pont[2] == NULL) var_pont[2] = l->criar_bloco(ponto_rep_loop_fim, this);
+                    if (a_tipo == linha) prender(l, rep_loop_fim);
+                    else if (!l->ativo && var_pont[2] == NULL) var_pont[2] = l->criar_bloco(rep_loop_fim, this);
                 }
 
                 if (col[4]) {
-                    if (a_tipo == linha) prender(l, ponto_rep_saida);
-                    else if (!l->ativo && var_pont[3] == NULL) var_pont[3] = l->criar_bloco(ponto_rep_saida, this);
+                    if (a_tipo == linha) prender(l, rep_S);
+                    else if (!l->ativo && var_pont[3] == NULL) var_pont[3] = l->criar_bloco(rep_S, this);
                 }
 
             }
@@ -1264,21 +1100,21 @@ void bloco::desenhar(lista_blocos *l) {
 			else if (col[0] && (!l->ativo || a_tipo >= bloco_fita)) al_draw_bitmap(BLOCO[0][1], bloco_xy, 0);
 			else al_draw_bitmap(BLOCO[0][0], bloco_xy, 0);
 
-			if (col[1] && (!l->ativo || l->bloco_ativo->tipo == linha)) al_draw_bitmap(PONTO[1], pos_x + pnt_log1_x, pos_y + pnt_log1_y, 0);
-			else al_draw_bitmap(PONTO[0], pos_x + pnt_log1_x, pos_y + pnt_log1_y, 0);
+			if (col[1] && (!l->ativo || l->bloco_ativo->tipo == linha)) al_draw_bitmap(PONTO[1], pos_ponto(dec_E), 0);
+			else al_draw_bitmap(PONTO[0], pos_ponto(dec_E), 0);
 
-			if (col[2] && (!l->ativo || l->bloco_ativo->tipo == linha)) al_draw_bitmap(PONTO[1], pos_x + pnt_log2_x, pos_y + pnt_log2_y, 0);
-			else al_draw_bitmap(PONTO[0], pos_x + pnt_log2_x, pos_y + pnt_log2_y, 0);
+			if (col[2] && (!l->ativo || l->bloco_ativo->tipo == linha)) al_draw_bitmap(PONTO[1], pos_ponto(dec_S_nao), 0);
+			else al_draw_bitmap(PONTO[0], pos_ponto(dec_S_nao), 0);
 
-			if (col[3] && (!l->ativo || l->bloco_ativo->tipo == linha)) al_draw_bitmap(PONTO[1], pos_x + pnt_log3_x, pos_y + pnt_log3_y, 0);
-			else al_draw_bitmap(PONTO[0], pos_x + pnt_log3_x, pos_y + pnt_log3_y, 0);
+			if (col[3] && (!l->ativo || l->bloco_ativo->tipo == linha)) al_draw_bitmap(PONTO[1], pos_ponto(dec_S_sim), 0);
+			else al_draw_bitmap(PONTO[0], pos_ponto(dec_S_sim), 0);
 		}
 		else {//se o programa estiver rodando, desenha o bloco com todas as junções sempre como inativas
 			if (ativo) al_draw_bitmap(BLOCO[0][3], bloco_xy, 0);
 			else al_draw_bitmap(BLOCO[0][0], bloco_xy, 0);
-			al_draw_bitmap(PONTO[0], pos_x + pnt_log1_x, pos_y + pnt_log1_y, 0);
-			al_draw_bitmap(PONTO[0], pos_x + pnt_log2_x, pos_y + pnt_log2_y, 0);
-			al_draw_bitmap(PONTO[0], pos_x + pnt_log3_x, pos_y + pnt_log3_y, 0);
+			al_draw_bitmap(PONTO[0], pos_ponto(dec_E), 0);
+			al_draw_bitmap(PONTO[0], pos_ponto(dec_S_nao), 0);
+			al_draw_bitmap(PONTO[0], pos_ponto(dec_S_sim), 0);
             if (var_pont[3] != NULL && var_pont[4] == NULL) if (var_pont[3]->tipo == bloco_numero) { //se o bloco estiver no modo de loop (apenas um bloco de número travado na primeira posição e nada na segunda) desenha um segundo bloco de numero na segunda posição, que mostrará quantas vezes o loop foi executado
                 if (var_pont[3]->var_int[1] == var_pont[3]->var_int[2]) al_draw_bitmap(NUMERO[var_pont[3]->var_int[2]], pos_x + qua_log2_x, pos_y + qua_log_y, 0); //como a variavel que indica quantas iterações ainda precisam ser feitas é decrementada assim que o comando é mandado para o programa, parece que uma iteração é feita imediatamente. Para evitar isso, apenas quando as duas variáceis são iguais elas são mostradas em seus valores reais, e depois o numero de iterações a fazer é mostrado incrementado por 1
                 else al_draw_bitmap(NUMERO[var_pont[3]->var_int[2] + 1], pos_x + qua_log2_x, pos_y + qua_log_y, 0);
@@ -1293,17 +1129,17 @@ void bloco::desenhar(lista_blocos *l) {
 			else if (col[0] && (!l->ativo || (a_tipo >= bloco_andar && a_tipo <= bloco_virar))) al_draw_bitmap(BLOCO[1][1], bloco_xy, 0);
 			else al_draw_bitmap(BLOCO[1][0], bloco_xy, 0);
 
-			if (col[1] && (!l->ativo || l->bloco_ativo->tipo == linha)) al_draw_bitmap(PONTO[1], pos_x + pnt_acao1_x, pos_y + pnt_acao1_y, 0);
-			else al_draw_bitmap(PONTO[0], pos_x + pnt_acao1_x, pos_y + pnt_acao1_y, 0);
+			if (col[1] && (!l->ativo || l->bloco_ativo->tipo == linha)) al_draw_bitmap(PONTO[1], pos_ponto(acao_E), 0);
+			else al_draw_bitmap(PONTO[0], pos_ponto(acao_E), 0);
 
-			if (col[2] && (!l->ativo || l->bloco_ativo->tipo == linha)) al_draw_bitmap(PONTO[1], pos_x + pnt_acao2_x, pos_y + pnt_acao2_y, 0);
-			else al_draw_bitmap(PONTO[0], pos_x + pnt_acao2_x, pos_y + pnt_acao2_y, 0);
+			if (col[2] && (!l->ativo || l->bloco_ativo->tipo == linha)) al_draw_bitmap(PONTO[1], pos_ponto(acao_S), 0);
+			else al_draw_bitmap(PONTO[0], pos_ponto(acao_S), 0);
 		}
 		else {
 			if (ativo) al_draw_bitmap(BLOCO[1][3], bloco_xy, 0);
 			else al_draw_bitmap(BLOCO[1][0], bloco_xy, 0);
-			al_draw_bitmap(PONTO[0], pos_x + pnt_acao1_x, pos_y + pnt_acao1_y, 0);
-			al_draw_bitmap(PONTO[0], pos_x + pnt_acao2_x, pos_y + pnt_acao2_y, 0);
+			al_draw_bitmap(PONTO[0], pos_ponto(acao_E), 0);
+			al_draw_bitmap(PONTO[0], pos_ponto(acao_S), 0);
 		}
 		break;
 
@@ -1314,14 +1150,14 @@ void bloco::desenhar(lista_blocos *l) {
 			else if (bloco_topo == this && col[0]) al_draw_bitmap(BLOCO[2][1], bloco_xy, 0);
 			else al_draw_bitmap(BLOCO[2][0], bloco_xy, 0);
 
-			if (col[1] && (!l->ativo || l->bloco_ativo->tipo == linha)) al_draw_bitmap(PONTO[1], pos_x + pnt_ini1_x, pos_y + pnt_ini1_y, 0);
-			else al_draw_bitmap(PONTO[0], pos_x + pnt_ini1_x, pos_y + pnt_ini1_y, 0);
+			if (col[1] && (!l->ativo || l->bloco_ativo->tipo == linha)) al_draw_bitmap(PONTO[1], pos_ponto(ini_S), 0);
+			else al_draw_bitmap(PONTO[0], pos_ponto(ini_S), 0);
 
 		}
 		else {
 			if (ativo) al_draw_bitmap(BLOCO[2][3], bloco_xy, 0);
 			else al_draw_bitmap(BLOCO[2][0], bloco_xy, 0);
-			al_draw_bitmap(PONTO[0], pos_x + pnt_ini1_x, pos_y + pnt_ini1_y, 0);
+			al_draw_bitmap(PONTO[0], pos_ponto(ini_S), 0);
 		}
 		break;
 
@@ -1332,13 +1168,13 @@ void bloco::desenhar(lista_blocos *l) {
 			else if (bloco_topo == this && col[0]) al_draw_bitmap(BLOCO[3][1], bloco_xy, 0);
 			else al_draw_bitmap(BLOCO[3][0], bloco_xy, 0);
 
-			if (col[1] && (!l->ativo || l->bloco_ativo->tipo == linha)) al_draw_bitmap(PONTO[1], pos_x + pnt_fim1_x, pos_y + pnt_fim1_y, 0);
-			else al_draw_bitmap(PONTO[0], pos_x + pnt_fim1_x, pos_y + pnt_fim1_y, 0);
+			if (col[1] && (!l->ativo || l->bloco_ativo->tipo == linha)) al_draw_bitmap(PONTO[1], pos_ponto(fim_E), 0);
+			else al_draw_bitmap(PONTO[0], pos_ponto(fim_E), 0);
 		}
 		else {
 			if (ativo) al_draw_bitmap(BLOCO[3][3], bloco_xy, 0);
 			else al_draw_bitmap(BLOCO[3][0], bloco_xy, 0);
-			al_draw_bitmap(PONTO[0], pos_x + pnt_fim1_x , pos_y + pnt_fim1_y, 0);
+			al_draw_bitmap(PONTO[0], pos_ponto(fim_E), 0);
 		}
 
 		break;
@@ -1350,21 +1186,21 @@ void bloco::desenhar(lista_blocos *l) {
 			else if (bloco_topo == this && col[0]) al_draw_bitmap(BLOCO[4][1], bloco_xy, 0);
 			else al_draw_bitmap(BLOCO[4][0], bloco_xy, 0);
 
-			if (col[1] && (!l->ativo || l->bloco_ativo->tipo == linha)) al_draw_bitmap(PONTO[1], pos_x + pnt_jun1_x, pos_y + pnt_jun1_y, 0);
-			else al_draw_bitmap(PONTO[0], pos_x + pnt_jun1_x, pos_y + pnt_jun1_y, 0);
+			if (col[1] && (!l->ativo || l->bloco_ativo->tipo == linha)) al_draw_bitmap(PONTO[1], pos_ponto(jun_E_esq), 0);
+			else al_draw_bitmap(PONTO[0], pos_ponto(jun_E_esq), 0);
 
-			if (col[2] && (!l->ativo || l->bloco_ativo->tipo == linha)) al_draw_bitmap(PONTO[1], pos_x + pnt_jun2_x, pos_y + pnt_jun2_y, 0);
-			else al_draw_bitmap(PONTO[0], pos_x + pnt_jun2_x, pos_y + pnt_jun2_y, 0);
+			if (col[2] && (!l->ativo || l->bloco_ativo->tipo == linha)) al_draw_bitmap(PONTO[1], pos_ponto(jun_E_dir), 0);
+			else al_draw_bitmap(PONTO[0], pos_ponto(jun_E_dir), 0);
 
-			if (col[3] && (!l->ativo || l->bloco_ativo->tipo == linha)) al_draw_bitmap(PONTO[1], pos_x + pnt_jun3_x, pos_y + pnt_jun3_y, 0);
-			else al_draw_bitmap(PONTO[0], pos_x + pnt_jun3_x, pos_y + pnt_jun3_y, 0);
+			if (col[3] && (!l->ativo || l->bloco_ativo->tipo == linha)) al_draw_bitmap(PONTO[1], pos_ponto(jun_S), 0);
+			else al_draw_bitmap(PONTO[0], pos_ponto(jun_S), 0);
 		}
 		else {
 			if (ativo) al_draw_bitmap(BLOCO[4][3], bloco_xy, 0);
 			else al_draw_bitmap(BLOCO[4][0], bloco_xy, 0);
-			al_draw_bitmap(PONTO[0], pos_x + pnt_jun1_x, pos_y + pnt_jun1_y, 0);
-			al_draw_bitmap(PONTO[0], pos_x + pnt_jun2_x, pos_y + pnt_jun2_y, 0);
-			al_draw_bitmap(PONTO[0], pos_x + pnt_jun3_x, pos_y + pnt_jun3_y, 0);
+			al_draw_bitmap(PONTO[0], pos_ponto(jun_E_esq), 0);
+			al_draw_bitmap(PONTO[0], pos_ponto(jun_E_dir), 0);
+			al_draw_bitmap(PONTO[0], pos_ponto(fim_E), 0);
 		}
 		break;
     case bloco_repeticao:
@@ -1373,25 +1209,25 @@ void bloco::desenhar(lista_blocos *l) {
 			else if (bloco_topo == this && col[0]) al_draw_bitmap(BLOCO[5][1], bloco_xy, 0);
 			else al_draw_bitmap(BLOCO[5][0], bloco_xy, 0);
 
-			if (col[1] && (!l->ativo || l->bloco_ativo->tipo == linha)) al_draw_bitmap(PONTO[1], pos_x + pnt_rep1_x, pos_y + pnt_rep1_y, 0);
-			else al_draw_bitmap(PONTO[0], pos_x + pnt_rep1_x, pos_y + pnt_rep1_y, 0);
+			if (col[1] && (!l->ativo || l->bloco_ativo->tipo == linha)) al_draw_bitmap(PONTO[1], pos_ponto(rep_E), 0);
+			else al_draw_bitmap(PONTO[0], pos_ponto(rep_E), 0);
 
-			if (col[2] && (!l->ativo || l->bloco_ativo->tipo == linha)) al_draw_bitmap(PONTO[1], pos_x + pnt_rep2_x, pos_y + pnt_rep2_y, 0);
-			else al_draw_bitmap(PONTO[0], pos_x + pnt_rep2_x, pos_y + pnt_rep2_y, 0);
+			if (col[2] && (!l->ativo || l->bloco_ativo->tipo == linha)) al_draw_bitmap(PONTO[1], pos_ponto(rep_loop_ini), 0);
+			else al_draw_bitmap(PONTO[0], pos_ponto(rep_loop_ini), 0);
 
-			if (col[3] && (!l->ativo || l->bloco_ativo->tipo == linha)) al_draw_bitmap(PONTO[1], pos_x + pnt_rep3_x, pos_y + pnt_rep3_y, 0);
-			else al_draw_bitmap(PONTO[0], pos_x + pnt_rep3_x, pos_y + pnt_rep3_y, 0);
+			if (col[3] && (!l->ativo || l->bloco_ativo->tipo == linha)) al_draw_bitmap(PONTO[1], pos_ponto(rep_loop_fim), 0);
+			else al_draw_bitmap(PONTO[0], pos_ponto(rep_loop_fim), 0);
 
-            if (col[4] && (!l->ativo || l->bloco_ativo->tipo == linha)) al_draw_bitmap(PONTO[1], pos_x + pnt_rep4_x, pos_y + pnt_rep4_y, 0);
-			else al_draw_bitmap(PONTO[0], pos_x + pnt_rep4_x, pos_y + pnt_rep4_y, 0);
+            if (col[4] && (!l->ativo || l->bloco_ativo->tipo == linha)) al_draw_bitmap(PONTO[1], pos_ponto(rep_S), 0);
+			else al_draw_bitmap(PONTO[0], pos_ponto(rep_S), 0);
 		}
 		else {
 			if (ativo) al_draw_bitmap(BLOCO[5][3], bloco_xy, 0);
 			else al_draw_bitmap(BLOCO[5][0], bloco_xy, 0);
-			al_draw_bitmap(PONTO[0], pos_x + pnt_rep1_x, pos_y + pnt_rep1_y, 0);
-			al_draw_bitmap(PONTO[0], pos_x + pnt_rep2_x, pos_y + pnt_rep2_y, 0);
-			al_draw_bitmap(PONTO[0], pos_x + pnt_rep3_x, pos_y + pnt_rep3_y, 0);
-			al_draw_bitmap(PONTO[0], pos_x + pnt_rep4_x, pos_y + pnt_rep4_y, 0);
+			al_draw_bitmap(PONTO[0], pos_ponto(rep_E), 0);
+			al_draw_bitmap(PONTO[0], pos_ponto(rep_loop_ini), 0);
+			al_draw_bitmap(PONTO[0], pos_ponto(rep_loop_fim), 0);
+			al_draw_bitmap(PONTO[0], pos_ponto(rep_S), 0);
             if (rep_it_faltando == rep_it_total) al_draw_bitmap(NUMERO[rep_it_total], pos_x + qua_rep_x, pos_y + qua_rep2_y, 0); //como a variavel que indica quantas iterações ainda precisam ser feitas é decrementada assim que o comando é mandado para o programa, parece que uma iteração é feita imediatamente. Para evitar isso, apenas quando as duas variáceis são iguais elas são mostradas em seus valores reais, e depois o numero de iterações a fazer é mostrado incrementado por 1
             else al_draw_bitmap(NUMERO[rep_it_faltando + 1], pos_x + qua_rep_x, pos_y + qua_rep2_y, 0);
 		}
@@ -1906,4 +1742,150 @@ bool botao(float x, float y, float dx, float dy, float offset) {
         return true;
     }
     else return false;
+}
+
+#define x(X) [X/100 - 1][X%10-1][0]
+#define y(X) [X/100 - 1][X%10-1][1]
+void cord::inic() {
+
+    lin = new int**[6];
+
+    lin[0] = new int*[3];
+    for(int i = 0; i < 3; i++) lin[0][i] = new int[2];
+
+
+    lin x(dec_E) = al_get_bitmap_width(BLOCO[0][0])/2;
+    lin y(dec_E) = 0;
+    lin x(dec_S_nao) = al_get_bitmap_width(BLOCO[0][0]);
+    lin y(dec_S_nao) = al_get_bitmap_height(BLOCO[0][0])/2;
+    lin x(dec_S_sim) = al_get_bitmap_width(BLOCO[0][0])/2;
+    lin y(dec_S_sim) = al_get_bitmap_height(BLOCO[0][0]);
+
+
+    lin[1] = new int*[2];
+    for(int i = 0; i < 2; i++) lin[1][i] = new int[2];
+
+    lin x(acao_E) = al_get_bitmap_width(BLOCO[1][0])/2;
+    lin y(acao_E) = 0;
+    lin x(acao_S) = al_get_bitmap_width(BLOCO[1][0])/2;
+    lin y(acao_S) = al_get_bitmap_height(BLOCO[1][0]);
+
+
+    lin[2] = new int*[1];
+    for(int i = 0; i < 1; i++) lin[2][i] = new int[2];
+
+    lin x(ini_S) = al_get_bitmap_width(BLOCO[2][0])/2;
+    lin y(ini_S) = al_get_bitmap_height(BLOCO[2][0]);
+
+
+    lin[3] = new int*[1];
+    for(int i = 0; i < 1; i++) lin[3][i] = new int[2];
+
+    lin x(fim_E) = al_get_bitmap_width(BLOCO[3][0])/2;
+    lin y(fim_E) = 0;
+
+
+    lin[4] = new int*[3];
+    for(int i = 0; i < 3; i++) lin[4][i] = new int[2];
+
+    lin x(jun_E_esq) = 0;
+    lin y(jun_E_esq) = 0;
+    lin x(jun_E_dir) = al_get_bitmap_width(BLOCO[4][0]);
+    lin y(jun_E_dir) = 0;
+    lin x(jun_S) = al_get_bitmap_width(BLOCO[4][0])/2;
+    lin y(jun_S) = al_get_bitmap_height(BLOCO[4][0]);
+
+    lin[5] = new int*[4];
+    for(int i = 0; i < 4; i++) lin[5][i] = new int[2];
+
+    lin x(rep_E) = al_get_bitmap_width(BLOCO[5][0])/2;
+    lin y(rep_E) = 0;
+    lin x(rep_loop_ini) = al_get_bitmap_width(BLOCO[5][0]);
+    lin y(rep_loop_ini) = 0;
+    lin x(rep_loop_fim) = al_get_bitmap_width(BLOCO[5][0]);
+    lin y(rep_loop_fim) = al_get_bitmap_height(BLOCO[5][0]);
+    lin x(rep_S) = al_get_bitmap_width(BLOCO[5][0])/2;
+    lin y(rep_S) = al_get_bitmap_height(BLOCO[5][0]);
+
+
+    pon = new int**[6];
+
+    pon[0] = new int*[3];
+    for(int i = 0; i < 3; i++) pon[0][i] = new int[2];
+
+    pon x(dec_E) = (al_get_bitmap_width(BLOCO[0][0])/2 - al_get_bitmap_width(PONTO[0])/2);
+    pon y(dec_E) = (-al_get_bitmap_height(PONTO[0])/2);
+    pon x(dec_S_nao) = (al_get_bitmap_width(BLOCO[0][0])-al_get_bitmap_width(PONTO[0])/2);
+    pon y(dec_S_nao) = (al_get_bitmap_height(BLOCO[0][0])/2 - al_get_bitmap_height(PONTO[0])/2);
+    pon x(dec_S_sim) = (al_get_bitmap_width(BLOCO[0][0])/2-al_get_bitmap_width(PONTO[0])/2);
+    pon y(dec_S_sim) = (al_get_bitmap_height(BLOCO[0][0])- al_get_bitmap_height(PONTO[0])/2);
+
+
+    pon[1] = new int*[2];
+    for(int i = 0; i < 2; i++) pon[1][i] = new int[2];
+
+    pon x(acao_E) = (al_get_bitmap_width(BLOCO[1][0])/2-al_get_bitmap_width(PONTO[0])/2);
+    pon y(acao_E) = (-al_get_bitmap_height(PONTO[0])/2);
+    pon x(acao_S) = (al_get_bitmap_width(BLOCO[1][0])/2-al_get_bitmap_width(PONTO[0])/2);
+    pon y(acao_S) = (al_get_bitmap_height(BLOCO[1][0])-al_get_bitmap_height(PONTO[0])/2);
+
+
+    pon[2] = new int*[1];
+    for(int i = 0; i < 1; i++) pon[2][i] = new int[2];
+
+    pon x(ini_S) = (al_get_bitmap_width(BLOCO[2][0])/2-al_get_bitmap_width(PONTO[0])/2);
+    pon y(ini_S) = (al_get_bitmap_height(BLOCO[2][0])-al_get_bitmap_height(PONTO[0])/2);
+
+
+    pon[3] = new int*[1];
+    for(int i = 0; i < 1; i++) pon[3][i] = new int[2];
+
+    pon x(fim_E) = (al_get_bitmap_width(BLOCO[3][0])/2-al_get_bitmap_width(PONTO[0])/2);
+    pon y(fim_E) = (-al_get_bitmap_height(PONTO[0])/2);
+
+
+    pon[4] = new int*[3];
+    for(int i = 0; i < 3; i++) pon[4][i] = new int[2];
+
+    pon x(jun_E_esq) = (-al_get_bitmap_width(PONTO[0])/2);
+    pon y(jun_E_esq) = (-al_get_bitmap_height(PONTO[0])/2);
+    pon x(jun_E_dir) = (al_get_bitmap_width(BLOCO[4][0])-al_get_bitmap_width(PONTO[0])/2);
+    pon y(jun_E_dir) = (-al_get_bitmap_height(PONTO[0])/2);
+    pon x(jun_S) = (al_get_bitmap_width(BLOCO[4][0])/2-al_get_bitmap_width(PONTO[0])/2);
+    pon y(jun_S) = (al_get_bitmap_height(BLOCO[4][0])-al_get_bitmap_height(PONTO[0])/2);
+
+
+    pon[5] = new int*[4];
+    for(int i = 0; i < 4; i++) pon[5][i] = new int[2];
+
+    pon x(rep_E) = (al_get_bitmap_width(BLOCO[5][0])/2 - al_get_bitmap_width(PONTO[0])/2);
+    pon y(rep_E) = (-al_get_bitmap_height(PONTO[0])/2);
+    pon x(rep_loop_ini) = (al_get_bitmap_width(BLOCO[5][0]) - al_get_bitmap_width(PONTO[0])/2);
+    pon y(rep_loop_ini) = (-al_get_bitmap_height(PONTO[0])/2);
+    pon x(rep_loop_fim) = (al_get_bitmap_width(BLOCO[5][0]) - al_get_bitmap_width(PONTO[0])/2);
+    pon y(rep_loop_fim) = (al_get_bitmap_height(BLOCO[5][0])-al_get_bitmap_height(PONTO[0])/2);
+    pon x(rep_S) = (al_get_bitmap_width(BLOCO[5][0])/2 - al_get_bitmap_width(PONTO[0])/2);
+    pon y(rep_S) = (al_get_bitmap_height(BLOCO[5][0])-al_get_bitmap_height(PONTO[0])/2);
+}
+
+void cord::destruir() {
+
+    for(int i = 0; i < 3; i++) delete lin[0][i];
+    for(int i = 0; i < 2; i++) delete lin[1][i];
+    for(int i = 0; i < 1; i++) delete lin[2][i];
+    for(int i = 0; i < 1; i++) delete lin[3][i];
+    for(int i = 0; i < 3; i++) delete lin[4][i];
+    for(int i = 0; i < 4; i++) delete lin[5][i];
+    for(int i = 0; i < 6; i++) delete lin[i];
+    delete lin;
+
+    for(int i = 0; i < 3; i++) delete pon[0][i];
+    for(int i = 0; i < 2; i++) delete pon[1][i];
+    for(int i = 0; i < 1; i++) delete pon[2][i];
+    for(int i = 0; i < 1; i++) delete pon[3][i];
+    for(int i = 0; i < 3; i++) delete pon[4][i];
+    for(int i = 0; i < 4; i++) delete pon[5][i];
+    for(int i = 0; i < 6; i++) delete pon[i];
+    delete pon;
+
 }

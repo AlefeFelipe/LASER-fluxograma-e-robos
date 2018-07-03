@@ -13,6 +13,7 @@
 #include <math.h>
 #include <fstream>
 
+#define debug(X) if(1)cout<<X<<endl
 const int modelo = 0;
 
 using namespace boost::interprocess;
@@ -84,89 +85,43 @@ extern uint8_t tempo_max_clique_duplo;
 #define largura al_get_bitmap_width
 #define altura al_get_bitmap_height
 //usados para referenciar os tipos de bloco
-#define linha 0
-#define bloco_decisao 1
-#define bloco_acao 2
-#define bloco_inicio 3
-#define bloco_fim  4
-#define bloco_juncao 5
+#define linha           0
+#define bloco_decisao   1
+#define bloco_acao      2
+#define bloco_inicio    3
+#define bloco_fim       4
+#define bloco_juncao    5
 #define bloco_repeticao 6
-#define bloco_andar 7
-#define bloco_virar 8
-#define bloco_fita 9
-#define bloco_som 10
-#define bloco_numero 11
-#define bloco_VF 12
+#define bloco_andar     7
+#define bloco_virar     8
+#define bloco_fita      9
+#define bloco_som       10
+#define bloco_numero    11
+#define bloco_VF        12
 
 #define primeiro_bloco_trava 7 //usado quando se quer especificar que os blocos a serem tratados são os normais ou os que travam
 #define primeiro_bloco_trava_logico 9 //usado para especificar que os blocos a serem tratados são os que travam no bloco lógico (ou não)
 
-//coordenadas dos pontos de inicio ou fim das linhas (em relação ao bloco a qual estão ligadas)
-#define lin_11_x al_get_bitmap_width(BLOCO[0][0])/2
-#define lin_11_y 0
-#define lin_12_x al_get_bitmap_width(BLOCO[0][0])
-#define lin_12_y al_get_bitmap_height(BLOCO[0][0])/2
-#define lin_14_x al_get_bitmap_width(BLOCO[0][0])/2
-#define lin_14_y al_get_bitmap_height(BLOCO[0][0])
-#define lin_21_x al_get_bitmap_width(BLOCO[1][0])/2
-#define lin_21_y 0
-#define lin_22_x al_get_bitmap_width(BLOCO[1][0])/2
-#define lin_22_y al_get_bitmap_height(BLOCO[1][0])
-#define lin_32_x al_get_bitmap_width(BLOCO[2][0])/2
-#define lin_32_y al_get_bitmap_height(BLOCO[2][0])
-#define lin_41_x al_get_bitmap_width(BLOCO[3][0])/2
-#define lin_41_y 0
-#define lin_51_x 0
-#define lin_51_y 0
-#define lin_52_x al_get_bitmap_width(BLOCO[4][0])/2
-#define lin_52_y al_get_bitmap_height(BLOCO[4][0])
-#define lin_53_x al_get_bitmap_width(BLOCO[4][0])
-#define lin_53_y 0
-#define lin_61_x al_get_bitmap_width(BLOCO[5][0])/2
-#define lin_61_y 0
-#define lin_62_x al_get_bitmap_width(BLOCO[5][0])
-#define lin_62_y 0
-#define lin_63_x al_get_bitmap_width(BLOCO[5][0])
-#define lin_63_y al_get_bitmap_height(BLOCO[5][0])
-#define lin_64_x al_get_bitmap_width(BLOCO[5][0])/2
-#define lin_64_y al_get_bitmap_height(BLOCO[5][0])
+//nomes para as junções dos blocos (XYZ X= tipo de bloco Y= entrada(0) ou saída(1) Z= número)
+//logo, ponto/100 = tipo de bloco; ((ponto%100)/10) = entrada ou saída; ponto%10 -1 = numero
+// E = entrada, S = saida
+#define dec_E        101
+#define dec_S_nao    112
+#define dec_S_sim    113
+#define acao_E       201
+#define acao_S       212
+#define ini_S        311
+#define fim_E        401
+#define jun_E_esq    501
+#define jun_E_dir    502
+#define jun_S        513
+#define rep_E        601
+#define rep_loop_ini 612
+#define rep_loop_fim 603
+#define rep_S        614
 
-
-//coordenadas das junçoes de cada bloco (usadas para desenhar os pontos de junção)
-#define pnt_log1_x (al_get_bitmap_width(BLOCO[0][0])/2 - al_get_bitmap_width(PONTO[0])/2)
-#define pnt_log1_y (-al_get_bitmap_height(PONTO[0])/2)
-#define pnt_log2_x (al_get_bitmap_width(BLOCO[0][0])-al_get_bitmap_width(PONTO[0])/2)
-#define pnt_log2_y (al_get_bitmap_height(BLOCO[0][0])/2 - al_get_bitmap_height(PONTO[0])/2)
-#define pnt_log3_x (al_get_bitmap_width(BLOCO[0][0])/2-al_get_bitmap_width(PONTO[0])/2)
-#define pnt_log3_y (al_get_bitmap_height(BLOCO[0][0])- al_get_bitmap_height(PONTO[0])/2)
-
-#define pnt_acao1_x (al_get_bitmap_width(BLOCO[1][0])/2-al_get_bitmap_width(PONTO[0])/2)
-#define pnt_acao1_y (-al_get_bitmap_height(PONTO[0])/2)
-#define pnt_acao2_x (al_get_bitmap_width(BLOCO[1][0])/2-al_get_bitmap_width(PONTO[0])/2)
-#define pnt_acao2_y (al_get_bitmap_height(BLOCO[1][0])-al_get_bitmap_height(PONTO[0])/2)
-
-#define pnt_ini1_x (al_get_bitmap_width(BLOCO[2][0])/2-al_get_bitmap_width(PONTO[0])/2)
-#define pnt_ini1_y (al_get_bitmap_height(BLOCO[2][0])-al_get_bitmap_height(PONTO[0])/2)
-
-#define pnt_fim1_x (al_get_bitmap_width(BLOCO[3][0])/2-al_get_bitmap_width(PONTO[0])/2)
-#define pnt_fim1_y (-al_get_bitmap_height(PONTO[0])/2)
-
-#define pnt_jun1_x (-al_get_bitmap_width(PONTO[0])/2)
-#define pnt_jun1_y (-al_get_bitmap_height(PONTO[0])/2)
-#define pnt_jun2_x (al_get_bitmap_width(BLOCO[4][0])-al_get_bitmap_width(PONTO[0])/2)
-#define pnt_jun2_y (-al_get_bitmap_height(PONTO[0])/2)
-#define pnt_jun3_x (al_get_bitmap_width(BLOCO[4][0])/2-al_get_bitmap_width(PONTO[0])/2)
-#define pnt_jun3_y (al_get_bitmap_height(BLOCO[4][0])-al_get_bitmap_height(PONTO[0])/2)
-
-#define pnt_rep1_x (al_get_bitmap_width(BLOCO[5][0])/2 - al_get_bitmap_width(PONTO[0])/2)
-#define pnt_rep1_y (-al_get_bitmap_height(PONTO[0])/2)
-#define pnt_rep2_x (al_get_bitmap_width(BLOCO[5][0]) - al_get_bitmap_width(PONTO[0])/2)
-#define pnt_rep2_y (-al_get_bitmap_height(PONTO[0])/2)
-#define pnt_rep3_x (al_get_bitmap_width(BLOCO[5][0]) - al_get_bitmap_width(PONTO[0])/2)
-#define pnt_rep3_y (al_get_bitmap_height(BLOCO[5][0])-al_get_bitmap_height(PONTO[0])/2)
-#define pnt_rep4_x (al_get_bitmap_width(BLOCO[5][0])/2 - al_get_bitmap_width(PONTO[0])/2)
-#define pnt_rep4_y (al_get_bitmap_height(BLOCO[5][0])-al_get_bitmap_height(PONTO[0])/2)
-
+#define pos_ponto(X) pos_x + coord.pontos_x(X), pos_y + coord.pontos_y(X)
+#define pos_linha(X) pos_x + coord.linhas_x(X), pos_y + coord.linhas_y(X)
 
 //definem as coordenadas do canto superior esquerdo dos quadrados onde ficam os blocos que travam
 #define qua_acao_x 34 //qua=quadrado, acao = bloco de ação
@@ -219,36 +174,19 @@ extern uint8_t tempo_max_clique_duplo;
 #define ints_VF        2
 
 //nomes para as posições de var_int de cada tipo de bloco
-#define lin_pos2_x var_int[0] //coordenada x do segundo ponto
-#define lin_pos2_y var_int[1] //coordenada y do segundo ponto
-#define lin_ponto1 var_int[2] //juncao a qual o primeiro ponto está ligado
-#define lin_ponto2 var_int[3] //juncao a qual o segundo ponto está ligado
-#define rep_it_total var_int[0] //numero total de iterações
+#define lin_pos2_x      var_int[0] //coordenada x do segundo ponto
+#define lin_pos2_y      var_int[1] //coordenada y do segundo ponto
+#define lin_ponto1      var_int[2] //juncao a qual o primeiro ponto está ligado
+#define lin_ponto2      var_int[3] //juncao a qual o segundo ponto está ligado
+#define rep_it_total    var_int[0] //numero total de iterações
 #define rep_it_faltando var_int[1] //numero que falta de iterações
-#define trava_posicao var_int[0] // posição a qual um bloco de trava está ligado ( -1 = solto, 0 = acao, 1 = decisao na esquerda, 2 - decisao na direita)
-#define and_sentido var_int[1] //sentido indicado pelo bloco de andar ( -1 = para trás, 1 = para frente)
-#define vir_dir var_int[1] //direção para qual o robô deve virar ( -1 = direita, 1 = esquerda)
-#define fita_sensor var_int[1] // sensor de fita que deve ser testado
-#define fita_cor var_int[2] //cor que deve ser testada
-#define som_sensor var_int[1] //sensor de ultrassom que deve ser testado
-#define VF_estado var_int[1] //define se o bloco indica verdadeiro (1) ou falso (-1)
-
-//nomes para as junções dos blocos (XYZ X= tipo de bloco Y= entrada(0) ou saída(1) Z= número)
-//logo, ponto/100 = tipo de bloco; ((ponto%100)/10) = entrada ou saída; ponto%10 -1 = numero
-#define ponto_dec_entrada     101
-#define ponto_dec_saida_nao   112
-#define ponto_dec_saida_sim   113
-#define ponto_acao_entrada    201
-#define ponto_acao_saida      212
-#define ponto_ini_saida       311
-#define ponto_fim_entrada     401
-#define ponto_jun_entrada_esq 501
-#define ponto_jun_entrada_dir 502
-#define ponto_jun_saida       513
-#define ponto_rep_entrada     601
-#define ponto_rep_loop_inicio 612
-#define ponto_rep_loop_fim    603
-#define ponto_rep_saida       614
+#define trava_posicao   var_int[0] // posição a qual um bloco de trava está ligado ( -1 = solto, 0 = acao, 1 = decisao na esquerda, 2 - decisao na direita)
+#define and_sentido     var_int[1] //sentido indicado pelo bloco de andar ( -1 = para trás, 1 = para frente)
+#define vir_dir         var_int[1] //direção para qual o robô deve virar ( -1 = direita, 1 = esquerda)
+#define fita_sensor     var_int[1] // sensor de fita que deve ser testado
+#define fita_cor        var_int[2] //cor que deve ser testada
+#define som_sensor      var_int[1] //sensor de ultrassom que deve ser testado
+#define VF_estado       var_int[1] //define se o bloco indica verdadeiro (1) ou falso (-1)
 
 #define largura_barra_rolagem 20
 
@@ -267,18 +205,18 @@ extern uint8_t tempo_max_clique_duplo;
 #define inic_fluxprog() dmouse_x = 0; dmouse_y = 0; blocos_inicio = 0; modo = desenhando; escala = 1; mouse_clicar[0] = false; mouse_clicar[1] = false; mouse_clicar[2] = false; mouse_segurar[0] = false; mouse_segurar[1] = false; mouse_segurar[2] = false; mouse_soltar[0] = false; mouse_soltar[1] = false; mouse_soltar[2] = false; posicao_y = 0;possibilidade_clique_duplo = false;tempo_max_clique_duplo = 0;
 
 //macros que definem os nomes das memorias compartilhadas e suas variáveis (necessário para o funcionamento da memória)
-#define SENDER_MEMORY_NAME "memoria"
-#define RECEIVER_MEMORY_NAME "memoria2"
-#define MEMORY_SIZE 65536
-#define COMMAND_VARIABLE_NAME "comando1"
-#define FEEDBACK_VARIABLE_NAME "comando2"
-#define SENSOR_VISAO "reading_VS"
-#define SENSOR_ULTRASSOM "readin_U"
-#define POSICAO_DETECTADA "detectedObjet_U"
-#define POSICAO "linPosition"
-#define ANGULAR "angPosition"
+#define SENDER_MEMORY_NAME      "memoria"
+#define RECEIVER_MEMORY_NAME    "memoria2"
+#define MEMORY_SIZE             65536
+#define COMMAND_VARIABLE_NAME   "comando1"
+#define FEEDBACK_VARIABLE_NAME  "comando2"
+#define SENSOR_VISAO            "reading_VS"
+#define SENSOR_ULTRASSOM        "readin_U"
+#define POSICAO_DETECTADA       "detectedObjet_U"
+#define POSICAO                 "linPosition"
+#define ANGULAR                 "angPosition"
 
-//classe que contem a lista enonde os blocos são armazenados
+//classe que contem a lista onde os blocos são armazenados
 class lista_blocos {
 public:
 	bloco* inicio; //guarda o inicio da lista encadeada
@@ -331,5 +269,20 @@ void scprintf(double d, float x, float y); //a mesma coisa que a anterior, mas p
 void scprintf(bloco* p, float x, float y); //a mesma coisa que a anterior, mas com um ponteiro para um bloco
 
 bool botao(float x, float y, float dx, float dy, float offset); //verifica se o mouse está sobre um botão, desenha o retângulo de destaque se estiver, e retorna verdadeiro ou falso correspondentemente
+
+class cord {
+    private:
+        int ***lin; //ponteiro para vetor multidimensional que armazena as coordenadas relativas (a origem do bloco a qual estao ligadas) das linhas
+        int ***pon; //ponteiro para vetor multidimensional que armazena as coordenadas relativas (a origem do bloco a qual estao ligadas) das junçoes
+    public :
+        void inic();
+        void destruir();
+        int linhas_x(int X) {return lin[X/100 - 1][X%10-1][0];}
+        int linhas_y(int X) {return lin[X/100 - 1][X%10-1][1];}
+        int pontos_x(int X) {return pon[X/100 - 1][X%10-1][0];}
+        int pontos_y(int X) {return pon[X/100 - 1][X%10-1][1];}
+};
+extern cord coord;
+
 #endif // FLUXPROG_H_INCLUDED
 #pragma once

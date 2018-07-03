@@ -85,6 +85,8 @@ int main(int argc, char **argv)
 	NUMERO[8] = al_load_bitmap("images/NUMBER_8.png");
 	NUMERO[9] = al_load_bitmap("images/NUMBER_9.png");
 
+	coord.inic();
+
 	fonte = al_load_font("OpenSans-Regular.ttf", 10, 0);
 
 	//inicialização do mouse e de seu tratamento, além do tratamento do teclado e do botao de fechar o programa
@@ -142,7 +144,6 @@ int main(int argc, char **argv)
         if (nova_posicao_y < 0) nova_posicao_y = 0;
         else if (nova_posicao_y > dimensao_vertical_maxima - dimensoes_tela_y) nova_posicao_y = dimensao_vertical_maxima - dimensoes_tela_y;
         posicao_y = nova_posicao_y;
-
 		//parte da atualização dos botoes do mouse
 		for (int i = 0; i < 3; i++) {
 			if (mouse_clicar[i]) { //se no ultimo ciclo o botao do mouse foi apertado, nesse ciclo ele esta sendo segurado
@@ -303,14 +304,12 @@ int main(int argc, char **argv)
 		}
 
 
-
         //esse bloco muda a posição dos blocos para que eles sejam impressos de acordo com a barra lateral
         al_identity_transform(&posicao);
         al_translate_transform(&posicao, 0, -posicao_y);
         al_use_transform(&posicao);
 
 		lista->desenhar();
-
 		//esse bloco volta ao estado inicial para que os botões e opções não saiam do lugar
         al_identity_transform(&posicao);
         al_translate_transform(&posicao, 0, 0);
@@ -675,6 +674,8 @@ int main(int argc, char **argv)
 	al_destroy_bitmap(menu);
 	al_destroy_display(tela);
 	al_destroy_font(fonte);
+
+    coord.destruir();
 
 	delete lista; //destroi a lista e todos os blocos
 
