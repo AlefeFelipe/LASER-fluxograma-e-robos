@@ -19,6 +19,7 @@ public:
     void turnRight();
     void stop();
     void moveStraight(long* timeold);
+    void reduceSpeed(long *timeold, int motor_num, float reason);
     ~Robot(){}
 };
 

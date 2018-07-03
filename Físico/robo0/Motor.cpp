@@ -77,6 +77,7 @@ int Motor::getRPM(long timeold)
           }
           attachInterrupt(digitalPinToInterrupt(pin_encoder), pulse_counter_r, FALLING);
       }
+      //Serial.println(millis()-timeold);
     //}
     return rpm;
 }
