@@ -54,3 +54,7 @@
 #define D_SPEED 5//delta para correcao da velocidade
 #define OBSTACLE_DIS -1.0
 #endif
+
+//tentar o seguinte: olhar o encoder 2x por segundo. ver qual é a velocidade que se quer, para a velocidade inicial estar próxima do valor
+//fazer a velocidade cair 1.5, 2 e 4. Depois fazer isso acontecer rapidamente. Criar um cara que será a diferença entre os caras
+//depois seguir linha é pra funcionar tranquilamente, mas se n funcionar acrescentar +2 graus de cada lado
