@@ -306,7 +306,7 @@ void Robot::moveStraight(long *timeold)
             lm_speed += D_SPEED;
             if(lm_speed > 255)
             {
-                lm_speed = 0;
+                lm_speed = 255;
             }
         }
         if(readingRPM[1]>SPEED_TO_UPDATE_TIME)
@@ -322,7 +322,7 @@ void Robot::moveStraight(long *timeold)
             rm_speed += D_SPEED;
             if(rm_speed > 255)
             {
-                rm_speed = 0;
+                rm_speed = 255;
             }
         }
         readingRPM[0] = motor[0]->getRPM(*timeold);
