@@ -35,7 +35,7 @@ using namespace boost::interprocess;
 //variaveis bluetooth
 #define BDRATE 115200
 #define CPORT_NR 16
-#define SIZEPACKET 40
+#define SIZEPACKET 4
 
 
 extern "C" {
