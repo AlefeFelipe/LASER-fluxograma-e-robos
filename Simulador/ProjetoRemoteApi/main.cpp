@@ -35,6 +35,7 @@ using namespace boost::interprocess;
 //variaveis bluetooth
 #define BDRATE 115200
 #define CPORT_NR 16
+#define SIZEPACKET 40
 
 
 extern "C" {
@@ -90,6 +91,11 @@ void sendCommand(char comando)
     //RS232_SendBuf(CPORT_NR, (unsigned char*) comando, 1);
 }
 
+int receiver(unsigned char* reading)
+{
+    return (RS232_PollComport(CPORT_NR, reading, SIZEPACKET));
+}
+
 
 int main(int argc, char **argv)
 {
@@ -97,6 +103,7 @@ int main(int argc, char **argv)
     string serverIP = "127.0.0.1";
 	int serverPort = 19999;
     int clientID=simxStart((simxChar*)serverIP.c_str(),serverPort,true,true,2000,5);
+    unsigned char* reading;
 
     //inteiros para localizacao dos objetos no vrep
     //inteiros para partes moveis
@@ -203,6 +210,11 @@ int main(int argc, char **argv)
         }
         *(comando1.first) = 0;
         usleep(1000);
+        int a = receiver(reading);
+        if(a)
+        {
+            cout << "vo: "<< int(reading[0])<<" e0: "<< int(reading[1])<< " v1: "<<int(reading[1])<<" e1: "<< int(reading[1])<<endl;
+        }
 
     }
 

@@ -29,6 +29,12 @@ void Robot::moveFoward()
     long time = millis(), timeold = millis(), time_stop;
     int* readingBTS = new int [N_BLACK_TAPE_SENSOR];
     int* readingU = new int [N_ULTRASONIC];
+    while(millis()-time<5000)
+    {
+        motor[0]->move(true, lm_speed);
+        motor[1]->move(true, rm_speed);
+        moveStraight(&timeold);
+    }
     /*while(1)
     {
         for(i=0; i<N_ULTRASONIC; i++)
@@ -52,7 +58,7 @@ void Robot::moveFoward()
         //moveStraight(&timeold);
         
      
-
+/*
         for(i=0; i<N_BLACK_TAPE_SENSOR; i++)
         {
             readingBTS[i] = black_tape_sensor[i]->getReading();
@@ -209,7 +215,7 @@ void Robot::moveFoward()
             //}
             readingU[2] = (ultrasonic[2]->getDistance() > OBSTACLE_DIS ? 0 : 1);
             //Serial.println("to chegando");
-        }
+        }*/
 }
 
 void Robot::turnLeft()
@@ -280,8 +286,13 @@ void Robot::moveStraight(long *timeold)
     int* readingRPM = new int [2];
     readingRPM[0] = motor[0]->getRPM(*timeold);
     readingRPM[1] = motor[1]->getRPM(*timeold);
+
     if(millis()-*timeold>=ENCODER_UPDATE_TIME)
     {
+        Serial.print("rpm[0]: ");
+        Serial.print(readingRPM[0]);
+        Serial.print("rpm[1]: ");
+        Serial.print(readingRPM[1]);
         if(readingRPM[0]>SPEED_TO_UPDATE_TIME)
         {
             lm_speed -= D_SPEED;
@@ -293,6 +304,10 @@ void Robot::moveStraight(long *timeold)
         else
         {
             lm_speed += D_SPEED;
+            if(lm_speed > 255)
+            {
+                lm_speed = 0;
+            }
         }
         if(readingRPM[1]>SPEED_TO_UPDATE_TIME)
         {
@@ -305,11 +320,23 @@ void Robot::moveStraight(long *timeold)
         else
         {
             rm_speed += D_SPEED;
+            if(rm_speed > 255)
+            {
+                rm_speed = 0;
+            }
         }
         readingRPM[0] = motor[0]->getRPM(*timeold);
         readingRPM[1] = motor[1]->getRPM(*timeold);
+        Serial.print(" v0: ");
+        Serial.print(lm_speed);
+        Serial.print(" v1: ");
+        Serial.println(rm_speed);
         //Serial.print(millis()-*timeold);
         *timeold = millis();
+        //Serial1.write("v0: ");
+        //char oi[4] = {lm_speed, readingRPM[0], rm_speed, readingRPM[1]};
+        //Serial1.write(oi, 4);
+        //Serial1.write("\n");
     }
 }
 

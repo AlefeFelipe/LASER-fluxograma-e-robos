@@ -23,7 +23,7 @@ void Bluetooth::sendPacket(uint8_t* readingBTS, float* readingU)
     char m_u[4];
     char rm_u[4];
     char r_u[4];
-
+    
     *((float*)&l_u) = readingU[0];
     *((float*)&lm_u) = readingU[1];
     *((float*)&m_u) = readingU[2];

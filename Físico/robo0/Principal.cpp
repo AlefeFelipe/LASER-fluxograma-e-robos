@@ -10,8 +10,14 @@ Principal::Principal()
 void Principal::start()
 {
     long time = millis();
-    //robot->moveFoward();
-    command = bluetooth->getCommand();
+    robot->moveFoward();
+    //while(1)
+    //{ 
+    //  float a[] = {1.43, 1.43, 1.34, 1.34, 1.34};
+    //  uint8_t b[] = {1,1,1,1,1};
+    //  bluetooth->sendPacket(b, a);
+    //}
+    //command = bluetooth->getCommand();
     if(command == 8)
     {
         //Serial.println("andando pra frente");
@@ -33,10 +39,11 @@ void Principal::start()
         //Serial.println("robo parado");
         robot->stop();
     }    
-    //time = millis();
-    //while(millis()-time<=2000)
-    //{
-    //    robot->stop();
-    //}
+    time = millis();
+    Serial.println("vou parar");
+    while(millis()-time<=2000)
+    {
+        robot->stop();
+    }
     
 }
