@@ -31,8 +31,8 @@ void Robot::moveFoward()
     int* readingU = new int [N_ULTRASONIC];
     while(millis()-time<5000)
     {
-        motor[0]->move(true, lm_speed);
-        motor[1]->move(true, rm_speed);
+        //motor[0]->move(true, lm_speed);
+        //motor[1]->move(true, rm_speed);
         moveStraight(&timeold);
     }
     /*while(1)
@@ -283,19 +283,23 @@ void Robot::stop()
 
 void Robot::moveStraight(long *timeold)
 {
+    int error = 0;
     int* readingRPM = new int [2];
     readingRPM[0] = motor[0]->getRPM(*timeold);
     readingRPM[1] = motor[1]->getRPM(*timeold);
-
     if(millis()-*timeold>=ENCODER_UPDATE_TIME)
     {
-        Serial.print("rpm[0]: ");
-        Serial.print(readingRPM[0]);
-        Serial.print("rpm[1]: ");
-        Serial.print(readingRPM[1]);
+        //Serial.print("rpm[0]: ");
+        //Serial.print(readingRPM[0]);
+        //Serial.print("rpm[1]: ");
+        //Serial.print(readingRPM[1]);
         if(readingRPM[0]>SPEED_TO_UPDATE_TIME)
         {
             lm_speed -= D_SPEED;
+
+            error = SPEED_TO_UPDATE_TIME-readingRPM[0];
+            //lm_speed -= abs(error);
+            //Serial.print("cara menor: ");
             if(lm_speed < 0)
             {
                 lm_speed = 0;
@@ -303,7 +307,20 @@ void Robot::moveStraight(long *timeold)
         }
         else
         {
+            error = SPEED_TO_UPDATE_TIME-readingRPM[0];
+            //Serial.print("leitura encoder esquerdo: ");
+            //Serial.println(readingRPM[0]);
+            //Serial.print("leitura velocidade: ");
+            //Serial.println(SPEED_TO_UPDATE_TIME);
+            //Serial.print("velocidade - encoder: ");
+            //Serial.println(SPEED_TO_UPDATE_TIME - readingRPM[0]);
+            //Serial.print("abs da subtração: ");
+            //Serial.println(abs(SPEED_TO_UPDATE_TIME - readingRPM[0]));
+            
+            
+            //Serial.print(int(SPEED_TO_UPDATE_TIME-readingRPM[0]));
             lm_speed += D_SPEED;
+            //Serial.print("cara maior");
             if(lm_speed > 255)
             {
                 lm_speed = 255;
@@ -311,7 +328,9 @@ void Robot::moveStraight(long *timeold)
         }
         if(readingRPM[1]>SPEED_TO_UPDATE_TIME)
         {
+            error = SPEED_TO_UPDATE_TIME-readingRPM[1];
             rm_speed -= D_SPEED;
+            //Serial.print("cara menor: ");
             if(rm_speed < 0)
             {
                 rm_speed = 0;
@@ -319,7 +338,9 @@ void Robot::moveStraight(long *timeold)
         }
         else
         {
-            rm_speed += D_SPEED;
+            error = SPEED_TO_UPDATE_TIME-readingRPM[1];
+            rm_speed += D_SPEED;    
+            //Serial.print("cara maior: ");            
             if(rm_speed > 255)
             {
                 rm_speed = 255;
@@ -328,7 +349,7 @@ void Robot::moveStraight(long *timeold)
         readingRPM[0] = motor[0]->getRPM(*timeold);
         readingRPM[1] = motor[1]->getRPM(*timeold);
         Serial.print(" v0: ");
-        Serial.print(lm_speed);
+        Serial.println(lm_speed);
         Serial.print(" v1: ");
         Serial.println(rm_speed);
         //Serial.print(millis()-*timeold);
