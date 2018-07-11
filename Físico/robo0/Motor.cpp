@@ -1,7 +1,7 @@
 #include "Motor.hpp"
 
-volatile byte pulses_l;
-volatile byte pulses_r;
+int pulses_l = 0;
+int pulses_r = 0;
 void pulse_counter_l()
 {
     pulses_l++;
@@ -61,8 +61,10 @@ int Motor::getRPM(long timeold)
       //rpm = ((60 * 1000 / resolution) / (millis() - timeold)) * pulses;
       if(pin_encoder == L_ENCODER)
       {
-          rpm = pulses_l ;// resolution;
-          if(millis()-timeold>=ENCODER_UPDATE_TIME)
+          rpm = pulses_l;// resolution;
+          //Serial.println(pulses_l);
+          
+          if(millis()-timeold>=long(ENCODER_UPDATE_TIME))
           {
               pulses_l = 0;
           }
@@ -70,8 +72,9 @@ int Motor::getRPM(long timeold)
       }
       else
       {
-          rpm = pulses_r ;// resolution;
-          if(millis()-timeold>=ENCODER_UPDATE_TIME)
+          rpm = pulses_r;// resolution;
+          //Serial.println(pulses_r);
+          if(millis()-timeold>=long(ENCODER_UPDATE_TIME))
           {
               pulses_r = 0;
           }
