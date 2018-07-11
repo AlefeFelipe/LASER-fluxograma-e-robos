@@ -7,6 +7,7 @@
 class Principal{
     Robot* robot;
     Bluetooth* bluetooth;
+    uint8_t command;
 public:
     Principal();
     void start();

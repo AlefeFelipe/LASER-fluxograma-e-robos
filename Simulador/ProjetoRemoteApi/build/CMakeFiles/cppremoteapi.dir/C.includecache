@@ -6,29 +6,29 @@
 
 #IncludeRegexTransform: 
 
-/home/laser/Desktop/Simulador/ProjetoRemoteApi/remoteApi/extApi.c
+/home/laser/Desktop/LASER-fluxograma-e-robos/Simulador/ProjetoRemoteApi/remoteApi/extApi.c
 extApi.h
-/home/laser/Desktop/Simulador/ProjetoRemoteApi/remoteApi/extApi.h
+/home/laser/Desktop/LASER-fluxograma-e-robos/Simulador/ProjetoRemoteApi/remoteApi/extApi.h
 extApiInternal.h
-/home/laser/Desktop/Simulador/ProjetoRemoteApi/remoteApi/extApiInternal.h
+/home/laser/Desktop/LASER-fluxograma-e-robos/Simulador/ProjetoRemoteApi/remoteApi/extApiInternal.h
 stdio.h
 -
 extApiJava.h
-/home/laser/Desktop/Simulador/ProjetoRemoteApi/remoteApi/extApiJava.h
+/home/laser/Desktop/LASER-fluxograma-e-robos/Simulador/ProjetoRemoteApi/remoteApi/extApiJava.h
 
-/home/laser/Desktop/Simulador/ProjetoRemoteApi/remoteApi/extApi.h
+/home/laser/Desktop/LASER-fluxograma-e-robos/Simulador/ProjetoRemoteApi/remoteApi/extApi.h
 extApiPlatform.h
-/home/laser/Desktop/Simulador/ProjetoRemoteApi/remoteApi/extApiPlatform.h
+/home/laser/Desktop/LASER-fluxograma-e-robos/Simulador/ProjetoRemoteApi/remoteApi/extApiPlatform.h
 v_repConst.h
-/home/laser/Desktop/Simulador/ProjetoRemoteApi/remoteApi/v_repConst.h
+/home/laser/Desktop/LASER-fluxograma-e-robos/Simulador/ProjetoRemoteApi/remoteApi/v_repConst.h
 
-/home/laser/Desktop/Simulador/ProjetoRemoteApi/remoteApi/extApiInternal.h
+/home/laser/Desktop/LASER-fluxograma-e-robos/Simulador/ProjetoRemoteApi/remoteApi/extApiInternal.h
 extApiPlatform.h
-/home/laser/Desktop/Simulador/ProjetoRemoteApi/remoteApi/extApiPlatform.h
+/home/laser/Desktop/LASER-fluxograma-e-robos/Simulador/ProjetoRemoteApi/remoteApi/extApiPlatform.h
 
-/home/laser/Desktop/Simulador/ProjetoRemoteApi/remoteApi/extApiPlatform.c
+/home/laser/Desktop/LASER-fluxograma-e-robos/Simulador/ProjetoRemoteApi/remoteApi/extApiPlatform.c
 extApiPlatform.h
-/home/laser/Desktop/Simulador/ProjetoRemoteApi/remoteApi/extApiPlatform.h
+/home/laser/Desktop/LASER-fluxograma-e-robos/Simulador/ProjetoRemoteApi/remoteApi/extApiPlatform.h
 stdio.h
 -
 Windows.h
@@ -54,17 +54,17 @@ arpa/inet.h
 netdb.h
 -
 
-/home/laser/Desktop/Simulador/ProjetoRemoteApi/remoteApi/extApiPlatform.h
+/home/laser/Desktop/LASER-fluxograma-e-robos/Simulador/ProjetoRemoteApi/remoteApi/extApiPlatform.h
 stdint.h
 -
 
-/home/laser/Desktop/Simulador/ProjetoRemoteApi/remoteApi/v_repConst.h
+/home/laser/Desktop/LASER-fluxograma-e-robos/Simulador/ProjetoRemoteApi/remoteApi/v_repConst.h
 
-/home/laser/Desktop/Simulador/ProjetoRemoteApi/rs232.c
+/home/laser/Desktop/LASER-fluxograma-e-robos/Simulador/ProjetoRemoteApi/rs232.c
 rs232.h
-/home/laser/Desktop/Simulador/ProjetoRemoteApi/rs232.h
+/home/laser/Desktop/LASER-fluxograma-e-robos/Simulador/ProjetoRemoteApi/rs232.h
 
-/home/laser/Desktop/Simulador/ProjetoRemoteApi/rs232.h
+/home/laser/Desktop/LASER-fluxograma-e-robos/Simulador/ProjetoRemoteApi/rs232.h
 stdio.h
 -
 string.h

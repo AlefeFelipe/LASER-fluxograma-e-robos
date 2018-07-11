@@ -4,25 +4,43 @@ Principal::Principal()
 {
     bluetooth = new Bluetooth();
     robot = new Robot();
+    command = 0;
 }
 
 void Principal::start()
 {
     long time = millis();
     robot->moveFoward();
-    if(bluetooth->getCommand() == 8)
+    //while(1)
+    //{ 
+    //  float a[] = {1.43, 1.43, 1.34, 1.34, 1.34};
+    //  uint8_t b[] = {1,1,1,1,1};
+    //  bluetooth->sendPacket(b, a);
+    //}
+    //command = bluetooth->getCommand();
+    if(command == 8)
     {
+        //Serial.println("andando pra frente");
         robot->moveFoward();
     }
-    else if(bluetooth->getCommand() == 4)
+    else if(command == 4)
     {
-        robot->turnLeft();
+        Serial.println("andando pra esquerda");
+        //robot->turnLeft();
+        
     }
-    else if(bluetooth->getCommand() == 6)
+    else if(command == 6)
     {
-        robot->turnRight();
+         Serial.println("andando pra direita");
+        //robot->turnRight();
     }
+    else
+    {
+        //Serial.println("robo parado");
+        robot->stop();
+    }    
     time = millis();
+    Serial.println("vou parar");
     while(millis()-time<=2000)
     {
         robot->stop();

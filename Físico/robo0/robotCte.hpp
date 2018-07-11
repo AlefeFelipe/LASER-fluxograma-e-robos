@@ -49,7 +49,12 @@
 #define N_BLACK_TAPE_SENSOR 5
 #define N_ULTRASONIC 5
 #define PACKETSIZE 25//5 fita, 20 ultrassom
-#define ENCODER_UPDATE_TIME 100//tempo em milissigundos para leitura dos encoders
-#define SPEED_TO_UPDATE_TIME 2//velocidade em relacao ao update time. Formula: N_VOLTAS*RESOLUTION_ENCODER/(1000/ENCODER_UPDATE_TIME) N_VOLTAS é o numero de voltas por segundo
+#define ENCODER_UPDATE_TIME 500//tempo em milissigundos para leitura dos encoders
+#define SPEED_TO_UPDATE_TIME 10//velocidade em relacao ao update time. Formula: N_VOLTAS*RESOLUTION_ENCODER/(1000/ENCODER_UPDATE_TIME) N_VOLTAS é o numero de voltas por segundo
 #define D_SPEED 5//delta para correcao da velocidade
+#define OBSTACLE_DIS -1.0
 #endif
+
+//tentar o seguinte: olhar o encoder 2x por segundo. ver qual é a velocidade que se quer, para a velocidade inicial estar próxima do valor
+//fazer a velocidade cair 1.5, 2 e 4. Depois fazer isso acontecer rapidamente. Criar um cara que será a diferença entre os caras
+//depois seguir linha é pra funcionar tranquilamente, mas se n funcionar acrescentar +2 graus de cada lado

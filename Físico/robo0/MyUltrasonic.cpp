@@ -28,5 +28,6 @@ float MyUltrasonic::getDistance()
     unsigned long time;
     time = ultrasonic->timing();
     distance = ultrasonic->convert(time, Ultrasonic::CM);
+    //Serial.println(distance);
     return distance;
 }
