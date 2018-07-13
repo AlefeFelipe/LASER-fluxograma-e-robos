@@ -10,6 +10,7 @@ uint8_t Bluetooth::getCommand()
     if(Serial1.available())
     {
         command = Serial1.read();
+        //Serial.print("legal");
         return command;
     }
     return 0;

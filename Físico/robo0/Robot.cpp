@@ -26,7 +26,7 @@ Robot::Robot()
         black_tape_sensor[i] = new BlackTapeSensor(i+1);
     }
     lm_speed = MOTORSPEED;
-    rm_speed = MOTORSPEED;
+    rm_speed = MOTORSPEED*SCALE;
 }
 
 void Robot::moveFoward()
@@ -35,25 +35,26 @@ void Robot::moveFoward()
     long time = millis(), timeold = millis(), time_stop;
     int* readingBTS = new int [N_BLACK_TAPE_SENSOR];
     int* readingU = new int [N_ULTRASONIC];
-    while(millis()-time<5000)
-    {
-        //motor[0]->move(true, lm_speed);
-        //motor[1]->move(true, rm_speed);
-        moveStraight(&timeold);
-    }
-    /*while(1)
-    {
-        for(i=0; i<N_ULTRASONIC; i++)
-        {
-            Serial.print("ultrasonic ");
-            Serial.print(i);
-            Serial.print(": ");
-            //readingU[i] = (ultrasonic[i]->getDistance() > OBSTACLE_DIS ? 0 : 1);
-            Serial.println(//readingU[i]);
+    //while(millis()-time<5000)
+    //{
+    //    motor[0]->move(true, lm_speed);
+    //    motor[1]->move(true, rm_speed);
+    //    moveStraight(&timeold);
+    //}
+    
+    //while(1)
+    //{
+        //for(i=0; i<N_ULTRASONIC; i++)
+        //{
+            //Serial.print("ultrasonic ");
+            //Serial.print(i);
+            //Serial.print(": ");
+          //  readingU[i] = (ultrasonic[i]->getDistance() > OBSTACLE_DIS ? 0 : 1);
+            //Serial.println(ultrasonic[i]->getDistance());
             
-        }
-        Serial.println();
-    }*/
+        //}
+        //Serial.println();
+    //}
 
 
 //    while(1)//(millis()-time<=5000))
@@ -64,7 +65,7 @@ void Robot::moveFoward()
         //moveStraight(&timeold);
         
      
-/*
+
         for(i=0; i<N_BLACK_TAPE_SENSOR; i++)
         {
             readingBTS[i] = black_tape_sensor[i]->getReading();
@@ -80,6 +81,10 @@ void Robot::moveFoward()
     //}
         while(((readingBTS[0]&&readingBTS[2])||(readingBTS[2]&&readingBTS[4])) && !readingU[2])//verificar se ta no mesmo estado, tecnicamente inutil devido a funcao acima
         {
+            //Serial.print(" v0: ");
+            //Serial.print(lm_speed);
+            //Serial.print(" v1: ");
+            //Serial.println(rm_speed);
             motor[0]->move(true, lm_speed);
             motor[1]->move(true, rm_speed);
             moveStraight(&timeold);
@@ -93,8 +98,8 @@ void Robot::moveFoward()
             //    //readingU[i] = (ultrasonic[i]->getDistance() > OBSTACLE_DIS ? 0 : 1);
                 //Serial.print(//readingU[i]);    
             //}
-            readingU[2] = (ultrasonic[2]->getDistance() > OBSTACLE_DIS ? 0 : 1);
-            //Serial.println("to lendo todo mundo!!");
+            //readingU[2] = (ultrasonic[2]->getDistance() > OBSTACLE_DIS ? 0 : 1);
+           // Serial.println("to lendo todo mundo!!");
             
         }
         while(!((readingBTS[0]&&readingBTS[2])||(readingBTS[2]&&readingBTS[4])) && !readingU[2])//anda ate os sensores captarem a linha ou obstaculo
@@ -107,12 +112,12 @@ void Robot::moveFoward()
             //{
             //    //readingU[i] = (ultrasonic[i]->getDistance() > OBSTACLE_DIS ? 0 : 1);    
             //}
-            readingU[2] = (ultrasonic[2]->getDistance() > OBSTACLE_DIS ? 0 : 1);
+            //readingU[2] = (ultrasonic[2]->getDistance() > OBSTACLE_DIS ? 0 : 1);
             //Serial.println("to achando o caminho!!");
             motor[0]->move(true, lm_speed);
             motor[1]->move(true, rm_speed);
                 
-            if(readingBTS[4])//&&!readingBTS[2])
+            if(readingBTS[4]&&!(readingBTS[2]||readingBTS[1]||readingBTS[0]))
             {
                 //Serial.println("vou parar o motor 1");
                 //motor[0]->move(true, lm_speed);
@@ -128,7 +133,7 @@ void Robot::moveFoward()
                 turnright = 1;
                 turnleft = 0;
             }
-            else if(readingBTS[3])//&&!readingBTS[2])
+            else if(readingBTS[3]&&!(readingBTS[2]||readingBTS[1]||readingBTS[0]))
             {
                 //motor[0]->move(true, lm_speed);
                 //motor[1]->move(false, rm_speed);
@@ -143,7 +148,7 @@ void Robot::moveFoward()
                 turnright = 1;
                 turnleft = 0;
             }
-            else if(readingBTS[1])//&&!readingBTS[2])//robo ta desviando para a direita, gira esquerda
+            else if(readingBTS[1]&&!(readingBTS[2]||readingBTS[3]||readingBTS[4]))//robo ta desviando para a direita, gira esquerda
             {
                 //motor[0]->move(false, lm_speed);
                 //motor[0]->move(true, lm_speed/1.5);
@@ -158,7 +163,7 @@ void Robot::moveFoward()
                 turnright = 0;
                 turnleft = 1;
             }
-            else if(readingBTS[0])//&&!readingBTS[2])//robo ta desviando para a direita, gira esquerda
+            else if(readingBTS[0]&&!(readingBTS[2]||readingBTS[3]||readingBTS[4]))//robo ta desviando para a direita, gira esquerda
             {
                 //motor[0]->move(false, lm_speed);
                // motor[0]->move(true, lm_speed/2);
@@ -210,7 +215,7 @@ void Robot::moveFoward()
            
         }
         time = millis();
-        while(millis()-time <= 0 && !readingU[2])
+        while(millis()-time <= TIMETURNING && !readingU[2])
         {
             motor[0]->move(true, lm_speed);
             motor[1]->move(true, rm_speed);
@@ -219,9 +224,9 @@ void Robot::moveFoward()
             //{
             //    //readingU[i] = (ultrasonic[i]->getDistance() > OBSTACLE_DIS ? 0 : 1);    
             //}
-            readingU[2] = (ultrasonic[2]->getDistance() > OBSTACLE_DIS ? 0 : 1);
+            //readingU[2] = (ultrasonic[2]->getDistance() > OBSTACLE_DIS ? 0 : 1);
             //Serial.println("to chegando");
-        }*/
+        }
 }
 
 void Robot::turnLeft()
@@ -231,8 +236,8 @@ void Robot::turnLeft()
     int* readingBTS = new int [N_BLACK_TAPE_SENSOR];
     while(millis()-time<=TIMETURNING*2)
     {
-        motor[0]->move(false, MOTORSPEED/1.2);
-        motor[1]->move(true, (MOTORSPEED*SCALE)/1.2);
+        motor[0]->move(false, lm_speed);
+        motor[1]->move(true, rm_speed);
     }
     for(i=0; i<N_BLACK_TAPE_SENSOR; i++)
     {
@@ -240,15 +245,16 @@ void Robot::turnLeft()
     }
     while(readingBTS[3])
     {
-        motor[0]->move(false, MOTORSPEED/1.2);
-        motor[1]->move(true, (MOTORSPEED*SCALE)/1.2);
+        motor[0]->move(false, lm_speed);
+        motor[1]->move(true, rm_speed);
         readingBTS[3] = black_tape_sensor[3]->getReading();
     }
-    while(!readingBTS[3])
+    readingBTS[2] = black_tape_sensor[2]->getReading();
+    while(!readingBTS[2])
     {
-        motor[0]->move(false, MOTORSPEED/1.2);
-        motor[1]->move(true, (MOTORSPEED*SCALE)/1.2);
-        readingBTS[3] = black_tape_sensor[3]->getReading();
+        motor[0]->move(false, lm_speed);
+        motor[1]->move(true, rm_speed);
+        readingBTS[2] = black_tape_sensor[2]->getReading();
     }
 }
 
@@ -260,8 +266,8 @@ void Robot::turnRight()
     int* readingBTS = new int [N_BLACK_TAPE_SENSOR];
     while(millis()-time<=TIMETURNING*2)
     {
-        motor[0]->move(true, MOTORSPEED/1.2);
-        motor[1]->move(false, (MOTORSPEED*SCALE)/1.2);
+        motor[0]->move(true, lm_speed);
+        motor[1]->move(false, rm_speed);
     }
     for(i=0; i<N_BLACK_TAPE_SENSOR; i++)
     {
@@ -269,15 +275,16 @@ void Robot::turnRight()
     }
     while(readingBTS[1])
     {
-        motor[0]->move(true, MOTORSPEED/1.2);
-        motor[1]->move(false, (MOTORSPEED*SCALE)/1.2);
+        motor[0]->move(true, lm_speed);
+        motor[1]->move(false, rm_speed);
         readingBTS[1] = black_tape_sensor[1]->getReading();
     }
-    while(!readingBTS[1])
+    readingBTS[2] = black_tape_sensor[2]->getReading();
+    while(!readingBTS[2])
     {
-        motor[0]->move(true, MOTORSPEED/1.2);
-        motor[1]->move(false, (MOTORSPEED*SCALE)/1.2);
-        readingBTS[1] = black_tape_sensor[1]->getReading();
+        motor[0]->move(true, lm_speed);
+        motor[1]->move(false, rm_speed);
+        readingBTS[2] = black_tape_sensor[2]->getReading();
     }
 }
 
@@ -303,10 +310,10 @@ void Robot::moveStraight(long *timeold)
         //Serial.print(SPEED_TO_UPDATE_TIME);
         if(readingRPM[0]>SPEED_TO_UPDATE_TIME)
         {
-    //        lm_speed -= D_SPEED;
+            lm_speed -= D_SPEED;
 
             error = SPEED_TO_UPDATE_TIME-readingRPM[0];
-            lm_speed -= myABS(error);
+            //lm_speed -= myABS(error);
             //Serial.print("cara menor: ");
             if(lm_speed < 0)
             {
@@ -327,8 +334,8 @@ void Robot::moveStraight(long *timeold)
             
             
             //Serial.print(int(SPEED_TO_UPDATE_TIME-readingRPM[0]));
-            //lm_speed += D_SPEED;
-            lm_speed += myABS(error);
+            lm_speed += D_SPEED;
+            //lm_speed += myABS(error);
             //Serial.print("cara maior");
             if(lm_speed > 255)
             {
@@ -338,8 +345,8 @@ void Robot::moveStraight(long *timeold)
         if(readingRPM[1]>SPEED_TO_UPDATE_TIME)
         {
             error = int(SPEED_TO_UPDATE_TIME)-readingRPM[1];
-            //rm_speed -= D_SPEED;
-            rm_speed -= myABS(error);
+            rm_speed -= D_SPEED;
+            //rm_speed -= myABS(error);
             //Serial.print("cara menor: ");
             if(rm_speed < 0)
             {
@@ -349,8 +356,8 @@ void Robot::moveStraight(long *timeold)
         else
         {
             error = int(SPEED_TO_UPDATE_TIME)-readingRPM[1];
-            //rm_speed += D_SPEED;
-            rm_speed += myABS(error);    
+            rm_speed += D_SPEED;
+            //rm_speed += myABS(error);    
             //Serial.print("cara maior: ");            
             if(rm_speed > 255)
             {
@@ -378,6 +385,7 @@ void Robot::reduceSpeed(long *timeold, int motor_num, float reason)
     int* readingRPM = new int [2];
     readingRPM[0] = motor[0]->getRPM(*timeold);
     readingRPM[1] = motor[1]->getRPM(*timeold);
+    motor[motor_num]->stop();
     if(millis()-*timeold>=ENCODER_UPDATE_TIME)
     {
         if (motor_num == 1)
@@ -393,8 +401,13 @@ void Robot::reduceSpeed(long *timeold, int motor_num, float reason)
             else
             {
                 lm_speed += D_SPEED;
+                if(lm_speed > 255)
+                {
+                    lm_speed = 255;
+                }
             }
-            if(readingRPM[1]>(SPEED_TO_UPDATE_TIME-reason))
+            
+            /*if(readingRPM[1]>(SPEED_TO_UPDATE_TIME-reason))
             {
                 rm_speed -= D_SPEED;
                 if(rm_speed < 0)
@@ -405,11 +418,11 @@ void Robot::reduceSpeed(long *timeold, int motor_num, float reason)
             else
             {
                 rm_speed += D_SPEED;
-            }
+            }*/
         }
         else
         {
-            if(readingRPM[0]>(SPEED_TO_UPDATE_TIME-reason))
+            /*if(readingRPM[0]>(SPEED_TO_UPDATE_TIME-reason))
             {
                 lm_speed -= D_SPEED;
                 if(lm_speed < 0)
@@ -420,7 +433,7 @@ void Robot::reduceSpeed(long *timeold, int motor_num, float reason)
             else
             {
                 lm_speed += D_SPEED;
-            }
+            }*/
             if(readingRPM[1]>SPEED_TO_UPDATE_TIME)
             {
                 rm_speed -= D_SPEED;
@@ -432,14 +445,16 @@ void Robot::reduceSpeed(long *timeold, int motor_num, float reason)
             else
             {
                 rm_speed += D_SPEED;
+                if(rm_speed > 255)
+                {
+                    rm_speed = 255;
+                }
             }
         }
         readingRPM[0] = motor[0]->getRPM(*timeold);
         readingRPM[1] = motor[1]->getRPM(*timeold);
         *timeold = millis();
     }
+    delete readingRPM;
 }
-
-
-
 
