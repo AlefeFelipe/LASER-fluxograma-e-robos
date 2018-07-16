@@ -13,6 +13,7 @@ void Principal::start()
     //robot->moveFoward();
     //while(1)
     //{ 
+    //    robot->moveFoward();
     //  float a[] = {1.43, 1.43, 1.34, 1.34, 1.34};
     //  uint8_t b[] = {1,1,1,1,1};
     //  bluetooth->sendPacket(b, a);
@@ -39,6 +40,7 @@ void Principal::start()
         //Serial.println("robo parado");
         robot->stop();
     }    
+    bluetooth->sendPacket(robot->getReadingBlackTypeSensor(), robot->getReadingUltrasonic());
     //time = millis();
     //Serial.println("vou parar");
     //while(millis()-time<=2000)

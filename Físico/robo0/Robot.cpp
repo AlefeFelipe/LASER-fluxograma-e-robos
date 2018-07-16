@@ -227,6 +227,8 @@ void Robot::moveFoward()
             //readingU[2] = (ultrasonic[2]->getDistance() > OBSTACLE_DIS ? 0 : 1);
             //Serial.println("to chegando");
         }
+        delete readingU;
+        delete readingBTS;
 }
 
 void Robot::turnLeft()
@@ -256,6 +258,7 @@ void Robot::turnLeft()
         motor[1]->move(true, rm_speed);
         readingBTS[2] = black_tape_sensor[2]->getReading();
     }
+    delete readingBTS;
 }
 
 void Robot::turnRight()
@@ -286,6 +289,7 @@ void Robot::turnRight()
         motor[1]->move(false, rm_speed);
         readingBTS[2] = black_tape_sensor[2]->getReading();
     }
+    delete readingBTS;
 }
 
 void Robot::stop()
@@ -458,3 +462,24 @@ void Robot::reduceSpeed(long *timeold, int motor_num, float reason)
     delete readingRPM;
 }
 
+uint8_t* Robot::getReadingBlackTypeSensor()
+{
+    int i;
+    uint8_t* readingBTS = new uint8_t [N_BLACK_TAPE_SENSOR];
+    for(i=0; i<N_BLACK_TAPE_SENSOR; i++)
+    {
+        readingBTS[i] = black_tape_sensor[i]->getReading();
+    }
+    return readingBTS;
+}   
+
+float* Robot::getReadingUltrasonic()
+{
+    int i;
+    float* detectedObjet_U = new float [N_ULTRASONIC];
+    for(i=0; i<N_ULTRASONIC; i++)
+    {
+        detectedObjet_U[i] = ultrasonic[i]->getDistance();
+    }
+    return detectedObjet_U;
+}

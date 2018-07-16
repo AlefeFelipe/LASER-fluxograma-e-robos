@@ -20,6 +20,8 @@ public:
     void stop();
     void moveStraight(long* timeold);
     void reduceSpeed(long *timeold, int motor_num, float reason);
+    uint8_t* getReadingBlackTypeSensor();
+    float* getReadingUltrasonic();
     ~Robot(){}
 };
 
