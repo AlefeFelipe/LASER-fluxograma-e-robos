@@ -53,6 +53,8 @@
 #define SPEED_TO_UPDATE_TIME 2//velocidade em relacao ao update time. Formula: N_VOLTAS*RESOLUTION_ENCODER/(1000/ENCODER_UPDATE_TIME) N_VOLTAS é o numero de voltas por segundo
 #define D_SPEED 5//delta para correcao da velocidade
 #define OBSTACLE_DIS -1.0
+#define MAX_DETECTION_DISTANCE 150//máxima distância captada pelos ultrassons em cm
+#define PING_INTERVAL 33//tempo entre a leitura de um ultrassom e outro para evitar conflito
 #endif
 
 //tentar o seguinte: olhar o encoder 2x por segundo. ver qual é a velocidade que se quer, para a velocidade inicial estar próxima do valor

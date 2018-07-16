@@ -3,14 +3,16 @@
 #ifndef _MYULTRASONIC_HPP_
 #define _MYULTRASONIC_HPP_
 #include <Ultrasonic.h>
+#include <NewPing.h>
 #include "robotCte.hpp"
 
 class MyUltrasonic{
-    Ultrasonic* ultrasonic;
+    NewPing* ultrasonic;
     float distance;
 public:
     MyUltrasonic(int name);
-    float getDistance();
+    void getDistance();
+    float isDistanceAvailable();
     ~MyUltrasonic(){}
 
 };

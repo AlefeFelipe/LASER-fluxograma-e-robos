@@ -49,8 +49,8 @@ void Robot::moveFoward()
             //Serial.print("ultrasonic ");
             //Serial.print(i);
             //Serial.print(": ");
-          //  readingU[i] = (ultrasonic[i]->getDistance() > OBSTACLE_DIS ? 0 : 1);
-            //Serial.println(ultrasonic[i]->getDistance());
+          //  readingU[i] = (ultrasonic[i]->isDistanceAvailable() > OBSTACLE_DIS ? 0 : 1);
+            //Serial.println(ultrasonic[i]->isDistanceAvailable());
             
         //}
         //Serial.println();
@@ -72,9 +72,9 @@ void Robot::moveFoward()
         }
         //for(i=0; i<N_ULTRASONIC; i++)
         //{
-            //readingU[i] = (ultrasonic[i]->getDistance() > OBSTACLE_DIS ? 0 : 1);    
+            //readingU[i] = (ultrasonic[i]->isDistanceAvailable() > OBSTACLE_DIS ? 0 : 1);    
         //}
-        readingU[2] = (ultrasonic[2]->getDistance() > OBSTACLE_DIS ? 0 : 1);
+        readingU[2] = (ultrasonic[2]->isDistanceAvailable() > OBSTACLE_DIS ? 0 : 1);
         //Serial.println(!//readingU[2]);
         
 
@@ -95,10 +95,10 @@ void Robot::moveFoward()
             }
             //for(i=0; i<N_ULTRASONIC; i++)
             //{
-            //    //readingU[i] = (ultrasonic[i]->getDistance() > OBSTACLE_DIS ? 0 : 1);
+            //    //readingU[i] = (ultrasonic[i]->isDistanceAvailable() > OBSTACLE_DIS ? 0 : 1);
                 //Serial.print(//readingU[i]);    
             //}
-            //readingU[2] = (ultrasonic[2]->getDistance() > OBSTACLE_DIS ? 0 : 1);
+            //readingU[2] = (ultrasonic[2]->isDistanceAvailable() > OBSTACLE_DIS ? 0 : 1);
            // Serial.println("to lendo todo mundo!!");
             
         }
@@ -110,9 +110,9 @@ void Robot::moveFoward()
             }
             //for(i=0; i<N_ULTRASONIC; i++)
             //{
-            //    //readingU[i] = (ultrasonic[i]->getDistance() > OBSTACLE_DIS ? 0 : 1);    
+            //    //readingU[i] = (ultrasonic[i]->isDistanceAvailable() > OBSTACLE_DIS ? 0 : 1);    
             //}
-            //readingU[2] = (ultrasonic[2]->getDistance() > OBSTACLE_DIS ? 0 : 1);
+            //readingU[2] = (ultrasonic[2]->isDistanceAvailable() > OBSTACLE_DIS ? 0 : 1);
             //Serial.println("to achando o caminho!!");
             motor[0]->move(true, lm_speed);
             motor[1]->move(true, rm_speed);
@@ -222,9 +222,9 @@ void Robot::moveFoward()
             moveStraight(&timeold);
             //for(i=0; i<N_ULTRASONIC; i++)
             //{
-            //    //readingU[i] = (ultrasonic[i]->getDistance() > OBSTACLE_DIS ? 0 : 1);    
+            //    //readingU[i] = (ultrasonic[i]->isDistanceAvailable() > OBSTACLE_DIS ? 0 : 1);    
             //}
-            //readingU[2] = (ultrasonic[2]->getDistance() > OBSTACLE_DIS ? 0 : 1);
+            //readingU[2] = (ultrasonic[2]->isDistanceAvailable() > OBSTACLE_DIS ? 0 : 1);
             //Serial.println("to chegando");
         }
         delete readingU;
@@ -479,7 +479,9 @@ float* Robot::getReadingUltrasonic()
     float* detectedObjet_U = new float [N_ULTRASONIC];
     for(i=0; i<N_ULTRASONIC; i++)
     {
-        detectedObjet_U[i] = ultrasonic[i]->getDistance();
+        detectedObjet_U[i] = ultrasonic[i]->isDistanceAvailable();
+        Serial.print(detectedObjet_U[i]);
     }
+    Serial.println();
     return detectedObjet_U;
 }
