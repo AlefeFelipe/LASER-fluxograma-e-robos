@@ -1,17 +1,18 @@
 #include "fluxprog.h"
 #include <cstring>
+#define inicializar(X, Y) if (!X){cout << "erro na inicializaçao do"<< Y << endl;}
 int main(int argc, char **argv)
 {
 
     //inicialização do allegro e de seus plugins
-	al_init();
-	al_init_image_addon();
-	al_init_primitives_addon();
-	al_init_native_dialog_addon();
-	al_install_keyboard();
-	al_install_mouse();
-	al_init_font_addon();
-	al_init_ttf_addon();
+    inicializar(al_init(), "allegro");
+	inicializar(al_init_image_addon(), "plugin de imagens");
+	inicializar(al_init_primitives_addon(), "plugin de desenho de primitivos");
+	inicializar(al_init_native_dialog_addon(), "plugin de caixas de diálogo nativo");
+	inicializar(al_install_keyboard(), "teclado");
+	inicializar(al_install_mouse(), "mouse");
+	inicializar(al_init_font_addon(), "plugin de fontes");
+	inicializar(al_init_ttf_addon(), "plugin de fontes truetype");
 
 	inic_fluxprog();
 
@@ -22,72 +23,76 @@ int main(int argc, char **argv)
 	//inicialização do display
 	al_set_new_display_flags(ALLEGRO_WINDOWED | ALLEGRO_RESIZABLE);
 	tela = al_create_display(dimensoes_tela_inicial_x, dimensoes_tela_inicial_y);
+	verificar_alocacao(tela, "tela");
 	al_set_window_title(tela, "fluxprog");
+
 	//inicialização dos bitmaps
-	ALLEGRO_BITMAP* botao_opcao = al_load_bitmap("images/botao_opcao.png");
-	ALLEGRO_BITMAP* botao_bloco = al_load_bitmap("images/botao_bloco.png");
-	ALLEGRO_BITMAP* menu = al_load_bitmap("images/menu.png");
-	ALLEGRO_BITMAP* rodar = al_load_bitmap("images/rodar.png");
-	ALLEGRO_BITMAP* pausar = al_load_bitmap("images/pausar.png");
-	ALLEGRO_BITMAP* parar = al_load_bitmap("images/parar.png");
-	ALLEGRO_BITMAP* salvar = al_load_bitmap("images/salvar.png");
-	ALLEGRO_BITMAP* carregar = al_load_bitmap("images/carregar.png");
-    ALLEGRO_BITMAP* salvar_como = al_load_bitmap("images/salvarcomo.png");
-    ALLEGRO_BITMAP* vrep = al_load_bitmap("images/vrep.png");
-	ALLEGRO_BITMAP* miniaturas[6];
-    miniaturas[0] = al_load_bitmap("images/miniatura_decisao.png");
-    miniaturas[1] = al_load_bitmap("images/miniatura_acao.png");
-    miniaturas[2] = al_load_bitmap("images/miniatura_inicio.png");
-    miniaturas[3] = al_load_bitmap("images/miniatura_fim.png");
-    miniaturas[4] = al_load_bitmap("images/miniatura_juncao.png");
-    miniaturas[5] = al_load_bitmap("images/miniatura_repeticao.png");
+	#define carregar_bitmap(X, Y) {ALLEGRO_BITMAP* temporario; temporario = al_load_bitmap(Y); if (!temporario) {cout << "erro carregando bitmap " << Y << endl; return -1;} else X = temporario;}
+    ALLEGRO_BITMAP *botao_opcao, *botao_bloco, *menu, *rodar, *pausar, *parar, *salvar, *carregar, *salvar_como, *vrep, *miniaturas[6];
+    carregar_bitmap(botao_opcao,"images/botao_opcao.png")
+    carregar_bitmap(botao_bloco,"images/botao_bloco.png")
+    carregar_bitmap(menu,"images/menu.png")
+    carregar_bitmap(rodar,"images/rodar.png")
+    carregar_bitmap(pausar,"images/pausar.png")
+    carregar_bitmap(parar,"images/parar.png")
+    carregar_bitmap(salvar,"images/salvar.png")
+    carregar_bitmap(carregar,"images/carregar.png")
+    carregar_bitmap(salvar_como,"images/salvarcomo.png")
+    carregar_bitmap(vrep,"images/vrep.png")
+    carregar_bitmap(miniaturas[0],"images/miniatura_decisao.png")
+    carregar_bitmap(miniaturas[1],"images/miniatura_acao.png")
+    carregar_bitmap(miniaturas[2],"images/miniatura_inicio.png")
+    carregar_bitmap(miniaturas[3],"images/miniatura_fim.png")
+    carregar_bitmap(miniaturas[4],"images/miniatura_juncao.png")
+    carregar_bitmap(miniaturas[5],"images/miniatura_repeticao.png")
 
-	seta = al_load_bitmap("images/seta.png");
-	voltita = al_load_bitmap("images/voltita.png");
-	ultrassom = al_load_bitmap("images/ultrassom.png");
-	logico_v= al_load_bitmap("images/logic_true.png");
-	logico_f = al_load_bitmap("images/logic_false.png");
-	fita = al_load_bitmap("images/fita.png");
-	PONTO[0] = al_load_bitmap("images/point.png");
-	PONTO[1] = al_load_bitmap("images/hpoint.png");
-	BLOCO[0][0] = al_load_bitmap("images/block1.png");
-	BLOCO[0][1] = al_load_bitmap("images/hblock1.png");
-	BLOCO[0][2] = al_load_bitmap("images/sblock1.png");
-	BLOCO[0][3] = al_load_bitmap("images/pblock1.png");
-	BLOCO[1][0] = al_load_bitmap("images/block2.png");
-	BLOCO[1][1] = al_load_bitmap("images/hblock2.png");
-	BLOCO[1][2] = al_load_bitmap("images/sblock2.png");
-	BLOCO[1][3] = al_load_bitmap("images/pblock2.png");
-	BLOCO[2][0] = al_load_bitmap("images/block3.png");
-	BLOCO[2][1] = al_load_bitmap("images/hblock3.png");
-	BLOCO[2][2] = al_load_bitmap("images/sblock3.png");
-	BLOCO[2][3] = al_load_bitmap("images/pblock3.png");
-	BLOCO[3][0] = al_load_bitmap("images/block4.png");
-	BLOCO[3][1] = al_load_bitmap("images/hblock4.png");
-	BLOCO[3][2] = al_load_bitmap("images/sblock4.png");
-	BLOCO[3][3] = al_load_bitmap("images/pblock4.png");
-	BLOCO[4][0] = al_load_bitmap("images/block5.png");
-	BLOCO[4][1] = al_load_bitmap("images/hblock5.png");
-	BLOCO[4][2] = al_load_bitmap("images/sblock5.png");
-	BLOCO[4][3] = al_load_bitmap("images/pblock5.png");
-	BLOCO[5][0] = al_load_bitmap("images/block6.png");
-	BLOCO[5][1] = al_load_bitmap("images/hblock6.png");
-	BLOCO[5][2] = al_load_bitmap("images/sblock6.png");
-	BLOCO[5][3] = al_load_bitmap("images/pblock6.png");
-	NUMERO[0] = al_load_bitmap("images/NUMBER_0.png");
-	NUMERO[1] = al_load_bitmap("images/NUMBER_1.png");
-	NUMERO[2] = al_load_bitmap("images/NUMBER_2.png");
-	NUMERO[3] = al_load_bitmap("images/NUMBER_3.png");
-	NUMERO[4] = al_load_bitmap("images/NUMBER_4.png");
-	NUMERO[5] = al_load_bitmap("images/NUMBER_5.png");
-	NUMERO[6] = al_load_bitmap("images/NUMBER_6.png");
-	NUMERO[7] = al_load_bitmap("images/NUMBER_7.png");
-	NUMERO[8] = al_load_bitmap("images/NUMBER_8.png");
-	NUMERO[9] = al_load_bitmap("images/NUMBER_9.png");
+    carregar_bitmap(seta,"images/seta.png")
+    carregar_bitmap(voltita,"images/voltita.png")
+    carregar_bitmap(ultrassom,"images/ultrassom.png")
+    carregar_bitmap(logico_v,"images/logic_true.png")
+    carregar_bitmap(logico_f,"images/logic_false.png")
+    carregar_bitmap(fita,"images/fita.png")
+    carregar_bitmap(PONTO[0],"images/point.png")
+    carregar_bitmap(PONTO[1],"images/hpoint.png")
+    carregar_bitmap(BLOCO[0][0],"images/block1.png")
+    carregar_bitmap(BLOCO[0][1],"images/hblock1.png")
+    carregar_bitmap(BLOCO[0][2],"images/sblock1.png")
+    carregar_bitmap(BLOCO[0][3],"images/pblock1.png")
+    carregar_bitmap(BLOCO[1][0],"images/block2.png")
+    carregar_bitmap(BLOCO[1][1],"images/hblock2.png")
+    carregar_bitmap(BLOCO[1][2],"images/sblock2.png")
+    carregar_bitmap(BLOCO[1][3],"images/pblock2.png")
+    carregar_bitmap(BLOCO[2][0],"images/block3.png")
+    carregar_bitmap(BLOCO[2][1],"images/hblock3.png")
+    carregar_bitmap(BLOCO[2][2],"images/sblock3.png")
+    carregar_bitmap(BLOCO[2][3],"images/pblock3.png")
+    carregar_bitmap(BLOCO[3][0],"images/block4.png")
+    carregar_bitmap(BLOCO[3][1],"images/hblock4.png")
+    carregar_bitmap(BLOCO[3][2],"images/sblock4.png")
+    carregar_bitmap(BLOCO[3][3],"images/pblock4.png")
+    carregar_bitmap(BLOCO[4][0],"images/block5.png")
+    carregar_bitmap(BLOCO[4][1],"images/hblock5.png")
+    carregar_bitmap(BLOCO[4][2],"images/sblock5.png")
+    carregar_bitmap(BLOCO[4][3],"images/pblock5.png")
+    carregar_bitmap(BLOCO[5][0],"images/block6.png")
+    carregar_bitmap(BLOCO[5][1],"images/hblock6.png")
+    carregar_bitmap(BLOCO[5][2],"images/sblock6.png")
+    carregar_bitmap(BLOCO[5][3],"images/pblock6.png")
+    carregar_bitmap(NUMERO[0],"images/NUMBER_0.png")
+    carregar_bitmap(NUMERO[1],"images/NUMBER_1.png")
+    carregar_bitmap(NUMERO[2],"images/NUMBER_2.png")
+    carregar_bitmap(NUMERO[3],"images/NUMBER_3.png")
+    carregar_bitmap(NUMERO[4],"images/NUMBER_4.png")
+    carregar_bitmap(NUMERO[5],"images/NUMBER_5.png")
+    carregar_bitmap(NUMERO[6],"images/NUMBER_6.png")
+    carregar_bitmap(NUMERO[7],"images/NUMBER_7.png")
+    carregar_bitmap(NUMERO[8],"images/NUMBER_8.png")
+    carregar_bitmap(NUMERO[9],"images/NUMBER_9.png")
 
-	coord.inic();
+	coord.inic(); //calcula as constantes usadas pelo programa para desenhar
 
 	fonte = al_load_font("OpenSans-Regular.ttf", 10, 0);
+    verificar_alocacao(fonte, "fonte");
 
 	//inicialização do mouse e de seu tratamento, além do tratamento do teclado e do botao de fechar o programa
 	//o tratamento do mouse, teclado e outros meios de entrada são tratadas pelo allegro por meio de filas que recebem os eventos que
@@ -99,14 +104,18 @@ int main(int argc, char **argv)
 	al_register_event_source(fila_tela, al_get_display_event_source(tela));
 	al_register_event_source(fila_teclado, al_get_keyboard_event_source());
 
+	//descobre o tamanho do monitor
 	ALLEGRO_MONITOR_INFO monitor;
     al_get_monitor_info(0, &monitor);
     monitor_altura = monitor.y2 - monitor.y1;
     monitor_comprimento = monitor.x2 - monitor.x1;
 
+    //isso é usado para transformar as coordenadas dos blocos, o que é usado para fazer eles subirem e descerem de acordo com a barra de rolagem
     ALLEGRO_TRANSFORM posicao;
+
 	lista_blocos *lista = new lista_blocos;
 
+    //isso cria um timer para registrar o tempo, o que é usado para o clique duplo e controlar quanto a barra de rolagem sobe ou desce, por exemplo
 	ALLEGRO_TIMER *temporizador = al_create_timer(intervalo_eventos_temporizador);
 	ALLEGRO_EVENT_QUEUE *fila_tempo = al_create_event_queue();
 	al_register_event_source(fila_tempo, al_get_timer_event_source(temporizador));
@@ -121,15 +130,19 @@ int main(int argc, char **argv)
     feedback = memoria->construct<int>(FEEDBACK_VARIABLE_NAME)(); //cria as variaveis dentro das memorias
 	*feedback = 0;
 
+	//diversas flags usadas no programa
 	bool barra_posicao_ativa = false;
 	bool sair_do_programa = false;
 	bool vrep_conectado = false;
 	bool vrep_conectando = false;
 	bool api_rodando = false;
 	bool arquivo_escolhido = false;
-    int ciclos_tempo = 0;
+
+    int ciclos_tempo = 0; //guarda quantas vezes ocorreu um evento do timer desde o ultimo loop
     int nova_posicao_y = posicao_y;
-    float roda_atual = 0;
+    float roda_atual = 0; //guarda a posição da roda do mouse
+
+    //cria vetores de caracteres que armazenam
     char* caminho = new char[100];
     strcpy(caminho, ".fp");
     char* titulo  = new char[100];
@@ -243,8 +256,7 @@ int main(int argc, char **argv)
                     else if (eventos_teclado.keyboard.keycode == 85) caractere_pressionado[0] = '2';
                 }
 
-                //cout << caractere_pressionado << endl;
-
+                //se não houver bloco ativo, o teclado é usado para os atalhos que criam blocos
                 if (!lista->ativo) switch (eventos_teclado.keyboard.keycode) {
 					case ALLEGRO_KEY_ESCAPE :
                         sair_do_programa = true;
@@ -289,11 +301,13 @@ int main(int argc, char **argv)
 
 			}
 		}
+		//se o tempo que passou desde o ultimo ciclo é maior que o definido em intervalo_eventos_temporizador, incrementa a variável ciclos_tempo
         while (!al_is_event_queue_empty(fila_tempo)) {
 			ALLEGRO_EVENT eventos_tempo;
 			al_wait_for_event(fila_tempo, &eventos_tempo);
 			if (eventos_tempo.type == ALLEGRO_EVENT_TIMER) {
                 ciclos_tempo++;
+                //verifica se já passou tempo suficiente para que um clique não possa mais ser considerado como o segundo de um clique duplo
                 if (tempo_max_clique_duplo >= tempo_maximo_clique_duplo/intervalo_eventos_temporizador) {
                     tempo_max_clique_duplo = 0;
                     possibilidade_clique_duplo = false;
@@ -304,19 +318,22 @@ int main(int argc, char **argv)
 		}
 
 
-        //esse bloco muda a posição dos blocos para que eles sejam impressos de acordo com a barra lateral
+        //esse bloco de código muda a posição dos blocos para que eles sejam impressos de acordo com a barra lateral
         al_identity_transform(&posicao);
         al_translate_transform(&posicao, 0, -posicao_y);
         al_use_transform(&posicao);
 
 		lista->desenhar();
+
 		//esse bloco volta ao estado inicial para que os botões e opções não saiam do lugar
         al_identity_transform(&posicao);
         al_translate_transform(&posicao, 0, 0);
         al_use_transform(&posicao);
 
+        //desenha o retangulo no qual ficam os botões de opções
         al_draw_filled_rectangle(0, 0, dimensoes_tela_x, 4 + altura(botao_opcao), al_map_rgb(176, 175, 175));
 
+        //desenha a moldura do botão e dai o botão em si
         al_draw_bitmap(botao_opcao, 2 + 0*largura(botao_opcao), 2, 0);
         al_draw_bitmap(rodar, 14 + 0*largura(botao_opcao), 14, 0);
 
@@ -335,26 +352,25 @@ int main(int argc, char **argv)
         al_draw_bitmap(botao_opcao, 2 + 5*largura(botao_opcao), 2, 0);
         al_draw_bitmap(salvar_como, 14 + 5*largura(botao_opcao), 14, 0);
 
-        //al_draw_bitmap(botao_opcao, dimensoes_tela_x - 2 - 1*largura(botao_opcao) - largura_barra_rolagem, 2, 0);
-
-
+        //desenha o botão de conexão ao v-rep acompanhando o lado direito da tela
         al_draw_bitmap(botao_opcao, dimensoes_tela_x - 2 - largura(botao_opcao) - largura_barra_rolagem, 2, 0);
         al_draw_bitmap(vrep, dimensoes_tela_x + 10 - largura(botao_opcao) - largura_barra_rolagem, 14, 0);
 
+        //desenha todas as molduras dos botões que criam blocos e daí todos os botões
         for (int i = 0; i <= 12; i++) al_draw_bitmap(botao_bloco, 0, altura(botao_opcao) + 4 + i * altura(botao_bloco), 0);
         for (int i = 0; i < 6; i++) al_draw_bitmap(miniaturas[i], 6, altura(botao_opcao) + 4 + i * altura(botao_bloco) + 6, 0);
 				al_draw_bitmap(seta, 6, altura(botao_opcao) + 6 * altura(botao_bloco) + 4 + 6, 0);
 				al_draw_bitmap(voltita, 6, altura(botao_opcao) + 7 * altura(botao_bloco) + 4 + 6, 0);
 				al_draw_bitmap(fita, 6, altura(botao_opcao) + 8 * altura(botao_bloco) + 4 + 6, 0);
 				al_draw_bitmap(ultrassom, 6, altura(botao_opcao) + 9 * altura(botao_bloco) + 4 + 6, 0);
-				al_draw_bitmap(NUMERO[2], 6, altura(botao_opcao) + 10 * altura(botao_bloco) + 4 + 6, 0);
+				al_draw_bitmap(NUMERO[2], 6, altura(botao_opcao) + 10 * altura(botao_bloco) + 4 + 6, 0); //desenha o 2 pois o bloco criado vai começar com o valor 2 (já que repetir 0 ou 1 vez não faz sentido)
 				al_draw_bitmap(logico_v, 6, altura(botao_opcao) + 11 * altura(botao_bloco) + 4 + 6, 0);
 
-		//botoes
 
 		//parte responsável pela conecção com o API
 
-		if (vrep_conectado) { //desenha um retângulo vermelho pra marcar que a conexão ocorreu e faz com que se o boitão for apertado novamente a memória seja desconectada (não e preciso mudar as variáveis, pois elas serão refeitas quando o botao for apertado de novo, e não serão usadas se vrep_conectado for falso)
+		if (vrep_conectado) { //desenha um retângulo vermelho pra marcar que a conexão ocorreu e faz com que se o botão for apertado novamente a memória seja desconectada
+		 //(não e preciso mudar as variáveis, pois elas serão refeitas quando o botao for apertado de novo, e não serão usadas se vrep_conectado for falso)
 			al_draw_rectangle(dimensoes_tela_x + 10 - largura(botao_opcao) - largura_barra_rolagem, 14, dimensoes_tela_x + 10 - largura(botao_opcao) - largura_barra_rolagem + largura(rodar), 14 + altura(rodar), al_map_rgb(255, 0 , 0), 1);
             if (modo == desenhando && mouse_clicar[mouse_esq] && botao(dimensoes_tela_x - 2 - 2*largura(botao_opcao) - largura_barra_rolagem, 2, largura(rodar), altura(rodar), offset_opcao)) { //se o usuário clicar sobre o botão do VREP quando ele já estiver conectado, o desconecta
                 vrep_conectado = false;
@@ -362,7 +378,7 @@ int main(int argc, char **argv)
                 api_rodando = false;
                 *command_var = -10;
                 al_show_native_message_box(al_get_current_display(), "Fluxprog", "desconectado!", "o programa foi desconectado da API", NULL, ALLEGRO_MESSAGEBOX_ERROR);
-            }
+            } //se o programa da api fechar, também desconectada
             else if (*feedback == -10) {
                 *feedback = -1;
                 vrep_conectado = false;
@@ -370,13 +386,15 @@ int main(int argc, char **argv)
                 api_rodando = false;
                 al_show_native_message_box(al_get_current_display(), "Fluxprog", "desconectado!", "o programa foi desconectado da API", NULL, ALLEGRO_MESSAGEBOX_ERROR);
             }
-		}
+		} //se o botão for apertado, tenta começar a conectar (se já não estiver tentando)
 		else if (botao(dimensoes_tela_x + 10 - largura(botao_opcao) - largura_barra_rolagem, 14, largura(rodar), altura(rodar), offset_opcao) && mouse_clicar[mouse_esq] && !vrep_conectando) {
             vrep_conectando = true;
             *command_var = 0;
-		}
+		} //se estiver tentando conectar, tenta abrir o programa da api
 		if (vrep_conectando) {
             if (!api_rodando){
+                //esse é um bloco de código específico para o linux, que basicamente duplica o programa atual
+                //e transforma o programa filho em um programa diferente, que é o da api
                 bool sucesso = true;
                 pid_t pid;
                 pid = fork();
@@ -391,11 +409,11 @@ int main(int argc, char **argv)
                     default :
                         api_rodando = true;
                 }
-                if (!sucesso) {
+                if (!sucesso) { //se falhar em abrir o programa, aborta a conexão
                     vrep_conectando = false;
                 al_show_native_message_box(al_get_current_display(), "Fluxprog", "Erro!", "A comunicação não pôde ser estabelecida (o processo da API não foi criado corretamente)", NULL, ALLEGRO_MESSAGEBOX_ERROR);}
             }
-            else if (*feedback == -4){
+            else if (*feedback == -4){//se a api mandar a mensagem de sucesso na conexão ao v-rep, conecta as variáveis (se houverem) ao programa
             	try {
                     if (modelo){
                         posicao_plana = memoria->find<float>(POSICAO);
@@ -413,7 +431,7 @@ int main(int argc, char **argv)
                     }
 
             }
-            else if (*feedback == -5) {
+            else if (*feedback == -5) {//se o programa da api não conseguir se conectar ao v-rep, aborta a conexão
                 vrep_conectando = false;
                 api_rodando = false;
                 al_show_native_message_box(al_get_current_display(), "Fluxprog", "Erro!", "O programa não conseguiu detectar a cena do VREP (verificar se a cena está aberta e rodando)", NULL, ALLEGRO_MESSAGEBOX_ERROR);
@@ -421,7 +439,9 @@ int main(int argc, char **argv)
 		}
 
 
-
+        //se estiver rodando, desenha um retangulo branco em volta do botão
+        //se não estier rodando, verifica se o programa está conectado ao v-rep
+        //se estiver, entra no modo de rodar o fluxograma
 		if (modo == rodando) al_draw_rectangle(14 - offset_opcao, 14 - offset_opcao, 14 + largura(rodar) + offset_opcao, 14 + altura(rodar) + offset_opcao, branco, 1);
 		else if (botao(14, 14, largura(rodar), altura(rodar), offset_opcao) && mouse_clicar[mouse_esq]) {
 			if (!vrep_conectado) al_show_native_message_box(al_get_current_display(), "Fluxprog", "Erro!", "O programa não está conectado ao V-REP", NULL, ALLEGRO_MESSAGEBOX_ERROR);
@@ -433,9 +453,14 @@ int main(int argc, char **argv)
 			}
 		}
 
+		//se estiver pausado, desenha um retangulo em volta do botão
+		//se estiver rodando o fluxograma e o botão for apertado, pausa o programa
+		//(termina a instrução que foi enviada, mas não manda a próxima nem permite a edição do fluxograma)
 		if (modo == pausado) al_draw_rectangle(14 + 1*largura(botao_opcao) - offset_opcao, 14 - offset_opcao, 14 + largura(rodar) + 1*largura(botao_opcao) + offset_opcao, 14 + altura(rodar) + offset_opcao, branco, 1);
 		else if (botao(14 + largura(botao_opcao), 14, largura(rodar), altura(rodar), offset_opcao)) if (mouse_clicar[mouse_esq] && modo == rodando) modo = pausado;
 
+		//se estiver desenhando, desenha um retangulo em volta do botão
+		//se estiver rodando o fluxograma ou pausado e o botão for apertado, volta para o modo de desenhar
 		if (modo == desenhando) al_draw_rectangle(14 + 2*largura(botao_opcao) - offset_opcao, 14 - offset_opcao, 14 + largura(rodar) + 2*largura(botao_opcao) + offset_opcao, 14 + altura(rodar) + offset_opcao, branco, 1);
 		else if (botao(14 + 2*largura(botao_opcao), 14, largura(rodar), altura(rodar), offset_opcao)) {
 			if (mouse_clicar[mouse_esq]) {
@@ -445,6 +470,7 @@ int main(int argc, char **argv)
 			}
 		}
 
+        //se estiver no modo de desenho
 		if (modo == desenhando && botao(14 + 3*largura(botao_opcao), 14, largura(rodar), altura(rodar), offset_opcao)) {
 			if (mouse_clicar[mouse_esq]) {
                 if (!arquivo_escolhido) {

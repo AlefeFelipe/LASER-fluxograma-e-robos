@@ -20,6 +20,7 @@ front-end:
 	selecionar área*
 	interface/estética:		
 		tooltips*
+	fazer com que se um bloco estiver embaixo dos botões não possa ser e que blocos sejam criados sobre os botões 
 limpeza e organização do código:
 
 

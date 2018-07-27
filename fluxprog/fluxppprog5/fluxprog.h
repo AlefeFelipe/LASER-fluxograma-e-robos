@@ -13,8 +13,9 @@
 #include <math.h>
 #include <fstream>
 
-#define debug(X) if(1)cout<<X<<endl
-const int modelo = 0;
+#define debug(X) if(1)cout<<X<<endl<<flush
+const int modelo = 0; //determina se o programa deve usar o modelo de comunicação com o vrep
+//q apenas manda os comandos (0)ou o que controla ele e recebe os sensores(1)
 
 using namespace boost::interprocess;
 using namespace std;
@@ -37,7 +38,8 @@ extern int mouse_x, mouse_y; //indicam a posição atual do mouse nos eixos x e 
 extern int* command_var, *feedback; //variaveis que mandam comandos
 extern float posicao_y;
 extern float monitor_comprimento, monitor_altura;
-extern char caractere_pressionado[2];
+extern char caractere_pressionado[2]; //o primeiro campo guarda qual caractere foi pressionado, o segundo marca se foi uma tecla normal '\0'
+//um número no numpad 'N' , um numero normal 'n' ou uma seta 'S'
 //extern std::pair<int*, managed_shared_memory::size_type> feedback; //variável que recebe a resposta ao comando do simulador
 //posicao e retorno dos sensores do robô do simulador
 extern std::pair<float*, managed_shared_memory::size_type> posicao_plana, posicao_angular, distancias_ultrassom;
@@ -45,35 +47,39 @@ extern std::pair<unsigned char*, managed_shared_memory::size_type> sensores_fita
 extern float posicao_plana_inical[3], posicao_angular_inicial[3];
 extern bool possibilidade_clique_duplo;
 extern uint8_t tempo_max_clique_duplo;
+
+//defines para os modos
 #define desenhando -1
 #define pausado 0
 #define rodando 1
 
+//verifica se uma variável foi alocada corretamente
+#define verificar_alocacao(X, Y) if(!X) {cout << "problema na inicializacao de " << Y <<endl; return -1;}
+
+//dimensões da tela quando o programa abre
 #define dimensoes_tela_inicial_x 700
 #define dimensoes_tela_inicial_y 900
 
+//determinam o tamanho atual da tela
 #define dimensoes_tela_x al_get_display_width(tela)
 #define dimensoes_tela_y al_get_display_height(tela)
 
+//máximo que pode ser descido com a barra de rolagem
 #define dimensao_vertical_maxima 4000.0
+
+//quanto um pixel na barra de rolagem corresponde ao que vai descer na tela
 #define proporcao_pixel_maximo (dimensao_vertical_maxima / dimensoes_tela_y )
 
-#define velocidade_rolagem 0.4
+#define velocidade_rolagem 0.4 // velocidade com a qual se rola a tela com a roda do mouse
 
 #define intervalo_eventos_temporizador 0.04 //dado em segundos
+//tempo máximo que o usuário pode esperar entre dois cliques para que seja considerado um clique duplo
 #define tempo_maximo_clique_duplo 0.5
 
+//usados para calcular distância absoluta
 #define MAX(X, Y) ((X>=Y) ? X : Y)
 #define MIN(X, Y) ((X<=Y) ? X : Y)
 #define DIS(X, Y) (MAX(X, Y) - MIN(X, Y))
-#define mouse_dentro_ret(X1, Y1, X2, Y2) ( mouse_x > X1 && mouse_y > Y1 && mouse_x < X2 && mouse_y < Y2)
-#define mouse_xy mouse_x, mouse_y
-#define mouse_xy_ajustado mouse_x, mouse_y + posicao_y
-#define mouse_y_ajustado mouse_y + posicao_y
-
-#define bloco_xy pos_x, pos_y
-#define bloco_ativo_xy  l->bloco_ativo->pos_x, l->bloco_ativo->pos_y
-#define meio_tela dimensoes_tela_x/2, dimensoes_tela_y/2
 
 #define mouse_cima 1 //utilizado quando se quer testar se a roda do mouse foi rodada significativamente para cima
 #define mouse_baixo -1 //o mesmo para baixo
@@ -82,8 +88,10 @@ extern uint8_t tempo_max_clique_duplo;
 #define mouse_dir 1 //idem para o botão da direita
 #define mouse_meio 2 //idem para o botão do meio
 
+//"apelidos" mais curtos para as funções
 #define largura al_get_bitmap_width
 #define altura al_get_bitmap_height
+
 //usados para referenciar os tipos de bloco
 #define linha           0
 #define bloco_decisao   1
@@ -120,8 +128,6 @@ extern uint8_t tempo_max_clique_duplo;
 #define rep_loop_fim 603
 #define rep_S        614
 
-#define pos_ponto(X) pos_x + coord.pontos_x(X), pos_y + coord.pontos_y(X)
-#define pos_linha(X) pos_x + coord.linhas_x(X), pos_y + coord.linhas_y(X)
 
 //definem as coordenadas do canto superior esquerdo dos quadrados onde ficam os blocos que travam
 #define qua_acao_x 34 //qua=quadrado, acao = bloco de ação
@@ -188,12 +194,13 @@ extern uint8_t tempo_max_clique_duplo;
 #define som_sensor      var_int[1] //sensor de ultrassom que deve ser testado
 #define VF_estado       var_int[1] //define se o bloco indica verdadeiro (1) ou falso (-1)
 
+
 #define largura_barra_rolagem 20
 
 #define sensibilidade_roda_mouse 20 //define quantos pixels a tela sobe ou desce para cada ponto na rolagem do mouse
 #define tolerancia_linha 10 // define a quantos pixels de distância o mouse pode estar de uma linha para que o programa considere que ele está sobre a linha
 
-
+//offset entre a moldura do botão e o o botão em si
 #define offset_opcao 4
 #define offset_bloco 2
 
@@ -203,6 +210,20 @@ extern uint8_t tempo_max_clique_duplo;
 
 //macro para inicializar as variáveis globais
 #define inic_fluxprog() dmouse_x = 0; dmouse_y = 0; blocos_inicio = 0; modo = desenhando; escala = 1; mouse_clicar[0] = false; mouse_clicar[1] = false; mouse_clicar[2] = false; mouse_segurar[0] = false; mouse_segurar[1] = false; mouse_segurar[2] = false; mouse_soltar[0] = false; mouse_soltar[1] = false; mouse_soltar[2] = false; posicao_y = 0;possibilidade_clique_duplo = false;tempo_max_clique_duplo = 0;
+
+
+//determina se o ponteiro do mouse está dentro do retângulo determinado pelos dois pontos
+#define mouse_dentro_ret(X1, Y1, X2, Y2) ( mouse_x > X1 && mouse_y > Y1 && mouse_x < X2 && mouse_y < Y2)
+
+//usados para diminuir o tamanho das linhas de código, já que esses termos são repetidos centenas de vezes
+#define mouse_xy mouse_x, mouse_y
+#define mouse_xy_ajustado mouse_x, mouse_y + posicao_y
+#define mouse_y_ajustado mouse_y + posicao_y
+#define bloco_xy pos_x, pos_y
+#define bloco_ativo_xy  l->bloco_ativo->pos_x, l->bloco_ativo->pos_y
+#define pos_ponto(X) pos_x + coord.pontos_x(X), pos_y + coord.pontos_y(X)
+#define pos_linha(X) pos_x + coord.linhas_x(X), pos_y + coord.linhas_y(X)
+#define meio_tela dimensoes_tela_x/2, dimensoes_tela_y/2
 
 //macros que definem os nomes das memorias compartilhadas e suas variáveis (necessário para o funcionamento da memória)
 #define SENDER_MEMORY_NAME      "memoria"
@@ -229,6 +250,7 @@ public:
 	void checar_colisoes(int x, int y); // verifica qual é o bloco do topo e com quais blocos (ou pontos de junção dentro dos blocos) houve colisão com o mouse
 	//função sobrecarregada cuja função é adicionar um novo bloco a lista. a primeira versão adiciona blocos normais e os de trava, e a segunda é especifica para as linhas
 	bloco* criar_bloco(int tipo_novo_bloco, int x, int y, bool esta_ativo);
+	bloco* criar_bloco(int tipo_novo_bloco, int x, int y); //cria blocos para a função de carregar: sempre inativos e sem fazer backup
 	bloco* criar_bloco(int point, bloco* xbloco);
 	void desenhar(); //desenha os blocos
 	void rodar(); //roda o fluxograma
@@ -270,15 +292,18 @@ void scprintf(bloco* p, float x, float y); //a mesma coisa que a anterior, mas c
 
 bool botao(float x, float y, float dx, float dy, float offset); //verifica se o mouse está sobre um botão, desenha o retângulo de destaque se estiver, e retorna verdadeiro ou falso correspondentemente
 
+//objeto que armazena as constantes usadas no desenho
 class cord {
     private:
         int ***lin; //ponteiro para vetor multidimensional que armazena as coordenadas relativas (a origem do bloco a qual estao ligadas) das linhas
         int ***pon; //ponteiro para vetor multidimensional que armazena as coordenadas relativas (a origem do bloco a qual estao ligadas) das junçoes
     public :
-        void inic();
-        void destruir();
+        void inic(); // inicializa as variáveis
+        void destruir(); //desaloca a memória utilizada
+        //retorna o valor do offset de desenho de uma linha de acordo com o ponto na qual está conectada
         int linhas_x(int X) {return lin[X/100 - 1][X%10-1][0];}
         int linhas_y(int X) {return lin[X/100 - 1][X%10-1][1];}
+        //retorna o valor do offset de desenho de uma ponto de junção de acordo com o ponto na qual está conectada
         int pontos_x(int X) {return pon[X/100 - 1][X%10-1][0];}
         int pontos_y(int X) {return pon[X/100 - 1][X%10-1][1];}
 };

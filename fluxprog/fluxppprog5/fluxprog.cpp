@@ -104,7 +104,6 @@ bool lista_blocos::carregar(const char* caminho) {
     n_blocos = stoi(linha_arquivo, &pos);//transforma a primeira linha (que contem apenas o numero de blocos na lista)
     bloco* vetor_blocos[n_blocos]; //cria um vetor que conterá todos os blocos (pois assim é possível relacionar o indice de cada bloco na lista com o numero associado aos ponteiros no arquivo)
     int ponteiros[n_blocos][5]; //cria uma matriz contendo os numeros correspondentes aos ponteiros do bloco
-
     for (int i = 0; i < n_blocos; i++){
         int tipo = -1, pos_x = -1, pos_y = -1; //variáveis que armazenam as variáveis que precisam ser utilizadas para criar os blocos
         if (!getline(arquivo, linha_arquivo)) return false;//carrega a linha correspondente ao bloco atual em linha_arquivo
@@ -118,7 +117,7 @@ bool lista_blocos::carregar(const char* caminho) {
             ponteiros[i][0]= stoi(linha_arquivo, &pos); //primeiro ponteiro
             linha_arquivo = linha_arquivo.substr(pos);
             if (tipo!=linha) {
-                vetor_blocos[i] = criar_bloco(tipo, pos_x, pos_y, false); //se o tipo não for linha (função de criação diferente), cria o bloco normalmente
+                vetor_blocos[i] = criar_bloco(tipo, pos_x, pos_y); //se o tipo não for linha (função de criação diferente), cria o bloco normalmente
                 //e então armazena os valores das próximas variáveis
                 switch (tipo) {
                     case bloco_decisao :
@@ -218,6 +217,7 @@ bool lista_blocos::carregar(const char* caminho) {
                     linha_arquivo = linha_arquivo.substr(pos);
                 }
             }
+
         }
     }
     //depois de criar todos os blocos, escreve os endereços corretos dos ponteiros dos blocos
@@ -397,15 +397,21 @@ bloco* lista_blocos::criar_bloco(int tipo, int x, int y, bool esta_ativo) {
 	bloco* xbloco = new bloco(tipo, x, y, esta_ativo);
 	xbloco->prox_bloco = inicio;
 	inicio = xbloco;
-    salvar(arquivo_backup);
+    salvar(arquivo_backup); //cada vez que umn bloco é criado ou deletado, o programa salva o fluxograma atual em um backup
     return xbloco;
 }
 
+bloco* lista_blocos::criar_bloco(int tipo, int x, int y) {
+	bloco* xbloco = new bloco(tipo, x, y, false);
+	xbloco->prox_bloco = inicio;
+	inicio = xbloco;
+    return xbloco;
+}
 bloco* lista_blocos::criar_bloco(int ponto, bloco* xbloco) {
 	bloco* novo = new bloco(ponto, xbloco);
 	novo->prox_bloco = inicio;
 	inicio = novo;
-	salvar(arquivo_backup);
+	salvar(arquivo_backup);//cada vez que umn bloco é criado ou deletado, o programa salva o fluxograma atual em um backup
 	return novo;
 }
 
@@ -434,7 +440,7 @@ void lista_blocos::rodar() {
 	else {
 		bloco_ativo->ativo = false; //desativa o bloco ativo
 		bloco_ativo = bloco_ativo->rodar();
-		if (bloco_ativo != NULL) bloco_ativo->ativo = true; //ativa o novo bloco ativo, se houver
+		if (bloco_ativo != NULL) bloco_ativo->ativo = true; //ativa o novo bloco ativo, se houver, ou reativa o antigo, se ele não mudou
 		else ativo = false; //se não houver novo bloco ativo, o programa parou de rodar, e é necessario registrar isso na lista de blocos
 
 	}
@@ -1020,9 +1026,6 @@ int bloco::atualizar(lista_blocos* l) {
                 }
 
             }
-            cout << possibilidade_clique_duplo << endl;
-            cout << clique_duplo << endl;
-            cout << "---" << endl;
             if (mouse_clicar[mouse_dir]) marcado_para_destruir = 1;
             if (mouse_clicar[mouse_meio]) ativo = true;
         }
