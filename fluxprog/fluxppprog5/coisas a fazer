@@ -13,6 +13,7 @@ back-end:
 front-end:
 	refazer bloco de repetição
 	alterar bloco de trava
+	botão para limpar fluxograma atual
 	barra lateral com o programa distanciado
 	fazer linhas que podem ter nós ou curvas (abandonar bloco de junção)?
 	programa em portugol

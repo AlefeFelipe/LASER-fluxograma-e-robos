@@ -92,7 +92,7 @@ int main(int argc, char **argv)
 	coord.inic(); //calcula as constantes usadas pelo programa para desenhar
 
 	fonte = al_load_font("OpenSans-Regular.ttf", 10, 0);
-    verificar_alocacao(fonte, "fonte");
+    verificar_alocacao(fonte, "fonte")
 
 	//inicialização do mouse e de seu tratamento, além do tratamento do teclado e do botao de fechar o programa
 	//o tratamento do mouse, teclado e outros meios de entrada são tratadas pelo allegro por meio de filas que recebem os eventos que
@@ -100,6 +100,9 @@ int main(int argc, char **argv)
 	//eles são retirados da lista e entao avaliados
 	al_set_system_mouse_cursor(tela, ALLEGRO_SYSTEM_MOUSE_CURSOR_DEFAULT);
 	ALLEGRO_EVENT_QUEUE *fila_mouse = al_create_event_queue(), *fila_tela= al_create_event_queue(), *fila_teclado= al_create_event_queue();
+	verificar_alocacao(fila_mouse, "fila_mouse")
+	verificar_alocacao(fila_tela, "fila_tela")
+	verificar_alocacao(fila_teclado, "fila_teclado")
 	al_register_event_source(fila_mouse, al_get_mouse_event_source()); //associam as filas a uma fonte de eventos
 	al_register_event_source(fila_tela, al_get_display_event_source(tela));
 	al_register_event_source(fila_teclado, al_get_keyboard_event_source());
@@ -114,20 +117,24 @@ int main(int argc, char **argv)
     ALLEGRO_TRANSFORM posicao;
 
 	lista_blocos *lista = new lista_blocos;
-
+    verificar_alocacao(lista, "lista")
     //isso cria um timer para registrar o tempo, o que é usado para o clique duplo e controlar quanto a barra de rolagem sobe ou desce, por exemplo
 	ALLEGRO_TIMER *temporizador = al_create_timer(intervalo_eventos_temporizador);
+	verificar_alocacao(temporizador, "temporizador")
 	ALLEGRO_EVENT_QUEUE *fila_tempo = al_create_event_queue();
+	verificar_alocacao(fila_tempo,"fila_tempo")
 	al_register_event_source(fila_tempo, al_get_timer_event_source(temporizador));
 
 	//inicialização das memórias compartilhadas
-	//managed_shared_memory* sender, *receiver;
 	managed_shared_memory* memoria;
 	shared_memory_object::remove(SENDER_MEMORY_NAME); //se o programa tiver terminado irregularmente da ultima vez e nao tenha destruido a memoria antiga, e necessario destrui-la para garantir
 	memoria = new managed_shared_memory(open_or_create, SENDER_MEMORY_NAME, MEMORY_SIZE);
+	verificar_alocacao(memoria, "memoria")
 	command_var = memoria->construct<int>(COMMAND_VARIABLE_NAME)(); //cria as variaveis dentro das memorias
+    verificar_alocacao(command_var, "command_var")
 	*command_var = 0;
     feedback = memoria->construct<int>(FEEDBACK_VARIABLE_NAME)(); //cria as variaveis dentro das memorias
+    verificar_alocacao(feedback, "feedback")
 	*feedback = 0;
 
 	//diversas flags usadas no programa
@@ -144,8 +151,10 @@ int main(int argc, char **argv)
 
     //cria vetores de caracteres que armazenam
     char* caminho = new char[100];
+    verificar_alocacao(caminho, "caminho")
     strcpy(caminho, ".fp");
     char* titulo  = new char[100];
+    verificar_alocacao(titulo, "titulo")
     strcpy(titulo, "fluxprog");
 
     al_start_timer(temporizador);
@@ -209,10 +218,12 @@ int main(int argc, char **argv)
 				}
 			}
 			if (eventos_mouse.type == ALLEGRO_EVENT_MOUSE_AXES) { //se o mouse for mexido
-				//atualiza as variaveis globais que armazenam a posição cartesiana do mouse
+				//atualiza as variaveis globais que armazenam as coordenadas do mouse
 				mouse_x = eventos_mouse.mouse.x;
 				mouse_y = eventos_mouse.mouse.y;
 				if (modo == desenhando) lista->checar_colisoes(eventos_mouse.mouse.x, eventos_mouse.mouse.y); //se o programa estiver em modo de desenho, checa se houve mudança em alguma colisão
+
+                //atualiza a barra de rolagem para cima ou para baixo comparando a posição atual da roda do mouse com a anterior
                 nova_posicao_y += (roda_atual - eventos_mouse.mouse.z)*sensibilidade_roda_mouse;
                 roda_atual = eventos_mouse.mouse.z;
 			}
@@ -268,7 +279,8 @@ int main(int argc, char **argv)
 						lista->criar_bloco(bloco_acao, meio_tela, false);
 						break;
 					case ALLEGRO_KEY_3:
-						lista->criar_bloco(bloco_inicio, meio_tela, false);
+                        if (blocos_inicio) al_show_native_message_box(al_get_current_display(), "Fluxprog", "Erro!", "só pode haver um bloco de inicio no fluxograma", NULL, ALLEGRO_MESSAGEBOX_ERROR);
+                        else lista->criar_bloco(bloco_inicio, meio_tela, false);
 						break;
 					case ALLEGRO_KEY_4:
 						lista->criar_bloco(bloco_fim, meio_tela, false);
@@ -438,9 +450,10 @@ int main(int argc, char **argv)
             }
 		}
 
+        //botão de "play"
 
         //se estiver rodando, desenha um retangulo branco em volta do botão
-        //se não estier rodando, verifica se o programa está conectado ao v-rep
+        //se não estiver rodando, verifica se o programa está conectado ao v-rep
         //se estiver, entra no modo de rodar o fluxograma
 		if (modo == rodando) al_draw_rectangle(14 - offset_opcao, 14 - offset_opcao, 14 + largura(rodar) + offset_opcao, 14 + altura(rodar) + offset_opcao, branco, 1);
 		else if (botao(14, 14, largura(rodar), altura(rodar), offset_opcao) && mouse_clicar[mouse_esq]) {
@@ -453,33 +466,40 @@ int main(int argc, char **argv)
 			}
 		}
 
+        //botão de pausa
+
 		//se estiver pausado, desenha um retangulo em volta do botão
 		//se estiver rodando o fluxograma e o botão for apertado, pausa o programa
 		//(termina a instrução que foi enviada, mas não manda a próxima nem permite a edição do fluxograma)
 		if (modo == pausado) al_draw_rectangle(14 + 1*largura(botao_opcao) - offset_opcao, 14 - offset_opcao, 14 + largura(rodar) + 1*largura(botao_opcao) + offset_opcao, 14 + altura(rodar) + offset_opcao, branco, 1);
-		else if (botao(14 + largura(botao_opcao), 14, largura(rodar), altura(rodar), offset_opcao)) if (mouse_clicar[mouse_esq] && modo == rodando) modo = pausado;
+		else if (botao(14 + largura(botao_opcao), 14, largura(rodar), altura(rodar), offset_opcao) && mouse_clicar[mouse_esq] && modo == rodando) modo = pausado;
+
+		//botão de parar
 
 		//se estiver desenhando, desenha um retangulo em volta do botão
 		//se estiver rodando o fluxograma ou pausado e o botão for apertado, volta para o modo de desenhar
 		if (modo == desenhando) al_draw_rectangle(14 + 2*largura(botao_opcao) - offset_opcao, 14 - offset_opcao, 14 + largura(rodar) + 2*largura(botao_opcao) + offset_opcao, 14 + altura(rodar) + offset_opcao, branco, 1);
-		else if (botao(14 + 2*largura(botao_opcao), 14, largura(rodar), altura(rodar), offset_opcao)) {
-			if (mouse_clicar[mouse_esq]) {
-				modo = desenhando;
-				if (lista->ativo) resetar_lista_blocos();
-				bloco_enviado = false;
-			}
-		}
+		else if (botao(14 + 2*largura(botao_opcao), 14, largura(rodar), altura(rodar), offset_opcao) && mouse_clicar[mouse_esq]) {
+            modo = desenhando;
+            if (lista->ativo) resetar_lista_blocos();
+            bloco_enviado = false;
+        }
 
-        //se estiver no modo de desenho
-		if (modo == desenhando && botao(14 + 3*largura(botao_opcao), 14, largura(rodar), altura(rodar), offset_opcao)) {
-			if (mouse_clicar[mouse_esq]) {
-                if (!arquivo_escolhido) {
-                    ALLEGRO_FILECHOOSER *selecionar_arquivo = al_create_native_file_dialog(caminho, "salvar fluxograma","*.fp*" , ALLEGRO_FILECHOOSER_SAVE);
+		//botão de salvar
+
+        //se estiver no modo de desenho e o botão for apertado
+        //verifica se já existe um arquivo aberto(se o usuário já abriu um fluxograma ou salvou o atual). Se houver, salva nele.
+        //se não houver, abre uma caixa de diálogo para selecionar o arquivo
+        //e escreve o caminho para o arquivo no cabeçalho
+		if (modo == desenhando && botao(14 + 3*largura(botao_opcao), 14, largura(rodar), altura(rodar), offset_opcao) && mouse_clicar[mouse_esq]) {
+            if (!arquivo_escolhido) {
+                ALLEGRO_FILECHOOSER *selecionar_arquivo = al_create_native_file_dialog(caminho, "salvar fluxograma","*.fp*" , ALLEGRO_FILECHOOSER_SAVE);
+                if (selecionar_arquivo != 0) {
                     al_show_native_file_dialog(tela, selecionar_arquivo);
-                    if (al_get_native_file_dialog_count(selecionar_arquivo)) {
+                    if (al_get_native_file_dialog_count(selecionar_arquivo)) {//verifica se a caixa de dialogo retornou algum caminho
                         strcpy(caminho, al_get_native_file_dialog_path(selecionar_arquivo, 0));
                         arquivo_escolhido = true;
-                        if (lista->salvar(caminho)) {
+                        if (lista->salvar(caminho)) { //salva e atualiza o texto do cabeçalho
                             al_show_native_message_box(al_get_current_display(), "Fluxprog", "Sucesso!", "Seu programa foi salvo corretamente", NULL, ALLEGRO_MESSAGEBOX_ERROR);
                             strcpy(titulo, "fluxprog - ");
                             strcat(titulo, caminho);
@@ -489,20 +509,26 @@ int main(int argc, char **argv)
                     }
                     al_destroy_native_file_dialog(selecionar_arquivo);
                 }
+                else al_show_native_message_box(al_get_current_display(), "Fluxprog", "Erro!", "Não foi possivel abrir a caixa de diálogo, por favor tente novamente", NULL, ALLEGRO_MESSAGEBOX_ERROR);
                 else {
                     if (lista->salvar(caminho)) al_show_native_message_box(al_get_current_display(), "Fluxprog", "Sucesso!", "Seu programa foi salvo corretamente", NULL, ALLEGRO_MESSAGEBOX_ERROR);
                     else al_show_native_message_box(al_get_current_display(), "Fluxprog", "Erro!", "Não foi possível criar o arquivo", NULL, ALLEGRO_MESSAGEBOX_ERROR);
                 }
 			}
-		}
-		if (modo == desenhando && botao(14 + 4*largura(botao_opcao), 14, largura(rodar), altura(rodar), offset_opcao)) {
-			if (mouse_clicar[mouse_esq]) {
-                ALLEGRO_FILECHOOSER *selecionar_arquivo = al_create_native_file_dialog(caminho, "carregar fluxograma","*.fp*" , ALLEGRO_FILECHOOSER_FILE_MUST_EXIST);
+
+
+
+		//carrega um fluxograma
+		if (modo == desenhando && botao(14 + 4*largura(botao_opcao), 14, largura(rodar), altura(rodar), offset_opcao) && mouse_clicar[mouse_esq]) {
+            ALLEGRO_FILECHOOSER *selecionar_arquivo = al_create_native_file_dialog(caminho, "carregar fluxograma","*.fp*" , ALLEGRO_FILECHOOSER_FILE_MUST_EXIST);
+            if (selecionar_arquivo != 0) {
                 al_show_native_file_dialog(tela, selecionar_arquivo);
                 if (al_get_native_file_dialog_count(selecionar_arquivo)) {
+                    //destroi os blocos que atualmente estão na lista
                     delete lista;
                     lista = new lista_blocos;
 
+                    //carrega o fluxograma escolhido e atualiza o nome no cabeçalho
                     strcpy(caminho, al_get_native_file_dialog_path(selecionar_arquivo, 0));
                     arquivo_escolhido = true;
                     if (!lista->carregar(caminho)) {
@@ -518,10 +544,16 @@ int main(int argc, char **argv)
                 }
                 al_destroy_native_file_dialog(selecionar_arquivo);
             }
-		}
-		if (modo == desenhando && botao(14 + 5*largura(botao_opcao), 14, largura(rodar), altura(rodar), offset_opcao)) {
-			if (mouse_clicar[mouse_esq]) {
-                ALLEGRO_FILECHOOSER *selecionar_arquivo = al_create_native_file_dialog(caminho, "salvar fluxograma","*.fp*" , ALLEGRO_FILECHOOSER_SAVE);
+            else al_show_native_message_box(al_get_current_display(), "Fluxprog", "Erro!", "Não foi possivel abrir a caixa de diálogo, por favor tente novamente", NULL, ALLEGRO_MESSAGEBOX_ERROR);
+        }
+
+        //salvar como
+
+        //que nem o salvar normal, mas sempre chamando a caixa de diálogo
+
+		if (modo == desenhando && botao(14 + 5*largura(botao_opcao), 14, largura(rodar), altura(rodar), offset_opcao) && mouse_clicar[mouse_esq]) {
+            ALLEGRO_FILECHOOSER *selecionar_arquivo = al_create_native_file_dialog(caminho, "salvar fluxograma","*.fp*" , ALLEGRO_FILECHOOSER_SAVE);
+            if (selecionar_arquivo != 0) {
                 al_show_native_file_dialog(tela, selecionar_arquivo);
                 if (al_get_native_file_dialog_count(selecionar_arquivo)) {
                     strcpy(caminho, al_get_native_file_dialog_path(selecionar_arquivo, 0));
@@ -536,26 +568,31 @@ int main(int argc, char **argv)
                 }
                 al_destroy_native_file_dialog(selecionar_arquivo);
             }
+            else al_show_native_message_box(al_get_current_display(), "Fluxprog", "Erro!", "Não foi possivel abrir a caixa de diálogo, por favor tente novamente", NULL, ALLEGRO_MESSAGEBOX_ERROR);
 		}
+
 		if (modo == desenhando) {
 			lista->atualizar();
 			//blocos
-            if (botao(6, altura(botao_opcao) +  0 * altura(botao_bloco) + 8 + offset_bloco, largura(miniaturas[0]), altura(miniaturas[0]), offset_bloco) && mouse_clicar[mouse_esq])  lista->criar_bloco(bloco_decisao, mouse_xy_ajustado, true);
-			if (botao(6, altura(botao_opcao) +  1 * altura(botao_bloco) + 8 + offset_bloco, largura(miniaturas[0]), altura(miniaturas[0]), offset_bloco) && mouse_clicar[mouse_esq]) lista->criar_bloco(bloco_acao, mouse_xy_ajustado, true);
-			if (botao(6, altura(botao_opcao) +  2 * altura(botao_bloco) + 8 + offset_bloco, largura(miniaturas[0]), altura(miniaturas[0]), offset_bloco) && mouse_clicar[mouse_esq] && !blocos_inicio) lista->criar_bloco(bloco_inicio, mouse_xy_ajustado, true);
-			if (botao(6, altura(botao_opcao) +  3 * altura(botao_bloco) + 8 + offset_bloco, largura(miniaturas[0]), altura(miniaturas[0]), offset_bloco) && mouse_clicar[mouse_esq])  lista->criar_bloco(bloco_fim, mouse_xy_ajustado, true);
-			if (botao(6, altura(botao_opcao) +  4 * altura(botao_bloco) + 8 + offset_bloco, largura(miniaturas[0]), altura(miniaturas[0]), offset_bloco) && mouse_clicar[mouse_esq]) lista->criar_bloco(bloco_juncao, mouse_xy_ajustado, true);
+            if (botao(6, altura(botao_opcao) +  0 * altura(botao_bloco) + 8 + offset_bloco, largura(miniaturas[0]), altura(miniaturas[0]), offset_bloco) && mouse_clicar[mouse_esq]) lista->criar_bloco(bloco_decisao,   mouse_xy_ajustado, true);
+			if (botao(6, altura(botao_opcao) +  1 * altura(botao_bloco) + 8 + offset_bloco, largura(miniaturas[0]), altura(miniaturas[0]), offset_bloco) && mouse_clicar[mouse_esq]) lista->criar_bloco(bloco_acao,      mouse_xy_ajustado, true);
+			if (botao(6, altura(botao_opcao) +  2 * altura(botao_bloco) + 8 + offset_bloco, largura(miniaturas[0]), altura(miniaturas[0]), offset_bloco) && mouse_clicar[mouse_esq]) {
+                if (blocos_inicio) al_show_native_message_box(al_get_current_display(), "Fluxprog", "Erro!", "só pode haver um bloco de inicio no fluxograma", NULL, ALLEGRO_MESSAGEBOX_ERROR);
+                else lista->criar_bloco(bloco_inicio, mouse_xy_ajustado, true);
+			}
+			if (botao(6, altura(botao_opcao) +  3 * altura(botao_bloco) + 8 + offset_bloco, largura(miniaturas[0]), altura(miniaturas[0]), offset_bloco) && mouse_clicar[mouse_esq]) lista->criar_bloco(bloco_fim,       mouse_xy_ajustado, true);
+			if (botao(6, altura(botao_opcao) +  4 * altura(botao_bloco) + 8 + offset_bloco, largura(miniaturas[0]), altura(miniaturas[0]), offset_bloco) && mouse_clicar[mouse_esq]) lista->criar_bloco(bloco_juncao,    mouse_xy_ajustado, true);
 			if (botao(6, altura(botao_opcao) +  5 * altura(botao_bloco) + 8 + offset_bloco, largura(miniaturas[0]), altura(miniaturas[0]), offset_bloco) && mouse_clicar[mouse_esq]) lista->criar_bloco(bloco_repeticao, mouse_xy_ajustado, true);
-		    if (botao(6, altura(botao_opcao) +  6 * altura(botao_bloco) + 8 + offset_bloco, largura(miniaturas[0]), altura(miniaturas[0]), offset_bloco) && mouse_clicar[mouse_esq]) lista->criar_bloco(bloco_andar, mouse_xy_ajustado, true);
-			if (botao(6, altura(botao_opcao) +  7 * altura(botao_bloco) + 8 + offset_bloco, largura(miniaturas[0]), altura(miniaturas[0]), offset_bloco) && mouse_clicar[mouse_esq]) lista->criar_bloco(bloco_virar, mouse_xy_ajustado, true);
-			if (botao(6, altura(botao_opcao) +  9 * altura(botao_bloco) + 8 + offset_bloco, largura(miniaturas[0]), altura(miniaturas[0]), offset_bloco) && mouse_clicar[mouse_esq]) lista->criar_bloco(bloco_som, mouse_xy_ajustado, true);
-			if (botao(6, altura(botao_opcao) +  8 * altura(botao_bloco) + 8 + offset_bloco, largura(miniaturas[0]), altura(miniaturas[0]), offset_bloco) && mouse_clicar[mouse_esq]) lista->criar_bloco(bloco_fita, mouse_xy_ajustado, true);
-            if (botao(6, altura(botao_opcao) + 10 * altura(botao_bloco) + 8 + offset_bloco, largura(miniaturas[0]), altura(miniaturas[0]), offset_bloco) && mouse_clicar[mouse_esq]) lista->criar_bloco(bloco_numero, mouse_xy_ajustado, true);
-            if (botao(6, altura(botao_opcao) + 11 * altura(botao_bloco) + 8 + offset_bloco, largura(miniaturas[0]), altura(miniaturas[0]), offset_bloco) && mouse_clicar[mouse_esq]) lista->criar_bloco(bloco_VF, mouse_xy_ajustado, true);
+		    if (botao(6, altura(botao_opcao) +  6 * altura(botao_bloco) + 8 + offset_bloco, largura(miniaturas[0]), altura(miniaturas[0]), offset_bloco) && mouse_clicar[mouse_esq]) lista->criar_bloco(bloco_andar,     mouse_xy_ajustado, true);
+			if (botao(6, altura(botao_opcao) +  7 * altura(botao_bloco) + 8 + offset_bloco, largura(miniaturas[0]), altura(miniaturas[0]), offset_bloco) && mouse_clicar[mouse_esq]) lista->criar_bloco(bloco_virar,     mouse_xy_ajustado, true);
+			if (botao(6, altura(botao_opcao) +  9 * altura(botao_bloco) + 8 + offset_bloco, largura(miniaturas[0]), altura(miniaturas[0]), offset_bloco) && mouse_clicar[mouse_esq]) lista->criar_bloco(bloco_som,       mouse_xy_ajustado, true);
+			if (botao(6, altura(botao_opcao) +  8 * altura(botao_bloco) + 8 + offset_bloco, largura(miniaturas[0]), altura(miniaturas[0]), offset_bloco) && mouse_clicar[mouse_esq]) lista->criar_bloco(bloco_fita,      mouse_xy_ajustado, true);
+            if (botao(6, altura(botao_opcao) + 10 * altura(botao_bloco) + 8 + offset_bloco, largura(miniaturas[0]), altura(miniaturas[0]), offset_bloco) && mouse_clicar[mouse_esq]) lista->criar_bloco(bloco_numero,    mouse_xy_ajustado, true);
+            if (botao(6, altura(botao_opcao) + 11 * altura(botao_bloco) + 8 + offset_bloco, largura(miniaturas[0]), altura(miniaturas[0]), offset_bloco) && mouse_clicar[mouse_esq]) lista->criar_bloco(bloco_VF,        mouse_xy_ajustado, true);
 		}
 //
 		else if (blocos_inicio && vrep_conectado) { //se o programa estiver no modo de rodar (por isso o else), houver um bloco de inicio e a memória compartilhada tiver sido encontrada o fluxograma pode rodar
-			if (*(feedback) == -10) {
+			if (*(feedback) == -10) { //se o programa da api retornar -10, ele terminou de executar
                 vrep_conectado = false;
                 api_rodando = false;
                 modo = desenhando;
@@ -632,54 +669,82 @@ int main(int argc, char **argv)
         scprintf(mouse_y, 600, 670);
         scprintf(dmouse_x, 630, 660);
         scprintf(dmouse_y, 630, 670);
-        int sobre_barra = 0;
-        if (mouse_dentro_ret(dimensoes_tela_x - largura_barra_rolagem, 0, dimensoes_tela_x, dimensoes_tela_y)) {
+
+
+        //barra de rolagem
+
+        int sobre_barra = 0; //variável que armazena se o mouse está sobre a barra de rolagem
+        if (mouse_dentro_ret(dimensoes_tela_x - largura_barra_rolagem, 0, dimensoes_tela_x, dimensoes_tela_y)) { //se o mouse estiver dentro da área onde a barra de rolagem fica, verifica o resto
+
+            //verifica se o mouse realmente está sobre a barra
             if (mouse_y > nova_posicao_y/proporcao_pixel_maximo && mouse_y < (posicao_y + dimensoes_tela_y)/ proporcao_pixel_maximo && !barra_posicao_ativa) sobre_barra = 1;
+
+
             if (mouse_clicar[mouse_esq]) {
                 if (!sobre_barra) {
+                //se não estiver, a barra "pula" de forma a ficar centralizada no mouse
                     nova_posicao_y = mouse_y*proporcao_pixel_maximo - dimensoes_tela_y/2;
                     if (nova_posicao_y < 0) nova_posicao_y = 0;
                     else if (nova_posicao_y > dimensao_vertical_maxima - dimensoes_tela_y) nova_posicao_y = dimensao_vertical_maxima;
                 }
+                //e de qualquer jeito, se torna ativa
                 barra_posicao_ativa = true;
                 dmouse_y = mouse_y - nova_posicao_y/proporcao_pixel_maximo;
             }
 		}
-        if (barra_posicao_ativa) {
+        if (barra_posicao_ativa) { //se a barra estiver ativa e o botão esquerdo do mouse estiver sendo segurado, continua atualizando
+        //a posição da barra
             if (mouse_segurar[mouse_esq]) {
                 nova_posicao_y = (mouse_y - dmouse_y)*proporcao_pixel_maximo;
             }
-            else if (mouse_soltar[mouse_esq]) {
+            else if (mouse_soltar[mouse_esq]) { //se o botão do mouse for solto, para de atualizar
                 barra_posicao_ativa = false;
                 dmouse_y = 0;
             }
         }
+
+        //desenha a parte da tela ligeiramente mais escura onde fica a barra
 		al_draw_filled_rectangle( dimensoes_tela_x - largura_barra_rolagem, 0, dimensoes_tela_x, dimensoes_tela_y, al_map_rgb(100, 100, 100));
+
+        //desenha a barra em si
         al_draw_filled_rectangle(dimensoes_tela_x - largura_barra_rolagem , nova_posicao_y/proporcao_pixel_maximo, dimensoes_tela_x , (posicao_y + dimensoes_tela_y)/ proporcao_pixel_maximo, cinza);
+
+		//desenha a moldura da barra de rolagem, em branco se o mouse estiver sobre ela e em preto em caso contrário
 		al_draw_rectangle(dimensoes_tela_x - largura_barra_rolagem , nova_posicao_y/proporcao_pixel_maximo, dimensoes_tela_x , (posicao_y + dimensoes_tela_y)/ proporcao_pixel_maximo, al_map_rgb(255 * (sobre_barra | barra_posicao_ativa), 255 * (sobre_barra | barra_posicao_ativa), 255 * (sobre_barra | barra_posicao_ativa)), 1);
+
+
+		//se um bloco estiver sendo arrastado para cima ou para baixo (saindo da tela), faz a tela rolar com ele
+		//de acordo com quanto tempo passou
+
 		if (lista->ativo && ciclos_tempo > 0) {
+
+            //se o bloco ativo for uma linha, arrasta a tela de acordo com a posição do mouse, que também é o ponto solto da linha
             if (lista->bloco_ativo->tipo == linha) {
                 if (mouse_y < 0) nova_posicao_y = posicao_y + (mouse_y)*velocidade_rolagem;
                 if (mouse_y > dimensoes_tela_y) nova_posicao_y = posicao_y + ((mouse_y - dimensoes_tela_y))*velocidade_rolagem;
             }
+            //se for um bloco normal, arrasta a tela de acordo com quanto do bloco está fora da tela
 		    else if (lista->bloco_ativo->tipo < primeiro_bloco_trava) {
                 if (lista->bloco_ativo->pos_y < nova_posicao_y ) nova_posicao_y = nova_posicao_y + (lista->bloco_ativo->pos_y - nova_posicao_y)*velocidade_rolagem;
                 else if (lista->bloco_ativo->pos_y + al_get_bitmap_height(BLOCO[lista->bloco_ativo->tipo-1][0]) > dimensoes_tela_y + nova_posicao_y) nova_posicao_y = nova_posicao_y + (lista->bloco_ativo->pos_y + al_get_bitmap_height(BLOCO[lista->bloco_ativo->tipo-1][0]) - (dimensoes_tela_y + nova_posicao_y))*velocidade_rolagem;
             }
+            //o mesmo para blocos de trava
             else {
                 if (lista->bloco_ativo->pos_y < nova_posicao_y) nova_posicao_y = nova_posicao_y + (lista->bloco_ativo->pos_y - nova_posicao_y)*velocidade_rolagem;
                 else if (lista->bloco_ativo->pos_y + al_get_bitmap_height(voltita) > dimensoes_tela_y + nova_posicao_y) nova_posicao_y = nova_posicao_y + (lista->bloco_ativo->pos_y + al_get_bitmap_height(voltita) - (dimensoes_tela_y + nova_posicao_y))*velocidade_rolagem;
             }
-
+            //se a posição nova da tela ficar fora dos limites definidos (0 e dimensão_vertical_maxima), coloca elas nesses limites
             if (nova_posicao_y < 0) nova_posicao_y = 0;
             else if (nova_posicao_y > dimensao_vertical_maxima - dimensoes_tela_y) nova_posicao_y = dimensao_vertical_maxima - dimensoes_tela_y;
+            //faz com que a posição do bloco ativo seja atualizada para continuar sendo desenhada no mesmo lugar na tela,
+            //pois sem fazer isso o bloco ativo fica "pulando"
             if (nova_posicao_y != posicao_y ) lista->bloco_ativo->pos_y += nova_posicao_y - posicao_y;
 		}
 
 
         al_flip_display();
 		al_clear_to_color(cinza); //cor provisória escolhida arbitrariamente
-		if (ciclos_tempo > 0) ciclos_tempo--;
+		if (ciclos_tempo > 0) ciclos_tempo--; //diz que um periodo de tempo já foi processado
 	}
 	//manda o comando -10, indicando para o receptor que o programa acabou
 	*command_var = -10;

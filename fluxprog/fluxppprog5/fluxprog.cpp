@@ -402,6 +402,7 @@ bloco* lista_blocos::criar_bloco(int tipo, int x, int y, bool esta_ativo) {
 }
 
 bloco* lista_blocos::criar_bloco(int tipo, int x, int y) {
+
 	bloco* xbloco = new bloco(tipo, x, y, false);
 	xbloco->prox_bloco = inicio;
 	inicio = xbloco;
@@ -722,11 +723,14 @@ bloco::bloco(int ponto, bloco* xbloco) {
 	//coloca as coordenadas do bloco de acordo com o bloco e juncao na qual esta conectado
 	pos_x = xbloco->pos_x + coord.linhas_x(ponto);
 	pos_y = xbloco->pos_y + coord.linhas_y(ponto);
+
 	col = new bool[cols_linha];
 	col[0] = false;
+
 	var_pont = new bloco*[ponts_linha];
 	var_pont[0] = xbloco;
 	var_pont[1] = NULL;
+
 	var_int = new int[ints_linha];
 	lin_pos2_x = mouse_x;
 	lin_pos2_y = mouse_y_ajustado;
@@ -1006,8 +1010,13 @@ int bloco::atualizar(lista_blocos* l) {
 		}
 		bool clique_duplo = false;
 
+
         if (col[0] && bloco_topo == this) {
+
             if (mouse_clicar[mouse_esq]) {
+                //alguns blocos podem ser atualizados usando um clique duplo
+                //se o usuário clicar em um bloco de trava, é marcado que é possível haver um clique duplo
+                //se houver um clique de novo dentro do espaço de tempo marcado em tempo_maximo_clique_duplo, o clique duplo é verificado
                 if (possibilidade_clique_duplo) {
                     clique_duplo = true;
                     possibilidade_clique_duplo = false;
@@ -1053,19 +1062,27 @@ int bloco::atualizar(lista_blocos* l) {
 			break;
 
 		case bloco_fita:
+            //se for apertada um numero do teclado normal, 1 a 5 determinam qual sensor é lido e 0 e 9 a cor lida
             if (caractere_pressionado[1] == 'n') {
                 if (caractere_pressionado[0] <= '5' && caractere_pressionado[0] >= '1') fita_sensor = caractere_pressionado[0] - 48;
                 else if (caractere_pressionado[0] == '0') fita_cor = 0;
                 else if (caractere_pressionado[0] == '9') fita_cor = 1;
             }
+            //se for no teclado numérico, imita o padrão da distribuição dos sensores, com 7 e 9 determinadno a cor
             else if (caractere_pressionado[1] == 'N') {
-                if (caractere_pressionado[0] == '1') fita_sensor = 1;
+                if (caractere_pressionado[0] == '1')      fita_sensor = 1;
                 else if (caractere_pressionado[0] == '4') fita_sensor = 2;
                 else if (caractere_pressionado[0] == '5') fita_sensor = 3;
                 else if (caractere_pressionado[0] == '6') fita_sensor = 4;
                 else if (caractere_pressionado[0] == '3') fita_sensor = 5;
                 else if (caractere_pressionado[0] == '7') fita_cor = 0;
                 else if (caractere_pressionado[0] == '9') fita_cor = 1;
+            }//se for uma das setas, cima e baixo trocam a cor, esquerda troca o sensor escolhido pelo da esquerda do atual, e o da direita pelo a direita do atual
+            else if (caractere_pressionado[1] == 'S') {
+                if (caractere_pressionado[0] == '8' || caractere_pressionado[0] == '2') fita_cor = (fita_cor == 0 ? 1 : 0);
+                else if (caractere_pressionado[0] == '4') fita_sensor = (fita_sensor == 1 ? fita_sensor - 1 : 5);
+                else if (caractere_pressionado[0] == '6') fita_sensor = (fita_sensor == 5 ? fita_sensor = 0 : fita_sensor + 1);
+
             }
 			break;
 
@@ -1088,7 +1105,7 @@ int bloco::atualizar(lista_blocos* l) {
 
 //função que desenha os blocos
 void bloco::desenhar(lista_blocos *l) {
-	int a_tipo = -1;
+	int a_tipo = -1; //armazena o tipo do bloco ativo (se não houver, continua em -1)
 	if (l->ativo) a_tipo = l->bloco_ativo->tipo;
 	switch (tipo) {
 	case linha:
@@ -1099,17 +1116,22 @@ void bloco::desenhar(lista_blocos *l) {
 
 	case bloco_decisao:
 		if (modo == -1) { //se o programa estiver em modo de desenho
+
+            //desenha primeiro o bloco em si, dependendo se ele está ativo, com o mouse sobre ele (ou, no caso do bloco de decisão, com
+            //um bloco de trava compatível sobre ele) ou sem nada
 			if (ativo) al_draw_bitmap(BLOCO[0][2], bloco_xy, 0);
 			else if (col[0] && (!l->ativo || a_tipo >= bloco_fita)) al_draw_bitmap(BLOCO[0][1], bloco_xy, 0);
 			else al_draw_bitmap(BLOCO[0][0], bloco_xy, 0);
 
-			if (col[1] && (!l->ativo || l->bloco_ativo->tipo == linha)) al_draw_bitmap(PONTO[1], pos_ponto(dec_E), 0);
+			//então desenha as junções de cada bloco, com uma linha branca em volta caso o mouse esteja sobre ela e não haja bloco ativo ou ele seja uma linha
+			//(pois em um caso clicar na junção criará uma linha e no outro conectará a linha a essa junção)
+			if (col[1] && (!l->ativo || a_tipo == linha)) al_draw_bitmap(PONTO[1], pos_ponto(dec_E), 0);
 			else al_draw_bitmap(PONTO[0], pos_ponto(dec_E), 0);
 
-			if (col[2] && (!l->ativo || l->bloco_ativo->tipo == linha)) al_draw_bitmap(PONTO[1], pos_ponto(dec_S_nao), 0);
+			if (col[2] && (!l->ativo || a_tipo == linha)) al_draw_bitmap(PONTO[1], pos_ponto(dec_S_nao), 0);
 			else al_draw_bitmap(PONTO[0], pos_ponto(dec_S_nao), 0);
 
-			if (col[3] && (!l->ativo || l->bloco_ativo->tipo == linha)) al_draw_bitmap(PONTO[1], pos_ponto(dec_S_sim), 0);
+			if (col[3] && (!l->ativo || a_tipo == linha)) al_draw_bitmap(PONTO[1], pos_ponto(dec_S_sim), 0);
 			else al_draw_bitmap(PONTO[0], pos_ponto(dec_S_sim), 0);
 		}
 		else {//se o programa estiver rodando, desenha o bloco com todas as junções sempre como inativas
@@ -1132,10 +1154,10 @@ void bloco::desenhar(lista_blocos *l) {
 			else if (col[0] && (!l->ativo || (a_tipo >= bloco_andar && a_tipo <= bloco_virar))) al_draw_bitmap(BLOCO[1][1], bloco_xy, 0);
 			else al_draw_bitmap(BLOCO[1][0], bloco_xy, 0);
 
-			if (col[1] && (!l->ativo || l->bloco_ativo->tipo == linha)) al_draw_bitmap(PONTO[1], pos_ponto(acao_E), 0);
+			if (col[1] && (!l->ativo || a_tipo == linha)) al_draw_bitmap(PONTO[1], pos_ponto(acao_E), 0);
 			else al_draw_bitmap(PONTO[0], pos_ponto(acao_E), 0);
 
-			if (col[2] && (!l->ativo || l->bloco_ativo->tipo == linha)) al_draw_bitmap(PONTO[1], pos_ponto(acao_S), 0);
+			if (col[2] && (!l->ativo || a_tipo == linha)) al_draw_bitmap(PONTO[1], pos_ponto(acao_S), 0);
 			else al_draw_bitmap(PONTO[0], pos_ponto(acao_S), 0);
 		}
 		else {
@@ -1153,7 +1175,7 @@ void bloco::desenhar(lista_blocos *l) {
 			else if (bloco_topo == this && col[0]) al_draw_bitmap(BLOCO[2][1], bloco_xy, 0);
 			else al_draw_bitmap(BLOCO[2][0], bloco_xy, 0);
 
-			if (col[1] && (!l->ativo || l->bloco_ativo->tipo == linha)) al_draw_bitmap(PONTO[1], pos_ponto(ini_S), 0);
+			if (col[1] && (!l->ativo || a_tipo == linha)) al_draw_bitmap(PONTO[1], pos_ponto(ini_S), 0);
 			else al_draw_bitmap(PONTO[0], pos_ponto(ini_S), 0);
 
 		}
@@ -1171,7 +1193,7 @@ void bloco::desenhar(lista_blocos *l) {
 			else if (bloco_topo == this && col[0]) al_draw_bitmap(BLOCO[3][1], bloco_xy, 0);
 			else al_draw_bitmap(BLOCO[3][0], bloco_xy, 0);
 
-			if (col[1] && (!l->ativo || l->bloco_ativo->tipo == linha)) al_draw_bitmap(PONTO[1], pos_ponto(fim_E), 0);
+			if (col[1] && (!l->ativo || a_tipo == linha)) al_draw_bitmap(PONTO[1], pos_ponto(fim_E), 0);
 			else al_draw_bitmap(PONTO[0], pos_ponto(fim_E), 0);
 		}
 		else {
@@ -1189,13 +1211,13 @@ void bloco::desenhar(lista_blocos *l) {
 			else if (bloco_topo == this && col[0]) al_draw_bitmap(BLOCO[4][1], bloco_xy, 0);
 			else al_draw_bitmap(BLOCO[4][0], bloco_xy, 0);
 
-			if (col[1] && (!l->ativo || l->bloco_ativo->tipo == linha)) al_draw_bitmap(PONTO[1], pos_ponto(jun_E_esq), 0);
+			if (col[1] && (!l->ativo || a_tipo == linha)) al_draw_bitmap(PONTO[1], pos_ponto(jun_E_esq), 0);
 			else al_draw_bitmap(PONTO[0], pos_ponto(jun_E_esq), 0);
 
-			if (col[2] && (!l->ativo || l->bloco_ativo->tipo == linha)) al_draw_bitmap(PONTO[1], pos_ponto(jun_E_dir), 0);
+			if (col[2] && (!l->ativo || a_tipo == linha)) al_draw_bitmap(PONTO[1], pos_ponto(jun_E_dir), 0);
 			else al_draw_bitmap(PONTO[0], pos_ponto(jun_E_dir), 0);
 
-			if (col[3] && (!l->ativo || l->bloco_ativo->tipo == linha)) al_draw_bitmap(PONTO[1], pos_ponto(jun_S), 0);
+			if (col[3] && (!l->ativo || a_tipo == linha)) al_draw_bitmap(PONTO[1], pos_ponto(jun_S), 0);
 			else al_draw_bitmap(PONTO[0], pos_ponto(jun_S), 0);
 		}
 		else {
@@ -1212,16 +1234,16 @@ void bloco::desenhar(lista_blocos *l) {
 			else if (bloco_topo == this && col[0]) al_draw_bitmap(BLOCO[5][1], bloco_xy, 0);
 			else al_draw_bitmap(BLOCO[5][0], bloco_xy, 0);
 
-			if (col[1] && (!l->ativo || l->bloco_ativo->tipo == linha)) al_draw_bitmap(PONTO[1], pos_ponto(rep_E), 0);
+			if (col[1] && (!l->ativo || a_tipo == linha)) al_draw_bitmap(PONTO[1], pos_ponto(rep_E), 0);
 			else al_draw_bitmap(PONTO[0], pos_ponto(rep_E), 0);
 
-			if (col[2] && (!l->ativo || l->bloco_ativo->tipo == linha)) al_draw_bitmap(PONTO[1], pos_ponto(rep_loop_ini), 0);
+			if (col[2] && (!l->ativo || a_tipo == linha)) al_draw_bitmap(PONTO[1], pos_ponto(rep_loop_ini), 0);
 			else al_draw_bitmap(PONTO[0], pos_ponto(rep_loop_ini), 0);
 
-			if (col[3] && (!l->ativo || l->bloco_ativo->tipo == linha)) al_draw_bitmap(PONTO[1], pos_ponto(rep_loop_fim), 0);
+			if (col[3] && (!l->ativo || a_tipo == linha)) al_draw_bitmap(PONTO[1], pos_ponto(rep_loop_fim), 0);
 			else al_draw_bitmap(PONTO[0], pos_ponto(rep_loop_fim), 0);
 
-            if (col[4] && (!l->ativo || l->bloco_ativo->tipo == linha)) al_draw_bitmap(PONTO[1], pos_ponto(rep_S), 0);
+            if (col[4] && (!l->ativo || a_tipo == linha)) al_draw_bitmap(PONTO[1], pos_ponto(rep_S), 0);
 			else al_draw_bitmap(PONTO[0], pos_ponto(rep_S), 0);
 		}
 		else {
@@ -1234,17 +1256,17 @@ void bloco::desenhar(lista_blocos *l) {
             if (rep_it_faltando == rep_it_total) al_draw_bitmap(NUMERO[rep_it_total], pos_x + qua_rep_x, pos_y + qua_rep2_y, 0); //como a variavel que indica quantas iterações ainda precisam ser feitas é decrementada assim que o comando é mandado para o programa, parece que uma iteração é feita imediatamente. Para evitar isso, apenas quando as duas variáceis são iguais elas são mostradas em seus valores reais, e depois o numero de iterações a fazer é mostrado incrementado por 1
             else al_draw_bitmap(NUMERO[rep_it_faltando + 1], pos_x + qua_rep_x, pos_y + qua_rep2_y, 0);
 		}
-		al_draw_bitmap(NUMERO[rep_it_total], pos_x + qua_rep_x, pos_y + qua_rep1_y, 0);
+		al_draw_bitmap(NUMERO[rep_it_total], pos_x + qua_rep_x, pos_y + qua_rep1_y, 0); //desenha o número de iterações totais
 		break;
 	case bloco_andar:
-
+        //desenha o bloco invertido ou não, de acordo com a direção que ele representa
 		if (and_sentido == 1) al_draw_bitmap(seta, bloco_xy, 0);
 		else al_draw_bitmap(seta, bloco_xy, ALLEGRO_FLIP_VERTICAL);
-		if (modo == -1) {
+		if (modo == desenhando) { //desenha uma moldura branca no bloco se ele estiver atio e preta se o mouse estiver sobre ele
 			if (ativo) al_draw_rectangle(bloco_xy, pos_x + al_get_bitmap_width(seta) - 1, pos_y + al_get_bitmap_height(seta) - 1, branco, 3);
 			else if (bloco_topo == this) al_draw_rectangle(bloco_xy, pos_x + al_get_bitmap_width(seta) - 1, pos_y + al_get_bitmap_height(seta) - 1, preto, 3);
 		}
-		else {
+		else { //se o fluxograma estiver rodando e esse bloco se tornar ativo, desenha uma moldura dourada nele (o que atualmente nunca acontece para nenhum dos blocos de trava)
 			if (ativo) al_draw_rectangle(bloco_xy, pos_x + al_get_bitmap_width(seta) - 1, pos_y + al_get_bitmap_height(seta) - 1, al_map_rgb(165, 179, 4), 3);
 		}
 		break;
@@ -1288,7 +1310,7 @@ void bloco::desenhar(lista_blocos *l) {
 			snsr_y = pos_y + snsr15_y;
 			break;
 		}
-        //desenha o retângulo de acordo com a cor
+        //desenha o retângulo de acordo com a cor (em um switch para facilitar caso no futuro hajam mais cores)
 		switch (fita_cor) {
 		case 0 :
             al_draw_filled_rectangle(snsr_x, snsr_y, snsr_x + 3, snsr_y + 3, preto);
@@ -1340,6 +1362,7 @@ void bloco::destruir(lista_blocos* l) {
     if (l->bloco_ativo == this) l->bloco_ativo = NULL;
     switch (tipo) {
         case linha :
+            //se algum bloco tiver um ponteiro para essa linha, o tira, para evitar que a linha seja acessada ou deletada de novo
             if (var_pont[0] != NULL) {
                 if (var_pont[0]->var_pont[0] == this) var_pont[0]->var_pont[0] = NULL;
                 if (var_pont[0]->var_pont[1] == this) var_pont[0]->var_pont[1] = NULL;
@@ -1367,16 +1390,19 @@ void bloco::destruir(lista_blocos* l) {
                 }
             }
         	//se há um bloco de trava conectado, garante que ele não tera mais um ponteiro para o
-        	//bloco destruido e que ele continuara sendo imprimido na ultima posicao que ocupou
+        	//bloco destruido e que ele continuara sendo imprimido na ultima posicao que ocupou,
+        	//além de marcar que ele não está mais conectado
 			if (var_pont[3] != NULL) {
 				var_pont[3]->var_pont[0] = NULL;
 				var_pont[3]->pos_x = pos_x + qua_log1_x;
 				var_pont[3]->pos_y = pos_y + qua_log_y;
+                var_pont[3]->trava_posicao = -1;
 			}
 			if (var_pont[4] != NULL) {
 				var_pont[4]->var_pont[0] = NULL;
 				var_pont[4]->pos_x = pos_x + qua_log2_x;
 				var_pont[4]->pos_y = pos_y + qua_log_y;
+                var_pont[4]->trava_posicao = -1;
 			}
 
             break;
@@ -1398,7 +1424,7 @@ void bloco::destruir(lista_blocos* l) {
         //como o bloco de inicio e o de fim só tem um ponteiro, são tratados identicamente,
         //exceto pelo fato que, para o bloco de inicio, é necessário mostrar que não há mais nenhum bloco de inicio
             blocos_inicio = false;
-
+        //não há break para que o próximo caso seja executado também, já que é a mesma coisa
         case bloco_fim :
             if (var_pont[0] != NULL) {
                 var_pont[0]->marcado_para_destruir = true;
@@ -1450,7 +1476,7 @@ void bloco::mover() {
 //impedindo o efeito que faria o bloco "pular" para o canto superior esquerdo quando fosse começar a ser movido
 	pos_x = mouse_x - dmouse_x;
 	pos_y = mouse_y_ajustado - dmouse_y;
-    //impede que mais da metade de um bloco esteja fora dos limites máximos da tela (contando o máximo com a barra de rolagem vertical e com a tela de tamanho ajustável
+    //impede que mais da metade de um bloco esteja fora dos limites máximos da tela (contando o máximo com a barra de rolagem vertical e com a tela de tamanho ajustável)
     if (tipo < primeiro_bloco_trava && tipo != linha) {
         if (pos_x < -al_get_bitmap_width(BLOCO[tipo - 1][0])/2) pos_x = -al_get_bitmap_width(BLOCO[tipo - 1][0])/2;
         else if (pos_x > dimensoes_tela_x - al_get_bitmap_width(BLOCO[tipo - 1][0])/2) pos_x = dimensoes_tela_x - al_get_bitmap_width(BLOCO[tipo - 1][0])/2;
@@ -1501,8 +1527,9 @@ bloco* bloco::rodar() {
                 var_pont[3]->var_int[2]--;
             }
             checou_condicao = true;
-		}
+		}//como esse código não foi testado e a maioria tem boa chance de mudar no futuro, ele está aqui mais como ideia geral do que fazer
 		else if (var_pont[4] != NULL && !bloco_enviado) {
+
             switch (var_pont[3]->tipo) {
                 case bloco_fita :
                     *command_var = var_pont[3]->fita_sensor*10 + var_pont[3]->fita_cor;
@@ -1565,12 +1592,12 @@ bloco* bloco::rodar() {
             else  if (var_pont[2]->tipo == bloco_virar && var_pont[2]->vir_dir == -1) *command_var = 6;
             else  if (var_pont[2]->tipo == bloco_virar && var_pont[2]->vir_dir == 1) *command_var = 4;
             bloco_enviado = true; //garante que o bloco não será enviado de novo
-            if (modelo) for (int i = 0; i < 3; i++) {
+            if (modelo) for (int i = 0; i < 3; i++) { //guarda a posição inicial do bloco para saber se ele já andou o suficiente
                 posicao_angular_inicial[i] = (posicao_angular.first)[i];
                 posicao_plana_inical[i] = (posicao_plana.first)[i];
             }
 		}
-		else if (var_pont[2] == NULL) {
+		else if (var_pont[2] == NULL) { //se não houver bloco de trava, o bloco de ação não faz nada e simplesmente passa para o próximo
             if (var_pont[1] == NULL) prox_bloco_a_rodar = NULL;
             else if (var_pont[1]->var_pont[0] == NULL || var_pont[1]->var_pont[1] == NULL) prox_bloco_a_rodar = NULL;
             else if (var_pont[1]->var_pont[0] == this) prox_bloco_a_rodar = var_pont[1]->var_pont[1];
@@ -1588,18 +1615,18 @@ bloco* bloco::rodar() {
                 bloco_enviado = false;
             }
 		}
-		else {
+		else { //se o comando tiver sido enviado, verifica se ele já foi completado
             bool terminar_comando = false;
-            if (var_pont[2]->tipo == bloco_andar && var_pont[2]->and_sentido == -1)	{
+            if (var_pont[2]->tipo == bloco_andar && var_pont[2]->and_sentido == -1)	{ //como andar pra trás não foi implementado, ignora esse comando
                 terminar_comando = true;
             }
-            else  if (var_pont[2]->tipo == bloco_andar && var_pont[2]->and_sentido == 1) {
+            else  if (var_pont[2]->tipo == bloco_andar && var_pont[2]->and_sentido == 1) { //calcula se o robô andou o suficiente para ir um quadrado
                 if(sqrt(pow(DIS(posicao_plana_inical[0], posicao_plana.first[0]), 2) + pow(DIS(posicao_plana_inical[1], posicao_plana.first[1]), 2)) >= 0.485) terminar_comando = true;
             }
             else  if (var_pont[2]->tipo == bloco_virar) {
-                if (DIS(posicao_angular.first[2], posicao_angular_inicial[2]) >= M_PI_2) terminar_comando = true;
+                if (DIS(posicao_angular.first[2], posicao_angular_inicial[2]) >= M_PI_2) terminar_comando = true;//calcula se o robô já andou o suficente para virar 90°
             }
-            if (terminar_comando) {
+            if (terminar_comando) {//se sim, vai para o próximo bloco, se houver
                 if (var_pont[1] == NULL) prox_bloco_a_rodar = NULL;
                 else if (var_pont[1]->var_pont[0] == NULL || var_pont[1]->var_pont[1] == NULL) prox_bloco_a_rodar = NULL;
                 else if (var_pont[1]->var_pont[0] == this) prox_bloco_a_rodar = var_pont[1]->var_pont[1];
@@ -1739,8 +1766,8 @@ void scprintf(float f, float x, float y){
 	al_draw_text(fonte, preto, x, y, ALLEGRO_ALIGN_LEFT, buffer);
 }
 
-bool botao(float x, float y, float dx, float dy, float offset) {
-    if (mouse_dentro_ret(x, y, x + dx, y + dy)) {
+bool botao(float x, float y, float dx, float dy, float offset) { //dx = comprimento, dy = altura
+    if (mouse_dentro_ret(x, y, x + dx, y + dy)) {//verifica se o mous esta dentro da area determinada, e se sim desenha um retangulo no botão
         al_draw_rectangle(x - offset, y - offset, x + dx + offset, y + dy + offset, preto, 1);
         return true;
     }
@@ -1750,13 +1777,16 @@ bool botao(float x, float y, float dx, float dy, float offset) {
 #define x(X) [X/100 - 1][X%10-1][0]
 #define y(X) [X/100 - 1][X%10-1][1]
 void cord::inic() {
+    //para economizar memória, são criados duas matrizes de 3 dimensões incompletas, ou seja, só há espaço alocado para o que vai ser utilizado
 
+    //aloca espaço para as linhas da matriz (qual bloco)
     lin = new int**[6];
 
+    //aloca espaço para as colunas da primeira linha da matriz (qual junção)
     lin[0] = new int*[3];
-    for(int i = 0; i < 3; i++) lin[0][i] = new int[2];
+    for(int i = 0; i < 3; i++) lin[0][i] = new int[2]; //aloca espaço para as duas coordenadas do offset (x = 0, y = 1)
 
-
+    //armazena os valores para cada campo
     lin x(dec_E) = al_get_bitmap_width(BLOCO[0][0])/2;
     lin y(dec_E) = 0;
     lin x(dec_S_nao) = al_get_bitmap_width(BLOCO[0][0]);
@@ -1811,6 +1841,7 @@ void cord::inic() {
     lin y(rep_S) = al_get_bitmap_height(BLOCO[5][0]);
 
 
+    //o mesmo que o bloco anterior, mas para a outra matriz
     pon = new int**[6];
 
     pon[0] = new int*[3];

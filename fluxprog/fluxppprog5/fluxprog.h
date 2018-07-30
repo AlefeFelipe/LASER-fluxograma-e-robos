@@ -14,6 +14,7 @@
 #include <fstream>
 
 #define debug(X) if(1)cout<<X<<endl<<flush
+
 const int modelo = 0; //determina se o programa deve usar o modelo de comunicação com o vrep
 //q apenas manda os comandos (0)ou o que controla ele e recebe os sensores(1)
 
