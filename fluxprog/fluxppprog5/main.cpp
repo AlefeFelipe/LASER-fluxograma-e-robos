@@ -510,12 +510,12 @@ int main(int argc, char **argv)
                     al_destroy_native_file_dialog(selecionar_arquivo);
                 }
                 else al_show_native_message_box(al_get_current_display(), "Fluxprog", "Erro!", "Não foi possivel abrir a caixa de diálogo, por favor tente novamente", NULL, ALLEGRO_MESSAGEBOX_ERROR);
-                else {
+			}
+			else {
                     if (lista->salvar(caminho)) al_show_native_message_box(al_get_current_display(), "Fluxprog", "Sucesso!", "Seu programa foi salvo corretamente", NULL, ALLEGRO_MESSAGEBOX_ERROR);
                     else al_show_native_message_box(al_get_current_display(), "Fluxprog", "Erro!", "Não foi possível criar o arquivo", NULL, ALLEGRO_MESSAGEBOX_ERROR);
                 }
-			}
-
+        }
 
 
 		//carrega um fluxograma

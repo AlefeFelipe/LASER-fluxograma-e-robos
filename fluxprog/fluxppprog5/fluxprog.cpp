@@ -1080,8 +1080,8 @@ int bloco::atualizar(lista_blocos* l) {
             }//se for uma das setas, cima e baixo trocam a cor, esquerda troca o sensor escolhido pelo da esquerda do atual, e o da direita pelo a direita do atual
             else if (caractere_pressionado[1] == 'S') {
                 if (caractere_pressionado[0] == '8' || caractere_pressionado[0] == '2') fita_cor = (fita_cor == 0 ? 1 : 0);
-                else if (caractere_pressionado[0] == '4') fita_sensor = (fita_sensor == 1 ? fita_sensor - 1 : 5);
-                else if (caractere_pressionado[0] == '6') fita_sensor = (fita_sensor == 5 ? fita_sensor = 0 : fita_sensor + 1);
+                else if (caractere_pressionado[0] == '4') fita_sensor = (fita_sensor == 1 ? 5 : (fita_sensor - 1));
+                else if (caractere_pressionado[0] == '6') fita_sensor = ((fita_sensor == 5) ? (1) : (fita_sensor + 1));
 
             }
 			break;
