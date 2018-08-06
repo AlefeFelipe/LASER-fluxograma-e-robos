@@ -7,11 +7,11 @@ C_FLAGS =
 
 C_DEFINES = -DMAX_EXT_API_CONNECTIONS=255 -DNON_MATLAB_PARSING
 
-C_INCLUDES = -I/home/robocup/projeto/ProjetoRemoteApi/include -I/home/robocup/projeto/ProjetoRemoteApi/remoteApi 
+C_INCLUDES = -I/home/robocup/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi/include -I/home/robocup/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi/remoteApi 
 
 CXX_FLAGS =   -Wall -std=c++0x -DBUILD_SHARED_LIBS=OFF   
 
 CXX_DEFINES = -DMAX_EXT_API_CONNECTIONS=255 -DNON_MATLAB_PARSING
 
-CXX_INCLUDES = -I/home/robocup/projeto/ProjetoRemoteApi/include -I/home/robocup/projeto/ProjetoRemoteApi/remoteApi 
+CXX_INCLUDES = -I/home/robocup/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi/include -I/home/robocup/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi/remoteApi 
 

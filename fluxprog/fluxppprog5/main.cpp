@@ -11,7 +11,7 @@ int main(int argc, char **argv)
 	inicializar(al_init_native_dialog_addon(), "plugin de caixas de diálogo nativo");
 	inicializar(al_install_keyboard(), "teclado");
 	inicializar(al_install_mouse(), "mouse");
-	inicializar(al_init_font_addon(), "plugin de fontes");
+	al_init_font_addon();
 	inicializar(al_init_ttf_addon(), "plugin de fontes truetype");
 
 	inic_fluxprog();
@@ -378,13 +378,23 @@ int main(int argc, char **argv)
 				al_draw_bitmap(NUMERO[2], 6, altura(botao_opcao) + 10 * altura(botao_bloco) + 4 + 6, 0); //desenha o 2 pois o bloco criado vai começar com o valor 2 (já que repetir 0 ou 1 vez não faz sentido)
 				al_draw_bitmap(logico_v, 6, altura(botao_opcao) + 11 * altura(botao_bloco) + 4 + 6, 0);
 
+        //botão para limpar a tela
+        al_draw_bitmap(botao_bloco, 0, dimensoes_tela_y - altura(botao_bloco), 0);
+        al_draw_bitmap(logico_f, 6, dimensoes_tela_y - altura(botao_bloco)+10, 0);
+        if(modo == desenhando && botao(6, dimensoes_tela_y - altura(botao_bloco)+10, largura(logico_f), altura(logico_f),0) && mouse_clicar[mouse_esq]) {
+            //ver referência em https://www.allegro.cc/manual/5/al_show_native_message_box
+            if (al_show_native_message_box(al_get_current_display(), "Fluxprog", "Limpar tela!", "voce tem certeza que quer deletar o fluxograma atual?", NULL, ALLEGRO_MESSAGEBOX_YES_NO) == 1) {
+                delete lista;
+                lista = new lista_blocos;
+            }
+        }
 
 		//parte responsável pela conecção com o API
 
 		if (vrep_conectado) { //desenha um retângulo vermelho pra marcar que a conexão ocorreu e faz com que se o botão for apertado novamente a memória seja desconectada
 		 //(não e preciso mudar as variáveis, pois elas serão refeitas quando o botao for apertado de novo, e não serão usadas se vrep_conectado for falso)
 			al_draw_rectangle(dimensoes_tela_x + 10 - largura(botao_opcao) - largura_barra_rolagem, 14, dimensoes_tela_x + 10 - largura(botao_opcao) - largura_barra_rolagem + largura(rodar), 14 + altura(rodar), al_map_rgb(255, 0 , 0), 1);
-            if (modo == desenhando && mouse_clicar[mouse_esq] && botao(dimensoes_tela_x - 2 - 2*largura(botao_opcao) - largura_barra_rolagem, 2, largura(rodar), altura(rodar), offset_opcao)) { //se o usuário clicar sobre o botão do VREP quando ele já estiver conectado, o desconecta
+            if (modo == desenhando && mouse_clicar[mouse_esq] && botao(dimensoes_tela_x + 10 - largura(botao_opcao) - largura_barra_rolagem, 14, largura(rodar), altura(rodar), offset_opcao)) { //se o usuário clicar sobre o botão do VREP quando ele já estiver conectado, o desconecta
                 vrep_conectado = false;
                 vrep_conectando = false;
                 api_rodando = false;

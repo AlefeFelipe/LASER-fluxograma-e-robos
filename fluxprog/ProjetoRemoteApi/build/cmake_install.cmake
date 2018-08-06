@@ -1,4 +1,4 @@
-# Install script for directory: /home/robocup/projeto/ProjetoRemoteApi
+# Install script for directory: /home/robocup/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -39,7 +39,7 @@ if(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspeci
          FILE "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/cppremoteapi"
          RPATH "")
   endif()
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/bin" TYPE EXECUTABLE FILES "/home/robocup/projeto/ProjetoRemoteApi/build/cppremoteapi")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/bin" TYPE EXECUTABLE FILES "/home/robocup/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi/build/cppremoteapi")
   if(EXISTS "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/cppremoteapi" AND
      NOT IS_SYMLINK "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/cppremoteapi")
     if(CMAKE_INSTALL_DO_STRIP)
@@ -56,5 +56,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/robocup/projeto/ProjetoRemoteApi/build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/robocup/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
