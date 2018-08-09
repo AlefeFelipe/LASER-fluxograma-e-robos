@@ -291,7 +291,7 @@ void scprintf(float f, float x, float y); //a mesma coisa que a anterior, mas pa
 void scprintf(double d, float x, float y); //a mesma coisa que a anterior, mas para um double
 void scprintf(bloco* p, float x, float y); //a mesma coisa que a anterior, mas com um ponteiro para um bloco
 
-bool botao(float x, float y, float dx, float dy, float offset); //verifica se o mouse está sobre um botão, desenha o retângulo de destaque se estiver, e retorna verdadeiro ou falso correspondentemente
+bool botao(float x, float y, float dx, float dy, float offset, bool ativo); //verifica se o mouse está sobre um botão, desenha o retângulo de destaque se estiver, e retorna verdadeiro ou falso correspondentemente
 
 //objeto que armazena as constantes usadas no desenho
 class cord {

@@ -37,7 +37,7 @@ lista_blocos::~lista_blocos() {
 		inicio = inicio->prox_bloco;
 		delete aux->col;
 		delete aux->var_pont;
-		if (aux->tipo == linha || aux->tipo>= primeiro_bloco_trava) delete aux->var_int;
+		if (aux->tipo == linha || aux->tipo>= primeiro_bloco_trava || aux->tipo == bloco_repeticao) delete aux->var_int;
 		delete aux;
 	}
 }
@@ -752,9 +752,14 @@ int bloco::atualizar(lista_blocos* l) {
 			lin_pos2_x = mouse_x;
 			lin_pos2_y = mouse_y_ajustado;
 		}
-		else {
+		else if (var_pont[1]){
             lin_pos2_x = var_pont[1]->pos_x + coord.linhas_x(lin_ponto2);
             lin_pos2_y = var_pont[1]->pos_y + coord.linhas_y(lin_ponto2);
+		}
+		else {
+            al_show_native_message_box(al_get_current_display(), "Fluxprog", "Erro!", "Houve um erro com uma das linhas do programa. Ela será destruída.", NULL, ALLEGRO_MESSAGEBOX_ERROR);
+            marcado_para_destruir = true;
+            return 0;
 		}
 //se o botão direito for pressionado sobre a linha ou enquanto ela está selecionada, ela é destruida
 		if (mouse_clicar[mouse_dir] && (col[0] || ativo)) {
@@ -805,9 +810,14 @@ int bloco::atualizar(lista_blocos* l) {
 				ativo = false;
 				l->bloco_ativo = NULL;
 			}
+			else if (mouse_clicar[mouse_dir]) {
+                marcado_para_destruir = true;
+                ativo = false;
+				l->bloco_ativo = NULL;
+			}
 		}
 		//se o mouse estiver sobre o bloco
-		if (col[0] && bloco_topo == this) {
+		else if (col[0] && bloco_topo == this) {
 			if (mouse_clicar[mouse_esq]) {
 				ativo = true;
 				dmouse_x = mouse_x - pos_x;
@@ -1504,6 +1514,7 @@ void bloco::prender(lista_blocos* l, int ponto) {
 		l->bloco_ativo->ativo = 0; //desativa a linha
 		l->bloco_ativo = NULL;
 	}
+	l->salvar(arquivo_backup);
 }
 
 bloco* bloco::rodar() {
@@ -1766,8 +1777,8 @@ void scprintf(float f, float x, float y){
 	al_draw_text(fonte, preto, x, y, ALLEGRO_ALIGN_LEFT, buffer);
 }
 
-bool botao(float x, float y, float dx, float dy, float offset) { //dx = comprimento, dy = altura
-    if (mouse_dentro_ret(x, y, x + dx, y + dy)) {//verifica se o mous esta dentro da area determinada, e se sim desenha um retangulo no botão
+bool botao(float x, float y, float dx, float dy, float offset, bool ativo) { //dx = comprimento, dy = altura
+    if (mouse_dentro_ret(x, y, x + dx, y + dy) && !ativo) {//verifica se o mous esta dentro da area determinada, e se sim desenha um retangulo no botão
         al_draw_rectangle(x - offset, y - offset, x + dx + offset, y + dy + offset, preto, 1);
         return true;
     }

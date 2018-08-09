@@ -381,7 +381,7 @@ int main(int argc, char **argv)
         //botão para limpar a tela
         al_draw_bitmap(botao_bloco, 0, dimensoes_tela_y - altura(botao_bloco), 0);
         al_draw_bitmap(logico_f, 6, dimensoes_tela_y - altura(botao_bloco)+10, 0);
-        if(modo == desenhando && botao(6, dimensoes_tela_y - altura(botao_bloco)+10, largura(logico_f), altura(logico_f),0) && mouse_clicar[mouse_esq]) {
+        if(modo == desenhando && botao(6, dimensoes_tela_y - altura(botao_bloco)+10, largura(logico_f), altura(logico_f),0, lista->ativo) && mouse_clicar[mouse_esq]) {
             //ver referência em https://www.allegro.cc/manual/5/al_show_native_message_box
             if (al_show_native_message_box(al_get_current_display(), "Fluxprog", "Limpar tela!", "voce tem certeza que quer deletar o fluxograma atual?", NULL, ALLEGRO_MESSAGEBOX_YES_NO) == 1) {
                 delete lista;
@@ -394,7 +394,7 @@ int main(int argc, char **argv)
 		if (vrep_conectado) { //desenha um retângulo vermelho pra marcar que a conexão ocorreu e faz com que se o botão for apertado novamente a memória seja desconectada
 		 //(não e preciso mudar as variáveis, pois elas serão refeitas quando o botao for apertado de novo, e não serão usadas se vrep_conectado for falso)
 			al_draw_rectangle(dimensoes_tela_x + 10 - largura(botao_opcao) - largura_barra_rolagem, 14, dimensoes_tela_x + 10 - largura(botao_opcao) - largura_barra_rolagem + largura(rodar), 14 + altura(rodar), al_map_rgb(255, 0 , 0), 1);
-            if (modo == desenhando && mouse_clicar[mouse_esq] && botao(dimensoes_tela_x + 10 - largura(botao_opcao) - largura_barra_rolagem, 14, largura(rodar), altura(rodar), offset_opcao)) { //se o usuário clicar sobre o botão do VREP quando ele já estiver conectado, o desconecta
+            if (modo == desenhando && mouse_clicar[mouse_esq] && botao(dimensoes_tela_x + 10 - largura(botao_opcao) - largura_barra_rolagem, 14, largura(rodar), altura(rodar), offset_opcao, lista->ativo)) { //se o usuário clicar sobre o botão do VREP quando ele já estiver conectado, o desconecta
                 vrep_conectado = false;
                 vrep_conectando = false;
                 api_rodando = false;
@@ -409,7 +409,7 @@ int main(int argc, char **argv)
                 al_show_native_message_box(al_get_current_display(), "Fluxprog", "desconectado!", "o programa foi desconectado da API", NULL, ALLEGRO_MESSAGEBOX_ERROR);
             }
 		} //se o botão for apertado, tenta começar a conectar (se já não estiver tentando)
-		else if (botao(dimensoes_tela_x + 10 - largura(botao_opcao) - largura_barra_rolagem, 14, largura(rodar), altura(rodar), offset_opcao) && mouse_clicar[mouse_esq] && !vrep_conectando) {
+		else if (botao(dimensoes_tela_x + 10 - largura(botao_opcao) - largura_barra_rolagem, 14, largura(rodar), altura(rodar), offset_opcao, lista->ativo) && mouse_clicar[mouse_esq] && !vrep_conectando) {
             vrep_conectando = true;
             *command_var = 0;
 		} //se estiver tentando conectar, tenta abrir o programa da api
@@ -466,7 +466,7 @@ int main(int argc, char **argv)
         //se não estiver rodando, verifica se o programa está conectado ao v-rep
         //se estiver, entra no modo de rodar o fluxograma
 		if (modo == rodando) al_draw_rectangle(14 - offset_opcao, 14 - offset_opcao, 14 + largura(rodar) + offset_opcao, 14 + altura(rodar) + offset_opcao, branco, 1);
-		else if (botao(14, 14, largura(rodar), altura(rodar), offset_opcao) && mouse_clicar[mouse_esq]) {
+		else if (botao(14, 14, largura(rodar), altura(rodar), offset_opcao, lista->ativo) && mouse_clicar[mouse_esq]) {
 			if (!vrep_conectado) al_show_native_message_box(al_get_current_display(), "Fluxprog", "Erro!", "O programa não está conectado ao V-REP", NULL, ALLEGRO_MESSAGEBOX_ERROR);
 			else if (!blocos_inicio) al_show_native_message_box(al_get_current_display(), "Fluxprog", "Erro!", "O programa não conseguiu encontrar nenhum bloco de inicio", NULL, ALLEGRO_MESSAGEBOX_ERROR);
 			else {
@@ -482,14 +482,14 @@ int main(int argc, char **argv)
 		//se estiver rodando o fluxograma e o botão for apertado, pausa o programa
 		//(termina a instrução que foi enviada, mas não manda a próxima nem permite a edição do fluxograma)
 		if (modo == pausado) al_draw_rectangle(14 + 1*largura(botao_opcao) - offset_opcao, 14 - offset_opcao, 14 + largura(rodar) + 1*largura(botao_opcao) + offset_opcao, 14 + altura(rodar) + offset_opcao, branco, 1);
-		else if (botao(14 + largura(botao_opcao), 14, largura(rodar), altura(rodar), offset_opcao) && mouse_clicar[mouse_esq] && modo == rodando) modo = pausado;
+		else if (botao(14 + largura(botao_opcao), 14, largura(rodar), altura(rodar), offset_opcao, lista->ativo) && mouse_clicar[mouse_esq] && modo == rodando) modo = pausado;
 
 		//botão de parar
 
 		//se estiver desenhando, desenha um retangulo em volta do botão
 		//se estiver rodando o fluxograma ou pausado e o botão for apertado, volta para o modo de desenhar
 		if (modo == desenhando) al_draw_rectangle(14 + 2*largura(botao_opcao) - offset_opcao, 14 - offset_opcao, 14 + largura(rodar) + 2*largura(botao_opcao) + offset_opcao, 14 + altura(rodar) + offset_opcao, branco, 1);
-		else if (botao(14 + 2*largura(botao_opcao), 14, largura(rodar), altura(rodar), offset_opcao) && mouse_clicar[mouse_esq]) {
+		else if (botao(14 + 2*largura(botao_opcao), 14, largura(rodar), altura(rodar), offset_opcao, lista->ativo) && mouse_clicar[mouse_esq]) {
             modo = desenhando;
             if (lista->ativo) resetar_lista_blocos();
             bloco_enviado = false;
@@ -501,7 +501,7 @@ int main(int argc, char **argv)
         //verifica se já existe um arquivo aberto(se o usuário já abriu um fluxograma ou salvou o atual). Se houver, salva nele.
         //se não houver, abre uma caixa de diálogo para selecionar o arquivo
         //e escreve o caminho para o arquivo no cabeçalho
-		if (modo == desenhando && botao(14 + 3*largura(botao_opcao), 14, largura(rodar), altura(rodar), offset_opcao) && mouse_clicar[mouse_esq]) {
+		if (modo == desenhando && botao(14 + 3*largura(botao_opcao), 14, largura(rodar), altura(rodar), offset_opcao, lista->ativo) && mouse_clicar[mouse_esq]) {
             if (!arquivo_escolhido) {
                 ALLEGRO_FILECHOOSER *selecionar_arquivo = al_create_native_file_dialog(caminho, "salvar fluxograma","*.fp*" , ALLEGRO_FILECHOOSER_SAVE);
                 if (selecionar_arquivo != 0) {
@@ -529,8 +529,9 @@ int main(int argc, char **argv)
 
 
 		//carrega um fluxograma
-		if (modo == desenhando && botao(14 + 4*largura(botao_opcao), 14, largura(rodar), altura(rodar), offset_opcao) && mouse_clicar[mouse_esq]) {
+		if (modo == desenhando && botao(14 + 4*largura(botao_opcao), 14, largura(rodar), altura(rodar), offset_opcao, lista->ativo) && mouse_clicar[mouse_esq]) {
             ALLEGRO_FILECHOOSER *selecionar_arquivo = al_create_native_file_dialog(caminho, "carregar fluxograma","*.fp*" , ALLEGRO_FILECHOOSER_FILE_MUST_EXIST);
+            verificar_alocacao(selecionar_arquivo,"selecionar_arquivo")
             if (selecionar_arquivo != 0) {
                 al_show_native_file_dialog(tela, selecionar_arquivo);
                 if (al_get_native_file_dialog_count(selecionar_arquivo)) {
@@ -561,7 +562,7 @@ int main(int argc, char **argv)
 
         //que nem o salvar normal, mas sempre chamando a caixa de diálogo
 
-		if (modo == desenhando && botao(14 + 5*largura(botao_opcao), 14, largura(rodar), altura(rodar), offset_opcao) && mouse_clicar[mouse_esq]) {
+		if (modo == desenhando && botao(14 + 5*largura(botao_opcao), 14, largura(rodar), altura(rodar), offset_opcao, lista->ativo) && mouse_clicar[mouse_esq]) {
             ALLEGRO_FILECHOOSER *selecionar_arquivo = al_create_native_file_dialog(caminho, "salvar fluxograma","*.fp*" , ALLEGRO_FILECHOOSER_SAVE);
             if (selecionar_arquivo != 0) {
                 al_show_native_file_dialog(tela, selecionar_arquivo);
@@ -580,25 +581,24 @@ int main(int argc, char **argv)
             }
             else al_show_native_message_box(al_get_current_display(), "Fluxprog", "Erro!", "Não foi possivel abrir a caixa de diálogo, por favor tente novamente", NULL, ALLEGRO_MESSAGEBOX_ERROR);
 		}
-
 		if (modo == desenhando) {
 			lista->atualizar();
 			//blocos
-            if (botao(6, altura(botao_opcao) +  0 * altura(botao_bloco) + 8 + offset_bloco, largura(miniaturas[0]), altura(miniaturas[0]), offset_bloco) && mouse_clicar[mouse_esq]) lista->criar_bloco(bloco_decisao,   mouse_xy_ajustado, true);
-			if (botao(6, altura(botao_opcao) +  1 * altura(botao_bloco) + 8 + offset_bloco, largura(miniaturas[0]), altura(miniaturas[0]), offset_bloco) && mouse_clicar[mouse_esq]) lista->criar_bloco(bloco_acao,      mouse_xy_ajustado, true);
-			if (botao(6, altura(botao_opcao) +  2 * altura(botao_bloco) + 8 + offset_bloco, largura(miniaturas[0]), altura(miniaturas[0]), offset_bloco) && mouse_clicar[mouse_esq]) {
+            if (botao(6, altura(botao_opcao) +  0 * altura(botao_bloco) + 8 + offset_bloco, largura(miniaturas[0]), altura(miniaturas[0]), offset_bloco, lista->ativo) && mouse_clicar[mouse_esq]) lista->criar_bloco(bloco_decisao,   mouse_xy_ajustado, true);
+			if (botao(6, altura(botao_opcao) +  1 * altura(botao_bloco) + 8 + offset_bloco, largura(miniaturas[0]), altura(miniaturas[0]), offset_bloco, lista->ativo) && mouse_clicar[mouse_esq]) lista->criar_bloco(bloco_acao,      mouse_xy_ajustado, true);
+			if (botao(6, altura(botao_opcao) +  2 * altura(botao_bloco) + 8 + offset_bloco, largura(miniaturas[0]), altura(miniaturas[0]), offset_bloco, lista->ativo) && mouse_clicar[mouse_esq]) {
                 if (blocos_inicio) al_show_native_message_box(al_get_current_display(), "Fluxprog", "Erro!", "só pode haver um bloco de inicio no fluxograma", NULL, ALLEGRO_MESSAGEBOX_ERROR);
                 else lista->criar_bloco(bloco_inicio, mouse_xy_ajustado, true);
 			}
-			if (botao(6, altura(botao_opcao) +  3 * altura(botao_bloco) + 8 + offset_bloco, largura(miniaturas[0]), altura(miniaturas[0]), offset_bloco) && mouse_clicar[mouse_esq]) lista->criar_bloco(bloco_fim,       mouse_xy_ajustado, true);
-			if (botao(6, altura(botao_opcao) +  4 * altura(botao_bloco) + 8 + offset_bloco, largura(miniaturas[0]), altura(miniaturas[0]), offset_bloco) && mouse_clicar[mouse_esq]) lista->criar_bloco(bloco_juncao,    mouse_xy_ajustado, true);
-			if (botao(6, altura(botao_opcao) +  5 * altura(botao_bloco) + 8 + offset_bloco, largura(miniaturas[0]), altura(miniaturas[0]), offset_bloco) && mouse_clicar[mouse_esq]) lista->criar_bloco(bloco_repeticao, mouse_xy_ajustado, true);
-		    if (botao(6, altura(botao_opcao) +  6 * altura(botao_bloco) + 8 + offset_bloco, largura(miniaturas[0]), altura(miniaturas[0]), offset_bloco) && mouse_clicar[mouse_esq]) lista->criar_bloco(bloco_andar,     mouse_xy_ajustado, true);
-			if (botao(6, altura(botao_opcao) +  7 * altura(botao_bloco) + 8 + offset_bloco, largura(miniaturas[0]), altura(miniaturas[0]), offset_bloco) && mouse_clicar[mouse_esq]) lista->criar_bloco(bloco_virar,     mouse_xy_ajustado, true);
-			if (botao(6, altura(botao_opcao) +  9 * altura(botao_bloco) + 8 + offset_bloco, largura(miniaturas[0]), altura(miniaturas[0]), offset_bloco) && mouse_clicar[mouse_esq]) lista->criar_bloco(bloco_som,       mouse_xy_ajustado, true);
-			if (botao(6, altura(botao_opcao) +  8 * altura(botao_bloco) + 8 + offset_bloco, largura(miniaturas[0]), altura(miniaturas[0]), offset_bloco) && mouse_clicar[mouse_esq]) lista->criar_bloco(bloco_fita,      mouse_xy_ajustado, true);
-            if (botao(6, altura(botao_opcao) + 10 * altura(botao_bloco) + 8 + offset_bloco, largura(miniaturas[0]), altura(miniaturas[0]), offset_bloco) && mouse_clicar[mouse_esq]) lista->criar_bloco(bloco_numero,    mouse_xy_ajustado, true);
-            if (botao(6, altura(botao_opcao) + 11 * altura(botao_bloco) + 8 + offset_bloco, largura(miniaturas[0]), altura(miniaturas[0]), offset_bloco) && mouse_clicar[mouse_esq]) lista->criar_bloco(bloco_VF,        mouse_xy_ajustado, true);
+			if (botao(6, altura(botao_opcao) +  3 * altura(botao_bloco) + 8 + offset_bloco, largura(miniaturas[0]), altura(miniaturas[0]), offset_bloco, lista->ativo) && mouse_clicar[mouse_esq]) lista->criar_bloco(bloco_fim,       mouse_xy_ajustado, true);
+			if (botao(6, altura(botao_opcao) +  4 * altura(botao_bloco) + 8 + offset_bloco, largura(miniaturas[0]), altura(miniaturas[0]), offset_bloco, lista->ativo) && mouse_clicar[mouse_esq]) lista->criar_bloco(bloco_juncao,    mouse_xy_ajustado, true);
+			if (botao(6, altura(botao_opcao) +  5 * altura(botao_bloco) + 8 + offset_bloco, largura(miniaturas[0]), altura(miniaturas[0]), offset_bloco, lista->ativo) && mouse_clicar[mouse_esq]) lista->criar_bloco(bloco_repeticao, mouse_xy_ajustado, true);
+		    if (botao(6, altura(botao_opcao) +  6 * altura(botao_bloco) + 8 + offset_bloco, largura(miniaturas[0]), altura(miniaturas[0]), offset_bloco, lista->ativo) && mouse_clicar[mouse_esq]) lista->criar_bloco(bloco_andar,     mouse_xy_ajustado, true);
+			if (botao(6, altura(botao_opcao) +  7 * altura(botao_bloco) + 8 + offset_bloco, largura(miniaturas[0]), altura(miniaturas[0]), offset_bloco, lista->ativo) && mouse_clicar[mouse_esq]) lista->criar_bloco(bloco_virar,     mouse_xy_ajustado, true);
+			if (botao(6, altura(botao_opcao) +  9 * altura(botao_bloco) + 8 + offset_bloco, largura(miniaturas[0]), altura(miniaturas[0]), offset_bloco, lista->ativo) && mouse_clicar[mouse_esq]) lista->criar_bloco(bloco_som,       mouse_xy_ajustado, true);
+			if (botao(6, altura(botao_opcao) +  8 * altura(botao_bloco) + 8 + offset_bloco, largura(miniaturas[0]), altura(miniaturas[0]), offset_bloco, lista->ativo) && mouse_clicar[mouse_esq]) lista->criar_bloco(bloco_fita,      mouse_xy_ajustado, true);
+            if (botao(6, altura(botao_opcao) + 10 * altura(botao_bloco) + 8 + offset_bloco, largura(miniaturas[0]), altura(miniaturas[0]), offset_bloco, lista->ativo) && mouse_clicar[mouse_esq]) lista->criar_bloco(bloco_numero,    mouse_xy_ajustado, true);
+            if (botao(6, altura(botao_opcao) + 11 * altura(botao_bloco) + 8 + offset_bloco, largura(miniaturas[0]), altura(miniaturas[0]), offset_bloco, lista->ativo) && mouse_clicar[mouse_esq]) lista->criar_bloco(bloco_VF,        mouse_xy_ajustado, true);
 		}
 //
 		else if (blocos_inicio && vrep_conectado) { //se o programa estiver no modo de rodar (por isso o else), houver um bloco de inicio e a memória compartilhada tiver sido encontrada o fluxograma pode rodar
@@ -748,7 +748,7 @@ int main(int argc, char **argv)
             else if (nova_posicao_y > dimensao_vertical_maxima - dimensoes_tela_y) nova_posicao_y = dimensao_vertical_maxima - dimensoes_tela_y;
             //faz com que a posição do bloco ativo seja atualizada para continuar sendo desenhada no mesmo lugar na tela,
             //pois sem fazer isso o bloco ativo fica "pulando"
-            if (nova_posicao_y != posicao_y ) lista->bloco_ativo->pos_y += nova_posicao_y - posicao_y;
+            if (nova_posicao_y != posicao_y && modo == desenhando) lista->bloco_ativo->pos_y += nova_posicao_y - posicao_y;
 		}
 
 
