@@ -23,6 +23,8 @@ void setup() {
     pinMode(M_BLACK_TAPE_SENSOR, INPUT);
     pinMode(RM_BLACK_TAPE_SENSOR, INPUT);
     pinMode(R_BLACK_TAPE_SENSOR, INPUT);
+    pinMode(VCC_SIGNAL_CONVERTER, OUTPUT);
+    pinMode(GND_SIGNAL_CONVERTER, OUTPUT);
     
 
 }

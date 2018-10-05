@@ -17,3 +17,7 @@ Arduíno - baixe a versão mais recente deste site: https://www.arduino.cc/en/Ma
 Allegro 5 - Tente sudo add-apt-repository ppa:allegro/5.2         
 		  sudo apt-get install liballegro5-dev. 
 Se não funcionar no momento de dar o make, siga estes passos: https://wiki.allegro.cc/index.php?title=Ubuntu_and_Allegro_5, onde o binário pode ser encontrado em https://github.com/liballeg/allegro5
+
+OBS:As bibliotecas que precisam ser incluidas no arduíno no formato zip são encontradas na pasta /LASER-fluxograma-e-robos/Físico/robo0/external libraries.Para incluí-las, basta procurar o menu Sketch, e depois incluir biblioteca, por fim encontrar os arquivos *.zip.
+
+

@@ -4,39 +4,43 @@
 
 //pinagem dos motores e encoders
 #define L_MOTOR 3
-#define R_MOTOR 1
-#define L_ENCODER 20//2, 3, 18, 19, 20, 21
-#define R_ENCODER 2
+#define R_MOTOR 4
+#define L_ENCODER 21//2, 3, 18, 19, 20, 21
+#define R_ENCODER 20
 //pinagem dos sensores. No momento nao eh usado as saidas como vcc e gnd
 //pinagem dos sensores de visao
-#define L_BLACK_TAPE_SENSOR 38
-#define LM_BLACK_TAPE_SENSOR 40
-#define M_BLACK_TAPE_SENSOR 42
-#define RM_BLACK_TAPE_SENSOR 44
-#define R_BLACK_TAPE_SENSOR 46
+#define L_BLACK_TAPE_SENSOR 44
+#define LM_BLACK_TAPE_SENSOR 46
+#define M_BLACK_TAPE_SENSOR 48
+#define RM_BLACK_TAPE_SENSOR 50
+#define R_BLACK_TAPE_SENSOR 52
 #define VCC_BLACK_TAPE_SENSOR 0
 #define GND_BLACK_TAPE_SENSOR 0
 //pinagem dos ultrassons -
-#define L_ULTRASONIC_ECHO 24
-#define L_ULTRASONIC_TRIG 25
+#define L_ULTRASONIC_ECHO 53
+#define L_ULTRASONIC_TRIG 51
 #define L_ULTRASONIC_VCC 0
 #define L_ULTRASONIC_GND 0
-#define LM_ULTRASONIC_ECHO 48
-#define LM_ULTRASONIC_TRIG 49
+#define LM_ULTRASONIC_ECHO 33
+#define LM_ULTRASONIC_TRIG 31
 #define LM_ULTRASONIC_VCC 0
 #define LM_ULTRASONIC_GND 0
-#define M_ULTRASONIC_ECHO 50
-#define M_ULTRASONIC_TRIG 51
+#define M_ULTRASONIC_ECHO 37
+#define M_ULTRASONIC_TRIG 35
 #define M_ULTRASONIC_VCC 0
 #define M_ULTRASONIC_GND 0
-#define RM_ULTRASONIC_ECHO 52
-#define RM_ULTRASONIC_TRIG 53
+#define RM_ULTRASONIC_ECHO 41
+#define RM_ULTRASONIC_TRIG 39
 #define RM_ULTRASONIC_VCC 0
 #define RM_ULTRASONIC_GND 0
-#define R_ULTRASONIC_ECHO 22
-#define R_ULTRASONIC_TRIG 23
+#define R_ULTRASONIC_ECHO 49
+#define R_ULTRASONIC_TRIG 47
 #define R_ULTRASONIC_VCC 0
 #define R_ULTRASONIC_GND 0
+//pinagem conversor de tensão lógica
+#define VCC_SIGNAL_CONVERTER 22
+#define GND_SIGNAL_CONVERTER 23
+
 
 //constantes motores
 #define RESOLUTION_ENCODER 20 //numero de furos
