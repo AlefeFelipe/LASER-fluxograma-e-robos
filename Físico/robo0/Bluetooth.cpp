@@ -10,7 +10,7 @@ uint8_t Bluetooth::getCommand()
     if(Serial1.available())
     {
         command = Serial1.read();
-        //Serial.print("legal");
+        Serial.println(command);
         return command;
     }
     return 0;
@@ -18,7 +18,7 @@ uint8_t Bluetooth::getCommand()
 
 void Bluetooth::sendPacket(uint8_t* readingBTS, float* detectedObjet_U)
 {
-    Serial.println(detectedObjet_U[4]);
+    //Serial.println(detectedObjet_U[4]);
     int i;
     char l_u[4];
     char lm_u[4];

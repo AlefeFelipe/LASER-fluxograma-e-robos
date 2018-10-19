@@ -3,8 +3,8 @@
 #define _ROBOTCEP_HPP_
 
 //pinagem dos motores e encoders
-#define L_MOTOR 3
-#define R_MOTOR 4
+#define L_MOTOR 1
+#define R_MOTOR 2
 #define L_ENCODER 21//2, 3, 18, 19, 20, 21
 #define R_ENCODER 20
 //pinagem dos sensores. No momento nao eh usado as saidas como vcc e gnd
@@ -40,6 +40,7 @@
 //pinagem conversor de tensão lógica
 #define VCC_SIGNAL_CONVERTER 22
 #define GND_SIGNAL_CONVERTER 23
+#define VCC_BLUETOOTH 24
 
 
 //constantes motores

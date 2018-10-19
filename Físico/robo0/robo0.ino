@@ -25,7 +25,7 @@ void setup() {
     pinMode(R_BLACK_TAPE_SENSOR, INPUT);
     pinMode(VCC_SIGNAL_CONVERTER, OUTPUT);
     pinMode(GND_SIGNAL_CONVERTER, OUTPUT);
-    
+    pinMode(VCC_BLUETOOTH, OUTPUT);
 
 }
 

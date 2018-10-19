@@ -11,14 +11,14 @@ void Principal::start()
 {
     long time = millis();
     //robot->moveFoward();
-    while(1)
-    {
+    //while(1)
+    //{
         //robot->getReadingUltrasonic();
-        robot->moveFoward();
+      //  robot->moveFoward();
     //  float a[] = {1.43, 1.43, 1.34, 1.34, 1.34};
     //  uint8_t b[] = {1,1,1,1,1};
     //  bluetooth->sendPacket(b, a);
-    }
+    //}
     command = bluetooth->getCommand();
     if(command == 8)
     {
@@ -33,7 +33,7 @@ void Principal::start()
     }
     else if(command == 6)
     {
-         //Serial.println("andando pra direita");
+        //Serial.println("andando pra direita");
         robot->turnRight();
     }
     else
@@ -43,7 +43,7 @@ void Principal::start()
     }    
     bluetooth->sendPacket(robot->getReadingBlackTypeSensor(), robot->getReadingUltrasonic());
     //time = millis();
-    //Serial.println("vou parar");
+    Serial.println("vou parar");
     //while(millis()-time<=2000)
     //{
     //    robot->stop();
