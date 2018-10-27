@@ -1,8 +1,6 @@
 #include "Principal.hpp"
 #include "robotCte.hpp"
 
-Principal* principal = new Principal();
-
 void setup() {
     Serial.begin(BDRATE);
     Serial1.begin(BDRATE);
@@ -23,10 +21,8 @@ void setup() {
     pinMode(M_BLACK_TAPE_SENSOR, INPUT);
     pinMode(RM_BLACK_TAPE_SENSOR, INPUT);
     pinMode(R_BLACK_TAPE_SENSOR, INPUT);
-    pinMode(VCC_SIGNAL_CONVERTER, OUTPUT);
-    pinMode(GND_SIGNAL_CONVERTER, OUTPUT);
-    pinMode(VCC_BLUETOOTH, OUTPUT);
-
+    Principal principal = Principal();
+    principal.start();
 }
 
-void loop(){principal->start();}
+void loop(){}

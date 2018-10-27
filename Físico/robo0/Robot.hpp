@@ -8,17 +8,17 @@
 #include "robotCte.hpp"
 
 class Robot{
-    Motor** motor;
+    Motor* motor[2];
     int lm_speed, rm_speed;
 public:
-    BlackTapeSensor** black_tape_sensor;
-    MyUltrasonic** ultrasonic;
+    BlackTapeSensor* black_tape_sensor[N_BLACK_TAPE_SENSOR];
+    //MyUltrasonic* ultrasonic[N_ULTRASONIC];
     Robot();
     void moveFoward();
     void turnLeft();
     void turnRight();
     void stop();
-    void moveStraight(long* timeold);
+    void moveStraight(long* timeold, int stopped_motor);
     void reduceSpeed(long *timeold, int motor_num, float reason);
     uint8_t* getReadingBlackTypeSensor();
     float* getReadingUltrasonic();

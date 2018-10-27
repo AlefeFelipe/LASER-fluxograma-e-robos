@@ -2,19 +2,14 @@
 
 #ifndef _MYULTRASONIC_HPP_
 #define _MYULTRASONIC_HPP_
-#include <Ultrasonic.h>
+//#include <Ultrasonic.h>
 #include <NewPing.h>
 #include "robotCte.hpp"
 
-class MyUltrasonic{
-    NewPing* ultrasonic;
-    float distance;
-public:
-    MyUltrasonic(int name);
-    void getDistance();
-    float isDistanceAvailable();
-    ~MyUltrasonic(){}
 
-};
+
+    void getDistance();
+    float* isDistanceAvailable();
+    void initUltrasonics();
 
 #endif

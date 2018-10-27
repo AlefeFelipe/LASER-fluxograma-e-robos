@@ -3,6 +3,7 @@
 Bluetooth::Bluetooth()
 {
     packet = new char [PACKETSIZE];
+    command = 0;
 }
 
 uint8_t Bluetooth::getCommand()
@@ -10,6 +11,7 @@ uint8_t Bluetooth::getCommand()
     if(Serial1.available())
     {
         command = Serial1.read();
+        Serial.print("comando");
         Serial.println(command);
         return command;
     }
@@ -44,5 +46,11 @@ void Bluetooth::sendPacket(uint8_t* readingBTS, float* detectedObjet_U)
         packet[i+17] = rm_u[i];
         packet[i+21] = r_u[i];
     }
+    //for(i=0; i<PACKETSIZE; i++)
+    //{
+    //    Serial.print(packet[i], HEX);
+    //}
+    //Serial.println();
+    delay(30);
     Serial1.write(packet, PACKETSIZE);
 }
