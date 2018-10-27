@@ -225,7 +225,7 @@ int main(int argc, char **argv)
             cout<<"mandei o comando "<<(*(comando1.first))<<endl;
         }
         *(comando1.first) = 0;
-        usleep(1000);
+        //usleep(10);
         int a = receiver(reading, reading_VS, detectedObjet_U);
         if(a)
         {
