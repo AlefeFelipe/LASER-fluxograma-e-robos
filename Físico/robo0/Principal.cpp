@@ -2,8 +2,8 @@
 
 Principal::Principal()
 {
-    bluetooth = new Bluetooth();
-    robot = new Robot();
+    bluetooth = Bluetooth();
+    robot = Robot();
     command = 0;
 }
 
@@ -15,14 +15,14 @@ void Principal::start()
         {
             //robot->getReadingUltrasonic();
             Serial.println("andando pra frente");
-            robot->moveFoward();
+            robot.moveFoward();
             time = millis();
             Serial.println("lendo ultrassom");
             while(millis()-time<=2000)
             {
-                robot->stop();
+                robot.stop();
                 //
-                robot->getReadingUltrasonic();
+                robot.getReadingUltrasonic();
             }
             Serial.println("andando pra esquerda");
             //robot->turnLeft();
@@ -30,7 +30,7 @@ void Principal::start()
             
             while(millis()-time<=2000)
             {
-                robot->stop();;
+                robot.stop();;
             }
             Serial.println("andando pra direita");
             //robot->turnRight();
@@ -38,36 +38,36 @@ void Principal::start()
             
             while(millis()-time<=2000)
             {
-                robot->stop();
+                robot.stop();
             }
         //  float a[] = {1.43, 1.43, 1.34, 1.34, 1.34};
         //  uint8_t b[] = {1,1,1,1,1};
         //  bluetooth->sendPacket(b, a);
         }*/
-        command = bluetooth->getCommand();
+        command = bluetooth.getCommand();
         if(command == 8)
         {
             //Serial.println("andando pra frente");
-            robot->moveFoward();
+            robot.moveFoward();
         }
         else if(command == 4)
         {
             //Serial.println("andando pra esquerda");
-            robot->turnLeft();
+            robot.turnLeft();
             
         }
         else if(command == 6)
         {
             //Serial.println("andando pra direita");
-            robot->turnRight();
+            robot.turnRight();
         }
         else
         {
             //Serial.println("robo parado");
-            robot->stop();
+            robot.stop();
             
         }    
-        bluetooth->sendPacket(robot->getReadingBlackTypeSensor(), robot->getReadingUltrasonic());
+        bluetooth.sendPacket(robot.getReadingBlackTypeSensor(), robot.getReadingUltrasonic());
         //time = millis();
         //Serial.println("vou parar");
         //while(millis()-time<=2000)

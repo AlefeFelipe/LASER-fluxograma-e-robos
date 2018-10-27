@@ -5,8 +5,8 @@
 #include "Bluetooth.hpp"
 
 class Principal{
-    Robot* robot;
-    Bluetooth* bluetooth;
+    Robot robot;
+    Bluetooth bluetooth;
     uint8_t command;
 public:
     Principal();

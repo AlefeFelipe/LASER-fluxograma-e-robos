@@ -51,6 +51,6 @@ void Bluetooth::sendPacket(uint8_t* readingBTS, float* detectedObjet_U)
     //    Serial.print(packet[i], HEX);
     //}
     //Serial.println();
-    delay(100);
+    delay(COMMUNICATION_DELAY);
     Serial1.write(packet, PACKETSIZE);
 }

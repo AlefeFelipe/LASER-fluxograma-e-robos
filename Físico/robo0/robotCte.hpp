@@ -54,6 +54,7 @@
 #define N_BLACK_TAPE_SENSOR 5
 #define N_ULTRASONIC 5
 #define PACKETSIZE 25//5 fita, 20 ultrassom
+#define COMMUNICATION_DELAY 50//tempo de delay do bluetooth em ms
 #define ENCODER_UPDATE_TIME 200//tempo em milissigundos para leitura dos encoders
 #define SPEED_TO_UPDATE_TIME 2//velocidade em relacao ao update time. Formula: N_VOLTAS*RESOLUTION_ENCODER/(1000/ENCODER_UPDATE_TIME) N_VOLTAS é o numero de voltas por segundo
 #define D_SPEED 5//delta para correcao da velocidade
