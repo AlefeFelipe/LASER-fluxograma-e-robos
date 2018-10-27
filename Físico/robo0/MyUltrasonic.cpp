@@ -29,30 +29,30 @@ float* isDistanceAvailable()
     { // Loop entre todos os sensores
         if (millis() >= pingTimer[i])
         {   
-            Serial.print("corrente: "); 
-            Serial.print(current_ultrasonic) ;    
+            //Serial.print("corrente: "); 
+            //Serial.print(current_ultrasonic) ;    
             pingTimer[i] += PING_INTERVAL * N_ULTRASONIC;  
-            //if (i == 0 && my_name == SONAR_NUM - 1)
+            //if (i == 0 && current_ultrasonic == N_ULTRASONIC - 1)
             //{
             //    oneSensorCycle();
             //}
             ultrasonic[current_ultrasonic].timer_stop();
             current_ultrasonic = i;
-            Serial.print("Agora corrente: ");
-            Serial.print(current_ultrasonic) ;
+            //Serial.print("Agora corrente: ");
+            //Serial.print(current_ultrasonic) ;
             cm[current_ultrasonic] = 0;
             ultrasonic[current_ultrasonic].ping_timer(getDistance);
           }
     }
-    Serial.print("Lendo ");
+    /*Serial.print("Lendo ");
     for (uint8_t i = 0; i < N_ULTRASONIC; i++)
     {
         Serial.print(cm[i]);
         Serial.print(" ");
     }
-    Serial.println();
-    //float* distance = cm;
-    return cm;
+    Serial.println();*/
+    float* distance = cm;
+    return distance;
 }
 
 void getDistance() 
@@ -65,7 +65,7 @@ void getDistance()
 void oneSensorCycle() 
 { 
   // Ciclo de leitura do sensor
-  for (uint8_t i = 0; i < N_ULTRASONIC; i++) 
+  /*for (uint8_t i = 0; i < N_ULTRASONIC; i++) 
   {
     //Imprime os valores lidos pelos sensores, no serial monitor
     Serial.print("Sensor : ");
@@ -73,6 +73,6 @@ void oneSensorCycle()
     Serial.print(" = ");
     Serial.print(cm[i]);
     Serial.print(" cm - ");
-  }
-  Serial.println();
+  }*/
+  Serial.println("Agora ta pronto");
 }

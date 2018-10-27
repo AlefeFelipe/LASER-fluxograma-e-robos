@@ -9,20 +9,19 @@ Principal::Principal()
 
 void Principal::start()
 {
-    while(1)
-    {
         long time = millis();
         //robot->moveFoward();
-        while(1)
+        /*while(1)
         {
-            robot->getReadingUltrasonic();
-            //Serial.println("andando pra frente");
+            //robot->getReadingUltrasonic();
+            Serial.println("andando pra frente");
             robot->moveFoward();
             time = millis();
-            
+            Serial.println("lendo ultrassom");
             while(millis()-time<=2000)
             {
                 robot->stop();
+                //
                 robot->getReadingUltrasonic();
             }
             Serial.println("andando pra esquerda");
@@ -44,8 +43,7 @@ void Principal::start()
         //  float a[] = {1.43, 1.43, 1.34, 1.34, 1.34};
         //  uint8_t b[] = {1,1,1,1,1};
         //  bluetooth->sendPacket(b, a);
-        }
-        float a[] = {1.43, 1.43, 1.34, 1.34, 1.34};
+        }*/
         command = bluetooth->getCommand();
         if(command == 8)
         {
@@ -67,15 +65,13 @@ void Principal::start()
         {
             //Serial.println("robo parado");
             robot->stop();
-            robot->getReadingUltrasonic();
             
         }    
-        //bluetooth->sendPacket(robot->getReadingBlackTypeSensor(), robot->getReadingUltrasonic());
+        bluetooth->sendPacket(robot->getReadingBlackTypeSensor(), robot->getReadingUltrasonic());
         //time = millis();
         //Serial.println("vou parar");
         //while(millis()-time<=2000)
         //{
         //    robot->stop();
        //}
-    }
 }

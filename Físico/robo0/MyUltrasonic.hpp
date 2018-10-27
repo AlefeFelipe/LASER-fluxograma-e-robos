@@ -11,5 +11,6 @@
     void getDistance();
     float* isDistanceAvailable();
     void initUltrasonics();
+    void oneSensorCycle() ;
 
 #endif

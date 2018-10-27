@@ -46,7 +46,7 @@
 //constantes motores
 #define RESOLUTION_ENCODER 20 //numero de furos
 #define MOTORSPEED 100 //velocidade inicial do motor em relacao nenhuma
-#define TIMETURNING 200 //tempo de giro 90º em milisegundos
+#define TIMETURNING 100 //tempo de giro 90º em milisegundos
 #define SCALE 0.6 //por enquanto, depois olhar um para o outro
 #define UPDATE_DELAY 0
 //constantes 
