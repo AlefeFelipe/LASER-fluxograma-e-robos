@@ -38,6 +38,7 @@ void Robot::moveFoward()
     long time = millis(), timeold = millis(), time_stop;
     int readingBTS [N_BLACK_TAPE_SENSOR];
     float* readingU;;// = new float [N_ULTRASONIC];
+    int readingOBS;
     //readingU[2] = 0;
     //while(millis()-time<5000)
     //{
@@ -79,7 +80,7 @@ void Robot::moveFoward()
             }
             //Serial.println();
         }
-        readingU = isDistanceAvailable();
+        //readingU = isDistanceAvailable();
         //Serial.println(1);
         /*for(i=0; i<N_ULTRASONIC; i++)
         {
@@ -96,9 +97,10 @@ void Robot::moveFoward()
         //readingU[2] = (ultrasonic[2]->isDistanceAvailable() > OBSTACLE_DIS ? 0 : 1);
         //Serial.println("hello");
         //readingU[2] = 0;
+        readingOBS = !digitalRead(OBSTACLE_SENSOR);
 
     //}
-        while(((readingBTS[0]&&readingBTS[2])||(readingBTS[2]&&readingBTS[4])) && !readingU[2])//verificar se ta no mesmo estado, tecnicamente inutil devido a funcao acima
+        while(((readingBTS[0]&&readingBTS[2])||(readingBTS[2]&&readingBTS[4])) && !readingOBS)//verificar se ta no mesmo estado, tecnicamente inutil devido a funcao acima
         {
             //Serial.print(" v0: ");
             //Serial.print(lm_speed);
@@ -133,9 +135,10 @@ void Robot::moveFoward()
             //}
             //readingU[2] = (ultrasonic[2]->isDistanceAvailable() > OBSTACLE_DIS ? 0 : 1);
            // Serial.println("to lendo todo mundo!!");
+           readingOBS = !digitalRead(OBSTACLE_SENSOR);
             
         }
-        while(!((readingBTS[0]&&readingBTS[2])||(readingBTS[2]&&readingBTS[4])) && !readingU[2])//anda ate os sensores captarem a linha ou obstaculo
+        while(!((readingBTS[0]&&readingBTS[2])||(readingBTS[2]&&readingBTS[4])) && !readingOBS)//anda ate os sensores captarem a linha ou obstaculo
         {
             for(i=0; i<N_BLACK_TAPE_SENSOR; i++)
             {
@@ -261,11 +264,12 @@ void Robot::moveFoward()
                 motor[1]->move(true, rm_speed);
                 moveStraight(&timeold, -1);
             }
+            readingOBS = !digitalRead(OBSTACLE_SENSOR);
 
            
         }
         time = millis();
-        while(millis()-time <= TIMETURNING && !readingU[2])
+        while(millis()-time <= TIMETURNING && !readingOBS)
         {
             motor[0]->move(true, lm_speed);
             motor[1]->move(true, rm_speed);
@@ -276,6 +280,7 @@ void Robot::moveFoward()
             //}
             //readingU[2] = (ultrasonic[2]->isDistanceAvailable() > OBSTACLE_DIS ? 0 : 1);
             //Serial.println("to chegando");
+            readingOBS = !digitalRead(OBSTACLE_SENSOR);
         }
 }
 
