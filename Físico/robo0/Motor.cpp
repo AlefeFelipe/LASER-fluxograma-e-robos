@@ -2,7 +2,8 @@
 
 int pulses_l = 0;
 int pulses_r = 0;
-int pulse_counter_l()
+
+void pulse_counter_l()
 {
     pulses_l++;
 }
