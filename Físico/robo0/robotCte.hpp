@@ -14,7 +14,7 @@
 #define M_BLACK_TAPE_SENSOR 48
 #define RM_BLACK_TAPE_SENSOR 50
 #define R_BLACK_TAPE_SENSOR 52
-#define OBSTACLE_SENSOR 53
+#define OBSTACLE_SENSOR 22
 #define VCC_BLACK_TAPE_SENSOR 0
 #define GND_BLACK_TAPE_SENSOR 0
 //pinagem dos ultrassons -

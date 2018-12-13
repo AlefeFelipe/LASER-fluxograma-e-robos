@@ -47,8 +47,8 @@ void Robot::moveFoward()
     //    moveStraight(&timeold);
     //}
     
-    //while(1)
-    //{
+    /*while(1)
+    {
         //for(i=0; i<N_ULTRASONIC; i++)
         //{
             //Serial.print("ultrasonic ");
@@ -59,7 +59,8 @@ void Robot::moveFoward()
             
         //}
         //Serial.println();
-    //}
+        Serial.println(digitalRead(OBSTACLE_SENSOR));
+    }*/
 
 
 //    while(1)//(millis()-time<=5000))
@@ -97,7 +98,7 @@ void Robot::moveFoward()
         //readingU[2] = (ultrasonic[2]->isDistanceAvailable() > OBSTACLE_DIS ? 0 : 1);
         //Serial.println("hello");
         //readingU[2] = 0;
-        readingOBS = !digitalRead(OBSTACLE_SENSOR);
+        readingOBS = digitalRead(OBSTACLE_SENSOR);
 
     //}
         while(((readingBTS[0]&&readingBTS[2])||(readingBTS[2]&&readingBTS[4])) && !readingOBS)//verificar se ta no mesmo estado, tecnicamente inutil devido a funcao acima
@@ -135,7 +136,7 @@ void Robot::moveFoward()
             //}
             //readingU[2] = (ultrasonic[2]->isDistanceAvailable() > OBSTACLE_DIS ? 0 : 1);
            // Serial.println("to lendo todo mundo!!");
-           readingOBS = !digitalRead(OBSTACLE_SENSOR);
+           readingOBS = digitalRead(OBSTACLE_SENSOR);
             
         }
         while(!((readingBTS[0]&&readingBTS[2])||(readingBTS[2]&&readingBTS[4])) && !readingOBS)//anda ate os sensores captarem a linha ou obstaculo
@@ -264,7 +265,7 @@ void Robot::moveFoward()
                 motor[1]->move(true, rm_speed);
                 moveStraight(&timeold, -1);
             }
-            readingOBS = !digitalRead(OBSTACLE_SENSOR);
+            readingOBS = digitalRead(OBSTACLE_SENSOR);
 
            
         }
@@ -280,7 +281,7 @@ void Robot::moveFoward()
             //}
             //readingU[2] = (ultrasonic[2]->isDistanceAvailable() > OBSTACLE_DIS ? 0 : 1);
             //Serial.println("to chegando");
-            readingOBS = !digitalRead(OBSTACLE_SENSOR);
+            readingOBS = digitalRead(OBSTACLE_SENSOR);
         }
 }
 
