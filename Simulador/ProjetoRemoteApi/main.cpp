@@ -35,7 +35,7 @@ using namespace boost::interprocess;
 //variaveis bluetooth
 #define BDRATE 115200
 #define CPORT_NR 16
-#define SIZEPACKET 25
+#define SIZEPACKET 15
 #define N_ULTRASONIC 5
 #define N_BLACK_TAPE_SENSOR 5
 
@@ -93,7 +93,7 @@ void sendCommand(char comando)
     //RS232_SendBuf(CPORT_NR, (unsigned char*) comando, 1);
 }
 
-int receiver(unsigned char* reading, unsigned char* reading_VS, float* detectedObjet_U)
+int receiver(unsigned char* reading, unsigned char* reading_VS, unsigned short int *detectedObjet_U)
 {
     int i, there_is_packet = RS232_PollComport(CPORT_NR, reading, SIZEPACKET);
     if (there_is_packet == SIZEPACKET)
@@ -104,7 +104,7 @@ int receiver(unsigned char* reading, unsigned char* reading_VS, float* detectedO
         }
         for (i = 0; i < N_ULTRASONIC; i++)
         {
-            detectedObjet_U[i] = *(float*)&reading[4*i + 5];
+            detectedObjet_U[i] = *(unsigned short int*)&reading[2*i + 5];
         }
     }
     else
@@ -195,13 +195,13 @@ int main(int argc, char **argv)
     int* comando2;// comando para enviar dados a memoria
     unsigned char* reading_VS;//vetores para captacao da leitura dos sensores na memoria
     unsigned char* reading_U;
-    float* detectedObjet_U;//vetor para captacao da posicao dos objetos captados
+    unsigned short int*  detectedObjet_U;//vetor para captacao da posicao dos objetos captados
     float* linPosition;//vetores para captacao da localizacao linear e angular do robo
     float* angPosition;
     comando2 = abrindo_memoria->construct<int>(NOME_DO_INT_NA_MEMORIA2)();
     reading_VS = abrindo_memoria->construct<unsigned char>(SENSOR_VISAO)[N_BLACK_TAPE_SENSOR]();
     reading_U = abrindo_memoria->construct<unsigned char>(SENSOR_ULTRASSOM)[N_ULTRASONIC]();
-    detectedObjet_U = abrindo_memoria->construct<float>(POSICAO_DETECTADA)[N_ULTRASONIC]();
+    detectedObjet_U = abrindo_memoria->construct<unsigned short int >(POSICAO_DETECTADA)[N_ULTRASONIC]();
     linPosition = abrindo_memoria->construct<float>(POSICAO)[3]();
     angPosition = abrindo_memoria->construct<float>(ANGULAR)[3]();
     *comando2 = 0;

@@ -11,44 +11,46 @@ uint8_t Bluetooth::getCommand()
     if(Serial1.available())
     {
         command = Serial1.read();
-        Serial.print("comando");
-        Serial.println(command);
+        //Serial.print("comando");
+        //Serial.println(command);
         return command;
     }
     return 0;
 }
 
-void Bluetooth::sendPacket(uint8_t* readingBTS, float* detectedObjet_U)
+void Bluetooth::sendPacket(uint8_t *readingBTS, unsigned int *detectedObjet_U)
 {
+    unsigned int detectedObjet2_U[5];
     //Serial.println(detectedObjet_U[4]);
     int i;
-    char l_u[4];
-    char lm_u[4];
-    char m_u[4];
-    char rm_u[4];
-    char r_u[4];
+    char l_u[2];
+    char lm_u[2];
+    char m_u[2];
+    char rm_u[2];
+    char r_u[2];
     
-    *((float*)&l_u) = detectedObjet_U[0];
-    *((float*)&lm_u) = detectedObjet_U[1];
-    *((float*)&m_u) = detectedObjet_U[2];
-    *((float*)&rm_u) = detectedObjet_U[3];
-    *((float*)&r_u) = detectedObjet_U[4];
+    *((unsigned int*)&l_u) = detectedObjet_U[0];
+    *((unsigned int*)&lm_u) = detectedObjet_U[1];
+    *((unsigned int*)&m_u) = detectedObjet_U[2];
+    *((unsigned int*)&rm_u) = detectedObjet_U[3];
+    *((unsigned int*)&r_u) = detectedObjet_U[4];
 
     for(i=0; i<N_BLACK_TAPE_SENSOR; i++)
     {
         packet[i] = readingBTS[i];
     }
-    for(i=0; i<4; i++)
+    for(i=0; i<2; i++)
     {
         packet[i+5] = l_u[i];
-        packet[i+9] = lm_u[i];
-        packet[i+13] = m_u[i];
-        packet[i+17] = rm_u[i];
-        packet[i+21] = r_u[i];
+        packet[i+7] = lm_u[i];
+        packet[i+9] = m_u[i];
+        packet[i+11] = rm_u[i];
+        packet[i+13] = r_u[i];
     }
     //for(i=0; i<PACKETSIZE; i++)
     //{
-    //    Serial.print(packet[i], HEX);
+    //   Serial.print(packet[i], HEX);
+    //   Serial.print(" ");
     //}
     //Serial.println();
     delay(COMMUNICATION_DELAY);

@@ -12,8 +12,6 @@ class Motor : AF_DCMotor{
     int pin_encoder;
     unsigned int resolution;
     
-    //friend void attachInterrupt(int, void*, int );
-
 public:
     
     Motor(int _name);

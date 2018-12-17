@@ -12,7 +12,7 @@ class Bluetooth{
 public:
     Bluetooth();
     uint8_t getCommand();
-    void sendPacket(uint8_t* readingBTS, float* readingU);
+    void sendPacket(uint8_t *readingBTS, unsigned int *readingU);
     ~Bluetooth(){}
 };
 #endif

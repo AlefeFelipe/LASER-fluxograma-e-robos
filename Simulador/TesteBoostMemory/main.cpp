@@ -76,8 +76,8 @@ int main()
         pair<unsigned char*, managed_shared_memory::size_type>reading_U;
         reading_U = dinamica->find<unsigned char>(SENSOR_ULTRASSOM);
         //objetos detectados
-        pair<float*, managed_shared_memory::size_type>detectedObjet_U;
-        detectedObjet_U = dinamica->find<float>(POSICAO_DETECTADA);
+        pair<unsigned short int *, managed_shared_memory::size_type>detectedObjet_U;
+        detectedObjet_U = dinamica->find<unsigned short int >(POSICAO_DETECTADA);
         cout.flush();
         int controle = 0;
 

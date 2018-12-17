@@ -47,18 +47,18 @@ void Principal::start()
         command = bluetooth.getCommand();
         if(command == 8)
         {
-            Serial.println("andando pra frente");
+            //Serial.println("andando pra frente");
             robot.moveFoward();
         }
         else if(command == 4)
         {
-            Serial.println("andando pra esquerda");
+            //Serial.println("andando pra esquerda");
             robot.turnLeft();
             
         }
         else if(command == 6)
         {
-            Serial.println("andando pra direita");
+            //Serial.println("andando pra direita");
             robot.turnRight();
         }
         else
@@ -67,7 +67,10 @@ void Principal::start()
             robot.stop();
             
         }    
-        bluetooth.sendPacket(robot.getReadingBlackTypeSensor(), robot.getReadingUltrasonic());
+        robot.getReadingBlackTypeSensor(readingBTS);
+        robot.getReadingUltrasonic(detectedObjet_U);
+        bluetooth.sendPacket(readingBTS, detectedObjet_U);
+        //robot.getReadingUltrasonic();
         //time = millis();
         //Serial.println("vou parar");
         //while(millis()-time<=2000)

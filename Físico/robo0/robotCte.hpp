@@ -54,13 +54,13 @@
 #define BDRATE 115200
 #define N_BLACK_TAPE_SENSOR 5
 #define N_ULTRASONIC 5
-#define PACKETSIZE 25//5 fita, 20 ultrassom
-#define COMMUNICATION_DELAY 50//tempo de delay do bluetooth em ms
+#define PACKETSIZE 15//5 fita, 10 ultrassom
+#define COMMUNICATION_DELAY 30//tempo de delay do bluetooth em ms
 #define ENCODER_UPDATE_TIME 200//tempo em milissigundos para leitura dos encoders
 #define SPEED_TO_UPDATE_TIME 2//velocidade em relacao ao update time. Formula: N_VOLTAS*RESOLUTION_ENCODER/(1000/ENCODER_UPDATE_TIME) N_VOLTAS é o numero de voltas por segundo
 #define D_SPEED 5//delta para correcao da velocidade
 #define OBSTACLE_DIS 10
-#define MAX_DETECTION_DISTANCE 50//máxima distância captada pelos ultrassons em cm
+#define ULTRASONIC_TIMEOUT 2940 //maximo tempo de espera pela leitura do ultrassom, formula:     int timeout = (MAX_DETECTION_DISTANCE*1000000)/17000;
 #define PING_INTERVAL 33//tempo entre a leitura de um ultrassom e outro para evitar conflito
 #endif
 

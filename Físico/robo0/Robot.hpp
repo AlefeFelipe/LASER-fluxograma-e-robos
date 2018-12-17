@@ -4,11 +4,18 @@
 #define _ROBOT_HPP_
 #include "Motor.hpp"
 #include "BlackTapeSensor.hpp"
-#include "MyUltrasonic.hpp"
+//#include "MyUltrasonic.hpp"
 #include "robotCte.hpp"
-
+#include <Ultrasonic.h>
 class Robot{
     Motor* motor[2];
+    Ultrasonic ultrasonic[N_ULTRASONIC] = {   // Sensor object array.
+        Ultrasonic(L_ULTRASONIC_TRIG, L_ULTRASONIC_ECHO, ULTRASONIC_TIMEOUT),
+        Ultrasonic(LM_ULTRASONIC_TRIG, LM_ULTRASONIC_ECHO, ULTRASONIC_TIMEOUT),
+        Ultrasonic(M_ULTRASONIC_TRIG, M_ULTRASONIC_ECHO, ULTRASONIC_TIMEOUT),
+        Ultrasonic(RM_ULTRASONIC_TRIG, RM_ULTRASONIC_ECHO, ULTRASONIC_TIMEOUT),
+        Ultrasonic(R_ULTRASONIC_TRIG, R_ULTRASONIC_ECHO, ULTRASONIC_TIMEOUT)
+    };
     int lm_speed, rm_speed;
 public:
     BlackTapeSensor* black_tape_sensor[N_BLACK_TAPE_SENSOR];
@@ -18,10 +25,10 @@ public:
     void turnLeft();
     void turnRight();
     void stop();
-    void moveStraight(long* timeold, int stopped_motor);
+    void moveStraight(long *timeold, int stopped_motor);
     void reduceSpeed(long *timeold, int motor_num, float reason);
-    uint8_t* getReadingBlackTypeSensor();
-    float* getReadingUltrasonic();
+    void getReadingBlackTypeSensor(uint8_t *readingBTS);
+    void getReadingUltrasonic(unsigned int *detectedObjet_U);
     ~Robot(){}
 };
 
