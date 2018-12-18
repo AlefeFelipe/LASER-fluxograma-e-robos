@@ -35,11 +35,11 @@ void Principal::start()
         }    
         robot.getReadingBlackTypeSensor(readingBTS);
         robot.getReadingUltrasonic(detectedObjet_U);
-        robot.getReadingColorSensor((uint16_t **)reading_color_sensor);
+        robot.getReadingColorSensor(reading_color_sensor);
         bluetooth.sendPacket(readingBTS, detectedObjet_U);
         //robot.getReadingUltrasonic();
         //time = millis();
-        Serial.println("vou parar");
+        //Serial.println("vou parar");
         //while(millis()-time<=2000)
         //{
         //    robot->stop();
