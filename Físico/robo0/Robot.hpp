@@ -7,6 +7,7 @@
 //#include "MyUltrasonic.hpp"
 #include "robotCte.hpp"
 #include <Ultrasonic.h>
+#include "ColorSensor.hpp"
 class Robot{
     Motor* motor[2];
     Ultrasonic ultrasonic[N_ULTRASONIC] = {   // Sensor object array.
@@ -17,9 +18,11 @@ class Robot{
         Ultrasonic(R_ULTRASONIC_TRIG, R_ULTRASONIC_ECHO, ULTRASONIC_TIMEOUT)
     };
     int lm_speed, rm_speed;
-public:
     BlackTapeSensor* black_tape_sensor[N_BLACK_TAPE_SENSOR];
+    ColorSensor *color_sensor[N_COLOR_SENSOR];
+public:
     //MyUltrasonic* ultrasonic[N_ULTRASONIC];
+   
     Robot();
     void moveFoward();
     void turnLeft();
@@ -29,6 +32,7 @@ public:
     void reduceSpeed(long *timeold, int motor_num, float reason);
     void getReadingBlackTypeSensor(uint8_t *readingBTS);
     void getReadingUltrasonic(unsigned int *detectedObjet_U);
+    void getReadingColorSensor(uint16_t **reading);
     ~Robot(){}
 };
 

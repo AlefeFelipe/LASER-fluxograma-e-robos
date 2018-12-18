@@ -15,6 +15,10 @@ Robot::Robot()
     {
         black_tape_sensor[i] = new BlackTapeSensor(i+1);
     }
+    for(i = 0; i < N_COLOR_SENSOR; i++)
+    {
+        color_sensor[i] = new ColorSensor(i+1, COLOR_SENSOR_GAIN);
+    }
     lm_speed = MOTORSPEED;
     rm_speed = MOTORSPEED*SCALE;
     
@@ -351,15 +355,32 @@ void Robot::getReadingBlackTypeSensor(uint8_t *readingBTS)
 void Robot::getReadingUltrasonic(unsigned int *detectedObjet_U)
 {
     int i;
-    //unsigned int* detectedObjet_U = new unsigned int [N_ULTRASONIC];
-    //Serial.print("lendo: ");
     for(i=0; i<N_ULTRASONIC; i++)
     {
         detectedObjet_U[i] = ultrasonic[i].read();
-      //  Serial.print(detectedObjet_U[i]);
-      //  Serial.print( " ");    
     }
-    //Serial.println();
-    //delay(10);
-    //return detectedObjet_U;
 }
+
+void Robot::getReadingColorSensor(uint16_t **reading)
+{
+    Serial.print("oipasdf");
+    int i, j;
+    for(i=0; i<N_COLOR_SENSOR; i++)
+    {
+        reading[i] = color_sensor[i]->getColors();    
+    }
+    for(i=0; i<N_COLOR_SENSOR; i++)
+    {
+        Serial.print("sensor ");
+        Serial.print(i);
+        for(j=0; j<4; j++)
+        {
+            Serial.print(" posicao");
+            Serial.print(j);
+            Serial.print(" ");
+            Serial.print(reading[i][j]);
+        }
+        Serial.println();
+    }
+}
+

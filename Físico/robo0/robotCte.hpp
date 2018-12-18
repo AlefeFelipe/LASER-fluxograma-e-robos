@@ -15,33 +15,22 @@
 #define RM_BLACK_TAPE_SENSOR 50
 #define R_BLACK_TAPE_SENSOR 52
 #define OBSTACLE_SENSOR 22
-#define VCC_BLACK_TAPE_SENSOR 0
-#define GND_BLACK_TAPE_SENSOR 0
 //pinagem dos ultrassons -
 #define L_ULTRASONIC_ECHO 53
 #define L_ULTRASONIC_TRIG 51
-#define L_ULTRASONIC_VCC 0
-#define L_ULTRASONIC_GND 0
 #define LM_ULTRASONIC_ECHO 33
 #define LM_ULTRASONIC_TRIG 31
-#define LM_ULTRASONIC_VCC 0
-#define LM_ULTRASONIC_GND 0
 #define M_ULTRASONIC_ECHO 37
 #define M_ULTRASONIC_TRIG 35
-#define M_ULTRASONIC_VCC 0
-#define M_ULTRASONIC_GND 0
 #define RM_ULTRASONIC_ECHO 41
 #define RM_ULTRASONIC_TRIG 39
-#define RM_ULTRASONIC_VCC 0
-#define RM_ULTRASONIC_GND 0
 #define R_ULTRASONIC_ECHO 49
 #define R_ULTRASONIC_TRIG 47
-#define R_ULTRASONIC_VCC 0
-#define R_ULTRASONIC_GND 0
-//pinagem conversor de tensão lógica
-#define VCC_SIGNAL_CONVERTER 22
-#define GND_SIGNAL_CONVERTER 23
-#define VCC_BLUETOOTH 24
+//pinagem sensores de cor
+#define L_COLOR_SENSOR_SDA 23 
+#define L_COLOR_SENSOR_SCL 22
+#define R_COLOR_SENSOR_SDA 25
+#define R_COLOR_SENSOR_SCL 24
 
 
 //constantes motores
@@ -54,6 +43,8 @@
 #define BDRATE 115200
 #define N_BLACK_TAPE_SENSOR 5
 #define N_ULTRASONIC 5
+#define N_COLOR_SENSOR 2
+#define COLOR_SENSOR_GAIN 2//grau de ganho, aqui vai de 1 a 4, no sensor de 1 a 60
 #define PACKETSIZE 15//5 fita, 10 ultrassom
 #define COMMUNICATION_DELAY 30//tempo de delay do bluetooth em ms
 #define ENCODER_UPDATE_TIME 200//tempo em milissigundos para leitura dos encoders
