@@ -11,9 +11,9 @@ void pulse_counter();
 class Motor : AF_DCMotor{
     int pin_encoder;
     unsigned int resolution;
-    
+
 public:
-    
+
     Motor(int _name);
     int getRPM(long timeold);
     ~Motor(){}
@@ -21,6 +21,5 @@ public:
     void stop();
 
 };
-void pulse_counter(Motor* motor);
 
 #endif

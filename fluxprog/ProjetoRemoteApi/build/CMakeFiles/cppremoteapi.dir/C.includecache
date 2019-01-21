@@ -1,4 +1,4 @@
-#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
 
 #IncludeRegexScan: ^.*$
 
@@ -6,29 +6,29 @@
 
 #IncludeRegexTransform: 
 
-/home/robocup/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi/remoteApi/extApi.c
+/home/laser/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi/remoteApi/extApi.c
 extApi.h
-/home/robocup/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi/remoteApi/extApi.h
+/home/laser/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi/remoteApi/extApi.h
 extApiInternal.h
-/home/robocup/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi/remoteApi/extApiInternal.h
+/home/laser/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi/remoteApi/extApiInternal.h
 stdio.h
 -
 extApiJava.h
-/home/robocup/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi/remoteApi/extApiJava.h
+/home/laser/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi/remoteApi/extApiJava.h
 
-/home/robocup/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi/remoteApi/extApi.h
+/home/laser/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi/remoteApi/extApi.h
 extApiPlatform.h
-/home/robocup/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi/remoteApi/extApiPlatform.h
+/home/laser/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi/remoteApi/extApiPlatform.h
 v_repConst.h
-/home/robocup/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi/remoteApi/v_repConst.h
+/home/laser/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi/remoteApi/v_repConst.h
 
-/home/robocup/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi/remoteApi/extApiInternal.h
+/home/laser/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi/remoteApi/extApiInternal.h
 extApiPlatform.h
-/home/robocup/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi/remoteApi/extApiPlatform.h
+/home/laser/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi/remoteApi/extApiPlatform.h
 
-/home/robocup/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi/remoteApi/extApiPlatform.c
+/home/laser/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi/remoteApi/extApiPlatform.c
 extApiPlatform.h
-/home/robocup/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi/remoteApi/extApiPlatform.h
+/home/laser/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi/remoteApi/extApiPlatform.h
 stdio.h
 -
 Windows.h
@@ -54,9 +54,9 @@ arpa/inet.h
 netdb.h
 -
 
-/home/robocup/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi/remoteApi/extApiPlatform.h
+/home/laser/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi/remoteApi/extApiPlatform.h
 stdint.h
 -
 
-/home/robocup/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi/remoteApi/v_repConst.h
+/home/laser/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi/remoteApi/v_repConst.h
 

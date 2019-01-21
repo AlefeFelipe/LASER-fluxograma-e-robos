@@ -7,7 +7,8 @@
 //#include "MyUltrasonic.hpp"
 #include "robotCte.hpp"
 #include <Ultrasonic.h>
-#include "ColorSensor.hpp"
+//#include "ColorSensor.hpp"
+#include <Adafruit_TCS34725softi2c.h>
 class Robot{
     Motor* motor[2];
     Ultrasonic ultrasonic[N_ULTRASONIC] = {
