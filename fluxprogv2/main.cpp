@@ -1,4 +1,4 @@
-#include "fluxprog.h"
+#include "fluxprog.h"j
 #include <cstring>
 #define inicializar(X, Y) if (!X){cout << "erro na inicializaçao do"<< Y << endl;}
 int main(int argc, char **argv)
