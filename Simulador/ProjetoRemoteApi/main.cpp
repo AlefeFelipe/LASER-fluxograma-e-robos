@@ -73,6 +73,22 @@ int kbhit(void)
 
     return 0;
 }
+
+void maybeQuit(int *comando2, managed_shared_memory *abrindo_memoria)
+{
+    char close;
+    if(kbhit())
+    {
+        cin>>close;
+        if(close=='x')
+        {
+            shared_memory_object::remove(NOME_DA_MEMORIA2);
+            delete abrindo_memoria;
+            *(comando2) = -10;
+            exit(0);
+        }
+    }
+}
 void setup()
 {
 
@@ -141,7 +157,7 @@ int main(int argc, char **argv)
     string serverIP = "127.0.0.1";
 	int serverPort = 19999;
     int clientID=simxStart((simxChar*)serverIP.c_str(),serverPort,true,true,2000,5);
-    unsigned char* reading;
+    unsigned char* reading_bluetooth;
 
     //inteiros para localizacao dos objetos no vrep
     //inteiros para partes moveis
@@ -167,16 +183,12 @@ int main(int argc, char **argv)
     //unsigned char reading_U[2] = 0;
     float* detectedObjetLU = new float[3];
     float* detectedSurfaceLU = new float[3];
-    unsigned char readingLU = 0;//leitura do sensor ultrassom
     float* detectedObjetLMU = new float[3];
     float* detectedSurfaceLMU = new float[3];
-    unsigned char readingLMU = 0;
     float* detectedObjetRMU = new float[3];
     float* detectedSurfaceRMU = new float[3];
-    unsigned char readingRMU = 0;
     float* detectedObjetRU = new float[3];
     float* detectedSurfaceRU = new float[3];
-    unsigned char readingRU = 0;
 
     //variaveis sensores de visao
     //unsigned char reading_VS[0] = 0;//leitura do sensor de visao
@@ -213,7 +225,7 @@ int main(int argc, char **argv)
           sleep(1);//extApi_sleepMs(5);
       }
     }
-    char close;
+
     int* comando2;// comando para enviar dados a memoria
     unsigned char* reading_VS;//vetores para captacao da leitura dos sensores na memoria
     unsigned char* reading_U;
@@ -235,11 +247,9 @@ int main(int argc, char **argv)
     ///Fechamento
     bluetooth = abrindo_memoria->find<int>(BLUETOOTH_ENABLE);
     setup();
-    unsigned char oi[1];
     while(*(bluetooth.first))
     {
         comando1 = abrindo_memoria->find<int>(NOME_DO_INT_NA_MEMORIA1);
-        oi[0] = char(*(comando1.first));
         //sendCommand(char(*(comando1.first)+'0'));
         if(*(comando1.first))
         {
@@ -248,7 +258,7 @@ int main(int argc, char **argv)
         }
         *(comando1.first) = 0;
         //usleep(10);
-        int a = receiver(reading, reading_VS, detectedObjet_U);
+        int a = receiver(reading_bluetooth, reading_VS, detectedObjet_U);
         if(a)
         {
             for (i = 0; i < N_BLACK_TAPE_SENSOR; i++)
@@ -266,6 +276,7 @@ int main(int argc, char **argv)
     ///conexao com elementos da cena
 	if (clientID!=-1)
 	{
+        bool tudo_ok = true;
 		cout << "Servidor conectado!" << std::endl;
 
         // inicialização dos motores e do robo
@@ -286,26 +297,40 @@ int main(int argc, char **argv)
                 cout << "conectado aos sensores de visao" <<endl;
 
 		if(simxGetObjectHandle(clientID,(const simxChar*) "bubbleRob_leftMotor",(simxInt *) &leftMotorHandle, (simxInt) simx_opmode_oneshot_wait) != simx_return_ok)
-			cout << "Handle do motor esquerdo nao encontrado!" << std::endl;
+        {
+            cout << "Handle do motor esquerdo nao encontrado!" << std::endl;
+            tudo_ok = false;
+        }
+
 		else
 			cout << "Conectado ao motor esquerdo!" << std::endl;
 
 		if(simxGetObjectHandle(clientID,(const simxChar*) "bubbleRob_rightMotor",(simxInt *) &rightMotorHandle, (simxInt) simx_opmode_oneshot_wait) != simx_return_ok)
-			cout << "Handle do motor direito nao encontrado!" << std::endl;
+        {
+            cout << "Handle do motor direito nao encontrado!" << std::endl;
+            tudo_ok = false;
+        }
+
 		else
 			cout << "Conectado ao motor direito!" << std::endl;
-            getReadingSensorsSimulator(clientID, bubbleRob, linPosition, angPosition, Middle_ultrasonic, reading_U,
-                                        detectedObjetLU, detectedObjetLMU, detectedObjetMU, detectedObjetRMU, detectedObjetRU,
-                                        detectedObjetHandleLU, detectedObjetHandleLMU, detectedObjetHandleMU, detectedObjetHandleRMU, detectedObjetHandleRU,
-                                        detectedSurfaceLU, detectedSurfaceLMU, detectedSurfaceMU, detectedSurfaceRMU, detectedSurfaceRU,
-                                        Left_Vision_sensor, LM_Vision_sensor, Middle_Vision_sensor, RM_Vision_sensor, Right_Vision_sensor,
-                                        reading_VS, DataLVS, DataLMVS, DataMVS, DataRMVS, DataRVS,
-                                        auxLVS, auxLMVS, auxMVS, auxRMVS, auxRVS);
+        getReadingSensorsSimulator(clientID, bubbleRob, linPosition, angPosition, Middle_ultrasonic, reading_U,
+                                    detectedObjetLU, detectedObjetLMU, detectedObjetMU, detectedObjetRMU, detectedObjetRU,
+                                    detectedObjetHandleLU, detectedObjetHandleLMU, detectedObjetHandleMU, detectedObjetHandleRMU, detectedObjetHandleRU,
+                                    detectedSurfaceLU, detectedSurfaceLMU, detectedSurfaceMU, detectedSurfaceRMU, detectedSurfaceRU,
+                                    Left_Vision_sensor, LM_Vision_sensor, Middle_Vision_sensor, RM_Vision_sensor, Right_Vision_sensor,
+                                    reading_VS, DataLVS, DataLMVS, DataMVS, DataRMVS, DataRVS,
+                                    auxLVS, auxLMVS, auxMVS, auxRMVS, auxRVS);
+        if (!tudo_ok)
+            *(comando2) = -5; // se a conexão com o vrep falha o programa manda -5 para indicara falha
+    	else
+    		*(comando2) = -4; // se a conexão der certo manda -4
 	}
 
+	else
+        *(comando2) = -5;
 
     //loop de execucao
-	while(simxGetConnectionId(clientID)!=-1 )
+	while(simxGetConnectionId(clientID)!=-1 && *(comando1.first) != -10)
     {
 		comando1 = abrindo_memoria->find<int>(NOME_DO_INT_NA_MEMORIA1);
         getReadingSensorsSimulator(clientID, bubbleRob, linPosition, angPosition, Middle_ultrasonic, reading_U,
@@ -328,112 +353,343 @@ int main(int argc, char **argv)
         cout << reading_VS[2] << endl;
 
         //linha reta (se nao estiver perto de um obstaculo)
-		while (*(comando1.first) == 8 )//&& (dx < DIS_RETO && dy <DIS_RETO))// && reading_U[2]==0)
+        if (*(comando1.first) == 8 && reading_U[2]==0)
         {
-            vLeft = VEL_MOT;
-            vRight = VEL_MOT;
-            simxSetJointTargetVelocity(clientID, leftMotorHandle, (simxFloat) vLeft, simx_opmode_streaming);
-            simxSetJointTargetVelocity(clientID, rightMotorHandle, (simxFloat) vRight, simx_opmode_streaming);
-            getReadingSensorsSimulator(clientID, bubbleRob, linPosition, angPosition, Middle_ultrasonic, reading_U,
-                                        detectedObjetLU, detectedObjetLMU, detectedObjetMU, detectedObjetRMU, detectedObjetRU,
-                                        detectedObjetHandleLU, detectedObjetHandleLMU, detectedObjetHandleMU, detectedObjetHandleRMU, detectedObjetHandleRU,
-                                        detectedSurfaceLU, detectedSurfaceLMU, detectedSurfaceMU, detectedSurfaceRMU, detectedSurfaceRU,
-                                        Left_Vision_sensor, LM_Vision_sensor, Middle_Vision_sensor, RM_Vision_sensor, Right_Vision_sensor,
-                                        reading_VS, DataLVS, DataLMVS, DataMVS, DataRMVS, DataRVS,
-                                        auxLVS, auxLMVS, auxMVS, auxRMVS, auxRVS);
-            reading_VS[0] = DataLVS[10]<MAX_INTE;//media da intensidade. No caso preto, sao todos 0
-            reading_VS[1] = DataLMVS[10]<MAX_INTE;
-            reading_VS[2] = DataMVS[10]<MAX_INTE;
-            reading_VS[3] = DataRMVS[10]<MAX_INTE;
-            reading_VS[4] = DataRVS[10]<MAX_INTE;
-            detectedObjet_U[0] = detectedObjetLU[2];
-            detectedObjet_U[1] = detectedObjetLMU[2];
-            detectedObjet_U[2] = detectedObjetMU[2];
-            detectedObjet_U[3] = detectedObjetRMU[2];
-            detectedObjet_U[4] = detectedSurfaceRU[2];
-            *comando2 = 1;
-            if(kbhit())
+            while(((reading_VS[0]&&reading_VS[2])||(reading_VS[2]&&reading_VS[4])) && reading_U[2]==0)//verificar se ta no mesmo estado, tecnicamente inutil devido a funcao acima
             {
-                cin>>close;
-                if(close=='x')
+                vLeft = VEL_MOT;
+                vRight = VEL_MOT;
+                simxSetJointTargetVelocity(clientID, leftMotorHandle, (simxFloat) vLeft, simx_opmode_streaming);
+                simxSetJointTargetVelocity(clientID, rightMotorHandle, (simxFloat) vRight, simx_opmode_streaming);
+                getReadingSensorsSimulator(clientID, bubbleRob, linPosition, angPosition, Middle_ultrasonic, reading_U,
+                                            detectedObjetLU, detectedObjetLMU, detectedObjetMU, detectedObjetRMU, detectedObjetRU,
+                                            detectedObjetHandleLU, detectedObjetHandleLMU, detectedObjetHandleMU, detectedObjetHandleRMU, detectedObjetHandleRU,
+                                            detectedSurfaceLU, detectedSurfaceLMU, detectedSurfaceMU, detectedSurfaceRMU, detectedSurfaceRU,
+                                            Left_Vision_sensor, LM_Vision_sensor, Middle_Vision_sensor, RM_Vision_sensor, Right_Vision_sensor,
+                                            reading_VS, DataLVS, DataLMVS, DataMVS, DataRMVS, DataRVS,
+                                            auxLVS, auxLMVS, auxMVS, auxRMVS, auxRVS);
+                reading_VS[0] = DataLVS[10]<MAX_INTE;//media da intensidade. No caso preto, sao todos 0
+                reading_VS[2] = DataMVS[10]<MAX_INTE;
+                reading_VS[4] = DataRVS[10]<MAX_INTE;
+                extApi_sleepMs(5);
+                if(reading_U[2])
                 {
-                    shared_memory_object::remove(NOME_DA_MEMORIA2);
-                    delete abrindo_memoria;
-                    return 0;
+                    cout<<"objeto "<<detectedObjetHandleMU<<" na posicao "<<detectedObjetMU[0]<<", "<<detectedObjetMU[1]<<", "<<detectedObjetMU[2]<<endl;
+                    cout<<"superficie em "<<detectedSurfaceMU[0]<<", "<<detectedSurfaceMU[1]<<", "<<detectedSurfaceMU[2]<<endl;
                 }
+                maybeQuit(comando2, abrindo_memoria);
             }
+            while(!((reading_VS[0]&&reading_VS[2])||(reading_VS[2]&&reading_VS[4])) && reading_U[2]==0)//anda ate os sensores captarem a linha ou obstaculo
+            {
+                vLeft = VEL_MOT;
+                vRight = VEL_MOT;
+                simxSetJointTargetVelocity(clientID, leftMotorHandle, (simxFloat) vLeft, simx_opmode_streaming);
+                simxSetJointTargetVelocity(clientID, rightMotorHandle, (simxFloat) vRight, simx_opmode_streaming);
+                getReadingSensorsSimulator(clientID, bubbleRob, linPosition, angPosition, Middle_ultrasonic, reading_U,
+                                            detectedObjetLU, detectedObjetLMU, detectedObjetMU, detectedObjetRMU, detectedObjetRU,
+                                            detectedObjetHandleLU, detectedObjetHandleLMU, detectedObjetHandleMU, detectedObjetHandleRMU, detectedObjetHandleRU,
+                                            detectedSurfaceLU, detectedSurfaceLMU, detectedSurfaceMU, detectedSurfaceRMU, detectedSurfaceRU,
+                                            Left_Vision_sensor, LM_Vision_sensor, Middle_Vision_sensor, RM_Vision_sensor, Right_Vision_sensor,
+                                            reading_VS, DataLVS, DataLMVS, DataMVS, DataRMVS, DataRVS,
+                                            auxLVS, auxLMVS, auxMVS, auxRMVS, auxRVS);
+                reading_VS[0] = DataLVS[10]<MAX_INTE;//media da intensidade. No caso preto, sao todos 0
+                reading_VS[1] = DataLMVS[10]<MAX_INTE;
+                reading_VS[2] = DataMVS[10]<MAX_INTE;
+                reading_VS[3] = DataRMVS[10]<MAX_INTE;
+                reading_VS[4] = DataRVS[10]<MAX_INTE;
+                //if(!reading_VS[2]&&(reading_VS[3]||reading_VS[4]))//robo esta desviando para a esquerda, gira direita
+                if(reading_VS[4])
+                {
+                    vLeft = VEL_MOT;
+                    vRight = VEL_MOT/4;
+                    simxSetJointTargetVelocity(clientID, leftMotorHandle, (simxFloat) vLeft, simx_opmode_streaming);
+                    simxSetJointTargetVelocity(clientID, rightMotorHandle, (simxFloat) vRight, simx_opmode_streaming);
+                    getReadingSensorsSimulator(clientID, bubbleRob, linPosition, angPosition, Middle_ultrasonic, reading_U,
+                                                detectedObjetLU, detectedObjetLMU, detectedObjetMU, detectedObjetRMU, detectedObjetRU,
+                                                detectedObjetHandleLU, detectedObjetHandleLMU, detectedObjetHandleMU, detectedObjetHandleRMU, detectedObjetHandleRU,
+                                                detectedSurfaceLU, detectedSurfaceLMU, detectedSurfaceMU, detectedSurfaceRMU, detectedSurfaceRU,
+                                                Left_Vision_sensor, LM_Vision_sensor, Middle_Vision_sensor, RM_Vision_sensor, Right_Vision_sensor,
+                                                reading_VS, DataLVS, DataLMVS, DataMVS, DataRMVS, DataRVS,
+                                                auxLVS, auxLMVS, auxMVS, auxRMVS, auxRVS);
+                    reading_VS[0] = DataLVS[10]<MAX_INTE;//media da intensidade. No caso preto, sao todos 0
+                    reading_VS[2] = DataMVS[10]<MAX_INTE;
+                    reading_VS[4] = DataRVS[10]<MAX_INTE;
+                    turnright = 1;
+                    turnleft = 0;
+                }
+                else if(reading_VS[3])
+                {
+                    vLeft = VEL_MOT;
+                    vRight = VEL_MOT/2;
+                    simxSetJointTargetVelocity(clientID, leftMotorHandle, (simxFloat) vLeft, simx_opmode_streaming);
+                    simxSetJointTargetVelocity(clientID, rightMotorHandle, (simxFloat) vRight, simx_opmode_streaming);
+                    getReadingSensorsSimulator(clientID, bubbleRob, linPosition, angPosition, Middle_ultrasonic, reading_U,
+                                                detectedObjetLU, detectedObjetLMU, detectedObjetMU, detectedObjetRMU, detectedObjetRU,
+                                                detectedObjetHandleLU, detectedObjetHandleLMU, detectedObjetHandleMU, detectedObjetHandleRMU, detectedObjetHandleRU,
+                                                detectedSurfaceLU, detectedSurfaceLMU, detectedSurfaceMU, detectedSurfaceRMU, detectedSurfaceRU,
+                                                Left_Vision_sensor, LM_Vision_sensor, Middle_Vision_sensor, RM_Vision_sensor, Right_Vision_sensor,
+                                                reading_VS, DataLVS, DataLMVS, DataMVS, DataRMVS, DataRVS,
+                                                auxLVS, auxLMVS, auxMVS, auxRMVS, auxRVS);
+                    reading_VS[0] = DataLVS[10]<MAX_INTE;//media da intensidade. No caso preto, sao todos 0
+                    reading_VS[2] = DataMVS[10]<MAX_INTE;
+                    reading_VS[4] = DataRVS[10]<MAX_INTE;
+                    turnright = 1;
+                    turnleft = 0;
+                }
+                else if(reading_VS[1])//robo ta desviando para a direita, gira esquerda
+                {
+                    vLeft = VEL_MOT/2;
+                    vRight = VEL_MOT;
+                    simxSetJointTargetVelocity(clientID, leftMotorHandle, (simxFloat) vLeft, simx_opmode_streaming);
+                    simxSetJointTargetVelocity(clientID, rightMotorHandle, (simxFloat) vRight, simx_opmode_streaming);
+                    getReadingSensorsSimulator(clientID, bubbleRob, linPosition, angPosition, Middle_ultrasonic, reading_U,
+                                                detectedObjetLU, detectedObjetLMU, detectedObjetMU, detectedObjetRMU, detectedObjetRU,
+                                                detectedObjetHandleLU, detectedObjetHandleLMU, detectedObjetHandleMU, detectedObjetHandleRMU, detectedObjetHandleRU,
+                                                detectedSurfaceLU, detectedSurfaceLMU, detectedSurfaceMU, detectedSurfaceRMU, detectedSurfaceRU,
+                                                Left_Vision_sensor, LM_Vision_sensor, Middle_Vision_sensor, RM_Vision_sensor, Right_Vision_sensor,
+                                                reading_VS, DataLVS, DataLMVS, DataMVS, DataRMVS, DataRVS,
+                                                auxLVS, auxLMVS, auxMVS, auxRMVS, auxRVS);
+                    reading_VS[0] = DataLVS[10]<MAX_INTE;//media da intensidade. No caso preto, sao todos 0
+                    reading_VS[2] = DataMVS[10]<MAX_INTE;
+                    reading_VS[4] = DataRVS[10]<MAX_INTE;
+                    turnright = 0;
+                    turnleft = 1;
+                }
+                else if(reading_VS[0])//robo ta desviando para a direita, gira esquerda
+                {
+                    vLeft = VEL_MOT/4;
+                    vRight = VEL_MOT;
+                    simxSetJointTargetVelocity(clientID, leftMotorHandle, (simxFloat) vLeft, simx_opmode_streaming);
+                    simxSetJointTargetVelocity(clientID, rightMotorHandle, (simxFloat) vRight, simx_opmode_streaming);
+                    getReadingSensorsSimulator(clientID, bubbleRob, linPosition, angPosition, Middle_ultrasonic, reading_U,
+                                                detectedObjetLU, detectedObjetLMU, detectedObjetMU, detectedObjetRMU, detectedObjetRU,
+                                                detectedObjetHandleLU, detectedObjetHandleLMU, detectedObjetHandleMU, detectedObjetHandleRMU, detectedObjetHandleRU,
+                                                detectedSurfaceLU, detectedSurfaceLMU, detectedSurfaceMU, detectedSurfaceRMU, detectedSurfaceRU,
+                                                Left_Vision_sensor, LM_Vision_sensor, Middle_Vision_sensor, RM_Vision_sensor, Right_Vision_sensor,
+                                                reading_VS, DataLVS, DataLMVS, DataMVS, DataRMVS, DataRVS,
+                                                auxLVS, auxLMVS, auxMVS, auxRMVS, auxRVS);
+                    reading_VS[0] = DataLVS[10]<MAX_INTE;//media da intensidade. No caso preto, sao todos 0
+                    reading_VS[2] = DataMVS[10]<MAX_INTE;
+                    reading_VS[4] = DataRVS[10]<MAX_INTE;
+                    turnright = 0;
+                    turnleft = 1;
+                }
+                else if(!(reading_VS[0]||reading_VS[1]||reading_VS[2]||reading_VS[3]||reading_VS[3]))
+                {
+                    if(turnright)
+                    {
+                        vLeft = VEL_MOT;
+                        vRight = VEL_MOT/4;
+                        simxSetJointTargetVelocity(clientID, leftMotorHandle, (simxFloat) vLeft, simx_opmode_streaming);
+                        simxSetJointTargetVelocity(clientID, rightMotorHandle, (simxFloat) vRight, simx_opmode_streaming);
+                        getReadingSensorsSimulator(clientID, bubbleRob, linPosition, angPosition, Middle_ultrasonic, reading_U,
+                                                    detectedObjetLU, detectedObjetLMU, detectedObjetMU, detectedObjetRMU, detectedObjetRU,
+                                                    detectedObjetHandleLU, detectedObjetHandleLMU, detectedObjetHandleMU, detectedObjetHandleRMU, detectedObjetHandleRU,
+                                                    detectedSurfaceLU, detectedSurfaceLMU, detectedSurfaceMU, detectedSurfaceRMU, detectedSurfaceRU,
+                                                    Left_Vision_sensor, LM_Vision_sensor, Middle_Vision_sensor, RM_Vision_sensor, Right_Vision_sensor,
+                                                    reading_VS, DataLVS, DataLMVS, DataMVS, DataRMVS, DataRVS,
+                                                    auxLVS, auxLMVS, auxMVS, auxRMVS, auxRVS);
+                        reading_VS[0] = DataLVS[10]<MAX_INTE;//media da intensidade. No caso preto, sao todos 0
+                        reading_VS[2] = DataMVS[10]<MAX_INTE;
+                        reading_VS[4] = DataRVS[10]<MAX_INTE;
+                    }
+                    else if(turnleft)
+                    {
+                        vLeft = VEL_MOT/4;
+                        vRight = VEL_MOT;
+                        simxSetJointTargetVelocity(clientID, leftMotorHandle, (simxFloat) vLeft, simx_opmode_streaming);
+                        simxSetJointTargetVelocity(clientID, rightMotorHandle, (simxFloat) vRight, simx_opmode_streaming);
+                        getReadingSensorsSimulator(clientID, bubbleRob, linPosition, angPosition, Middle_ultrasonic, reading_U,
+                                                    detectedObjetLU, detectedObjetLMU, detectedObjetMU, detectedObjetRMU, detectedObjetRU,
+                                                    detectedObjetHandleLU, detectedObjetHandleLMU, detectedObjetHandleMU, detectedObjetHandleRMU, detectedObjetHandleRU,
+                                                    detectedSurfaceLU, detectedSurfaceLMU, detectedSurfaceMU, detectedSurfaceRMU, detectedSurfaceRU,
+                                                    Left_Vision_sensor, LM_Vision_sensor, Middle_Vision_sensor, RM_Vision_sensor, Right_Vision_sensor,
+                                                    reading_VS, DataLVS, DataLMVS, DataMVS, DataRMVS, DataRVS,
+                                                    auxLVS, auxLMVS, auxMVS, auxRMVS, auxRVS);
+                        reading_VS[0] = DataLVS[10]<MAX_INTE;//media da intensidade. No caso preto, sao todos 0
+                        reading_VS[2] = DataMVS[10]<MAX_INTE;
+                        reading_VS[4] = DataRVS[10]<MAX_INTE;
+                    }
+                }
+                if(reading_U[2])
+                {
+                    cout<<"objeto "<<detectedObjetHandleMU<<" na posicao "<<detectedObjetMU[0]<<", "<<detectedObjetMU[1]<<", "<<detectedObjetMU[2]<<endl;
+                    cout<<"superficie em "<<detectedSurfaceMU[0]<<", "<<detectedSurfaceMU[1]<<", "<<detectedSurfaceMU[2]<<endl;
+                }
+                maybeQuit(comando2, abrindo_memoria);
+                extApi_sleepMs(5);
+            }
+            simxGetObjectPosition(clientID, bubbleRob, -1, linPosition, simx_opmode_buffer);
+            X_inicial = linPosition[0];
+            Y_inicial = linPosition[1];
+            dx=0;
+            dy=0;
+            while((dx < DIS_RETO && dy <DIS_RETO) && reading_U[2]==0)//chegar na linha
+            {
+                vLeft = VEL_MOT;
+                vRight = VEL_MOT;
+                simxSetJointTargetVelocity(clientID, leftMotorHandle, (simxFloat) vLeft, simx_opmode_streaming);
+                simxSetJointTargetVelocity(clientID, rightMotorHandle, (simxFloat) vRight, simx_opmode_streaming);
+                getReadingSensorsSimulator(clientID, bubbleRob, linPosition, angPosition, Middle_ultrasonic, reading_U,
+                                            detectedObjetLU, detectedObjetLMU, detectedObjetMU, detectedObjetRMU, detectedObjetRU,
+                                            detectedObjetHandleLU, detectedObjetHandleLMU, detectedObjetHandleMU, detectedObjetHandleRMU, detectedObjetHandleRU,
+                                            detectedSurfaceLU, detectedSurfaceLMU, detectedSurfaceMU, detectedSurfaceRMU, detectedSurfaceRU,
+                                            Left_Vision_sensor, LM_Vision_sensor, Middle_Vision_sensor, RM_Vision_sensor, Right_Vision_sensor,
+                                            reading_VS, DataLVS, DataLMVS, DataMVS, DataRMVS, DataRVS,
+                                            auxLVS, auxLMVS, auxMVS, auxRMVS, auxRVS);
+                dx = abs(linPosition[0]-X_inicial);
+                dy = abs(linPosition[1]-Y_inicial);
+                extApi_sleepMs(5);
+                if(reading_U[2])
+                {
+                    cout<<"objeto "<<detectedObjetHandleMU<<" na posicao "<<detectedObjetMU[0]<<", "<<detectedObjetMU[1]<<", "<<detectedObjetMU[2]<<endl;
+                    cout<<"superficie em "<<detectedSurfaceMU[0]<<", "<<detectedSurfaceMU[1]<<", "<<detectedSurfaceMU[2]<<endl;
+                }
+                maybeQuit(comando2, abrindo_memoria);
+            }
+            *comando2 = 1;
+            maybeQuit(comando2, abrindo_memoria);
 		}
 
         //virar direita
-		while(*(comando1.first) == 6)
+        else if(*(comando1.first) == 6)
         {
-			vLeft = VEL_MOT/1.5;
-			vRight = -VEL_MOT/1.5;
-			simxSetJointTargetVelocity(clientID, leftMotorHandle, (simxFloat) vLeft, simx_opmode_streaming);
-			simxSetJointTargetVelocity(clientID, rightMotorHandle, (simxFloat) vRight, simx_opmode_streaming);
-            getReadingSensorsSimulator(clientID, bubbleRob, linPosition, angPosition, Middle_ultrasonic, reading_U,
-                                        detectedObjetLU, detectedObjetLMU, detectedObjetMU, detectedObjetRMU, detectedObjetRU,
-                                        detectedObjetHandleLU, detectedObjetHandleLMU, detectedObjetHandleMU, detectedObjetHandleRMU, detectedObjetHandleRU,
-                                        detectedSurfaceLU, detectedSurfaceLMU, detectedSurfaceMU, detectedSurfaceRMU, detectedSurfaceRU,
-                                        Left_Vision_sensor, LM_Vision_sensor, Middle_Vision_sensor, RM_Vision_sensor, Right_Vision_sensor,
-                                        reading_VS, DataLVS, DataLMVS, DataMVS, DataRMVS, DataRVS,
-                                        auxLVS, auxLMVS, auxMVS, auxRMVS, auxRVS);
-            reading_VS[0] = DataLVS[10]<MAX_INTE;//media da intensidade. No caso preto, sao todos 0
-            reading_VS[1] = DataLMVS[10]<MAX_INTE;
+            while(d_ang < (M_PI/4-DIS_CURVA))//escapar do estado de verificacao dos sensores
+            {
+                vLeft = VEL_MOT/1.5;
+                vRight = -VEL_MOT/1.5;
+                simxSetJointTargetVelocity(clientID, leftMotorHandle, (simxFloat) vLeft, simx_opmode_streaming);
+                simxSetJointTargetVelocity(clientID, rightMotorHandle, (simxFloat) vRight, simx_opmode_streaming);
+                simxGetObjectOrientation(clientID, bubbleRob, -1, angle, simx_opmode_buffer);
+                ang = (angle[2]);
+                d_ang = abs(ang-ang_inicial);
+                //se houve salto da atan, ignora colocando o salto na posicao normal. Como abs, mas funciona melhor
+                if(d_ang>(M_PI/2-D_ANG))
+                {
+                    ang = -ang;
+                    d_ang = abs(ang-ang_inicial);
+                }
+                extApi_sleepMs(5);
+                getReadingSensorsSimulator(clientID, bubbleRob, linPosition, angPosition, Middle_ultrasonic, reading_U,
+                                            detectedObjetLU, detectedObjetLMU, detectedObjetMU, detectedObjetRMU, detectedObjetRU,
+                                            detectedObjetHandleLU, detectedObjetHandleLMU, detectedObjetHandleMU, detectedObjetHandleRMU, detectedObjetHandleRU,
+                                            detectedSurfaceLU, detectedSurfaceLMU, detectedSurfaceMU, detectedSurfaceRMU, detectedSurfaceRU,
+                                            Left_Vision_sensor, LM_Vision_sensor, Middle_Vision_sensor, RM_Vision_sensor, Right_Vision_sensor,
+                                            reading_VS, DataLVS, DataLMVS, DataMVS, DataRMVS, DataRVS,
+                                            auxLVS, auxLMVS, auxMVS, auxRMVS, auxRVS);
+                maybeQuit(comando2, abrindo_memoria);
+            }
             reading_VS[2] = DataMVS[10]<MAX_INTE;
             reading_VS[3] = DataRMVS[10]<MAX_INTE;
-            reading_VS[4] = DataRVS[10]<MAX_INTE;
-            detectedObjet_U[0] = detectedObjetLU[2];
-            detectedObjet_U[1] = detectedObjetLMU[2];
-            detectedObjet_U[2] = detectedObjetMU[2];
-            detectedObjet_U[3] = detectedObjetRMU[2];
-            detectedObjet_U[4] = detectedSurfaceRU[2];
-            *comando2 = 1;
-            if(kbhit())
+            while(reading_VS[2])//verificar se ta no mesmo estado, tecnicamente inutil devido a funcao acima
             {
-                cin>>close;
-                if(close=='x')
-                {
-                    shared_memory_object::remove(NOME_DA_MEMORIA2);
-                    delete abrindo_memoria;
-                    return 0;
-                }
+                vLeft = VEL_MOT/1.5;
+                vRight = -VEL_MOT/1.5;
+                simxSetJointTargetVelocity(clientID, leftMotorHandle, (simxFloat) vLeft, simx_opmode_streaming);
+                simxSetJointTargetVelocity(clientID, rightMotorHandle, (simxFloat) vRight, simx_opmode_streaming);
+                getReadingSensorsSimulator(clientID, bubbleRob, linPosition, angPosition, Middle_ultrasonic, reading_U,
+                                            detectedObjetLU, detectedObjetLMU, detectedObjetMU, detectedObjetRMU, detectedObjetRU,
+                                            detectedObjetHandleLU, detectedObjetHandleLMU, detectedObjetHandleMU, detectedObjetHandleRMU, detectedObjetHandleRU,
+                                            detectedSurfaceLU, detectedSurfaceLMU, detectedSurfaceMU, detectedSurfaceRMU, detectedSurfaceRU,
+                                            Left_Vision_sensor, LM_Vision_sensor, Middle_Vision_sensor, RM_Vision_sensor, Right_Vision_sensor,
+                                            reading_VS, DataLVS, DataLMVS, DataMVS, DataRMVS, DataRVS,
+                                            auxLVS, auxLMVS, auxMVS, auxRMVS, auxRVS);
+                reading_VS[2] = DataMVS[10]<MAX_INTE;
+                reading_VS[3] = DataRMVS[10]<MAX_INTE;
+                extApi_sleepMs(5);
+                maybeQuit(comando2, abrindo_memoria);
             }
+            while(!(reading_VS[2]))//gira ate os sensores captarem a linha
+            {
+                vLeft = VEL_MOT/1.5;
+                vRight = -VEL_MOT/1.5;
+                simxSetJointTargetVelocity(clientID, leftMotorHandle, (simxFloat) vLeft, simx_opmode_streaming);
+                simxSetJointTargetVelocity(clientID, rightMotorHandle, (simxFloat) vRight, simx_opmode_streaming);
+                getReadingSensorsSimulator(clientID, bubbleRob, linPosition, angPosition, Middle_ultrasonic, reading_U,
+                                            detectedObjetLU, detectedObjetLMU, detectedObjetMU, detectedObjetRMU, detectedObjetRU,
+                                            detectedObjetHandleLU, detectedObjetHandleLMU, detectedObjetHandleMU, detectedObjetHandleRMU, detectedObjetHandleRU,
+                                            detectedSurfaceLU, detectedSurfaceLMU, detectedSurfaceMU, detectedSurfaceRMU, detectedSurfaceRU,
+                                            Left_Vision_sensor, LM_Vision_sensor, Middle_Vision_sensor, RM_Vision_sensor, Right_Vision_sensor,
+                                            reading_VS, DataLVS, DataLMVS, DataMVS, DataRMVS, DataRVS,
+                                            auxLVS, auxLMVS, auxMVS, auxRMVS, auxRVS);
+                reading_VS[2] = DataMVS[10]<MAX_INTE;
+                reading_VS[3] = DataRMVS[10]<MAX_INTE;
+                extApi_sleepMs(5);
+                maybeQuit(comando2, abrindo_memoria);
+            }
+            *comando2 = 1;
         }
 
         //virar esquerda
-		while (*(comando1.first) == 4)
+        else if(*(comando1.first) == 4)
         {
-			vLeft = -VEL_MOT/1.5;
-			vRight = VEL_MOT/1.5;
-            getReadingSensorsSimulator(clientID, bubbleRob, linPosition, angPosition, Middle_ultrasonic, reading_U,
-                                        detectedObjetLU, detectedObjetLMU, detectedObjetMU, detectedObjetRMU, detectedObjetRU,
-                                        detectedObjetHandleLU, detectedObjetHandleLMU, detectedObjetHandleMU, detectedObjetHandleRMU, detectedObjetHandleRU,
-                                        detectedSurfaceLU, detectedSurfaceLMU, detectedSurfaceMU, detectedSurfaceRMU, detectedSurfaceRU,
-                                        Left_Vision_sensor, LM_Vision_sensor, Middle_Vision_sensor, RM_Vision_sensor, Right_Vision_sensor,
-                                        reading_VS, DataLVS, DataLMVS, DataMVS, DataRMVS, DataRVS,
-                                        auxLVS, auxLMVS, auxMVS, auxRMVS, auxRVS);
-            reading_VS[0] = DataLVS[10]<MAX_INTE;//media da intensidade. No caso preto, sao todos 0
+            while(d_ang < (M_PI/4-DIS_CURVA))//escapar do estado de verificacao dos sensores
+            {
+				vLeft = -VEL_MOT/1.5;
+				vRight = VEL_MOT/1.5;
+				simxSetJointTargetVelocity(clientID, leftMotorHandle, (simxFloat) vLeft, simx_opmode_streaming);
+				simxSetJointTargetVelocity(clientID, rightMotorHandle, (simxFloat) vRight, simx_opmode_streaming);
+                simxGetObjectOrientation(clientID, bubbleRob, -1, angle, simx_opmode_buffer);
+                ang = (angle[2]);
+                d_ang = abs(ang-ang_inicial);
+                //se houve salto da atan, ignora colocando o salto na posicao normal. Como abs, mas funciona melhor
+                if(d_ang>(M_PI/2-D_ANG))
+                {
+                    ang = -ang;
+                    d_ang = abs(ang-ang_inicial);
+                }
+                extApi_sleepMs(5);
+                getReadingSensorsSimulator(clientID, bubbleRob, linPosition, angPosition, Middle_ultrasonic, reading_U,
+                                            detectedObjetLU, detectedObjetLMU, detectedObjetMU, detectedObjetRMU, detectedObjetRU,
+                                            detectedObjetHandleLU, detectedObjetHandleLMU, detectedObjetHandleMU, detectedObjetHandleRMU, detectedObjetHandleRU,
+                                            detectedSurfaceLU, detectedSurfaceLMU, detectedSurfaceMU, detectedSurfaceRMU, detectedSurfaceRU,
+                                            Left_Vision_sensor, LM_Vision_sensor, Middle_Vision_sensor, RM_Vision_sensor, Right_Vision_sensor,
+                                            reading_VS, DataLVS, DataLMVS, DataMVS, DataRMVS, DataRVS,
+                                            auxLVS, auxLMVS, auxMVS, auxRMVS, auxRVS);
+                maybeQuit(comando2, abrindo_memoria);
+			}
+
             reading_VS[1] = DataLMVS[10]<MAX_INTE;
             reading_VS[2] = DataMVS[10]<MAX_INTE;
-            reading_VS[3] = DataRMVS[10]<MAX_INTE;
-            reading_VS[4] = DataRVS[10]<MAX_INTE;
-            detectedObjet_U[0] = detectedObjetLU[2];
-            detectedObjet_U[1] = detectedObjetLMU[2];
-            detectedObjet_U[2] = detectedObjetMU[2];
-            detectedObjet_U[3] = detectedObjetRMU[2];
-            detectedObjet_U[4] = detectedSurfaceRU[2];
-            *comando2 = 1;
-            if(kbhit())
+            while((reading_VS[2]))//verificar se ta no mesmo estado, tecnicamente inutil devido a funcao acima
             {
-                cin>>close;
-                if(close=='x')
-                {
-                    delete abrindo_memoria;
-                    return 0;
-                }
+                vLeft = -VEL_MOT/1.5;
+                vRight = VEL_MOT/1.5;
+                simxSetJointTargetVelocity(clientID, leftMotorHandle, (simxFloat) vLeft, simx_opmode_streaming);
+                simxSetJointTargetVelocity(clientID, rightMotorHandle, (simxFloat) vRight, simx_opmode_streaming);
+                getReadingSensorsSimulator(clientID, bubbleRob, linPosition, angPosition, Middle_ultrasonic, reading_U,
+                                            detectedObjetLU, detectedObjetLMU, detectedObjetMU, detectedObjetRMU, detectedObjetRU,
+                                            detectedObjetHandleLU, detectedObjetHandleLMU, detectedObjetHandleMU, detectedObjetHandleRMU, detectedObjetHandleRU,
+                                            detectedSurfaceLU, detectedSurfaceLMU, detectedSurfaceMU, detectedSurfaceRMU, detectedSurfaceRU,
+                                            Left_Vision_sensor, LM_Vision_sensor, Middle_Vision_sensor, RM_Vision_sensor, Right_Vision_sensor,
+                                            reading_VS, DataLVS, DataLMVS, DataMVS, DataRMVS, DataRVS,
+                                            auxLVS, auxLMVS, auxMVS, auxRMVS, auxRVS);
+                reading_VS[1] = DataLMVS[10]<MAX_INTE;
+                reading_VS[2] = DataMVS[10]<MAX_INTE;
+                maybeQuit(comando2, abrindo_memoria);
+                extApi_sleepMs(5);
             }
+            while(!(reading_VS[2]))//gira ate os sensores captarem a linha
+            {
+                vLeft = -VEL_MOT/1.5;
+                vRight = VEL_MOT/1.5;
+                simxSetJointTargetVelocity(clientID, leftMotorHandle, (simxFloat) vLeft, simx_opmode_streaming);
+                simxSetJointTargetVelocity(clientID, rightMotorHandle, (simxFloat) vRight, simx_opmode_streaming);
+                getReadingSensorsSimulator(clientID, bubbleRob, linPosition, angPosition, Middle_ultrasonic, reading_U,
+                                            detectedObjetLU, detectedObjetLMU, detectedObjetMU, detectedObjetRMU, detectedObjetRU,
+                                            detectedObjetHandleLU, detectedObjetHandleLMU, detectedObjetHandleMU, detectedObjetHandleRMU, detectedObjetHandleRU,
+                                            detectedSurfaceLU, detectedSurfaceLMU, detectedSurfaceMU, detectedSurfaceRMU, detectedSurfaceRU,
+                                            Left_Vision_sensor, LM_Vision_sensor, Middle_Vision_sensor, RM_Vision_sensor, Right_Vision_sensor,
+                                            reading_VS, DataLVS, DataLMVS, DataMVS, DataRMVS, DataRVS,
+                                            auxLVS, auxLMVS, auxMVS, auxRMVS, auxRVS);
+                reading_VS[1] = DataLMVS[10]<MAX_INTE;
+                reading_VS[2] = DataMVS[10]<MAX_INTE;
+                maybeQuit(comando2, abrindo_memoria);
+                extApi_sleepMs(5);
+			}
+            *comando2 = 1;
 		}
+
         //zera variaveis e manda o robo parar
         X_inicial = 0;
         Y_inicial = 0;
@@ -448,18 +704,12 @@ int main(int argc, char **argv)
 		simxSetJointTargetVelocity(clientID, leftMotorHandle, (simxFloat) vLeft, simx_opmode_streaming);
 		simxSetJointTargetVelocity(clientID, rightMotorHandle, (simxFloat) vRight, simx_opmode_streaming);
 		extApi_sleepMs(5);
-        if(kbhit())
-        {
-            cin>>close;
-            if(close=='x')
-            {
-                delete abrindo_memoria;
-                return 0;
-            }
-        }
+        maybeQuit(comando2, abrindo_memoria);
 	}
 
     simxFinish(clientID); // fechando conexao com o servidor
     cout << "Conexao e Servidor fechados!" << std::endl;
+    if (*comando2 != -5)
+        *(comando2) = -10; //quando o programa fecha, seja por ter acabado sozinho com a simulação parando ou recebendo o comando -10, deve responder com -10 pra sinalizar que fechou. a unica exceção é quando acaba por não ter conseguido conectar, daí manda -5
 	return 0;
  }
