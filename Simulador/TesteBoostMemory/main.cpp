@@ -85,7 +85,7 @@ int main()
         {
             cout << "8)Frente" << endl << "6)Direita " << endl << "4)Esquerda" << endl << "1)Fechar"<<endl;
             cin >> (*comando1);
-            if(!(*bluetooth))
+            /*if(!(*bluetooth))
             {
                 X_inicial = (linPosition.first)[0];
                 Y_inicial = (linPosition.first)[1];
@@ -107,7 +107,7 @@ int main()
                 dy=0;
                 cout<<"leitura dos sensores de visao"<<endl;
                 cout<<int(reading_VS.first[0])<<", "<<int(reading_VS.first[1])<<", "<<int(reading_VS.first[2])<<", "<<int(reading_VS.first[3])<<", "<<int(reading_VS.first[4])<<endl;
-            }
+            }*/
         }
 
         shared_memory_object::remove(NOME_DA_MEMORIA);
