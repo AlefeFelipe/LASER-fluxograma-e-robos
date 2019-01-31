@@ -133,21 +133,40 @@ void getReadingSensorsSimulator(int clientID, int bubbleRob, float *linPosition,
                                 int detectedObjetHandleLU, int detectedObjetHandleLMU, int detectedObjetHandleMU, int detectedObjetHandleRMU, int detectedObjetHandleRU,
                                 float *detectedSurfaceLU, float *detectedSurfaceLMU, float *detectedSurfaceMU, float *detectedSurfaceRMU, float *detectedSurfaceRU,
                                 int Left_Vision_sensor, int LM_Vision_sensor, int Middle_Vision_sensor, int RM_Vision_sensor, int Right_Vision_sensor,
-                                unsigned char *reading_VS, float *DataLVS, float *DataLMVS, float *DataMVS, float *DataRMVS, float *DataRVS,
-                                int *auxLVS, int *auxLMVS, int *auxMVS, int *auxRMVS, int *auxRVS)
+                                unsigned char *reading_VS, float **DataLVS, float **DataLMVS, float **DataMVS, float **DataRMVS, float **DataRVS,
+                                int *auxLVS, int *auxLMVS, int *auxMVS, int *auxRMVS, int *auxRVS, bool first_time=false)
 {
-    simxGetObjectPosition(clientID, bubbleRob, -1, linPosition, simx_opmode_streaming);
-    simxGetObjectOrientation(clientID, bubbleRob, -1, angPosition,simx_opmode_streaming);
-    simxReadProximitySensor(clientID, Middle_ultrasonic, &reading_U[0], detectedObjetLU, &detectedObjetHandleLU, detectedSurfaceLU, simx_opmode_streaming);
-    simxReadProximitySensor(clientID, Middle_ultrasonic, &reading_U[1], detectedObjetLMU, &detectedObjetHandleLMU, detectedSurfaceLMU, simx_opmode_streaming);
-    simxReadProximitySensor(clientID, Middle_ultrasonic, &reading_U[2], detectedObjetMU, &detectedObjetHandleMU, detectedSurfaceMU, simx_opmode_streaming);
-    simxReadProximitySensor(clientID, Middle_ultrasonic, &reading_U[3], detectedObjetRMU, &detectedObjetHandleRMU, detectedSurfaceRMU, simx_opmode_streaming);
-    simxReadProximitySensor(clientID, Middle_ultrasonic, &reading_U[4], detectedObjetRU, &detectedObjetHandleRU, detectedSurfaceRU, simx_opmode_streaming);
-    simxReadVisionSensor(clientID, Left_Vision_sensor, &reading_VS[0], &DataLVS, &auxLVS, simx_opmode_streaming);
-    simxReadVisionSensor(clientID, LM_Vision_sensor, &reading_VS[1], &DataLMVS, &auxLMVS, simx_opmode_streaming);
-    simxReadVisionSensor(clientID, Middle_Vision_sensor, &reading_VS[2], &DataMVS, &auxMVS, simx_opmode_streaming);
-    simxReadVisionSensor(clientID, RM_Vision_sensor, &reading_VS[3], &DataRMVS, &auxRMVS, simx_opmode_streaming);
-    simxReadVisionSensor(clientID, Right_Vision_sensor, &reading_VS[4], &DataRVS, &auxRVS, simx_opmode_streaming);
+    if(!first_time)
+    {
+        simxGetObjectPosition(clientID, bubbleRob, -1, linPosition, simx_opmode_buffer);
+        simxGetObjectOrientation(clientID, bubbleRob, -1, angPosition,simx_opmode_buffer);
+        simxReadProximitySensor(clientID, Middle_ultrasonic, &reading_U[0], detectedObjetLU, &detectedObjetHandleLU, detectedSurfaceLU, simx_opmode_buffer);
+        simxReadProximitySensor(clientID, Middle_ultrasonic, &reading_U[1], detectedObjetLMU, &detectedObjetHandleLMU, detectedSurfaceLMU, simx_opmode_buffer);
+        simxReadProximitySensor(clientID, Middle_ultrasonic, &reading_U[2], detectedObjetMU, &detectedObjetHandleMU, detectedSurfaceMU, simx_opmode_buffer);
+        simxReadProximitySensor(clientID, Middle_ultrasonic, &reading_U[3], detectedObjetRMU, &detectedObjetHandleRMU, detectedSurfaceRMU, simx_opmode_buffer);
+        simxReadProximitySensor(clientID, Middle_ultrasonic, &reading_U[4], detectedObjetRU, &detectedObjetHandleRU, detectedSurfaceRU, simx_opmode_buffer);
+        simxReadVisionSensor(clientID, Left_Vision_sensor, &reading_VS[0], DataLVS, &auxLVS, simx_opmode_buffer);
+        simxReadVisionSensor(clientID, LM_Vision_sensor, &reading_VS[1], DataLMVS, &auxLMVS, simx_opmode_buffer);
+        simxReadVisionSensor(clientID, Middle_Vision_sensor, &reading_VS[2], DataMVS, &auxMVS, simx_opmode_buffer);
+        simxReadVisionSensor(clientID, RM_Vision_sensor, &reading_VS[3], DataRMVS, &auxRMVS, simx_opmode_buffer);
+        simxReadVisionSensor(clientID, Right_Vision_sensor, &reading_VS[4], DataRVS, &auxRVS, simx_opmode_buffer);
+
+    }
+    else
+    {
+        simxGetObjectPosition(clientID, bubbleRob, -1, linPosition, simx_opmode_streaming);
+        simxGetObjectOrientation(clientID, bubbleRob, -1, angPosition,simx_opmode_streaming);
+        simxReadProximitySensor(clientID, Middle_ultrasonic, &reading_U[0], detectedObjetLU, &detectedObjetHandleLU, detectedSurfaceLU, simx_opmode_streaming);
+        simxReadProximitySensor(clientID, Middle_ultrasonic, &reading_U[1], detectedObjetLMU, &detectedObjetHandleLMU, detectedSurfaceLMU, simx_opmode_streaming);
+        simxReadProximitySensor(clientID, Middle_ultrasonic, &reading_U[2], detectedObjetMU, &detectedObjetHandleMU, detectedSurfaceMU, simx_opmode_streaming);
+        simxReadProximitySensor(clientID, Middle_ultrasonic, &reading_U[3], detectedObjetRMU, &detectedObjetHandleRMU, detectedSurfaceRMU, simx_opmode_streaming);
+        simxReadProximitySensor(clientID, Middle_ultrasonic, &reading_U[4], detectedObjetRU, &detectedObjetHandleRU, detectedSurfaceRU, simx_opmode_streaming);
+        simxReadVisionSensor(clientID, Left_Vision_sensor, &reading_VS[0], DataLVS, &auxLVS, simx_opmode_streaming);
+        simxReadVisionSensor(clientID, LM_Vision_sensor, &reading_VS[1], DataLMVS, &auxLMVS, simx_opmode_streaming);
+        simxReadVisionSensor(clientID, Middle_Vision_sensor, &reading_VS[2], DataMVS, &auxMVS, simx_opmode_streaming);
+        simxReadVisionSensor(clientID, RM_Vision_sensor, &reading_VS[3], DataRMVS, &auxRMVS, simx_opmode_streaming);
+        simxReadVisionSensor(clientID, Right_Vision_sensor, &reading_VS[4], DataRVS, &auxRVS, simx_opmode_streaming);
+    }
 }
 
 
@@ -318,8 +337,9 @@ int main(int argc, char **argv)
                                     detectedObjetHandleLU, detectedObjetHandleLMU, detectedObjetHandleMU, detectedObjetHandleRMU, detectedObjetHandleRU,
                                     detectedSurfaceLU, detectedSurfaceLMU, detectedSurfaceMU, detectedSurfaceRMU, detectedSurfaceRU,
                                     Left_Vision_sensor, LM_Vision_sensor, Middle_Vision_sensor, RM_Vision_sensor, Right_Vision_sensor,
-                                    reading_VS, DataLVS, DataLMVS, DataMVS, DataRMVS, DataRVS,
-                                    auxLVS, auxLMVS, auxMVS, auxRMVS, auxRVS);
+                                    reading_VS, &DataLVS, &DataLMVS, &DataMVS, &DataRMVS, &DataRVS,
+                                    auxLVS, auxLMVS, auxMVS, auxRMVS, auxRVS, true);
+
         if (!tudo_ok)
             *(comando2) = -5; // se a conexão com o vrep falha o programa manda -5 para indicara falha
     	else
@@ -328,17 +348,16 @@ int main(int argc, char **argv)
 
 	else
         *(comando2) = -5;
-
+    comando1 = abrindo_memoria->find<int>(NOME_DO_INT_NA_MEMORIA1);
     //loop de execucao
 	while(simxGetConnectionId(clientID)!=-1 && *(comando1.first) != -10)
     {
-		comando1 = abrindo_memoria->find<int>(NOME_DO_INT_NA_MEMORIA1);
         getReadingSensorsSimulator(clientID, bubbleRob, linPosition, angPosition, Middle_ultrasonic, reading_U,
                                     detectedObjetLU, detectedObjetLMU, detectedObjetMU, detectedObjetRMU, detectedObjetRU,
                                     detectedObjetHandleLU, detectedObjetHandleLMU, detectedObjetHandleMU, detectedObjetHandleRMU, detectedObjetHandleRU,
                                     detectedSurfaceLU, detectedSurfaceLMU, detectedSurfaceMU, detectedSurfaceRMU, detectedSurfaceRU,
                                     Left_Vision_sensor, LM_Vision_sensor, Middle_Vision_sensor, RM_Vision_sensor, Right_Vision_sensor,
-                                    reading_VS, DataLVS, DataLMVS, DataMVS, DataRMVS, DataRVS,
+                                    reading_VS, &DataLVS, &DataLMVS, &DataMVS, &DataRMVS, &DataRVS,
                                     auxLVS, auxLMVS, auxMVS, auxRMVS, auxRVS);
         reading_VS[0] = DataLVS[10]<MAX_INTE;//media da intensidade. No caso preto, sao todos 0
         reading_VS[1] = DataLMVS[10]<MAX_INTE;
@@ -350,7 +369,6 @@ int main(int argc, char **argv)
         detectedObjet_U[2] = detectedObjetMU[2];
         detectedObjet_U[3] = detectedObjetRMU[2];
         detectedObjet_U[4] = detectedSurfaceRU[2];
-        cout << reading_VS[2] << endl;
 
         //linha reta (se nao estiver perto de um obstaculo)
         if (*(comando1.first) == 8 && reading_U[2]==0)
@@ -366,7 +384,7 @@ int main(int argc, char **argv)
                                             detectedObjetHandleLU, detectedObjetHandleLMU, detectedObjetHandleMU, detectedObjetHandleRMU, detectedObjetHandleRU,
                                             detectedSurfaceLU, detectedSurfaceLMU, detectedSurfaceMU, detectedSurfaceRMU, detectedSurfaceRU,
                                             Left_Vision_sensor, LM_Vision_sensor, Middle_Vision_sensor, RM_Vision_sensor, Right_Vision_sensor,
-                                            reading_VS, DataLVS, DataLMVS, DataMVS, DataRMVS, DataRVS,
+                                            reading_VS, &DataLVS, &DataLMVS, &DataMVS, &DataRMVS, &DataRVS,
                                             auxLVS, auxLMVS, auxMVS, auxRMVS, auxRVS);
                 reading_VS[0] = DataLVS[10]<MAX_INTE;//media da intensidade. No caso preto, sao todos 0
                 reading_VS[2] = DataMVS[10]<MAX_INTE;
@@ -390,7 +408,7 @@ int main(int argc, char **argv)
                                             detectedObjetHandleLU, detectedObjetHandleLMU, detectedObjetHandleMU, detectedObjetHandleRMU, detectedObjetHandleRU,
                                             detectedSurfaceLU, detectedSurfaceLMU, detectedSurfaceMU, detectedSurfaceRMU, detectedSurfaceRU,
                                             Left_Vision_sensor, LM_Vision_sensor, Middle_Vision_sensor, RM_Vision_sensor, Right_Vision_sensor,
-                                            reading_VS, DataLVS, DataLMVS, DataMVS, DataRMVS, DataRVS,
+                                            reading_VS, &DataLVS, &DataLMVS, &DataMVS, &DataRMVS, &DataRVS,
                                             auxLVS, auxLMVS, auxMVS, auxRMVS, auxRVS);
                 reading_VS[0] = DataLVS[10]<MAX_INTE;//media da intensidade. No caso preto, sao todos 0
                 reading_VS[1] = DataLMVS[10]<MAX_INTE;
@@ -409,7 +427,7 @@ int main(int argc, char **argv)
                                                 detectedObjetHandleLU, detectedObjetHandleLMU, detectedObjetHandleMU, detectedObjetHandleRMU, detectedObjetHandleRU,
                                                 detectedSurfaceLU, detectedSurfaceLMU, detectedSurfaceMU, detectedSurfaceRMU, detectedSurfaceRU,
                                                 Left_Vision_sensor, LM_Vision_sensor, Middle_Vision_sensor, RM_Vision_sensor, Right_Vision_sensor,
-                                                reading_VS, DataLVS, DataLMVS, DataMVS, DataRMVS, DataRVS,
+                                                reading_VS, &DataLVS, &DataLMVS, &DataMVS, &DataRMVS, &DataRVS,
                                                 auxLVS, auxLMVS, auxMVS, auxRMVS, auxRVS);
                     reading_VS[0] = DataLVS[10]<MAX_INTE;//media da intensidade. No caso preto, sao todos 0
                     reading_VS[2] = DataMVS[10]<MAX_INTE;
@@ -428,7 +446,7 @@ int main(int argc, char **argv)
                                                 detectedObjetHandleLU, detectedObjetHandleLMU, detectedObjetHandleMU, detectedObjetHandleRMU, detectedObjetHandleRU,
                                                 detectedSurfaceLU, detectedSurfaceLMU, detectedSurfaceMU, detectedSurfaceRMU, detectedSurfaceRU,
                                                 Left_Vision_sensor, LM_Vision_sensor, Middle_Vision_sensor, RM_Vision_sensor, Right_Vision_sensor,
-                                                reading_VS, DataLVS, DataLMVS, DataMVS, DataRMVS, DataRVS,
+                                                reading_VS, &DataLVS, &DataLMVS, &DataMVS, &DataRMVS, &DataRVS,
                                                 auxLVS, auxLMVS, auxMVS, auxRMVS, auxRVS);
                     reading_VS[0] = DataLVS[10]<MAX_INTE;//media da intensidade. No caso preto, sao todos 0
                     reading_VS[2] = DataMVS[10]<MAX_INTE;
@@ -447,7 +465,7 @@ int main(int argc, char **argv)
                                                 detectedObjetHandleLU, detectedObjetHandleLMU, detectedObjetHandleMU, detectedObjetHandleRMU, detectedObjetHandleRU,
                                                 detectedSurfaceLU, detectedSurfaceLMU, detectedSurfaceMU, detectedSurfaceRMU, detectedSurfaceRU,
                                                 Left_Vision_sensor, LM_Vision_sensor, Middle_Vision_sensor, RM_Vision_sensor, Right_Vision_sensor,
-                                                reading_VS, DataLVS, DataLMVS, DataMVS, DataRMVS, DataRVS,
+                                                reading_VS, &DataLVS, &DataLMVS, &DataMVS, &DataRMVS, &DataRVS,
                                                 auxLVS, auxLMVS, auxMVS, auxRMVS, auxRVS);
                     reading_VS[0] = DataLVS[10]<MAX_INTE;//media da intensidade. No caso preto, sao todos 0
                     reading_VS[2] = DataMVS[10]<MAX_INTE;
@@ -466,7 +484,7 @@ int main(int argc, char **argv)
                                                 detectedObjetHandleLU, detectedObjetHandleLMU, detectedObjetHandleMU, detectedObjetHandleRMU, detectedObjetHandleRU,
                                                 detectedSurfaceLU, detectedSurfaceLMU, detectedSurfaceMU, detectedSurfaceRMU, detectedSurfaceRU,
                                                 Left_Vision_sensor, LM_Vision_sensor, Middle_Vision_sensor, RM_Vision_sensor, Right_Vision_sensor,
-                                                reading_VS, DataLVS, DataLMVS, DataMVS, DataRMVS, DataRVS,
+                                                reading_VS, &DataLVS, &DataLMVS, &DataMVS, &DataRMVS, &DataRVS,
                                                 auxLVS, auxLMVS, auxMVS, auxRMVS, auxRVS);
                     reading_VS[0] = DataLVS[10]<MAX_INTE;//media da intensidade. No caso preto, sao todos 0
                     reading_VS[2] = DataMVS[10]<MAX_INTE;
@@ -487,7 +505,7 @@ int main(int argc, char **argv)
                                                     detectedObjetHandleLU, detectedObjetHandleLMU, detectedObjetHandleMU, detectedObjetHandleRMU, detectedObjetHandleRU,
                                                     detectedSurfaceLU, detectedSurfaceLMU, detectedSurfaceMU, detectedSurfaceRMU, detectedSurfaceRU,
                                                     Left_Vision_sensor, LM_Vision_sensor, Middle_Vision_sensor, RM_Vision_sensor, Right_Vision_sensor,
-                                                    reading_VS, DataLVS, DataLMVS, DataMVS, DataRMVS, DataRVS,
+                                                    reading_VS, &DataLVS, &DataLMVS, &DataMVS, &DataRMVS, &DataRVS,
                                                     auxLVS, auxLMVS, auxMVS, auxRMVS, auxRVS);
                         reading_VS[0] = DataLVS[10]<MAX_INTE;//media da intensidade. No caso preto, sao todos 0
                         reading_VS[2] = DataMVS[10]<MAX_INTE;
@@ -504,7 +522,7 @@ int main(int argc, char **argv)
                                                     detectedObjetHandleLU, detectedObjetHandleLMU, detectedObjetHandleMU, detectedObjetHandleRMU, detectedObjetHandleRU,
                                                     detectedSurfaceLU, detectedSurfaceLMU, detectedSurfaceMU, detectedSurfaceRMU, detectedSurfaceRU,
                                                     Left_Vision_sensor, LM_Vision_sensor, Middle_Vision_sensor, RM_Vision_sensor, Right_Vision_sensor,
-                                                    reading_VS, DataLVS, DataLMVS, DataMVS, DataRMVS, DataRVS,
+                                                    reading_VS, &DataLVS, &DataLMVS, &DataMVS, &DataRMVS, &DataRVS,
                                                     auxLVS, auxLMVS, auxMVS, auxRMVS, auxRVS);
                         reading_VS[0] = DataLVS[10]<MAX_INTE;//media da intensidade. No caso preto, sao todos 0
                         reading_VS[2] = DataMVS[10]<MAX_INTE;
@@ -535,7 +553,7 @@ int main(int argc, char **argv)
                                             detectedObjetHandleLU, detectedObjetHandleLMU, detectedObjetHandleMU, detectedObjetHandleRMU, detectedObjetHandleRU,
                                             detectedSurfaceLU, detectedSurfaceLMU, detectedSurfaceMU, detectedSurfaceRMU, detectedSurfaceRU,
                                             Left_Vision_sensor, LM_Vision_sensor, Middle_Vision_sensor, RM_Vision_sensor, Right_Vision_sensor,
-                                            reading_VS, DataLVS, DataLMVS, DataMVS, DataRMVS, DataRVS,
+                                            reading_VS, &DataLVS, &DataLMVS, &DataMVS, &DataRMVS, &DataRVS,
                                             auxLVS, auxLMVS, auxMVS, auxRMVS, auxRVS);
                 dx = abs(linPosition[0]-X_inicial);
                 dy = abs(linPosition[1]-Y_inicial);
@@ -575,7 +593,7 @@ int main(int argc, char **argv)
                                             detectedObjetHandleLU, detectedObjetHandleLMU, detectedObjetHandleMU, detectedObjetHandleRMU, detectedObjetHandleRU,
                                             detectedSurfaceLU, detectedSurfaceLMU, detectedSurfaceMU, detectedSurfaceRMU, detectedSurfaceRU,
                                             Left_Vision_sensor, LM_Vision_sensor, Middle_Vision_sensor, RM_Vision_sensor, Right_Vision_sensor,
-                                            reading_VS, DataLVS, DataLMVS, DataMVS, DataRMVS, DataRVS,
+                                            reading_VS, &DataLVS, &DataLMVS, &DataMVS, &DataRMVS, &DataRVS,
                                             auxLVS, auxLMVS, auxMVS, auxRMVS, auxRVS);
                 maybeQuit(comando2, abrindo_memoria);
             }
@@ -592,7 +610,7 @@ int main(int argc, char **argv)
                                             detectedObjetHandleLU, detectedObjetHandleLMU, detectedObjetHandleMU, detectedObjetHandleRMU, detectedObjetHandleRU,
                                             detectedSurfaceLU, detectedSurfaceLMU, detectedSurfaceMU, detectedSurfaceRMU, detectedSurfaceRU,
                                             Left_Vision_sensor, LM_Vision_sensor, Middle_Vision_sensor, RM_Vision_sensor, Right_Vision_sensor,
-                                            reading_VS, DataLVS, DataLMVS, DataMVS, DataRMVS, DataRVS,
+                                            reading_VS, &DataLVS, &DataLMVS, &DataMVS, &DataRMVS, &DataRVS,
                                             auxLVS, auxLMVS, auxMVS, auxRMVS, auxRVS);
                 reading_VS[2] = DataMVS[10]<MAX_INTE;
                 reading_VS[3] = DataRMVS[10]<MAX_INTE;
@@ -610,7 +628,7 @@ int main(int argc, char **argv)
                                             detectedObjetHandleLU, detectedObjetHandleLMU, detectedObjetHandleMU, detectedObjetHandleRMU, detectedObjetHandleRU,
                                             detectedSurfaceLU, detectedSurfaceLMU, detectedSurfaceMU, detectedSurfaceRMU, detectedSurfaceRU,
                                             Left_Vision_sensor, LM_Vision_sensor, Middle_Vision_sensor, RM_Vision_sensor, Right_Vision_sensor,
-                                            reading_VS, DataLVS, DataLMVS, DataMVS, DataRMVS, DataRVS,
+                                            reading_VS, &DataLVS, &DataLMVS, &DataMVS, &DataRMVS, &DataRVS,
                                             auxLVS, auxLMVS, auxMVS, auxRMVS, auxRVS);
                 reading_VS[2] = DataMVS[10]<MAX_INTE;
                 reading_VS[3] = DataRMVS[10]<MAX_INTE;
@@ -644,7 +662,7 @@ int main(int argc, char **argv)
                                             detectedObjetHandleLU, detectedObjetHandleLMU, detectedObjetHandleMU, detectedObjetHandleRMU, detectedObjetHandleRU,
                                             detectedSurfaceLU, detectedSurfaceLMU, detectedSurfaceMU, detectedSurfaceRMU, detectedSurfaceRU,
                                             Left_Vision_sensor, LM_Vision_sensor, Middle_Vision_sensor, RM_Vision_sensor, Right_Vision_sensor,
-                                            reading_VS, DataLVS, DataLMVS, DataMVS, DataRMVS, DataRVS,
+                                            reading_VS, &DataLVS, &DataLMVS, &DataMVS, &DataRMVS, &DataRVS,
                                             auxLVS, auxLMVS, auxMVS, auxRMVS, auxRVS);
                 maybeQuit(comando2, abrindo_memoria);
 			}
@@ -662,7 +680,7 @@ int main(int argc, char **argv)
                                             detectedObjetHandleLU, detectedObjetHandleLMU, detectedObjetHandleMU, detectedObjetHandleRMU, detectedObjetHandleRU,
                                             detectedSurfaceLU, detectedSurfaceLMU, detectedSurfaceMU, detectedSurfaceRMU, detectedSurfaceRU,
                                             Left_Vision_sensor, LM_Vision_sensor, Middle_Vision_sensor, RM_Vision_sensor, Right_Vision_sensor,
-                                            reading_VS, DataLVS, DataLMVS, DataMVS, DataRMVS, DataRVS,
+                                            reading_VS, &DataLVS, &DataLMVS, &DataMVS, &DataRMVS, &DataRVS,
                                             auxLVS, auxLMVS, auxMVS, auxRMVS, auxRVS);
                 reading_VS[1] = DataLMVS[10]<MAX_INTE;
                 reading_VS[2] = DataMVS[10]<MAX_INTE;
@@ -680,7 +698,7 @@ int main(int argc, char **argv)
                                             detectedObjetHandleLU, detectedObjetHandleLMU, detectedObjetHandleMU, detectedObjetHandleRMU, detectedObjetHandleRU,
                                             detectedSurfaceLU, detectedSurfaceLMU, detectedSurfaceMU, detectedSurfaceRMU, detectedSurfaceRU,
                                             Left_Vision_sensor, LM_Vision_sensor, Middle_Vision_sensor, RM_Vision_sensor, Right_Vision_sensor,
-                                            reading_VS, DataLVS, DataLMVS, DataMVS, DataRMVS, DataRVS,
+                                            reading_VS, &DataLVS, &DataLMVS, &DataMVS, &DataRMVS, &DataRVS,
                                             auxLVS, auxLMVS, auxMVS, auxRMVS, auxRVS);
                 reading_VS[1] = DataLMVS[10]<MAX_INTE;
                 reading_VS[2] = DataMVS[10]<MAX_INTE;
