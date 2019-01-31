@@ -10,8 +10,12 @@ CMakeFiles/cppremoteapi.dir/remoteApi/extApi.c.o: ../remoteApi/v_repConst.h
 CMakeFiles/cppremoteapi.dir/remoteApi/extApiPlatform.c.o: ../remoteApi/extApiPlatform.c
 CMakeFiles/cppremoteapi.dir/remoteApi/extApiPlatform.c.o: ../remoteApi/extApiPlatform.h
 
+CMakeFiles/cppremoteapi.dir/rs232.c.o: ../rs232.c
+CMakeFiles/cppremoteapi.dir/rs232.c.o: ../rs232.h
+
 CMakeFiles/cppremoteapi.dir/main.cpp.o: ../main.cpp
 CMakeFiles/cppremoteapi.dir/main.cpp.o: ../remoteApi/extApi.h
 CMakeFiles/cppremoteapi.dir/main.cpp.o: ../remoteApi/extApiPlatform.h
 CMakeFiles/cppremoteapi.dir/main.cpp.o: ../remoteApi/v_repConst.h
+CMakeFiles/cppremoteapi.dir/main.cpp.o: ../rs232.h
 

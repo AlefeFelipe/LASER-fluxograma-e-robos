@@ -60,3 +60,33 @@ stdint.h
 
 /home/laser/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi/remoteApi/v_repConst.h
 
+/home/laser/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi/rs232.c
+rs232.h
+/home/laser/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi/rs232.h
+
+/home/laser/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi/rs232.h
+stdio.h
+-
+string.h
+-
+termios.h
+-
+sys/ioctl.h
+-
+unistd.h
+-
+fcntl.h
+-
+sys/types.h
+-
+sys/stat.h
+-
+limits.h
+-
+sys/file.h
+-
+errno.h
+-
+windows.h
+-
+

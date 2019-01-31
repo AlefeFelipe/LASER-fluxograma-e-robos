@@ -1,4 +1,4 @@
-The system is: Linux - 4.15.0-42-generic - x86_64
+The system is: Linux - 4.15.0-43-generic - x86_64
 Compiling the C compiler identification source file "CMakeCCompilerId.c" succeeded.
 Compiler: /usr/bin/cc 
 Build flags: 
@@ -28,39 +28,39 @@ The CXX compiler identification is GNU, found in "/home/laser/Desktop/LASER-flux
 Determining if the C compiler works passed with the following output:
 Change Dir: /home/laser/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi/build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_439d0/fast"
-/usr/bin/make -f CMakeFiles/cmTC_439d0.dir/build.make CMakeFiles/cmTC_439d0.dir/build
+Run Build Command:"/usr/bin/make" "cmTC_9a148/fast"
+/usr/bin/make -f CMakeFiles/cmTC_9a148.dir/build.make CMakeFiles/cmTC_9a148.dir/build
 make[1]: Entering directory '/home/laser/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi/build/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_439d0.dir/testCCompiler.c.o
-/usr/bin/cc    -o CMakeFiles/cmTC_439d0.dir/testCCompiler.c.o   -c /home/laser/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi/build/CMakeFiles/CMakeTmp/testCCompiler.c
-Linking C executable cmTC_439d0
-/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_439d0.dir/link.txt --verbose=1
-/usr/bin/cc      -rdynamic CMakeFiles/cmTC_439d0.dir/testCCompiler.c.o  -o cmTC_439d0 
+Building C object CMakeFiles/cmTC_9a148.dir/testCCompiler.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_9a148.dir/testCCompiler.c.o   -c /home/laser/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi/build/CMakeFiles/CMakeTmp/testCCompiler.c
+Linking C executable cmTC_9a148
+/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_9a148.dir/link.txt --verbose=1
+/usr/bin/cc      -rdynamic CMakeFiles/cmTC_9a148.dir/testCCompiler.c.o  -o cmTC_9a148 
 make[1]: Leaving directory '/home/laser/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi/build/CMakeFiles/CMakeTmp'
 
 
 Detecting C compiler ABI info compiled with the following output:
 Change Dir: /home/laser/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi/build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_9af22/fast"
-/usr/bin/make -f CMakeFiles/cmTC_9af22.dir/build.make CMakeFiles/cmTC_9af22.dir/build
+Run Build Command:"/usr/bin/make" "cmTC_e577e/fast"
+/usr/bin/make -f CMakeFiles/cmTC_e577e.dir/build.make CMakeFiles/cmTC_e577e.dir/build
 make[1]: Entering directory '/home/laser/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi/build/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_9af22.dir/CMakeCCompilerABI.c.o
-/usr/bin/cc    -o CMakeFiles/cmTC_9af22.dir/CMakeCCompilerABI.c.o   -c /usr/local/share/cmake-3.11/Modules/CMakeCCompilerABI.c
-Linking C executable cmTC_9af22
-/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_9af22.dir/link.txt --verbose=1
-/usr/bin/cc     -v -rdynamic CMakeFiles/cmTC_9af22.dir/CMakeCCompilerABI.c.o  -o cmTC_9af22 
+Building C object CMakeFiles/cmTC_e577e.dir/CMakeCCompilerABI.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_e577e.dir/CMakeCCompilerABI.c.o   -c /usr/local/share/cmake-3.11/Modules/CMakeCCompilerABI.c
+Linking C executable cmTC_e577e
+/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_e577e.dir/link.txt --verbose=1
+/usr/bin/cc     -v -rdynamic CMakeFiles/cmTC_e577e.dir/CMakeCCompilerABI.c.o  -o cmTC_e577e 
 Using built-in specs.
 COLLECT_GCC=/usr/bin/cc
 COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-linux-gnu/5/lto-wrapper
 Target: x86_64-linux-gnu
-Configured with: ../src/configure -v --with-pkgversion='Ubuntu 5.4.0-6ubuntu1~16.04.10' --with-bugurl=file:///usr/share/doc/gcc-5/README.Bugs --enable-languages=c,ada,c++,java,go,d,fortran,objc,obj-c++ --prefix=/usr --program-suffix=-5 --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --with-sysroot=/ --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-vtable-verify --enable-libmpx --enable-plugin --with-system-zlib --disable-browser-plugin --enable-java-awt=gtk --enable-gtk-cairo --with-java-home=/usr/lib/jvm/java-1.5.0-gcj-5-amd64/jre --enable-java-home --with-jvm-root-dir=/usr/lib/jvm/java-1.5.0-gcj-5-amd64 --with-jvm-jar-dir=/usr/lib/jvm-exports/java-1.5.0-gcj-5-amd64 --with-arch-directory=amd64 --with-ecj-jar=/usr/share/java/eclipse-ecj.jar --enable-objc-gc --enable-multiarch --disable-werror --with-arch-32=i686 --with-abi=m64 --with-multilib-list=m32,m64,mx32 --enable-multilib --with-tune=generic --enable-checking=release --build=x86_64-linux-gnu --host=x86_64-linux-gnu --target=x86_64-linux-gnu
+Configured with: ../src/configure -v --with-pkgversion='Ubuntu 5.4.0-6ubuntu1~16.04.11' --with-bugurl=file:///usr/share/doc/gcc-5/README.Bugs --enable-languages=c,ada,c++,java,go,d,fortran,objc,obj-c++ --prefix=/usr --program-suffix=-5 --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --with-sysroot=/ --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-vtable-verify --enable-libmpx --enable-plugin --with-system-zlib --disable-browser-plugin --enable-java-awt=gtk --enable-gtk-cairo --with-java-home=/usr/lib/jvm/java-1.5.0-gcj-5-amd64/jre --enable-java-home --with-jvm-root-dir=/usr/lib/jvm/java-1.5.0-gcj-5-amd64 --with-jvm-jar-dir=/usr/lib/jvm-exports/java-1.5.0-gcj-5-amd64 --with-arch-directory=amd64 --with-ecj-jar=/usr/share/java/eclipse-ecj.jar --enable-objc-gc --enable-multiarch --disable-werror --with-arch-32=i686 --with-abi=m64 --with-multilib-list=m32,m64,mx32 --enable-multilib --with-tune=generic --enable-checking=release --build=x86_64-linux-gnu --host=x86_64-linux-gnu --target=x86_64-linux-gnu
 Thread model: posix
-gcc version 5.4.0 20160609 (Ubuntu 5.4.0-6ubuntu1~16.04.10) 
+gcc version 5.4.0 20160609 (Ubuntu 5.4.0-6ubuntu1~16.04.11) 
 COMPILER_PATH=/usr/lib/gcc/x86_64-linux-gnu/5/:/usr/lib/gcc/x86_64-linux-gnu/5/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/5/:/usr/lib/gcc/x86_64-linux-gnu/
 LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/5/:/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/5/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/5/../../../:/lib/:/usr/lib/
-COLLECT_GCC_OPTIONS='-v' '-rdynamic' '-o' 'cmTC_9af22' '-mtune=generic' '-march=x86-64'
- /usr/lib/gcc/x86_64-linux-gnu/5/collect2 -plugin /usr/lib/gcc/x86_64-linux-gnu/5/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/5/lto-wrapper -plugin-opt=-fresolution=/tmp/ccjDgXm3.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --sysroot=/ --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -export-dynamic -dynamic-linker /lib64/ld-linux-x86-64.so.2 -z relro -o cmTC_9af22 /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crt1.o /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/5/crtbegin.o -L/usr/lib/gcc/x86_64-linux-gnu/5 -L/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/5/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/5/../../.. CMakeFiles/cmTC_9af22.dir/CMakeCCompilerABI.c.o -lgcc --as-needed -lgcc_s --no-as-needed -lc -lgcc --as-needed -lgcc_s --no-as-needed /usr/lib/gcc/x86_64-linux-gnu/5/crtend.o /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crtn.o
+COLLECT_GCC_OPTIONS='-v' '-rdynamic' '-o' 'cmTC_e577e' '-mtune=generic' '-march=x86-64'
+ /usr/lib/gcc/x86_64-linux-gnu/5/collect2 -plugin /usr/lib/gcc/x86_64-linux-gnu/5/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/5/lto-wrapper -plugin-opt=-fresolution=/tmp/cc0N3WyK.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --sysroot=/ --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -export-dynamic -dynamic-linker /lib64/ld-linux-x86-64.so.2 -z relro -o cmTC_e577e /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crt1.o /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/5/crtbegin.o -L/usr/lib/gcc/x86_64-linux-gnu/5 -L/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/5/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/5/../../.. CMakeFiles/cmTC_e577e.dir/CMakeCCompilerABI.c.o -lgcc --as-needed -lgcc_s --no-as-needed -lc -lgcc --as-needed -lgcc_s --no-as-needed /usr/lib/gcc/x86_64-linux-gnu/5/crtend.o /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crtn.o
 make[1]: Leaving directory '/home/laser/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi/build/CMakeFiles/CMakeTmp'
 
 
@@ -68,30 +68,30 @@ Parsed C implicit link information from above output:
   link line regex: [^( *|.*[/\])(ld|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\]+-)?ld|collect2)[^/\]*( |$)]
   ignore line: [Change Dir: /home/laser/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi/build/CMakeFiles/CMakeTmp]
   ignore line: []
-  ignore line: [Run Build Command:"/usr/bin/make" "cmTC_9af22/fast"]
-  ignore line: [/usr/bin/make -f CMakeFiles/cmTC_9af22.dir/build.make CMakeFiles/cmTC_9af22.dir/build]
+  ignore line: [Run Build Command:"/usr/bin/make" "cmTC_e577e/fast"]
+  ignore line: [/usr/bin/make -f CMakeFiles/cmTC_e577e.dir/build.make CMakeFiles/cmTC_e577e.dir/build]
   ignore line: [make[1]: Entering directory '/home/laser/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi/build/CMakeFiles/CMakeTmp']
-  ignore line: [Building C object CMakeFiles/cmTC_9af22.dir/CMakeCCompilerABI.c.o]
-  ignore line: [/usr/bin/cc    -o CMakeFiles/cmTC_9af22.dir/CMakeCCompilerABI.c.o   -c /usr/local/share/cmake-3.11/Modules/CMakeCCompilerABI.c]
-  ignore line: [Linking C executable cmTC_9af22]
-  ignore line: [/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_9af22.dir/link.txt --verbose=1]
-  ignore line: [/usr/bin/cc     -v -rdynamic CMakeFiles/cmTC_9af22.dir/CMakeCCompilerABI.c.o  -o cmTC_9af22 ]
+  ignore line: [Building C object CMakeFiles/cmTC_e577e.dir/CMakeCCompilerABI.c.o]
+  ignore line: [/usr/bin/cc    -o CMakeFiles/cmTC_e577e.dir/CMakeCCompilerABI.c.o   -c /usr/local/share/cmake-3.11/Modules/CMakeCCompilerABI.c]
+  ignore line: [Linking C executable cmTC_e577e]
+  ignore line: [/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_e577e.dir/link.txt --verbose=1]
+  ignore line: [/usr/bin/cc     -v -rdynamic CMakeFiles/cmTC_e577e.dir/CMakeCCompilerABI.c.o  -o cmTC_e577e ]
   ignore line: [Using built-in specs.]
   ignore line: [COLLECT_GCC=/usr/bin/cc]
   ignore line: [COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-linux-gnu/5/lto-wrapper]
   ignore line: [Target: x86_64-linux-gnu]
-  ignore line: [Configured with: ../src/configure -v --with-pkgversion='Ubuntu 5.4.0-6ubuntu1~16.04.10' --with-bugurl=file:///usr/share/doc/gcc-5/README.Bugs --enable-languages=c,ada,c++,java,go,d,fortran,objc,obj-c++ --prefix=/usr --program-suffix=-5 --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --with-sysroot=/ --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-vtable-verify --enable-libmpx --enable-plugin --with-system-zlib --disable-browser-plugin --enable-java-awt=gtk --enable-gtk-cairo --with-java-home=/usr/lib/jvm/java-1.5.0-gcj-5-amd64/jre --enable-java-home --with-jvm-root-dir=/usr/lib/jvm/java-1.5.0-gcj-5-amd64 --with-jvm-jar-dir=/usr/lib/jvm-exports/java-1.5.0-gcj-5-amd64 --with-arch-directory=amd64 --with-ecj-jar=/usr/share/java/eclipse-ecj.jar --enable-objc-gc --enable-multiarch --disable-werror --with-arch-32=i686 --with-abi=m64 --with-multilib-list=m32,m64,mx32 --enable-multilib --with-tune=generic --enable-checking=release --build=x86_64-linux-gnu --host=x86_64-linux-gnu --target=x86_64-linux-gnu]
+  ignore line: [Configured with: ../src/configure -v --with-pkgversion='Ubuntu 5.4.0-6ubuntu1~16.04.11' --with-bugurl=file:///usr/share/doc/gcc-5/README.Bugs --enable-languages=c,ada,c++,java,go,d,fortran,objc,obj-c++ --prefix=/usr --program-suffix=-5 --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --with-sysroot=/ --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-vtable-verify --enable-libmpx --enable-plugin --with-system-zlib --disable-browser-plugin --enable-java-awt=gtk --enable-gtk-cairo --with-java-home=/usr/lib/jvm/java-1.5.0-gcj-5-amd64/jre --enable-java-home --with-jvm-root-dir=/usr/lib/jvm/java-1.5.0-gcj-5-amd64 --with-jvm-jar-dir=/usr/lib/jvm-exports/java-1.5.0-gcj-5-amd64 --with-arch-directory=amd64 --with-ecj-jar=/usr/share/java/eclipse-ecj.jar --enable-objc-gc --enable-multiarch --disable-werror --with-arch-32=i686 --with-abi=m64 --with-multilib-list=m32,m64,mx32 --enable-multilib --with-tune=generic --enable-checking=release --build=x86_64-linux-gnu --host=x86_64-linux-gnu --target=x86_64-linux-gnu]
   ignore line: [Thread model: posix]
-  ignore line: [gcc version 5.4.0 20160609 (Ubuntu 5.4.0-6ubuntu1~16.04.10) ]
+  ignore line: [gcc version 5.4.0 20160609 (Ubuntu 5.4.0-6ubuntu1~16.04.11) ]
   ignore line: [COMPILER_PATH=/usr/lib/gcc/x86_64-linux-gnu/5/:/usr/lib/gcc/x86_64-linux-gnu/5/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/5/:/usr/lib/gcc/x86_64-linux-gnu/]
   ignore line: [LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/5/:/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/5/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/5/../../../:/lib/:/usr/lib/]
-  ignore line: [COLLECT_GCC_OPTIONS='-v' '-rdynamic' '-o' 'cmTC_9af22' '-mtune=generic' '-march=x86-64']
-  link line: [ /usr/lib/gcc/x86_64-linux-gnu/5/collect2 -plugin /usr/lib/gcc/x86_64-linux-gnu/5/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/5/lto-wrapper -plugin-opt=-fresolution=/tmp/ccjDgXm3.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --sysroot=/ --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -export-dynamic -dynamic-linker /lib64/ld-linux-x86-64.so.2 -z relro -o cmTC_9af22 /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crt1.o /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/5/crtbegin.o -L/usr/lib/gcc/x86_64-linux-gnu/5 -L/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/5/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/5/../../.. CMakeFiles/cmTC_9af22.dir/CMakeCCompilerABI.c.o -lgcc --as-needed -lgcc_s --no-as-needed -lc -lgcc --as-needed -lgcc_s --no-as-needed /usr/lib/gcc/x86_64-linux-gnu/5/crtend.o /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crtn.o]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-rdynamic' '-o' 'cmTC_e577e' '-mtune=generic' '-march=x86-64']
+  link line: [ /usr/lib/gcc/x86_64-linux-gnu/5/collect2 -plugin /usr/lib/gcc/x86_64-linux-gnu/5/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/5/lto-wrapper -plugin-opt=-fresolution=/tmp/cc0N3WyK.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --sysroot=/ --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -export-dynamic -dynamic-linker /lib64/ld-linux-x86-64.so.2 -z relro -o cmTC_e577e /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crt1.o /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/5/crtbegin.o -L/usr/lib/gcc/x86_64-linux-gnu/5 -L/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/5/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/5/../../.. CMakeFiles/cmTC_e577e.dir/CMakeCCompilerABI.c.o -lgcc --as-needed -lgcc_s --no-as-needed -lc -lgcc --as-needed -lgcc_s --no-as-needed /usr/lib/gcc/x86_64-linux-gnu/5/crtend.o /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crtn.o]
     arg [/usr/lib/gcc/x86_64-linux-gnu/5/collect2] ==> ignore
     arg [-plugin] ==> ignore
     arg [/usr/lib/gcc/x86_64-linux-gnu/5/liblto_plugin.so] ==> ignore
     arg [-plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/5/lto-wrapper] ==> ignore
-    arg [-plugin-opt=-fresolution=/tmp/ccjDgXm3.res] ==> ignore
+    arg [-plugin-opt=-fresolution=/tmp/cc0N3WyK.res] ==> ignore
     arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
     arg [-plugin-opt=-pass-through=-lgcc_s] ==> ignore
     arg [-plugin-opt=-pass-through=-lc] ==> ignore
@@ -109,7 +109,7 @@ Parsed C implicit link information from above output:
     arg [/lib64/ld-linux-x86-64.so.2] ==> ignore
     arg [-zrelro] ==> ignore
     arg [-o] ==> ignore
-    arg [cmTC_9af22] ==> ignore
+    arg [cmTC_e577e] ==> ignore
     arg [/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crt1.o] ==> ignore
     arg [/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crti.o] ==> ignore
     arg [/usr/lib/gcc/x86_64-linux-gnu/5/crtbegin.o] ==> ignore
@@ -121,7 +121,7 @@ Parsed C implicit link information from above output:
     arg [-L/usr/lib/x86_64-linux-gnu] ==> dir [/usr/lib/x86_64-linux-gnu]
     arg [-L/usr/lib/../lib] ==> dir [/usr/lib/../lib]
     arg [-L/usr/lib/gcc/x86_64-linux-gnu/5/../../..] ==> dir [/usr/lib/gcc/x86_64-linux-gnu/5/../../..]
-    arg [CMakeFiles/cmTC_9af22.dir/CMakeCCompilerABI.c.o] ==> ignore
+    arg [CMakeFiles/cmTC_e577e.dir/CMakeCCompilerABI.c.o] ==> ignore
     arg [-lgcc] ==> lib [gcc]
     arg [--as-needed] ==> ignore
     arg [-lgcc_s] ==> lib [gcc_s]
@@ -151,14 +151,14 @@ Parsed C implicit link information from above output:
 Detecting C [-std=c11] compiler features compiled with the following output:
 Change Dir: /home/laser/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi/build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_c3dbe/fast"
-/usr/bin/make -f CMakeFiles/cmTC_c3dbe.dir/build.make CMakeFiles/cmTC_c3dbe.dir/build
+Run Build Command:"/usr/bin/make" "cmTC_41dea/fast"
+/usr/bin/make -f CMakeFiles/cmTC_41dea.dir/build.make CMakeFiles/cmTC_41dea.dir/build
 make[1]: Entering directory '/home/laser/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi/build/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_c3dbe.dir/feature_tests.c.o
-/usr/bin/cc   -std=c11 -o CMakeFiles/cmTC_c3dbe.dir/feature_tests.c.o   -c /home/laser/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi/build/CMakeFiles/feature_tests.c
-Linking C executable cmTC_c3dbe
-/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_c3dbe.dir/link.txt --verbose=1
-/usr/bin/cc      -rdynamic CMakeFiles/cmTC_c3dbe.dir/feature_tests.c.o  -o cmTC_c3dbe 
+Building C object CMakeFiles/cmTC_41dea.dir/feature_tests.c.o
+/usr/bin/cc   -std=c11 -o CMakeFiles/cmTC_41dea.dir/feature_tests.c.o   -c /home/laser/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi/build/CMakeFiles/feature_tests.c
+Linking C executable cmTC_41dea
+/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_41dea.dir/link.txt --verbose=1
+/usr/bin/cc      -rdynamic CMakeFiles/cmTC_41dea.dir/feature_tests.c.o  -o cmTC_41dea 
 make[1]: Leaving directory '/home/laser/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi/build/CMakeFiles/CMakeTmp'
 
 
@@ -171,14 +171,14 @@ make[1]: Leaving directory '/home/laser/Desktop/LASER-fluxograma-e-robos/fluxpro
 Detecting C [-std=c99] compiler features compiled with the following output:
 Change Dir: /home/laser/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi/build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_a4afb/fast"
-/usr/bin/make -f CMakeFiles/cmTC_a4afb.dir/build.make CMakeFiles/cmTC_a4afb.dir/build
+Run Build Command:"/usr/bin/make" "cmTC_7d425/fast"
+/usr/bin/make -f CMakeFiles/cmTC_7d425.dir/build.make CMakeFiles/cmTC_7d425.dir/build
 make[1]: Entering directory '/home/laser/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi/build/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_a4afb.dir/feature_tests.c.o
-/usr/bin/cc   -std=c99 -o CMakeFiles/cmTC_a4afb.dir/feature_tests.c.o   -c /home/laser/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi/build/CMakeFiles/feature_tests.c
-Linking C executable cmTC_a4afb
-/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_a4afb.dir/link.txt --verbose=1
-/usr/bin/cc      -rdynamic CMakeFiles/cmTC_a4afb.dir/feature_tests.c.o  -o cmTC_a4afb 
+Building C object CMakeFiles/cmTC_7d425.dir/feature_tests.c.o
+/usr/bin/cc   -std=c99 -o CMakeFiles/cmTC_7d425.dir/feature_tests.c.o   -c /home/laser/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi/build/CMakeFiles/feature_tests.c
+Linking C executable cmTC_7d425
+/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_7d425.dir/link.txt --verbose=1
+/usr/bin/cc      -rdynamic CMakeFiles/cmTC_7d425.dir/feature_tests.c.o  -o cmTC_7d425 
 make[1]: Leaving directory '/home/laser/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi/build/CMakeFiles/CMakeTmp'
 
 
@@ -191,14 +191,14 @@ make[1]: Leaving directory '/home/laser/Desktop/LASER-fluxograma-e-robos/fluxpro
 Detecting C [-std=c90] compiler features compiled with the following output:
 Change Dir: /home/laser/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi/build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_a7710/fast"
-/usr/bin/make -f CMakeFiles/cmTC_a7710.dir/build.make CMakeFiles/cmTC_a7710.dir/build
+Run Build Command:"/usr/bin/make" "cmTC_2eae5/fast"
+/usr/bin/make -f CMakeFiles/cmTC_2eae5.dir/build.make CMakeFiles/cmTC_2eae5.dir/build
 make[1]: Entering directory '/home/laser/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi/build/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_a7710.dir/feature_tests.c.o
-/usr/bin/cc   -std=c90 -o CMakeFiles/cmTC_a7710.dir/feature_tests.c.o   -c /home/laser/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi/build/CMakeFiles/feature_tests.c
-Linking C executable cmTC_a7710
-/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_a7710.dir/link.txt --verbose=1
-/usr/bin/cc      -rdynamic CMakeFiles/cmTC_a7710.dir/feature_tests.c.o  -o cmTC_a7710 
+Building C object CMakeFiles/cmTC_2eae5.dir/feature_tests.c.o
+/usr/bin/cc   -std=c90 -o CMakeFiles/cmTC_2eae5.dir/feature_tests.c.o   -c /home/laser/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi/build/CMakeFiles/feature_tests.c
+Linking C executable cmTC_2eae5
+/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_2eae5.dir/link.txt --verbose=1
+/usr/bin/cc      -rdynamic CMakeFiles/cmTC_2eae5.dir/feature_tests.c.o  -o cmTC_2eae5 
 make[1]: Leaving directory '/home/laser/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi/build/CMakeFiles/CMakeTmp'
 
 
@@ -209,39 +209,39 @@ make[1]: Leaving directory '/home/laser/Desktop/LASER-fluxograma-e-robos/fluxpro
 Determining if the CXX compiler works passed with the following output:
 Change Dir: /home/laser/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi/build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_72c4c/fast"
-/usr/bin/make -f CMakeFiles/cmTC_72c4c.dir/build.make CMakeFiles/cmTC_72c4c.dir/build
+Run Build Command:"/usr/bin/make" "cmTC_e69cb/fast"
+/usr/bin/make -f CMakeFiles/cmTC_e69cb.dir/build.make CMakeFiles/cmTC_e69cb.dir/build
 make[1]: Entering directory '/home/laser/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi/build/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_72c4c.dir/testCXXCompiler.cxx.o
-/usr/bin/c++     -o CMakeFiles/cmTC_72c4c.dir/testCXXCompiler.cxx.o -c /home/laser/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi/build/CMakeFiles/CMakeTmp/testCXXCompiler.cxx
-Linking CXX executable cmTC_72c4c
-/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_72c4c.dir/link.txt --verbose=1
-/usr/bin/c++       -rdynamic CMakeFiles/cmTC_72c4c.dir/testCXXCompiler.cxx.o  -o cmTC_72c4c 
+Building CXX object CMakeFiles/cmTC_e69cb.dir/testCXXCompiler.cxx.o
+/usr/bin/c++     -o CMakeFiles/cmTC_e69cb.dir/testCXXCompiler.cxx.o -c /home/laser/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi/build/CMakeFiles/CMakeTmp/testCXXCompiler.cxx
+Linking CXX executable cmTC_e69cb
+/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_e69cb.dir/link.txt --verbose=1
+/usr/bin/c++       -rdynamic CMakeFiles/cmTC_e69cb.dir/testCXXCompiler.cxx.o  -o cmTC_e69cb 
 make[1]: Leaving directory '/home/laser/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi/build/CMakeFiles/CMakeTmp'
 
 
 Detecting CXX compiler ABI info compiled with the following output:
 Change Dir: /home/laser/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi/build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_5747b/fast"
-/usr/bin/make -f CMakeFiles/cmTC_5747b.dir/build.make CMakeFiles/cmTC_5747b.dir/build
+Run Build Command:"/usr/bin/make" "cmTC_42b9e/fast"
+/usr/bin/make -f CMakeFiles/cmTC_42b9e.dir/build.make CMakeFiles/cmTC_42b9e.dir/build
 make[1]: Entering directory '/home/laser/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi/build/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_5747b.dir/CMakeCXXCompilerABI.cpp.o
-/usr/bin/c++     -o CMakeFiles/cmTC_5747b.dir/CMakeCXXCompilerABI.cpp.o -c /usr/local/share/cmake-3.11/Modules/CMakeCXXCompilerABI.cpp
-Linking CXX executable cmTC_5747b
-/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_5747b.dir/link.txt --verbose=1
-/usr/bin/c++      -v -rdynamic CMakeFiles/cmTC_5747b.dir/CMakeCXXCompilerABI.cpp.o  -o cmTC_5747b 
+Building CXX object CMakeFiles/cmTC_42b9e.dir/CMakeCXXCompilerABI.cpp.o
+/usr/bin/c++     -o CMakeFiles/cmTC_42b9e.dir/CMakeCXXCompilerABI.cpp.o -c /usr/local/share/cmake-3.11/Modules/CMakeCXXCompilerABI.cpp
+Linking CXX executable cmTC_42b9e
+/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_42b9e.dir/link.txt --verbose=1
+/usr/bin/c++      -v -rdynamic CMakeFiles/cmTC_42b9e.dir/CMakeCXXCompilerABI.cpp.o  -o cmTC_42b9e 
 Using built-in specs.
 COLLECT_GCC=/usr/bin/c++
 COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-linux-gnu/5/lto-wrapper
 Target: x86_64-linux-gnu
-Configured with: ../src/configure -v --with-pkgversion='Ubuntu 5.4.0-6ubuntu1~16.04.10' --with-bugurl=file:///usr/share/doc/gcc-5/README.Bugs --enable-languages=c,ada,c++,java,go,d,fortran,objc,obj-c++ --prefix=/usr --program-suffix=-5 --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --with-sysroot=/ --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-vtable-verify --enable-libmpx --enable-plugin --with-system-zlib --disable-browser-plugin --enable-java-awt=gtk --enable-gtk-cairo --with-java-home=/usr/lib/jvm/java-1.5.0-gcj-5-amd64/jre --enable-java-home --with-jvm-root-dir=/usr/lib/jvm/java-1.5.0-gcj-5-amd64 --with-jvm-jar-dir=/usr/lib/jvm-exports/java-1.5.0-gcj-5-amd64 --with-arch-directory=amd64 --with-ecj-jar=/usr/share/java/eclipse-ecj.jar --enable-objc-gc --enable-multiarch --disable-werror --with-arch-32=i686 --with-abi=m64 --with-multilib-list=m32,m64,mx32 --enable-multilib --with-tune=generic --enable-checking=release --build=x86_64-linux-gnu --host=x86_64-linux-gnu --target=x86_64-linux-gnu
+Configured with: ../src/configure -v --with-pkgversion='Ubuntu 5.4.0-6ubuntu1~16.04.11' --with-bugurl=file:///usr/share/doc/gcc-5/README.Bugs --enable-languages=c,ada,c++,java,go,d,fortran,objc,obj-c++ --prefix=/usr --program-suffix=-5 --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --with-sysroot=/ --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-vtable-verify --enable-libmpx --enable-plugin --with-system-zlib --disable-browser-plugin --enable-java-awt=gtk --enable-gtk-cairo --with-java-home=/usr/lib/jvm/java-1.5.0-gcj-5-amd64/jre --enable-java-home --with-jvm-root-dir=/usr/lib/jvm/java-1.5.0-gcj-5-amd64 --with-jvm-jar-dir=/usr/lib/jvm-exports/java-1.5.0-gcj-5-amd64 --with-arch-directory=amd64 --with-ecj-jar=/usr/share/java/eclipse-ecj.jar --enable-objc-gc --enable-multiarch --disable-werror --with-arch-32=i686 --with-abi=m64 --with-multilib-list=m32,m64,mx32 --enable-multilib --with-tune=generic --enable-checking=release --build=x86_64-linux-gnu --host=x86_64-linux-gnu --target=x86_64-linux-gnu
 Thread model: posix
-gcc version 5.4.0 20160609 (Ubuntu 5.4.0-6ubuntu1~16.04.10) 
+gcc version 5.4.0 20160609 (Ubuntu 5.4.0-6ubuntu1~16.04.11) 
 COMPILER_PATH=/usr/lib/gcc/x86_64-linux-gnu/5/:/usr/lib/gcc/x86_64-linux-gnu/5/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/5/:/usr/lib/gcc/x86_64-linux-gnu/
 LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/5/:/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/5/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/5/../../../:/lib/:/usr/lib/
-COLLECT_GCC_OPTIONS='-v' '-rdynamic' '-o' 'cmTC_5747b' '-shared-libgcc' '-mtune=generic' '-march=x86-64'
- /usr/lib/gcc/x86_64-linux-gnu/5/collect2 -plugin /usr/lib/gcc/x86_64-linux-gnu/5/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/5/lto-wrapper -plugin-opt=-fresolution=/tmp/ccxdPA6E.res -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc --sysroot=/ --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -export-dynamic -dynamic-linker /lib64/ld-linux-x86-64.so.2 -z relro -o cmTC_5747b /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crt1.o /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/5/crtbegin.o -L/usr/lib/gcc/x86_64-linux-gnu/5 -L/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/5/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/5/../../.. CMakeFiles/cmTC_5747b.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/lib/gcc/x86_64-linux-gnu/5/crtend.o /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crtn.o
+COLLECT_GCC_OPTIONS='-v' '-rdynamic' '-o' 'cmTC_42b9e' '-shared-libgcc' '-mtune=generic' '-march=x86-64'
+ /usr/lib/gcc/x86_64-linux-gnu/5/collect2 -plugin /usr/lib/gcc/x86_64-linux-gnu/5/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/5/lto-wrapper -plugin-opt=-fresolution=/tmp/ccO6kAXq.res -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc --sysroot=/ --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -export-dynamic -dynamic-linker /lib64/ld-linux-x86-64.so.2 -z relro -o cmTC_42b9e /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crt1.o /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/5/crtbegin.o -L/usr/lib/gcc/x86_64-linux-gnu/5 -L/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/5/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/5/../../.. CMakeFiles/cmTC_42b9e.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/lib/gcc/x86_64-linux-gnu/5/crtend.o /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crtn.o
 make[1]: Leaving directory '/home/laser/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi/build/CMakeFiles/CMakeTmp'
 
 
@@ -249,30 +249,30 @@ Parsed CXX implicit link information from above output:
   link line regex: [^( *|.*[/\])(ld|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\]+-)?ld|collect2)[^/\]*( |$)]
   ignore line: [Change Dir: /home/laser/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi/build/CMakeFiles/CMakeTmp]
   ignore line: []
-  ignore line: [Run Build Command:"/usr/bin/make" "cmTC_5747b/fast"]
-  ignore line: [/usr/bin/make -f CMakeFiles/cmTC_5747b.dir/build.make CMakeFiles/cmTC_5747b.dir/build]
+  ignore line: [Run Build Command:"/usr/bin/make" "cmTC_42b9e/fast"]
+  ignore line: [/usr/bin/make -f CMakeFiles/cmTC_42b9e.dir/build.make CMakeFiles/cmTC_42b9e.dir/build]
   ignore line: [make[1]: Entering directory '/home/laser/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi/build/CMakeFiles/CMakeTmp']
-  ignore line: [Building CXX object CMakeFiles/cmTC_5747b.dir/CMakeCXXCompilerABI.cpp.o]
-  ignore line: [/usr/bin/c++     -o CMakeFiles/cmTC_5747b.dir/CMakeCXXCompilerABI.cpp.o -c /usr/local/share/cmake-3.11/Modules/CMakeCXXCompilerABI.cpp]
-  ignore line: [Linking CXX executable cmTC_5747b]
-  ignore line: [/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_5747b.dir/link.txt --verbose=1]
-  ignore line: [/usr/bin/c++      -v -rdynamic CMakeFiles/cmTC_5747b.dir/CMakeCXXCompilerABI.cpp.o  -o cmTC_5747b ]
+  ignore line: [Building CXX object CMakeFiles/cmTC_42b9e.dir/CMakeCXXCompilerABI.cpp.o]
+  ignore line: [/usr/bin/c++     -o CMakeFiles/cmTC_42b9e.dir/CMakeCXXCompilerABI.cpp.o -c /usr/local/share/cmake-3.11/Modules/CMakeCXXCompilerABI.cpp]
+  ignore line: [Linking CXX executable cmTC_42b9e]
+  ignore line: [/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_42b9e.dir/link.txt --verbose=1]
+  ignore line: [/usr/bin/c++      -v -rdynamic CMakeFiles/cmTC_42b9e.dir/CMakeCXXCompilerABI.cpp.o  -o cmTC_42b9e ]
   ignore line: [Using built-in specs.]
   ignore line: [COLLECT_GCC=/usr/bin/c++]
   ignore line: [COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-linux-gnu/5/lto-wrapper]
   ignore line: [Target: x86_64-linux-gnu]
-  ignore line: [Configured with: ../src/configure -v --with-pkgversion='Ubuntu 5.4.0-6ubuntu1~16.04.10' --with-bugurl=file:///usr/share/doc/gcc-5/README.Bugs --enable-languages=c,ada,c++,java,go,d,fortran,objc,obj-c++ --prefix=/usr --program-suffix=-5 --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --with-sysroot=/ --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-vtable-verify --enable-libmpx --enable-plugin --with-system-zlib --disable-browser-plugin --enable-java-awt=gtk --enable-gtk-cairo --with-java-home=/usr/lib/jvm/java-1.5.0-gcj-5-amd64/jre --enable-java-home --with-jvm-root-dir=/usr/lib/jvm/java-1.5.0-gcj-5-amd64 --with-jvm-jar-dir=/usr/lib/jvm-exports/java-1.5.0-gcj-5-amd64 --with-arch-directory=amd64 --with-ecj-jar=/usr/share/java/eclipse-ecj.jar --enable-objc-gc --enable-multiarch --disable-werror --with-arch-32=i686 --with-abi=m64 --with-multilib-list=m32,m64,mx32 --enable-multilib --with-tune=generic --enable-checking=release --build=x86_64-linux-gnu --host=x86_64-linux-gnu --target=x86_64-linux-gnu]
+  ignore line: [Configured with: ../src/configure -v --with-pkgversion='Ubuntu 5.4.0-6ubuntu1~16.04.11' --with-bugurl=file:///usr/share/doc/gcc-5/README.Bugs --enable-languages=c,ada,c++,java,go,d,fortran,objc,obj-c++ --prefix=/usr --program-suffix=-5 --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --with-sysroot=/ --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-vtable-verify --enable-libmpx --enable-plugin --with-system-zlib --disable-browser-plugin --enable-java-awt=gtk --enable-gtk-cairo --with-java-home=/usr/lib/jvm/java-1.5.0-gcj-5-amd64/jre --enable-java-home --with-jvm-root-dir=/usr/lib/jvm/java-1.5.0-gcj-5-amd64 --with-jvm-jar-dir=/usr/lib/jvm-exports/java-1.5.0-gcj-5-amd64 --with-arch-directory=amd64 --with-ecj-jar=/usr/share/java/eclipse-ecj.jar --enable-objc-gc --enable-multiarch --disable-werror --with-arch-32=i686 --with-abi=m64 --with-multilib-list=m32,m64,mx32 --enable-multilib --with-tune=generic --enable-checking=release --build=x86_64-linux-gnu --host=x86_64-linux-gnu --target=x86_64-linux-gnu]
   ignore line: [Thread model: posix]
-  ignore line: [gcc version 5.4.0 20160609 (Ubuntu 5.4.0-6ubuntu1~16.04.10) ]
+  ignore line: [gcc version 5.4.0 20160609 (Ubuntu 5.4.0-6ubuntu1~16.04.11) ]
   ignore line: [COMPILER_PATH=/usr/lib/gcc/x86_64-linux-gnu/5/:/usr/lib/gcc/x86_64-linux-gnu/5/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/5/:/usr/lib/gcc/x86_64-linux-gnu/]
   ignore line: [LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/5/:/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/5/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/5/../../../:/lib/:/usr/lib/]
-  ignore line: [COLLECT_GCC_OPTIONS='-v' '-rdynamic' '-o' 'cmTC_5747b' '-shared-libgcc' '-mtune=generic' '-march=x86-64']
-  link line: [ /usr/lib/gcc/x86_64-linux-gnu/5/collect2 -plugin /usr/lib/gcc/x86_64-linux-gnu/5/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/5/lto-wrapper -plugin-opt=-fresolution=/tmp/ccxdPA6E.res -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc --sysroot=/ --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -export-dynamic -dynamic-linker /lib64/ld-linux-x86-64.so.2 -z relro -o cmTC_5747b /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crt1.o /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/5/crtbegin.o -L/usr/lib/gcc/x86_64-linux-gnu/5 -L/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/5/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/5/../../.. CMakeFiles/cmTC_5747b.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/lib/gcc/x86_64-linux-gnu/5/crtend.o /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crtn.o]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-rdynamic' '-o' 'cmTC_42b9e' '-shared-libgcc' '-mtune=generic' '-march=x86-64']
+  link line: [ /usr/lib/gcc/x86_64-linux-gnu/5/collect2 -plugin /usr/lib/gcc/x86_64-linux-gnu/5/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/5/lto-wrapper -plugin-opt=-fresolution=/tmp/ccO6kAXq.res -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc --sysroot=/ --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -export-dynamic -dynamic-linker /lib64/ld-linux-x86-64.so.2 -z relro -o cmTC_42b9e /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crt1.o /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/5/crtbegin.o -L/usr/lib/gcc/x86_64-linux-gnu/5 -L/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/5/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/5/../../.. CMakeFiles/cmTC_42b9e.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/lib/gcc/x86_64-linux-gnu/5/crtend.o /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crtn.o]
     arg [/usr/lib/gcc/x86_64-linux-gnu/5/collect2] ==> ignore
     arg [-plugin] ==> ignore
     arg [/usr/lib/gcc/x86_64-linux-gnu/5/liblto_plugin.so] ==> ignore
     arg [-plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/5/lto-wrapper] ==> ignore
-    arg [-plugin-opt=-fresolution=/tmp/ccxdPA6E.res] ==> ignore
+    arg [-plugin-opt=-fresolution=/tmp/ccO6kAXq.res] ==> ignore
     arg [-plugin-opt=-pass-through=-lgcc_s] ==> ignore
     arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
     arg [-plugin-opt=-pass-through=-lc] ==> ignore
@@ -290,7 +290,7 @@ Parsed CXX implicit link information from above output:
     arg [/lib64/ld-linux-x86-64.so.2] ==> ignore
     arg [-zrelro] ==> ignore
     arg [-o] ==> ignore
-    arg [cmTC_5747b] ==> ignore
+    arg [cmTC_42b9e] ==> ignore
     arg [/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crt1.o] ==> ignore
     arg [/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crti.o] ==> ignore
     arg [/usr/lib/gcc/x86_64-linux-gnu/5/crtbegin.o] ==> ignore
@@ -302,7 +302,7 @@ Parsed CXX implicit link information from above output:
     arg [-L/usr/lib/x86_64-linux-gnu] ==> dir [/usr/lib/x86_64-linux-gnu]
     arg [-L/usr/lib/../lib] ==> dir [/usr/lib/../lib]
     arg [-L/usr/lib/gcc/x86_64-linux-gnu/5/../../..] ==> dir [/usr/lib/gcc/x86_64-linux-gnu/5/../../..]
-    arg [CMakeFiles/cmTC_5747b.dir/CMakeCXXCompilerABI.cpp.o] ==> ignore
+    arg [CMakeFiles/cmTC_42b9e.dir/CMakeCXXCompilerABI.cpp.o] ==> ignore
     arg [-lstdc++] ==> lib [stdc++]
     arg [-lm] ==> lib [m]
     arg [-lgcc_s] ==> lib [gcc_s]
@@ -330,14 +330,14 @@ Parsed CXX implicit link information from above output:
 Detecting CXX [-std=c++1z] compiler features compiled with the following output:
 Change Dir: /home/laser/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi/build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_b4e75/fast"
-/usr/bin/make -f CMakeFiles/cmTC_b4e75.dir/build.make CMakeFiles/cmTC_b4e75.dir/build
+Run Build Command:"/usr/bin/make" "cmTC_ffdb8/fast"
+/usr/bin/make -f CMakeFiles/cmTC_ffdb8.dir/build.make CMakeFiles/cmTC_ffdb8.dir/build
 make[1]: Entering directory '/home/laser/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi/build/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_b4e75.dir/feature_tests.cxx.o
-/usr/bin/c++    -std=c++1z -o CMakeFiles/cmTC_b4e75.dir/feature_tests.cxx.o -c /home/laser/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi/build/CMakeFiles/feature_tests.cxx
-Linking CXX executable cmTC_b4e75
-/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_b4e75.dir/link.txt --verbose=1
-/usr/bin/c++       -rdynamic CMakeFiles/cmTC_b4e75.dir/feature_tests.cxx.o  -o cmTC_b4e75 
+Building CXX object CMakeFiles/cmTC_ffdb8.dir/feature_tests.cxx.o
+/usr/bin/c++    -std=c++1z -o CMakeFiles/cmTC_ffdb8.dir/feature_tests.cxx.o -c /home/laser/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi/build/CMakeFiles/feature_tests.cxx
+Linking CXX executable cmTC_ffdb8
+/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_ffdb8.dir/link.txt --verbose=1
+/usr/bin/c++       -rdynamic CMakeFiles/cmTC_ffdb8.dir/feature_tests.cxx.o  -o cmTC_ffdb8 
 make[1]: Leaving directory '/home/laser/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi/build/CMakeFiles/CMakeTmp'
 
 
@@ -403,14 +403,14 @@ make[1]: Leaving directory '/home/laser/Desktop/LASER-fluxograma-e-robos/fluxpro
 Detecting CXX [-std=c++14] compiler features compiled with the following output:
 Change Dir: /home/laser/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi/build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_b5ba7/fast"
-/usr/bin/make -f CMakeFiles/cmTC_b5ba7.dir/build.make CMakeFiles/cmTC_b5ba7.dir/build
+Run Build Command:"/usr/bin/make" "cmTC_47483/fast"
+/usr/bin/make -f CMakeFiles/cmTC_47483.dir/build.make CMakeFiles/cmTC_47483.dir/build
 make[1]: Entering directory '/home/laser/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi/build/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_b5ba7.dir/feature_tests.cxx.o
-/usr/bin/c++    -std=c++14 -o CMakeFiles/cmTC_b5ba7.dir/feature_tests.cxx.o -c /home/laser/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi/build/CMakeFiles/feature_tests.cxx
-Linking CXX executable cmTC_b5ba7
-/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_b5ba7.dir/link.txt --verbose=1
-/usr/bin/c++       -rdynamic CMakeFiles/cmTC_b5ba7.dir/feature_tests.cxx.o  -o cmTC_b5ba7 
+Building CXX object CMakeFiles/cmTC_47483.dir/feature_tests.cxx.o
+/usr/bin/c++    -std=c++14 -o CMakeFiles/cmTC_47483.dir/feature_tests.cxx.o -c /home/laser/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi/build/CMakeFiles/feature_tests.cxx
+Linking CXX executable cmTC_47483
+/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_47483.dir/link.txt --verbose=1
+/usr/bin/c++       -rdynamic CMakeFiles/cmTC_47483.dir/feature_tests.cxx.o  -o cmTC_47483 
 make[1]: Leaving directory '/home/laser/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi/build/CMakeFiles/CMakeTmp'
 
 
@@ -476,14 +476,14 @@ make[1]: Leaving directory '/home/laser/Desktop/LASER-fluxograma-e-robos/fluxpro
 Detecting CXX [-std=c++11] compiler features compiled with the following output:
 Change Dir: /home/laser/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi/build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_fec53/fast"
-/usr/bin/make -f CMakeFiles/cmTC_fec53.dir/build.make CMakeFiles/cmTC_fec53.dir/build
+Run Build Command:"/usr/bin/make" "cmTC_06f05/fast"
+/usr/bin/make -f CMakeFiles/cmTC_06f05.dir/build.make CMakeFiles/cmTC_06f05.dir/build
 make[1]: Entering directory '/home/laser/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi/build/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_fec53.dir/feature_tests.cxx.o
-/usr/bin/c++    -std=c++11 -o CMakeFiles/cmTC_fec53.dir/feature_tests.cxx.o -c /home/laser/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi/build/CMakeFiles/feature_tests.cxx
-Linking CXX executable cmTC_fec53
-/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_fec53.dir/link.txt --verbose=1
-/usr/bin/c++       -rdynamic CMakeFiles/cmTC_fec53.dir/feature_tests.cxx.o  -o cmTC_fec53 
+Building CXX object CMakeFiles/cmTC_06f05.dir/feature_tests.cxx.o
+/usr/bin/c++    -std=c++11 -o CMakeFiles/cmTC_06f05.dir/feature_tests.cxx.o -c /home/laser/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi/build/CMakeFiles/feature_tests.cxx
+Linking CXX executable cmTC_06f05
+/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_06f05.dir/link.txt --verbose=1
+/usr/bin/c++       -rdynamic CMakeFiles/cmTC_06f05.dir/feature_tests.cxx.o  -o cmTC_06f05 
 make[1]: Leaving directory '/home/laser/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi/build/CMakeFiles/CMakeTmp'
 
 
@@ -549,14 +549,14 @@ make[1]: Leaving directory '/home/laser/Desktop/LASER-fluxograma-e-robos/fluxpro
 Detecting CXX [-std=c++98] compiler features compiled with the following output:
 Change Dir: /home/laser/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi/build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_bbe26/fast"
-/usr/bin/make -f CMakeFiles/cmTC_bbe26.dir/build.make CMakeFiles/cmTC_bbe26.dir/build
+Run Build Command:"/usr/bin/make" "cmTC_73001/fast"
+/usr/bin/make -f CMakeFiles/cmTC_73001.dir/build.make CMakeFiles/cmTC_73001.dir/build
 make[1]: Entering directory '/home/laser/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi/build/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_bbe26.dir/feature_tests.cxx.o
-/usr/bin/c++    -std=c++98 -o CMakeFiles/cmTC_bbe26.dir/feature_tests.cxx.o -c /home/laser/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi/build/CMakeFiles/feature_tests.cxx
-Linking CXX executable cmTC_bbe26
-/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_bbe26.dir/link.txt --verbose=1
-/usr/bin/c++       -rdynamic CMakeFiles/cmTC_bbe26.dir/feature_tests.cxx.o  -o cmTC_bbe26 
+Building CXX object CMakeFiles/cmTC_73001.dir/feature_tests.cxx.o
+/usr/bin/c++    -std=c++98 -o CMakeFiles/cmTC_73001.dir/feature_tests.cxx.o -c /home/laser/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi/build/CMakeFiles/feature_tests.cxx
+Linking CXX executable cmTC_73001
+/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_73001.dir/link.txt --verbose=1
+/usr/bin/c++       -rdynamic CMakeFiles/cmTC_73001.dir/feature_tests.cxx.o  -o cmTC_73001 
 make[1]: Leaving directory '/home/laser/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi/build/CMakeFiles/CMakeTmp'
 
 
@@ -620,28 +620,28 @@ make[1]: Leaving directory '/home/laser/Desktop/LASER-fluxograma-e-robos/fluxpro
 Determining if the include file pthread.h exists passed with the following output:
 Change Dir: /home/laser/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi/build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_c4fc6/fast"
-/usr/bin/make -f CMakeFiles/cmTC_c4fc6.dir/build.make CMakeFiles/cmTC_c4fc6.dir/build
+Run Build Command:"/usr/bin/make" "cmTC_e90c3/fast"
+/usr/bin/make -f CMakeFiles/cmTC_e90c3.dir/build.make CMakeFiles/cmTC_e90c3.dir/build
 make[1]: Entering directory '/home/laser/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi/build/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_c4fc6.dir/CheckIncludeFile.c.o
-/usr/bin/cc    -o CMakeFiles/cmTC_c4fc6.dir/CheckIncludeFile.c.o   -c /home/laser/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi/build/CMakeFiles/CMakeTmp/CheckIncludeFile.c
-Linking C executable cmTC_c4fc6
-/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_c4fc6.dir/link.txt --verbose=1
-/usr/bin/cc      -rdynamic CMakeFiles/cmTC_c4fc6.dir/CheckIncludeFile.c.o  -o cmTC_c4fc6 
+Building C object CMakeFiles/cmTC_e90c3.dir/CheckIncludeFile.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_e90c3.dir/CheckIncludeFile.c.o   -c /home/laser/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi/build/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_e90c3
+/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_e90c3.dir/link.txt --verbose=1
+/usr/bin/cc      -rdynamic CMakeFiles/cmTC_e90c3.dir/CheckIncludeFile.c.o  -o cmTC_e90c3 
 make[1]: Leaving directory '/home/laser/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi/build/CMakeFiles/CMakeTmp'
 
 
 Determining if the function pthread_create exists in the pthread passed with the following output:
 Change Dir: /home/laser/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi/build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_6f184/fast"
-/usr/bin/make -f CMakeFiles/cmTC_6f184.dir/build.make CMakeFiles/cmTC_6f184.dir/build
+Run Build Command:"/usr/bin/make" "cmTC_26002/fast"
+/usr/bin/make -f CMakeFiles/cmTC_26002.dir/build.make CMakeFiles/cmTC_26002.dir/build
 make[1]: Entering directory '/home/laser/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi/build/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_6f184.dir/CheckFunctionExists.c.o
-/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_6f184.dir/CheckFunctionExists.c.o   -c /usr/local/share/cmake-3.11/Modules/CheckFunctionExists.c
-Linking C executable cmTC_6f184
-/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_6f184.dir/link.txt --verbose=1
-/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=pthread_create    -rdynamic CMakeFiles/cmTC_6f184.dir/CheckFunctionExists.c.o  -o cmTC_6f184 -lpthread 
+Building C object CMakeFiles/cmTC_26002.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_26002.dir/CheckFunctionExists.c.o   -c /usr/local/share/cmake-3.11/Modules/CheckFunctionExists.c
+Linking C executable cmTC_26002
+/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_26002.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=pthread_create    -rdynamic CMakeFiles/cmTC_26002.dir/CheckFunctionExists.c.o  -o cmTC_26002 -lpthread 
 make[1]: Leaving directory '/home/laser/Desktop/LASER-fluxograma-e-robos/fluxprog/ProjetoRemoteApi/build/CMakeFiles/CMakeTmp'
 
 

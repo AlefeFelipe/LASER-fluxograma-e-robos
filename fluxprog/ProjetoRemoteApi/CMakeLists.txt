@@ -19,8 +19,9 @@ set(SOURCES
     remoteApi/extApi.c
     #remoteApi/extApiCustom.c
     remoteApi/extApiPlatform.c
+    rs232.c
 )
- 
+
 set(HEADERS
     remoteApi/extApi.h
     #remoteApi/extApiCustom.h
@@ -28,7 +29,8 @@ set(HEADERS
     remoteApi/extApiPlatform.h
     include/v_repConst.h
     include/v_repLib.h
-    
+    rs232.h
+
 )
 
 include_directories("include/")
@@ -40,8 +42,8 @@ find_package(Threads REQUIRED)
 
 
 
-add_executable(cppremoteapi 
-               main.cpp 
+add_executable(cppremoteapi
+               main.cpp
                ${SOURCES}
 	       ${HEADERS})
 
@@ -54,7 +56,7 @@ endif()
 
 TARGET_LINK_LIBRARIES(cppremoteapi ${Boost_LIBRARIES} rt)
 
-	       
+
 target_link_libraries (cppremoteapi ${CMAKE_THREAD_LIBS_INIT})
 
 install(TARGETS cppremoteapi RUNTIME DESTINATION bin)
