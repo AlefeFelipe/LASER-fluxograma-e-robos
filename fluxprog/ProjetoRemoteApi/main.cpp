@@ -245,48 +245,52 @@ int main(int argc, char **argv)
       }
     }
 
-    int* comando2;// comando para enviar dados a memoria
     unsigned char* reading_VS;//vetores para captacao da leitura dos sensores na memoria
     unsigned char* reading_U;
     unsigned short int*  detectedObjet_U;//vetor para captacao da posicao dos objetos captados
     float* linPosition;//vetores para captacao da localizacao linear e angular do robo
     float* angPosition;
-    comando2 = abrindo_memoria->construct<int>(NOME_DO_INT_NA_MEMORIA2)();
     reading_VS = abrindo_memoria->construct<unsigned char>(SENSOR_VISAO)[N_BLACK_TAPE_SENSOR]();
     reading_U = abrindo_memoria->construct<unsigned char>(SENSOR_ULTRASSOM)[N_ULTRASONIC]();
     detectedObjet_U = abrindo_memoria->construct<unsigned short int >(POSICAO_DETECTADA)[N_ULTRASONIC]();
     linPosition = abrindo_memoria->construct<float>(POSICAO)[3]();
     angPosition = abrindo_memoria->construct<float>(ANGULAR)[3]();
-    *comando2 = 0;
     ///Finalização
 
 
     pair<int*, managed_shared_memory::size_type> comando1;
     pair<int*, managed_shared_memory::size_type> bluetooth;
-    ///Fechamento
+    pair<int*, managed_shared_memory::size_type> comando2;
+    comando1 = abrindo_memoria->find<int>(NOME_DO_INT_NA_MEMORIA1);
+	comando2 = abrindo_memoria->find<int>(NOME_DO_INT_NA_MEMORIA2);
     bluetooth = abrindo_memoria->find<int>(BLUETOOTH_ENABLE);
-    setup();
-    while(*(bluetooth.first))
+
+    ///Fechamento
+    if(*(bluetooth.first))
     {
-        comando1 = abrindo_memoria->find<int>(NOME_DO_INT_NA_MEMORIA1);
-        //sendCommand(char(*(comando1.first)+'0'));
-        if(*(comando1.first))
+        setup();
+        while(*(bluetooth.first))
         {
-            sendCommand(char(*(comando1.first)));
-            cout<<"mandei o comando "<<(*(comando1.first))<<endl;
-        }
-        *(comando1.first) = 0;
-        //usleep(10);
-        int a = receiver(reading_bluetooth, reading_VS, detectedObjet_U);
-        if(a)
-        {
-            for (i = 0; i < N_BLACK_TAPE_SENSOR; i++)
+            comando1 = abrindo_memoria->find<int>(NOME_DO_INT_NA_MEMORIA1);
+            //sendCommand(char(*(comando1.first)+'0'));
+            if(*(comando1.first))
             {
-                cout<<"sensor fita " << i << " :" << int(reading_VS[i]) << endl;
+                sendCommand(char(*(comando1.first)));
+                cout<<"mandei o comando "<<(*(comando1.first))<<endl;
             }
-            for (i = 0; i < N_ULTRASONIC; i++)
+            *(comando1.first) = 0;
+            //usleep(10);
+            int a = receiver(reading_bluetooth, reading_VS, detectedObjet_U);
+            if(a)
             {
-                cout<<"ultrassom " << i << " :" << detectedObjet_U[i] << endl;
+                for (i = 0; i < N_BLACK_TAPE_SENSOR; i++)
+                {
+                    cout<<"sensor fita " << i << " :" << int(reading_VS[i]) << endl;
+                }
+                for (i = 0; i < N_ULTRASONIC; i++)
+                {
+                    cout<<"ultrassom " << i << " :" << detectedObjet_U[i] << endl;
+                }
             }
         }
     }
@@ -341,13 +345,15 @@ int main(int argc, char **argv)
                                     auxLVS, auxLMVS, auxMVS, auxRMVS, auxRVS, true);
 
         if (!tudo_ok)
-            *(comando2) = -5; // se a conexão com o vrep falha o programa manda -5 para indicara falha
+            *(comando2.first) = -5; // se a conexão com o vrep falha o programa manda -5 para indicara falha
     	else
-    		*(comando2) = -4; // se a conexão der certo manda -4
+    		*(comando2.first) = -4; // se a conexão der certo manda -4
 	}
-
 	else
-        *(comando2) = -5;
+    {
+        *(comando2.first) = -5;
+        cout << "legal" <<endl;
+    }
     comando1 = abrindo_memoria->find<int>(NOME_DO_INT_NA_MEMORIA1);
     //loop de execucao
 	while(simxGetConnectionId(clientID)!=-1 && *(comando1.first) != -10)
@@ -395,7 +401,7 @@ int main(int argc, char **argv)
                     cout<<"objeto "<<detectedObjetHandleMU<<" na posicao "<<detectedObjetMU[0]<<", "<<detectedObjetMU[1]<<", "<<detectedObjetMU[2]<<endl;
                     cout<<"superficie em "<<detectedSurfaceMU[0]<<", "<<detectedSurfaceMU[1]<<", "<<detectedSurfaceMU[2]<<endl;
                 }
-                maybeQuit(comando2, abrindo_memoria);
+                maybeQuit(comando2.first, abrindo_memoria);
             }
             while(!((reading_VS[0]&&reading_VS[2])||(reading_VS[2]&&reading_VS[4])) && reading_U[2]==0)//anda ate os sensores captarem a linha ou obstaculo
             {
@@ -534,7 +540,7 @@ int main(int argc, char **argv)
                     cout<<"objeto "<<detectedObjetHandleMU<<" na posicao "<<detectedObjetMU[0]<<", "<<detectedObjetMU[1]<<", "<<detectedObjetMU[2]<<endl;
                     cout<<"superficie em "<<detectedSurfaceMU[0]<<", "<<detectedSurfaceMU[1]<<", "<<detectedSurfaceMU[2]<<endl;
                 }
-                maybeQuit(comando2, abrindo_memoria);
+                maybeQuit(comando2.first, abrindo_memoria);
                 extApi_sleepMs(5);
             }
             simxGetObjectPosition(clientID, bubbleRob, -1, linPosition, simx_opmode_buffer);
@@ -563,10 +569,10 @@ int main(int argc, char **argv)
                     cout<<"objeto "<<detectedObjetHandleMU<<" na posicao "<<detectedObjetMU[0]<<", "<<detectedObjetMU[1]<<", "<<detectedObjetMU[2]<<endl;
                     cout<<"superficie em "<<detectedSurfaceMU[0]<<", "<<detectedSurfaceMU[1]<<", "<<detectedSurfaceMU[2]<<endl;
                 }
-                maybeQuit(comando2, abrindo_memoria);
+                maybeQuit(comando2.first, abrindo_memoria);
             }
-            *comando2 = 1;
-            maybeQuit(comando2, abrindo_memoria);
+            *comando2.first = 1;
+            maybeQuit(comando2.first, abrindo_memoria);
 		}
 
         //virar direita
@@ -595,7 +601,7 @@ int main(int argc, char **argv)
                                             Left_Vision_sensor, LM_Vision_sensor, Middle_Vision_sensor, RM_Vision_sensor, Right_Vision_sensor,
                                             reading_VS, &DataLVS, &DataLMVS, &DataMVS, &DataRMVS, &DataRVS,
                                             auxLVS, auxLMVS, auxMVS, auxRMVS, auxRVS);
-                maybeQuit(comando2, abrindo_memoria);
+                maybeQuit(comando2.first, abrindo_memoria);
             }
             reading_VS[2] = DataMVS[10]<MAX_INTE;
             reading_VS[3] = DataRMVS[10]<MAX_INTE;
@@ -615,7 +621,7 @@ int main(int argc, char **argv)
                 reading_VS[2] = DataMVS[10]<MAX_INTE;
                 reading_VS[3] = DataRMVS[10]<MAX_INTE;
                 extApi_sleepMs(5);
-                maybeQuit(comando2, abrindo_memoria);
+                maybeQuit(comando2.first, abrindo_memoria);
             }
             while(!(reading_VS[2]))//gira ate os sensores captarem a linha
             {
@@ -633,9 +639,9 @@ int main(int argc, char **argv)
                 reading_VS[2] = DataMVS[10]<MAX_INTE;
                 reading_VS[3] = DataRMVS[10]<MAX_INTE;
                 extApi_sleepMs(5);
-                maybeQuit(comando2, abrindo_memoria);
+                maybeQuit(comando2.first, abrindo_memoria);
             }
-            *comando2 = 1;
+            *comando2.first = 1;
         }
 
         //virar esquerda
@@ -664,7 +670,7 @@ int main(int argc, char **argv)
                                             Left_Vision_sensor, LM_Vision_sensor, Middle_Vision_sensor, RM_Vision_sensor, Right_Vision_sensor,
                                             reading_VS, &DataLVS, &DataLMVS, &DataMVS, &DataRMVS, &DataRVS,
                                             auxLVS, auxLMVS, auxMVS, auxRMVS, auxRVS);
-                maybeQuit(comando2, abrindo_memoria);
+                maybeQuit(comando2.first, abrindo_memoria);
 			}
 
             reading_VS[1] = DataLMVS[10]<MAX_INTE;
@@ -684,7 +690,7 @@ int main(int argc, char **argv)
                                             auxLVS, auxLMVS, auxMVS, auxRMVS, auxRVS);
                 reading_VS[1] = DataLMVS[10]<MAX_INTE;
                 reading_VS[2] = DataMVS[10]<MAX_INTE;
-                maybeQuit(comando2, abrindo_memoria);
+                maybeQuit(comando2.first, abrindo_memoria);
                 extApi_sleepMs(5);
             }
             while(!(reading_VS[2]))//gira ate os sensores captarem a linha
@@ -702,10 +708,10 @@ int main(int argc, char **argv)
                                             auxLVS, auxLMVS, auxMVS, auxRMVS, auxRVS);
                 reading_VS[1] = DataLMVS[10]<MAX_INTE;
                 reading_VS[2] = DataMVS[10]<MAX_INTE;
-                maybeQuit(comando2, abrindo_memoria);
+                maybeQuit(comando2.first, abrindo_memoria);
                 extApi_sleepMs(5);
 			}
-            *comando2 = 1;
+            *comando2.first = 1;
 		}
 
         //zera variaveis e manda o robo parar
@@ -717,17 +723,17 @@ int main(int argc, char **argv)
         ang = 0;
 		vLeft = 0;
 		vRight = 0;
-        *comando2 = 0;
+        *comando2.first = 0;
         *(comando1.first) = 0;
 		simxSetJointTargetVelocity(clientID, leftMotorHandle, (simxFloat) vLeft, simx_opmode_streaming);
 		simxSetJointTargetVelocity(clientID, rightMotorHandle, (simxFloat) vRight, simx_opmode_streaming);
 		extApi_sleepMs(5);
-        maybeQuit(comando2, abrindo_memoria);
+        maybeQuit(comando2.first, abrindo_memoria);
 	}
 
     simxFinish(clientID); // fechando conexao com o servidor
     cout << "Conexao e Servidor fechados!" << std::endl;
-    if (*comando2 != -5)
-        *(comando2) = -10; //quando o programa fecha, seja por ter acabado sozinho com a simulação parando ou recebendo o comando -10, deve responder com -10 pra sinalizar que fechou. a unica exceção é quando acaba por não ter conseguido conectar, daí manda -5
+    if (*comando2.first != -5)
+        *(comando2.first) = -10; //quando o programa fecha, seja por ter acabado sozinho com a simulação parando ou recebendo o comando -10, deve responder com -10 pra sinalizar que fechou. a unica exceção é quando acaba por não ter conseguido conectar, daí manda -5
 	return 0;
  }

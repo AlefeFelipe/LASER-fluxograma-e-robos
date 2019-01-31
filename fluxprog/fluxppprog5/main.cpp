@@ -136,6 +136,9 @@ int main(int argc, char **argv)
     feedback = memoria->construct<int>(FEEDBACK_VARIABLE_NAME)(); //cria as variaveis dentro das memorias
     verificar_alocacao(feedback, "feedback")
 	*feedback = 0;
+    bluetooth = memoria->construct<int>(BLUETOOTH_ENABLE)();//indica se o robô real sera usado ou nao
+    verificar_alocacao(bluetooth, "bluetooth");
+    *bluetooth = 0;
 
 	//diversas flags usadas no programa
 	bool barra_posicao_ativa = false;

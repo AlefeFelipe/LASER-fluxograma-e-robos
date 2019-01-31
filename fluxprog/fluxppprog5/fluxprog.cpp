@@ -12,7 +12,7 @@ bool mouse_segurar[3];
 bool mouse_soltar[3];
 short int mouse_rolar;
 int mouse_x, mouse_y;
-int* command_var, *feedback;
+int* command_var, *feedback, *bluetooth;
 float posicao_y;
 float monitor_comprimento, monitor_altura;
 char caractere_pressionado[2];

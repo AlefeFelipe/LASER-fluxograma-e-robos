@@ -36,7 +36,7 @@ extern bool mouse_clicar[3]; //diz se, entre o último ciclo e o presente, o usu
 extern bool mouse_segurar[3]; //diz se, entre o ciclo anterior e o presente, o usuário não parou de segurar algum dos  botões do mouse
 extern bool mouse_soltar[3]; //diz se, entre o ciclo anterior e o presente, o usuário soltou algum dos  botões do mouse
 extern int mouse_x, mouse_y; //indicam a posição atual do mouse nos eixos x e y
-extern int* command_var, *feedback; //variaveis que mandam comandos
+extern int *command_var, *feedback, *bluetooth; //variaveis que mandam comandos
 extern float posicao_y;
 extern float monitor_comprimento, monitor_altura;
 extern char caractere_pressionado[2]; //o primeiro campo guarda qual caractere foi pressionado, o segundo marca se foi uma tecla normal '\0'
@@ -237,6 +237,7 @@ extern uint8_t tempo_max_clique_duplo;
 #define POSICAO_DETECTADA       "detectedObjet_U"
 #define POSICAO                 "linPosition"
 #define ANGULAR                 "angPosition"
+#define BLUETOOTH_ENABLE        "bluetooth"
 
 //classe que contem a lista onde os blocos são armazenados
 class lista_blocos {
