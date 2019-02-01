@@ -28,7 +28,7 @@ int main(int argc, char **argv)
 
 	//inicialização dos bitmaps
 	#define carregar_bitmap(X, Y) {ALLEGRO_BITMAP* temporario; temporario = al_load_bitmap(Y); if (!temporario) {cout << "erro carregando bitmap " << Y << endl; return -1;} else X = temporario;}
-    ALLEGRO_BITMAP *botao_opcao, *botao_bloco, *menu, *rodar, *pausar, *parar, *salvar, *carregar, *salvar_como, *vrep, *miniaturas[6];
+    ALLEGRO_BITMAP *botao_opcao, *botao_bloco, *menu, *rodar, *pausar, *parar, *salvar, *carregar, *salvar_como, *vrep, *bt_bluetooth, *miniaturas[6];
     carregar_bitmap(botao_opcao,"images/botao_opcao.png")
     carregar_bitmap(botao_bloco,"images/botao_bloco.png")
     carregar_bitmap(menu,"images/menu.png")
@@ -39,6 +39,7 @@ int main(int argc, char **argv)
     carregar_bitmap(carregar,"images/carregar.png")
     carregar_bitmap(salvar_como,"images/salvarcomo.png")
     carregar_bitmap(vrep,"images/vrep.png")
+    carregar_bitmap(bt_bluetooth, "images/bluetooth.png")
     carregar_bitmap(miniaturas[0],"images/miniatura_decisao.png")
     carregar_bitmap(miniaturas[1],"images/miniatura_acao.png")
     carregar_bitmap(miniaturas[2],"images/miniatura_inicio.png")
@@ -367,9 +368,11 @@ int main(int argc, char **argv)
         al_draw_bitmap(botao_opcao, 2 + 5*largura(botao_opcao), 2, 0);
         al_draw_bitmap(salvar_como, 14 + 5*largura(botao_opcao), 14, 0);
 
-        //desenha o botão de conexão ao v-rep acompanhando o lado direito da tela
+        //desenha o botão de conexão ao v-rep e bluetooth acompanhando o lado direito da tela
         al_draw_bitmap(botao_opcao, dimensoes_tela_x - 2 - largura(botao_opcao) - largura_barra_rolagem, 2, 0);
         al_draw_bitmap(vrep, dimensoes_tela_x + 10 - largura(botao_opcao) - largura_barra_rolagem, 14, 0);
+        al_draw_bitmap(botao_opcao, dimensoes_tela_x - 85 - largura(botao_opcao) - largura_barra_rolagem, 2, 0);
+        al_draw_bitmap(bt_bluetooth, dimensoes_tela_x - 73.5 - largura(botao_opcao) - largura_barra_rolagem, 13.5, 0);
 
         //desenha todas as molduras dos botões que criam blocos e daí todos os botões
         for (int i = 0; i <= 12; i++) al_draw_bitmap(botao_bloco, 0, altura(botao_opcao) + 4 + i * altura(botao_bloco), 0);
@@ -776,6 +779,7 @@ int main(int argc, char **argv)
 	}
     for(int i = 0; i< 10; i++)	al_destroy_bitmap(NUMERO[i]);
 	al_destroy_bitmap(vrep);
+    al_destroy_bitmap(bt_bluetooth);
 	al_destroy_bitmap(menu);
 	al_destroy_display(tela);
 	al_destroy_font(fonte);
