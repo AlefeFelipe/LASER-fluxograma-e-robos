@@ -27,7 +27,7 @@ using namespace boost::interprocess;
 //variaveis robo
 #define VEL_MOT 4.25 //tecnicamente em rad/s
 #define DIS_RETO 0.05 //tamanho do passo em m ate inicio da leitura dos sensores
-#define DIS_CURVA 0.262 //delta para virar PI, ja que ha o delay de comunicacao e eh float, nunca igual, (~VEL_MOT/(7.5PI)) - aleatorio
+#define DIS_CURVA 0.35 //delta para virar PI, ja que ha o delay de comunicacao e eh float, nunca igual, (~VEL_MOT/(7.5PI)) - aleatorio
 #define D_ANG 0.1 //delta para captacao de salto da atan, (~DIS_CURVA-0.1)
 #define MAX_INTE 0.2 //delta para media ta intensidade. tecnicamente, deve ser zero
 #define CONT 0 //contador para comecar virar
