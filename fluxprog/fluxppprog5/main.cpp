@@ -415,10 +415,18 @@ int main(int argc, char **argv)
                 al_show_native_message_box(al_get_current_display(), "Fluxprog", "desconectado!", "o programa foi desconectado da API", NULL, ALLEGRO_MESSAGEBOX_ERROR);
             }
 		} //se o botão for apertado, tenta começar a conectar (se já não estiver tentando)
-		else if (botao(dimensoes_tela_x + 10 - largura(botao_opcao) - largura_barra_rolagem, 14, largura(rodar), altura(rodar), offset_opcao, lista->ativo) && mouse_clicar[mouse_esq] && !vrep_conectando) {
+		else
+        {
+            if (botao(dimensoes_tela_x + 10 - largura(botao_opcao) - largura_barra_rolagem, 14, largura(rodar), altura(rodar), offset_opcao, lista->ativo) && mouse_clicar[mouse_esq] && !vrep_conectando) {
             vrep_conectando = true;
             *command_var = 0;
-		} //se estiver tentando conectar, tenta abrir o programa da api
+		      }
+              else if (botao(dimensoes_tela_x - 73.5 - largura(botao_opcao) - largura_barra_rolagem, 13.5, largura(rodar), altura(rodar), offset_opcao, lista->ativo) && mouse_clicar[mouse_esq] && !vrep_conectando) {
+              vrep_conectando = true;
+              *command_var = 0;
+              *bluetooth = 1;
+  		      }
+        } //se estiver tentando conectar, tenta abrir o programa da api
 		if (vrep_conectando) {
             if (!api_rodando){
                 //esse é um bloco de código específico para o linux, que basicamente duplica o programa atual

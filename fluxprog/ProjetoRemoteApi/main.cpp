@@ -74,7 +74,7 @@ int kbhit(void)
     return 0;
 }
 
-void maybeQuit(int *comando2, managed_shared_memory *abrindo_memoria)
+/*void //maybeQuit(int *comando2, managed_shared_memory *abrindo_memoria);
 {
     char close;
     if(kbhit())
@@ -88,16 +88,17 @@ void maybeQuit(int *comando2, managed_shared_memory *abrindo_memoria)
             exit(0);
         }
     }
-}
-void setup()
+}*/
+int setup()
 {
-
     if(RS232_OpenComport(CPORT_NR, BDRATE, "8N1"))
     {
         printf("AVISO: NENHUMA serial encontrada!!\n");
+        return 0;
     }
     RS232_enableDTR(CPORT_NR);
     RS232_enableRTS(CPORT_NR);
+    return 1;
 
 }
 
@@ -268,7 +269,12 @@ int main(int argc, char **argv)
     ///Fechamento
     if(*(bluetooth.first))
     {
-        setup();
+        if(!setup())
+        {
+            *comando2.first = -5;
+            return 0;
+        }
+        *comando2.first = -4;
         while(*(bluetooth.first))
         {
             comando1 = abrindo_memoria->find<int>(NOME_DO_INT_NA_MEMORIA1);
@@ -277,12 +283,13 @@ int main(int argc, char **argv)
             {
                 sendCommand(char(*(comando1.first)));
                 cout<<"mandei o comando "<<(*(comando1.first))<<endl;
+                *(comando1.first) = 0;
             }
-            *(comando1.first) = 0;
             //usleep(10);
             int a = receiver(reading_bluetooth, reading_VS, detectedObjet_U);
             if(a)
             {
+                *(comando2.first) = 1;//por enquanto o robo envia coisas quando ele terminou de fazer as paradas
                 for (i = 0; i < N_BLACK_TAPE_SENSOR; i++)
                 {
                     cout<<"sensor fita " << i << " :" << int(reading_VS[i]) << endl;
@@ -404,7 +411,7 @@ int main(int argc, char **argv)
                     cout<<"objeto "<<detectedObjetHandleMU<<" na posicao "<<detectedObjetMU[0]<<", "<<detectedObjetMU[1]<<", "<<detectedObjetMU[2]<<endl;
                     cout<<"superficie em "<<detectedSurfaceMU[0]<<", "<<detectedSurfaceMU[1]<<", "<<detectedSurfaceMU[2]<<endl;
                 }
-                maybeQuit(comando2.first, abrindo_memoria);
+                //maybeQuit(comando2.first, abrindo_memoria);
             }
             while(!((reading_VS[0]&&reading_VS[2])||(reading_VS[2]&&reading_VS[4])) && reading_U[2]==0)//anda ate os sensores captarem a linha ou obstaculo
             {
@@ -543,7 +550,7 @@ int main(int argc, char **argv)
                     cout<<"objeto "<<detectedObjetHandleMU<<" na posicao "<<detectedObjetMU[0]<<", "<<detectedObjetMU[1]<<", "<<detectedObjetMU[2]<<endl;
                     cout<<"superficie em "<<detectedSurfaceMU[0]<<", "<<detectedSurfaceMU[1]<<", "<<detectedSurfaceMU[2]<<endl;
                 }
-                maybeQuit(comando2.first, abrindo_memoria);
+                //maybeQuit(comando2.first, abrindo_memoria);
                 extApi_sleepMs(5);
             }
             simxGetObjectPosition(clientID, bubbleRob, -1, linPosition, simx_opmode_buffer);
@@ -572,11 +579,11 @@ int main(int argc, char **argv)
                     cout<<"objeto "<<detectedObjetHandleMU<<" na posicao "<<detectedObjetMU[0]<<", "<<detectedObjetMU[1]<<", "<<detectedObjetMU[2]<<endl;
                     cout<<"superficie em "<<detectedSurfaceMU[0]<<", "<<detectedSurfaceMU[1]<<", "<<detectedSurfaceMU[2]<<endl;
                 }
-                maybeQuit(comando2.first, abrindo_memoria);
+                //maybeQuit(comando2.first, abrindo_memoria);
             }
             *comando2.first = 1;
             *comando1.first = 0;
-            maybeQuit(comando2.first, abrindo_memoria);
+            //maybeQuit(comando2.first, abrindo_memoria);
 		}
 
         //virar direita
@@ -600,7 +607,7 @@ int main(int argc, char **argv)
                     d_ang = abs(ang-ang_inicial);
                 }
                 extApi_sleepMs(5);
-                maybeQuit(comando2.first, abrindo_memoria);
+                //maybeQuit(comando2.first, abrindo_memoria);
             }
             getReadingSensorsSimulator(clientID, bubbleRob, linPosition, angPosition, Middle_ultrasonic, reading_U,
                                         detectedObjetLU, detectedObjetLMU, detectedObjetMU, detectedObjetRMU, detectedObjetRU,
@@ -627,7 +634,7 @@ int main(int argc, char **argv)
                 reading_VS[2] = DataMVS[10]<MAX_INTE;
                 reading_VS[3] = DataRMVS[10]<MAX_INTE;
                 extApi_sleepMs(5);
-                maybeQuit(comando2.first, abrindo_memoria);
+                //maybeQuit(comando2.first, abrindo_memoria);
             }
             while(!(reading_VS[2]))//gira ate os sensores captarem a linha
             {
@@ -645,7 +652,7 @@ int main(int argc, char **argv)
                 reading_VS[2] = DataMVS[10]<MAX_INTE;
                 reading_VS[3] = DataRMVS[10]<MAX_INTE;
                 extApi_sleepMs(5);
-                maybeQuit(comando2.first, abrindo_memoria);
+                //maybeQuit(comando2.first, abrindo_memoria);
             }
             *comando2.first = 1;
             *comando1.first = 0;
@@ -672,7 +679,7 @@ int main(int argc, char **argv)
                     d_ang = abs(ang-ang_inicial);
                 }
                 extApi_sleepMs(5);
-                maybeQuit(comando2.first, abrindo_memoria);
+                //maybeQuit(comando2.first, abrindo_memoria);
 			}
             getReadingSensorsSimulator(clientID, bubbleRob, linPosition, angPosition, Middle_ultrasonic, reading_U,
                                         detectedObjetLU, detectedObjetLMU, detectedObjetMU, detectedObjetRMU, detectedObjetRU,
@@ -698,7 +705,7 @@ int main(int argc, char **argv)
                                             auxLVS, auxLMVS, auxMVS, auxRMVS, auxRVS);
                 reading_VS[1] = DataLMVS[10]<MAX_INTE;
                 reading_VS[2] = DataMVS[10]<MAX_INTE;
-                maybeQuit(comando2.first, abrindo_memoria);
+                //maybeQuit(comando2.first, abrindo_memoria);
                 extApi_sleepMs(5);
             }
             while(!(reading_VS[2]))//gira ate os sensores captarem a linha
@@ -716,7 +723,7 @@ int main(int argc, char **argv)
                                             auxLVS, auxLMVS, auxMVS, auxRMVS, auxRVS);
                 reading_VS[1] = DataLMVS[10]<MAX_INTE;
                 reading_VS[2] = DataMVS[10]<MAX_INTE;
-                maybeQuit(comando2.first, abrindo_memoria);
+                //maybeQuit(comando2.first, abrindo_memoria);
                 extApi_sleepMs(5);
 			}
             *comando2.first = 1;
@@ -736,7 +743,7 @@ int main(int argc, char **argv)
 		simxSetJointTargetVelocity(clientID, leftMotorHandle, (simxFloat) vLeft, simx_opmode_streaming);
 		simxSetJointTargetVelocity(clientID, rightMotorHandle, (simxFloat) vRight, simx_opmode_streaming);
 		extApi_sleepMs(5);
-        maybeQuit(comando2.first, abrindo_memoria);
+        //maybeQuit(comando2.first, abrindo_memoria);
 	}
 
     simxFinish(clientID); // fechando conexao com o servidor
