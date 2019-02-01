@@ -345,14 +345,17 @@ int main(int argc, char **argv)
                                     auxLVS, auxLMVS, auxMVS, auxRMVS, auxRVS, true);
 
         if (!tudo_ok)
+        {
             *(comando2.first) = -5; // se a conexão com o vrep falha o programa manda -5 para indicara falha
-    	else
+        }
+        else
+        {
     		*(comando2.first) = -4; // se a conexão der certo manda -4
+        }
 	}
 	else
     {
         *(comando2.first) = -5;
-        cout << "legal" <<endl;
     }
     comando1 = abrindo_memoria->find<int>(NOME_DO_INT_NA_MEMORIA1);
     //loop de execucao
@@ -572,12 +575,15 @@ int main(int argc, char **argv)
                 maybeQuit(comando2.first, abrindo_memoria);
             }
             *comando2.first = 1;
+            *comando1.first = 0;
             maybeQuit(comando2.first, abrindo_memoria);
 		}
 
         //virar direita
         else if(*(comando1.first) == 6)
         {
+            simxGetObjectOrientation(clientID, bubbleRob, -1, angle, simx_opmode_buffer);
+            ang_inicial = (angle[2]);
             while(d_ang < (M_PI/4-DIS_CURVA))//escapar do estado de verificacao dos sensores
             {
                 vLeft = VEL_MOT/1.5;
@@ -594,15 +600,15 @@ int main(int argc, char **argv)
                     d_ang = abs(ang-ang_inicial);
                 }
                 extApi_sleepMs(5);
-                getReadingSensorsSimulator(clientID, bubbleRob, linPosition, angPosition, Middle_ultrasonic, reading_U,
-                                            detectedObjetLU, detectedObjetLMU, detectedObjetMU, detectedObjetRMU, detectedObjetRU,
-                                            detectedObjetHandleLU, detectedObjetHandleLMU, detectedObjetHandleMU, detectedObjetHandleRMU, detectedObjetHandleRU,
-                                            detectedSurfaceLU, detectedSurfaceLMU, detectedSurfaceMU, detectedSurfaceRMU, detectedSurfaceRU,
-                                            Left_Vision_sensor, LM_Vision_sensor, Middle_Vision_sensor, RM_Vision_sensor, Right_Vision_sensor,
-                                            reading_VS, &DataLVS, &DataLMVS, &DataMVS, &DataRMVS, &DataRVS,
-                                            auxLVS, auxLMVS, auxMVS, auxRMVS, auxRVS);
                 maybeQuit(comando2.first, abrindo_memoria);
             }
+            getReadingSensorsSimulator(clientID, bubbleRob, linPosition, angPosition, Middle_ultrasonic, reading_U,
+                                        detectedObjetLU, detectedObjetLMU, detectedObjetMU, detectedObjetRMU, detectedObjetRU,
+                                        detectedObjetHandleLU, detectedObjetHandleLMU, detectedObjetHandleMU, detectedObjetHandleRMU, detectedObjetHandleRU,
+                                        detectedSurfaceLU, detectedSurfaceLMU, detectedSurfaceMU, detectedSurfaceRMU, detectedSurfaceRU,
+                                        Left_Vision_sensor, LM_Vision_sensor, Middle_Vision_sensor, RM_Vision_sensor, Right_Vision_sensor,
+                                        reading_VS, &DataLVS, &DataLMVS, &DataMVS, &DataRMVS, &DataRVS,
+                                        auxLVS, auxLMVS, auxMVS, auxRMVS, auxRVS);
             reading_VS[2] = DataMVS[10]<MAX_INTE;
             reading_VS[3] = DataRMVS[10]<MAX_INTE;
             while(reading_VS[2])//verificar se ta no mesmo estado, tecnicamente inutil devido a funcao acima
@@ -642,11 +648,14 @@ int main(int argc, char **argv)
                 maybeQuit(comando2.first, abrindo_memoria);
             }
             *comando2.first = 1;
+            *comando1.first = 0;
         }
 
         //virar esquerda
         else if(*(comando1.first) == 4)
         {
+            simxGetObjectOrientation(clientID, bubbleRob, -1, angle, simx_opmode_buffer);
+            ang_inicial = (angle[2]);
             while(d_ang < (M_PI/4-DIS_CURVA))//escapar do estado de verificacao dos sensores
             {
 				vLeft = -VEL_MOT/1.5;
@@ -663,16 +672,15 @@ int main(int argc, char **argv)
                     d_ang = abs(ang-ang_inicial);
                 }
                 extApi_sleepMs(5);
-                getReadingSensorsSimulator(clientID, bubbleRob, linPosition, angPosition, Middle_ultrasonic, reading_U,
-                                            detectedObjetLU, detectedObjetLMU, detectedObjetMU, detectedObjetRMU, detectedObjetRU,
-                                            detectedObjetHandleLU, detectedObjetHandleLMU, detectedObjetHandleMU, detectedObjetHandleRMU, detectedObjetHandleRU,
-                                            detectedSurfaceLU, detectedSurfaceLMU, detectedSurfaceMU, detectedSurfaceRMU, detectedSurfaceRU,
-                                            Left_Vision_sensor, LM_Vision_sensor, Middle_Vision_sensor, RM_Vision_sensor, Right_Vision_sensor,
-                                            reading_VS, &DataLVS, &DataLMVS, &DataMVS, &DataRMVS, &DataRVS,
-                                            auxLVS, auxLMVS, auxMVS, auxRMVS, auxRVS);
                 maybeQuit(comando2.first, abrindo_memoria);
 			}
-
+            getReadingSensorsSimulator(clientID, bubbleRob, linPosition, angPosition, Middle_ultrasonic, reading_U,
+                                        detectedObjetLU, detectedObjetLMU, detectedObjetMU, detectedObjetRMU, detectedObjetRU,
+                                        detectedObjetHandleLU, detectedObjetHandleLMU, detectedObjetHandleMU, detectedObjetHandleRMU, detectedObjetHandleRU,
+                                        detectedSurfaceLU, detectedSurfaceLMU, detectedSurfaceMU, detectedSurfaceRMU, detectedSurfaceRU,
+                                        Left_Vision_sensor, LM_Vision_sensor, Middle_Vision_sensor, RM_Vision_sensor, Right_Vision_sensor,
+                                        reading_VS, &DataLVS, &DataLMVS, &DataMVS, &DataRMVS, &DataRVS,
+                                        auxLVS, auxLMVS, auxMVS, auxRMVS, auxRVS);
             reading_VS[1] = DataLMVS[10]<MAX_INTE;
             reading_VS[2] = DataMVS[10]<MAX_INTE;
             while((reading_VS[2]))//verificar se ta no mesmo estado, tecnicamente inutil devido a funcao acima
@@ -712,6 +720,7 @@ int main(int argc, char **argv)
                 extApi_sleepMs(5);
 			}
             *comando2.first = 1;
+            *comando1.first = 0;
 		}
 
         //zera variaveis e manda o robo parar
@@ -720,11 +729,10 @@ int main(int argc, char **argv)
         dx = 0;
         dy = 0;
         d_ang = 0;
+        ang_inicial = 0;
         ang = 0;
 		vLeft = 0;
 		vRight = 0;
-        *comando2.first = 0;
-        *(comando1.first) = 0;
 		simxSetJointTargetVelocity(clientID, leftMotorHandle, (simxFloat) vLeft, simx_opmode_streaming);
 		simxSetJointTargetVelocity(clientID, rightMotorHandle, (simxFloat) vRight, simx_opmode_streaming);
 		extApi_sleepMs(5);

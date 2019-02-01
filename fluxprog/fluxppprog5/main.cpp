@@ -438,7 +438,8 @@ int main(int argc, char **argv)
                     vrep_conectando = false;
                 al_show_native_message_box(al_get_current_display(), "Fluxprog", "Erro!", "A comunicação não pôde ser estabelecida (o processo da API não foi criado corretamente)", NULL, ALLEGRO_MESSAGEBOX_ERROR);}
             }
-            else if (*feedback == -4){//se a api mandar a mensagem de sucesso na conexão ao v-rep, conecta as variáveis (se houverem) ao programa
+            else if (*feedback == -4){
+            //se a api mandar a mensagem de sucesso na conexão ao v-rep, conecta as variáveis (se houverem) ao programa
             	try {
                     if (modelo){
                         posicao_plana = memoria->find<float>(POSICAO);
