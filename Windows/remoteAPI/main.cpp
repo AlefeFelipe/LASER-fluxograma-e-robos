@@ -2,12 +2,14 @@
 #include <iostream>
 #include <time.h>
 #include <string.h>
-#include <unistd.h>
-#include <fcntl.h>
+//#include <unistd.h>
+//#include <fcntl.h>
 using namespace std;
 #include <boost/interprocess/managed_shared_memory.hpp>
 #include <boost/interprocess/offset_ptr.hpp>
 #include "rs232.h"
+#define M_PI       3.14159265358979323846
+#include <windows.h>
 
 using namespace boost::interprocess;
 
@@ -34,7 +36,7 @@ using namespace boost::interprocess;
 
 //variaveis bluetooth
 #define BDRATE 115200
-#define CPORT_NR 16
+#define CPORT_NR 6
 #define SIZEPACKET 15
 #define N_ULTRASONIC 5
 #define N_BLACK_TAPE_SENSOR 5
@@ -244,7 +246,7 @@ int main(int argc, char **argv)
       catch(...)
       {
           std::cout<<"erro ao abrir memoria 1" << i++ << std::endl;
-          sleep(1);//extApi_sleepMs(5);
+          //sleep(1);//extApi_sleepMs(5);
       }
     }
 

@@ -1,5 +1,6 @@
 #ifndef FLUXPROG_H_INCLUDED
 #define FLUXPROG_H_INCLUDED
+#define _USE_MATH_DEFINES
 #include <allegro5/allegro.h> //biblioteca matriz do allegro
 #include <allegro5/allegro_color.h> //biblioteca para rotinas de cor
 #include <allegro5/allegro_primitives.h> //biblioteca para desenho de formas geométricas
@@ -13,6 +14,8 @@
 #include <math.h>
 #include <fstream>
 #include <windows.h>
+#include <string>
+#define M_PI_2     1.57079632679489661923
 
 #define debug(X) if(1)cout<<X<<endl<<flush
 
