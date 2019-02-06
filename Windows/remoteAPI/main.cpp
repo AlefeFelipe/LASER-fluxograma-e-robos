@@ -36,7 +36,7 @@ using namespace boost::interprocess;
 
 //variaveis bluetooth
 #define BDRATE 115200
-#define CPORT_NR 6
+#define CPORT_NR 5
 #define SIZEPACKET 15
 #define N_ULTRASONIC 5
 #define N_BLACK_TAPE_SENSOR 5
@@ -177,6 +177,7 @@ void getReadingSensorsSimulator(int clientID, int bubbleRob, float *linPosition,
 
 int main(int argc, char **argv)
 {
+
     //enderecamentos remoteapi
     string serverIP = "127.0.0.1";
 	int serverPort = 19999;
