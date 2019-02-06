@@ -438,7 +438,7 @@ int main(int argc, char **argv)
                 ZeroMemory(&si, sizeof(si));
                 si.cb = sizeof(si);
                 ZeroMemory(&p, sizeof(p));
-                if( !CreateProcess( NULL, ".\\..\\remoteAPI\\bin\\Debug\\remoteAPI.exe", NULL, NULL, FALSE, 0, NULL, NULL, &si, &p))
+                if( !CreateProcess( NULL, ".//remoteAPI.exe", NULL, NULL, FALSE, 0, NULL, NULL, &si, &p))
                 {
                     sucesso = false;
                     api_rodando = false;
