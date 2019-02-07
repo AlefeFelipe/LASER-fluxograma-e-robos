@@ -7,7 +7,7 @@
 #include "remoteApi/extApiPlatform.h"
 #include "fluxProgBackendCte.h"
 
-class VirtualRobot{
+class VirtualRobot : public Robot{
     int client_id;
     int robot;
     int motors[N_MOTORS];
