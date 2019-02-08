@@ -14,10 +14,7 @@
 #include <cstring>
 #include <iostream>
 
-#define inicialize(X, Y) if (!X){al_show_native_message_box(NULL, NULL, NULL, "Erro na inicializacao", NULL, NULL);}
-#define check_alocation(X, Y) if(!X) {al_show_native_message_box(NULL, NULL, NULL, "Erro na alocacao", NULL, NULL);}
-#define load_bitmap(X, Y) {ALLEGRO_BITMAP* temporario; temporario = al_load_bitmap(Y); if (!temporario) {al_show_native_message_box(NULL, NULL, NULL, "Erro ao carregar bitmap", NULL, NULL); return -1;} else X = temporario;}
-
+using namespace std;
 
 #define display_width 700
 #define display_height 900
@@ -29,10 +26,13 @@ class Interface {
     ALLEGRO_COLOR white;
     ALLEGRO_COLOR menu_color;
     ALLEGRO_DISPLAY *display;
-    ALLEGRO_BITMAP *botao_opcao, *botao_bloco, *menu, *rodar, *pausar, *parar, *salvar, *carregar, *salvar_como, *vrep, *bt_bluetooth, *miniaturas[6];
-    ALLEGRO_BITMAP *seta, *voltita, *fita, *ultrassom, *NUMERO[10], *logico_v, *logico_f; //bitmaps para os blocos de travamento (os que travam nos blocos maiores)
-    ALLEGRO_BITMAP *BLOCO[6][4], *PONTO[2]; //bitmaps para os blocos e suas variações (inativo, destacado pelo mouse, sendo movido e sendo rodado) e para os pontos de junção dos blocos (inativo e destacado)
+    ALLEGRO_BITMAP *play_button, *pause_button, *stop_button, *save_button, *load_button, *save_as_button, *vrep_button, *bluetooth_button, *mini_menu[6];
+    ALLEGRO_BITMAP *action_walk, *action_turn, *sensor_black, *sensor_ultrasonic, *NUMBER[10], *logic_true, *logic_false; //bitmaps para os blocos de travamento (os que travam nos blocos maiores)
+    ALLEGRO_BITMAP *DECISION_BLOCK[4], *END_BLOCK[4], *FUNCTION_BLOCK[4], *LOOP_BLOCK[4], *MERGE_BLOCK[4], *START_BLOCK[4], *POINT[2]; //bitmaps para os blocos e suas variações (inativo, destacado pelo mouse, sendo movido e sendo rodado) e para os pontos de junção dos blocos (inativo e destacado)
     ALLEGRO_FONT *font;
+    bool executing;
+
+    void load_bitmap(ALLEGRO_BITMAP **bitmap, char *adress);
 
 public:
 
