@@ -7,6 +7,7 @@
 
 class PhysicalRobot : public Robot{
     void sendCommand();
+    void receiveData();
 public:
     PhysicalRobot();
     ~PhysicalRobot();
