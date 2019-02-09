@@ -48,15 +48,15 @@ add_executable(cppremoteapi
 	       ${HEADERS})
 
 if(THREADS_HAVE_PTHREAD_ARG)
-  target_compile_options(cppremoteapi PUBLIC "-pthread")
+  target_compile_options(${PROJECT_NAME} PUBLIC "-pthread")
 endif()
 if(CMAKE_THREAD_LIBS_INIT)
-  target_link_libraries(cppremoteapi "${CMAKE_THREAD_LIBS_INIT}")
+  target_link_libraries(${PROJECT_NAME} "${CMAKE_THREAD_LIBS_INIT}")
 endif()
 
-TARGET_LINK_LIBRARIES(cppremoteapi ${Boost_LIBRARIES} rt)
+TARGET_LINK_LIBRARIES(${PROJECT_NAME} ${Boost_LIBRARIES} rt)
 
 
-target_link_libraries (cppremoteapi ${CMAKE_THREAD_LIBS_INIT})
+target_link_libraries (${PROJECT_NAME} ${CMAKE_THREAD_LIBS_INIT})
 
-install(TARGETS cppremoteapi RUNTIME DESTINATION bin)
+install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION bin)
