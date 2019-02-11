@@ -8,7 +8,7 @@ class Robot{
 protected:
     int ultrasonic_sensor_reading [N_ULTRASONIC];
     int black_type_sensor_reading [N_BLACK_TAPE_SENSOR];
-    int color_sensor_reading [N_COLOR_SENSOR][COLOR_SENSOR_COMPONENTS];
+    //int color_sensor_reading [N_COLOR_SENSOR][COLOR_SENSOR_COMPONENTS];
     int command;
 
 public:
@@ -18,7 +18,7 @@ public:
     int isFinished();
     int *getUltrasonicReading();
     int *getBlackTypeReading();
-    int **getColorReading();
+    //int **getColorReading();
     void updateSensorsReading();
 };
 

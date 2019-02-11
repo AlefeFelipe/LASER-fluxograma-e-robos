@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.6)
-project(cppremoteapi)
+project(fluxprogbackend)
 
 INCLUDE(FindPkgConfig)
 
@@ -27,25 +27,24 @@ set(HEADERS
     #remoteApi/extApiCustom.h
     remoteApi/extApiInternal.h
     remoteApi/extApiPlatform.h
-    include/v_repConst.h
-    include/v_repLib.h
+    remoteApi/v_repConst.h
+    remoteApi/v_repLib.h
     rs232.h
 
 )
 
-include_directories("include/")
 include_directories("remoteApi/")
-
+aux_source_directory(. SRC_LIST)
 
 find_package(Threads REQUIRED)
 
 
 
 
-add_executable(cppremoteapi
-               main.cpp
+add_executable(${PROJECT_NAME}
                ${SOURCES}
-	       ${HEADERS})
+	       ${HEADERS}
+       ${SRC_LIST})
 
 if(THREADS_HAVE_PTHREAD_ARG)
   target_compile_options(${PROJECT_NAME} PUBLIC "-pthread")

@@ -1,11 +1,11 @@
 #include "PhysicalRobot.hpp"
 
-PhysicalRobot::PhysicalRobot()
+PhysicalRobot::PhysicalRobot(int *error)
 {
     if(RS232_OpenComport(CPORT_NR, BDRATE, "8N1"))
     {
         printf("AVISO: NENHUMA serial encontrada!!\n");
-        ~PhysicalRobot();
+        *error = 1;
     }
     else
     {
@@ -16,10 +16,10 @@ PhysicalRobot::PhysicalRobot()
 
 PhysicalRobot::~PhysicalRobot()
 {
-    ;//fechar a porta
+    RS232_CloseComport(CPORT_NR);
 }
 
-void PhysicalRobot::setCommand(int _command);
+void PhysicalRobot::setCommand(int _command)
 {
     command = _command;
     if(command)

@@ -5,7 +5,9 @@
 #include "fluxProgBackendCte.h"
 #include <boost/interprocess/managed_shared_memory.hpp>
 #include <boost/interprocess/offset_ptr.hpp>
+#include <iostream>
 using namespace boost::interprocess;
+using namespace std;
 
 class Communication{
     managed_shared_memory *shared_memory;
@@ -21,8 +23,8 @@ public:
     ~Communication();
     int getCommand();
     int isVirtual();
-    void setFeedback(int feedback);
-    void setUltrasonicReading(float *ultrasonic_reading);
+    void setFeedback(int _feedback);
+    void setUltrasonicReading(int *ultrasonic_reading);
     void setBlackTypeReading(int *black_type_reading);
     void setColorReading(int **color_reading);
 };

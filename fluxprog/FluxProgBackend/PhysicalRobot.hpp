@@ -4,13 +4,16 @@
 #define _PHYSICAL_ROBOT_HPP_
 #include "fluxProgBackendCte.h"
 #include "rs232.h"
+#include "Robot.hpp"
 
 class PhysicalRobot : public Robot{
     void sendCommand();
     void receiveData();
 public:
-    PhysicalRobot();
+    PhysicalRobot(int *error);
     ~PhysicalRobot();
+    void setCommand(int _command);
+    void updateSensorsReading();
 
 };
 

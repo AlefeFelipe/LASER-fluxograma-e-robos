@@ -2,7 +2,6 @@
 
 Robot::Robot()
 {
-    int i, j;
     updateSensorsReading();
     command = 0;
 }
@@ -27,26 +26,27 @@ int *Robot::getBlackTypeReading()
     return black_type_sensor_reading;
 }
 
-int **Robot::getColorReading()
-{
-    return color_sensor_reading;
-}
+//int **Robot::getColorReading()
+//{
+//    return color_sensor_reading;
+//}
 
 void Robot::updateSensorsReading()
 {
+    int i;
     for (i = 0; i < N_ULTRASONIC; i++)
     {
-        ultrasonic_sensor_reading[i] = 0
+        ultrasonic_sensor_reading[i] = 0;
     }
     for (i = 0; i < N_BLACK_TAPE_SENSOR; i++)
     {
-        black_type_sensor_reading[i] = 0
+        black_type_sensor_reading[i] = 0;
     }
-    for (i = 0; i < N_COLOR_SENSOR; i++)
+    /*for (i = 0; i < N_COLOR_SENSOR; i++)
     {
         for (j = 0; j < COLOR_SENSOR_COMPONENTS; j++)
         {
             color_sensor_reading[i][j] = 0
         }
-    }
+    }*/
 }

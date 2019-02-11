@@ -21,6 +21,8 @@
 #define D_ANG 0.1 //delta para captacao de salto da atan, (~DIS_CURVA-0.1)
 #define MAX_INTE 0.2 //delta para media ta intensidade. tecnicamente, deve ser zero
 #define CONT 0 //contador para comecar virar
+#define N_MOTORS 2
+#define ANGLE_COMPONENTS 3
 
 //variaveis bluetooth
 #define BDRATE 115200
@@ -36,7 +38,7 @@
 #define CLOSE_PROGRAM -10
 #define ERROR -5
 #define CONNECTED -4
-#define GO_AHEAD 8
+#define MOVE_FORWARD 8
 #define TURN_LEFT 4
-#define MOVE_FORWARD 6
+#define TURN_RIGHT 6
 #endif

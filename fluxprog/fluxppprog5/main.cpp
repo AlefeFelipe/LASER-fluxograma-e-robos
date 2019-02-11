@@ -439,7 +439,7 @@ int main(int argc, char **argv)
                         sucesso = false;
                         break;
                     case 0 :
-                        execl(".//..//ProjetoRemoteApi//build//cppremoteapi", "cppremoteapi", NULL);
+                        execl(".//..//FluxProgBackend//build//fluxprogbackend", "fluxprogbackend", NULL);
                         sucesso = false;
                         break;
                     default :

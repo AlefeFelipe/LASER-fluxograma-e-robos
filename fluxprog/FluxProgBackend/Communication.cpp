@@ -3,6 +3,7 @@
 Communication::Communication()
 {
     bool opened = false;
+    int i;
     while(!opened)
     {
         if(shared_memory!=NULL) //deletes the last opened vision shared memory if it exists
@@ -16,7 +17,7 @@ Communication::Communication()
         }
         catch(...)
         {
-            std::cout<<"erro ao abrir memoria 1" << i++ << std::endl;
+            cout<<"erro ao abrir memoria 1" << i++ << endl;
         }
     }
     ultrasonic_sensor_reading = shared_memory->construct<int>(SENSOR_ULTRASSOM)[N_ULTRASONIC]();
@@ -24,7 +25,7 @@ Communication::Communication()
     //color_sensor_reading = shared_memory->construct<unsigned short int >(POSICAO_DETECTADA)[N_ULTRASONIC]();
     command = shared_memory->find<int>(NOME_DO_INT_NA_MEMORIA1);
 	feedback = shared_memory->find<int>(NOME_DO_INT_NA_MEMORIA2);
-    virtual_robot = !(shared_memory->find<int>(BLUETOOTH_ENABLE));
+    virtual_robot = shared_memory->find<int>(BLUETOOTH_ENABLE);
 }
 
 Communication::~Communication()
@@ -43,15 +44,16 @@ int Communication::getCommand()
 
 int Communication::isVirtual()
 {
-    return *virtual_robot.first;
+    return !(*virtual_robot.first);
 }
 
-void Communication::setFeedback(int feedback)
+void Communication::setFeedback(int _feedback)
 {
-    *feedback.first = feedback;
+    *feedback.first = _feedback;
+    *command.first = 0;//desnecessario
 }
 
-void Communication::setUltrasonicReading(float *ultrasonic_reading)
+void Communication::setUltrasonicReading(int *ultrasonic_reading)
 {
     ultrasonic_sensor_reading = ultrasonic_reading;
 }
