@@ -41,11 +41,13 @@ Interface :: Interface()
     }
 
     //CRIA A JANELA DO PROGRAMA E SETA AS VARIÁVEIS DA JANELA
-    al_set_new_display_flags(ALLEGRO_WINDOWED | ALLEGRO_RESIZABLE);
+    al_set_new_display_flags(ALLEGRO_WINDOWED | ALLEGRO_RESIZABLE | ALLEGRO_MAXIMIZED);
     display = al_create_display(display_width, display_height);
     al_set_window_position(display, 40, 40);
     al_set_window_title(display, "Fluxprog_v2");
     al_clear_to_color(al_map_rgb(0, 0, 0));
+    al_set_window_constraints(display, 670, 600, 5000, 5000);
+    al_apply_window_constraints(display, true);
 
 
     //inicialização das cores
@@ -238,14 +240,13 @@ void Interface :: start() {
             executing = false;
         }
 
+
     }
     delete this;
 }
 
 void Interface :: load_bitmap(ALLEGRO_BITMAP **bitmap, char *adress) {
     if(!al_load_bitmap(adress)) {
-        //char text = "Erro ao carregar bitmap";
-        //strcpy(text, &adress)
         al_show_native_message_box(NULL, NULL, NULL, adress, NULL, NULL);
         executing = false;
     } else {
