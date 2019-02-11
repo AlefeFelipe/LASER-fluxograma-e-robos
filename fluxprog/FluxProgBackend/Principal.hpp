@@ -5,16 +5,19 @@
 #include "Communication.hpp"
 #include "VirtualRobot.hpp"
 #include "PhysicalRobot.hpp"
+#include "fluxProgBackendCte.h"
 
 class Principal{
     int feedback;
     Communication *communication;
     VirtualRobot *virtual_robot;
-    PhysicalRobot *physicalRobot;
+    PhysicalRobot *physical_robot;
 
 public:
     Principal();
     ~Principal();
+    void start();
+    void connect();
 };
 
 #endif

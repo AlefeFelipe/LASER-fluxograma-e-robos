@@ -32,4 +32,11 @@
 #define ULTRASONIC_SENSOR_COMPONENTS 3
 #define VISION_SENSOR_COMPONENTS 15
 
+//variaveis de communicacao entre back e front end
+#define CLOSE_PROGRAM -10
+#define ERROR -5
+#define CONNECTED -4
+#define GO_AHEAD 8
+#define TURN_LEFT 4
+#define MOVE_FORWARD 6
 #endif
