@@ -27,7 +27,7 @@
 #define R_ULTRASONIC_ECHO 49
 #define R_ULTRASONIC_TRIG 47
 //pinagem sensores de cor
-#define L_COLOR_SENSOR_SDA 23 
+#define L_COLOR_SENSOR_SDA 23
 #define L_COLOR_SENSOR_SCL 22
 #define R_COLOR_SENSOR_SDA 25
 #define R_COLOR_SENSOR_SCL 24
@@ -39,7 +39,7 @@
 #define TIMETURNING 100 //tempo de giro 90º em milisegundos
 #define SCALE 0.6 //por enquanto, depois olhar um para o outro
 #define UPDATE_DELAY 0
-//constantes 
+//constantes
 #define BDRATE 115200
 #define N_BLACK_TAPE_SENSOR 5
 #define N_ULTRASONIC 5
@@ -53,8 +53,8 @@
 #define OBSTACLE_DIS 10
 #define ULTRASONIC_TIMEOUT 2940 //maximo tempo de espera pela leitura do ultrassom, formula:     int timeout = (MAX_DETECTION_DISTANCE*1000000)/17000;
 #define PING_INTERVAL 33//tempo entre a leitura de um ultrassom e outro para evitar conflito
+#define MOVE_FORWARD 8
+#define TURN_LEFT 4
+#define TURN_RIGHT 6
+#define COLOR_SENSOR_COMPONENTS 4
 #endif
-
-//tentar o seguinte: olhar o encoder 2x por segundo. ver qual é a velocidade que se quer, para a velocidade inicial estar próxima do valor
-//fazer a velocidade cair 1.5, 2 e 4. Depois fazer isso acontecer rapidamente. Criar um cara que será a diferença entre os caras
-//depois seguir linha é pra funcionar tranquilamente, mas se n funcionar acrescentar +2 graus de cada lado

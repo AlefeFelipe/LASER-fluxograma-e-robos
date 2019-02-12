@@ -2,7 +2,7 @@
 
 #ifndef _MOTOR_HPP_
 #define _MOTOR_HPP_
-#include "robotCte.hpp"
+#include "robotCte.h"
 #include <Arduino.h>
 #include <AFMotor.h>
 

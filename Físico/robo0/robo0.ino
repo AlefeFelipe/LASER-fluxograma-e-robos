@@ -1,8 +1,9 @@
 #include "Principal.hpp"
-#include "robotCte.hpp"
+#include "robotCte.h"
 
 Principal principal = Principal();
-void setup() {
+void setup()
+{
     Serial.begin(BDRATE);
     Serial1.begin(BDRATE);
     pinMode(L_ENCODER, INPUT);
@@ -23,8 +24,11 @@ void setup() {
     pinMode(RM_BLACK_TAPE_SENSOR, INPUT);
     pinMode(R_BLACK_TAPE_SENSOR, INPUT);
     pinMode(OBSTACLE_SENSOR, INPUT);
-    
+
 
 }
 
-void loop(){    principal.start();}
+void loop()
+{
+    principal.start();
+}

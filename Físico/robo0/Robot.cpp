@@ -5,6 +5,54 @@ int myABS(int x)
     return (x>0? x : -x);
 }
 
+int getTrig(int name)
+{
+    int trig;
+    switch (name)
+    {
+        case 1:
+            trig = L_ULTRASONIC_TRIG;
+        break;
+        case 2:
+            trig = LM_ULTRASONIC_TRIG;
+        break;
+        case 3:
+            trig = M_ULTRASONIC_TRIG;
+        break;
+        case 4:
+            trig = RM_ULTRASONIC_TRIG;
+        break;
+        case 5:
+            trig = R_ULTRASONIC_TRIG;
+        break;
+    }
+    return trig;
+}
+
+int getEcho(int name)
+{
+    int echo;
+    switch (name)
+    {
+        case 1:
+            echo = L_ULTRASONIC_ECHO;
+        break;
+        case 2:
+            echo = LM_ULTRASONIC_ECHO;
+        break;
+        case 3:
+            echo = M_ULTRASONIC_ECHO;
+        break;
+        case 4:
+            echo = RM_ULTRASONIC_ECHO;
+        break;
+        case 5:
+            echo = R_ULTRASONIC_ECHO;
+        break;
+    }
+    return echo;
+}
+
 Robot::Robot()
 {
     int i;
@@ -15,9 +63,16 @@ Robot::Robot()
     {
         black_tape_sensor[i] = new BlackTapeSensor(i+1);
     }
+    for(i = 0; i < N_ULTRASONIC; i++)
+    {
+        ultrasonic[i] = new Ultrasonic(getTrig(i+1), getEcho(i+1), ULTRASONIC_TIMEOUT);
+    }
+
+    color_sensor[0] = new Adafruit_TCS34725softi2c(TCS34725_INTEGRATIONTIME_50MS, TCS34725_GAIN_4X, L_COLOR_SENSOR_SDA, L_COLOR_SENSOR_SCL);
+    color_sensor[1] = new Adafruit_TCS34725softi2c(TCS34725_INTEGRATIONTIME_50MS, TCS34725_GAIN_4X, R_COLOR_SENSOR_SDA, R_COLOR_SENSOR_SCL);        
     lm_speed = MOTORSPEED;
     rm_speed = MOTORSPEED*SCALE;
-    
+
 }
 
 void Robot::moveFoward()
@@ -29,13 +84,13 @@ void Robot::moveFoward()
     //primeira leitura dos sensores
     for(i=0; i<N_ULTRASONIC; i++)
     {
-        readingU[i] = (ultrasonic[i].read() > OBSTACLE_DIS ? 0 : 1);  
+        readingU[i] = (ultrasonic[i]->read() > OBSTACLE_DIS ? 0 : 1);
     }
     for(i=0; i<N_BLACK_TAPE_SENSOR; i++)
     {
         readingBTS[i] = black_tape_sensor[i]->getReading();
     }
-    
+
     while(((readingBTS[0]&&readingBTS[2])||(readingBTS[2]&&readingBTS[4])) && !readingU[2])//verificar se ta no mesmo estado, tecnicamente inutil devido a funcao acima
     {
         motor[0]->move(true, lm_speed);
@@ -47,10 +102,10 @@ void Robot::moveFoward()
         }
         for(i=0; i<N_ULTRASONIC; i++)
         {
-            readingU[i] = (ultrasonic[i].read() > OBSTACLE_DIS ? 0 : 1);
-        }        
+            readingU[i] = (ultrasonic[i]->read() > OBSTACLE_DIS ? 0 : 1);
+        }
     }
-    
+
     while(!((readingBTS[0]&&readingBTS[2])||(readingBTS[2]&&readingBTS[4])) && !readingU[2])//anda ate os sensores captarem a linha ou obstaculo
     {
         for(i=0; i<N_BLACK_TAPE_SENSOR; i++)
@@ -59,9 +114,9 @@ void Robot::moveFoward()
         }
         for(i=0; i<N_ULTRASONIC; i++)
         {
-            readingU[i] = (ultrasonic[i].read() > OBSTACLE_DIS ? 0 : 1);
+            readingU[i] = (ultrasonic[i]->read() > OBSTACLE_DIS ? 0 : 1);
         }
-        
+
         if(readingBTS[4]&&!(readingBTS[2]||readingBTS[1]||readingBTS[0]))
         {
             motor[0]->move(true, lm_speed);
@@ -144,7 +199,7 @@ void Robot::moveFoward()
             motor[0]->move(true, lm_speed);
             motor[1]->move(true, rm_speed);
             moveStraight(&timeold, -1);
-        }      
+        }
     }
     time = millis();
     while(millis()-time <= TIMETURNING && !readingU[2])
@@ -154,7 +209,7 @@ void Robot::moveFoward()
         moveStraight(&timeold, -1);
         for(i=0; i<N_ULTRASONIC; i++)
         {
-            readingU[i] = (ultrasonic[i].read() > OBSTACLE_DIS ? 0 : 1);    
+            readingU[i] = (ultrasonic[i]->read() > OBSTACLE_DIS ? 0 : 1);
         }
     }
 }
@@ -194,7 +249,7 @@ void Robot::turnLeft()
 void Robot::turnRight()
 {
     long time = millis(), timeold = millis();
-    
+
     int i;
     int readingBTS[N_BLACK_TAPE_SENSOR];
     while(millis()-time<=TIMETURNING*2)
@@ -243,7 +298,7 @@ void Robot::moveStraight(long *timeold, int stopped_motor)
             if(readingRPM[0]>SPEED_TO_UPDATE_TIME)
             {
                 lm_speed -= D_SPEED;
-    
+
                 error = SPEED_TO_UPDATE_TIME-readingRPM[0];
                 if(lm_speed < 0)
                 {
@@ -274,7 +329,7 @@ void Robot::moveStraight(long *timeold, int stopped_motor)
             else
             {
                 error = int(SPEED_TO_UPDATE_TIME)-readingRPM[1];
-                rm_speed += D_SPEED;           
+                rm_speed += D_SPEED;
                 if(rm_speed > 255)
                 {
                     rm_speed = 255;
@@ -346,23 +401,23 @@ void Robot::getReadingBlackTypeSensor(uint8_t *readingBTS)
     {
         readingBTS[i] = black_tape_sensor[i]->getReading();
     }
-}   
+}
 
 void Robot::getReadingUltrasonic(unsigned int *detectedObjet_U)
 {
     int i;
     for(i=0; i<N_ULTRASONIC; i++)
     {
-        detectedObjet_U[i] = ultrasonic[i].read();
+        detectedObjet_U[i] = ultrasonic[i]->read();
     }
 }
 
-void Robot::getReadingColorSensor(uint16_t reading[N_COLOR_SENSOR][4])
+void Robot::getReadingColorSensor(uint16_t reading[N_COLOR_SENSOR][COLOR_SENSOR_COMPONENTS])
 {
     int i, j;
     for(i=0; i<N_COLOR_SENSOR; i++)
     {
-        color_sensor[i].getRawData(&colors[i][0], &colors[i][1], &colors[i][2], &colors[i][3]);    
+        color_sensor[i]->getRawData(&colors[i][0], &colors[i][1], &colors[i][2], &colors[i][3]);
     }
     reading = colors;
     /*for(i=0; i<N_COLOR_SENSOR; i++)
@@ -377,5 +432,5 @@ void Robot::getReadingColorSensor(uint16_t reading[N_COLOR_SENSOR][4])
             Serial.print(reading[i][j]);
         }
         Serial.println();
-    }*/    
+    }*/
 }

@@ -3,7 +3,7 @@
 #ifndef _BLUETOOTH_HPP_
 #define _BLUETOOTH_HPP_
 #include <Arduino.h>
-#include "robotCte.hpp"
+#include "robotCte.h"
 
 class Bluetooth{
     char* packet;

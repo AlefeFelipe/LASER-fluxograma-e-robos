@@ -5,26 +5,17 @@
 #include "Motor.hpp"
 #include "BlackTapeSensor.hpp"
 //#include "MyUltrasonic.hpp"
-#include "robotCte.hpp"
+#include "robotCte.h"
 #include <Ultrasonic.h>
 //#include "ColorSensor.hpp"
 #include <Adafruit_TCS34725softi2c.h>
 class Robot{
     Motor* motor[2];
-    Ultrasonic ultrasonic[N_ULTRASONIC] = {
-        Ultrasonic(L_ULTRASONIC_TRIG, L_ULTRASONIC_ECHO, ULTRASONIC_TIMEOUT),
-        Ultrasonic(LM_ULTRASONIC_TRIG, LM_ULTRASONIC_ECHO, ULTRASONIC_TIMEOUT),
-        Ultrasonic(M_ULTRASONIC_TRIG, M_ULTRASONIC_ECHO, ULTRASONIC_TIMEOUT),
-        Ultrasonic(RM_ULTRASONIC_TRIG, RM_ULTRASONIC_ECHO, ULTRASONIC_TIMEOUT),
-        Ultrasonic(R_ULTRASONIC_TRIG, R_ULTRASONIC_ECHO, ULTRASONIC_TIMEOUT)
-    };
+    Ultrasonic *ultrasonic[N_ULTRASONIC];
     int lm_speed, rm_speed;
-    BlackTapeSensor* black_tape_sensor[N_BLACK_TAPE_SENSOR];
-    Adafruit_TCS34725softi2c color_sensor[N_COLOR_SENSOR] = {
-        Adafruit_TCS34725softi2c(TCS34725_INTEGRATIONTIME_50MS, TCS34725_GAIN_4X, L_COLOR_SENSOR_SDA, L_COLOR_SENSOR_SCL),
-        Adafruit_TCS34725softi2c(TCS34725_INTEGRATIONTIME_50MS, TCS34725_GAIN_4X, R_COLOR_SENSOR_SDA, R_COLOR_SENSOR_SCL)
-    };
-    uint16_t colors[N_COLOR_SENSOR][4];
+    BlackTapeSensor *black_tape_sensor[N_BLACK_TAPE_SENSOR];
+    Adafruit_TCS34725softi2c *color_sensor[N_COLOR_SENSOR];
+    uint16_t colors[N_COLOR_SENSOR][COLOR_SENSOR_COMPONENTS];
 public:
     Robot();
     void moveFoward();

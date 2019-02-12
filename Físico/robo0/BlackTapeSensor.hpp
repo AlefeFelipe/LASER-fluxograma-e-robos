@@ -2,7 +2,7 @@
 
 #ifndef _BLACKTAPESENSOR_HPP_
 #define _BLACKTAPESENSOR_HPP_
-#include "robotCte.hpp"
+#include "robotCte.h"
 #include <Arduino.h>
 
 class BlackTapeSensor{
