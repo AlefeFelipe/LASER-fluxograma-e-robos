@@ -13,6 +13,7 @@
 #include <fstream>
 #include <cstring>
 #include <iostream>
+#include "Block.hpp"
 
 using namespace std;
 
@@ -26,11 +27,15 @@ class Interface {
     ALLEGRO_COLOR white;
     ALLEGRO_COLOR menu_color;
     ALLEGRO_DISPLAY *display;
-    ALLEGRO_BITMAP *play_button, *pause_button, *stop_button, *save_button, *load_button, *save_as_button, *vrep_button, *bluetooth_button, *mini_menu[6];
+    ALLEGRO_BITMAP *play_button, *play_button_selected, *pause_button, *pause_button_selected, *stop_button, *stop_button_selected, *save_button, *save_button_selected;
+    ALLEGRO_BITMAP *load_button, *load_button_selected, *save_as_button, *save_as_button_selected, *vrep_button, *vrep_button_selected, *bluetooth_button, *bluetooth_button_selected, *mini_menu[6];
     ALLEGRO_BITMAP *action_walk, *action_turn, *sensor_black, *sensor_ultrasonic, *NUMBER[10], *logic_true, *logic_false; //bitmaps para os blocos de travamento (os que travam nos blocos maiores)
     ALLEGRO_BITMAP *DECISION_BLOCK[4], *END_BLOCK[4], *FUNCTION_BLOCK[4], *LOOP_BLOCK[4], *MERGE_BLOCK[4], *START_BLOCK[4], *POINT[2]; //bitmaps para os blocos e suas variações (inativo, destacado pelo mouse, sendo movido e sendo rodado) e para os pontos de junção dos blocos (inativo e destacado)
     ALLEGRO_FONT *font;
     bool executing;
+    int mouseX, mouseY;
+    int menu_selected;
+    //bool on_play_button, on_pause_button, on_stop_button, on_save_button, on_load_button, on_save_as_button, on_vrep_button, on_bluetooth_button;
 
     void load_bitmap(ALLEGRO_BITMAP **bitmap, char *adress);
 
