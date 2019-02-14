@@ -14,6 +14,7 @@
 #include <cstring>
 #include <iostream>
 #include "Block.hpp"
+#include "StartBlock.hpp"
 
 using namespace std;
 
@@ -35,9 +36,10 @@ class Interface {
     bool executing;
     int mouseX, mouseY;
     int menu_selected;
-    //bool on_play_button, on_pause_button, on_stop_button, on_save_button, on_load_button, on_save_as_button, on_vrep_button, on_bluetooth_button;
+    Block* blocks_list_to_print[100];
 
     void load_bitmap(ALLEGRO_BITMAP **bitmap, char *adress);
+    void add_block(Block *b);
 
 public:
 

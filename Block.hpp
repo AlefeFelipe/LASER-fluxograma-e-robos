@@ -1,6 +1,8 @@
 #ifndef BLOCK_HPP_
 #define BLOCK_HPP_
 
+#include <allegro5/allegro.h>
+#include <allegro5/allegro_image.h>
 #include <iostream> // usada para debugging
 #include <math.h>
 #include <fstream>
@@ -27,6 +29,7 @@ public:
     int getX();
     void setY(int ny);
     int getY();
+    int getType();
     void setSelected(int s);
     int getSelected();
 };

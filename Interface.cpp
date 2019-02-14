@@ -138,6 +138,9 @@ Interface :: Interface()
         al_show_native_message_box(NULL, NULL, NULL, "Erro na inicializacao da fonte", NULL, NULL);
         executing = false;
     }
+    for(int i=0; i<100; i++) {
+        blocks_list_to_print[i] = NULL;
+    }
 
 }
 
@@ -300,6 +303,14 @@ void Interface :: start() {
             menu_selected = 0;
         }
 
+        for(int i=0; i<100; i++) {
+            if(blocks_list_to_print[i] != NULL) {
+                if(blocks_list_to_print[i]->getType() == 6) {
+                    al_draw_bitmap(START_BLOCK[0], 50, 100, 0);
+                }
+            }
+
+        }
 
         al_flip_display();
 
@@ -321,6 +332,24 @@ void Interface :: start() {
             mouseY = events.mouse.y;
         }
         if(events.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN) {
+
+            for(int i=0; i<100; i++) {
+                if(blocks_list_to_print[i] != NULL) {
+                    cout<<"clicou"<<endl;
+                    if((mouseX > blocks_list_to_print[i]->getX()) && (mouseX < (blocks_list_to_print[i]->getX()+50)) && (mouseY > blocks_list_to_print[i]->getY()) && (mouseY < (blocks_list_to_print[i]->getY()+50))) {
+                        blocks_list_to_print[i]->setX(mouseX);
+                        blocks_list_to_print[i]->setY(mouseY);
+                        cout<<"clicou em cima"<<endl;
+                    }
+                }
+            }
+
+
+
+        }
+
+        if(events.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP) {
+            StartBlock *aux = new StartBlock();
             switch (menu_selected) {
                 case 1:
                     cout<<"clicou menu play" << endl;
@@ -354,6 +383,11 @@ void Interface :: start() {
                     break;
                 case 11:
                     cout<<"clicou menu bloco inicio" << endl;
+                    //Block *aux = new Block();
+                    //aux->setImage(START_BLOCK[0]);
+                    aux->setX(50);
+                    aux->setY(50);
+                    add_block(aux);
                     break;
                 case 12:
                     cout<<"clicou menu bloco fim" << endl;
@@ -385,7 +419,6 @@ void Interface :: start() {
                 default:
                     cout<<"clicou em nenhum menu"<<endl;
             }
-
         }
 
 
@@ -402,4 +435,16 @@ void Interface :: load_bitmap(ALLEGRO_BITMAP **bitmap, char *adress) {
     } else {
         *bitmap = al_load_bitmap(adress);
     }
+}
+
+void Interface :: add_block(Block *b) {
+    for(int i=0; i<100; i++) {
+        cout << i << endl;
+        if(blocks_list_to_print[i] == NULL) {
+            blocks_list_to_print[i] = b;
+            cout<< "adicionou na lista" << endl;
+            break;
+        }
+    }
+
 }

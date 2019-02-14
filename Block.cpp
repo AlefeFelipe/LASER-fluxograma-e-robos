@@ -31,3 +31,7 @@ void Block :: setSelected(int s) {
 int Block :: getSelected() {
     return selected;
 }
+
+int Block :: getType() {
+    return type;
+}
