@@ -24,14 +24,22 @@ int Block :: getY() {
     return y;
 }
 
-void Block :: setSelected(int s) {
+void Block :: setSelected(bool s) {
     selected = s;
 }
 
-int Block :: getSelected() {
+bool Block :: getSelected() {
     return selected;
 }
 
 int Block :: getType() {
     return type;
+}
+
+void Block :: setTypeOfSensor(int t) {
+
+}
+int Block :: getTypeOfSensor() {
+    cout<<"block"<<endl;
+    return 0;
 }

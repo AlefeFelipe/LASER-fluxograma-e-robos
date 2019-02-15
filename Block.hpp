@@ -16,7 +16,7 @@ class Block {
 
     int x;
     int y;
-    int selected;
+    bool selected;
 
 protected:
     int type;
@@ -30,7 +30,9 @@ public:
     void setY(int ny);
     int getY();
     int getType();
-    void setSelected(int s);
-    int getSelected();
+    void setSelected(bool s);
+    bool getSelected();
+    void setTypeOfSensor(int t);
+    int getTypeOfSensor();
 };
 #endif

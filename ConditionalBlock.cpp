@@ -32,6 +32,14 @@ bool ConditionalBlock :: getResponse() {
     }
 }
 
+void ConditionalBlock :: setPrevious(Block b) {
+    previous = b;
+}
+
+Block ConditionalBlock :: getPrevious() {
+    return previous;
+}
+
 void ConditionalBlock :: setNextTrue(Block b) {
     next_true = b;
 }
@@ -46,4 +54,13 @@ void ConditionalBlock :: setNextFalse(Block b) {
 
 Block ConditionalBlock :: getNextFalse() {
     return next_false;
+}
+
+void ConditionalBlock :: setTypeOfSensor(int t) {
+    type_of_sensor = t;
+}
+
+int ConditionalBlock :: getTypeOfSensor() {
+    cout<<"conditional"<<endl;
+    return 2;
 }
