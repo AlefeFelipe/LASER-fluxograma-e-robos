@@ -14,8 +14,6 @@ public:
     ProgrammingBlock();
     ~ProgrammingBlock();
     int getProgrammingType();
-    void setTypeOfSensor(int t);
-    int getTypeOfSensor();
 
 };
 #endif

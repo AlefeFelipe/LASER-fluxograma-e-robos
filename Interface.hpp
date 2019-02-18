@@ -45,6 +45,7 @@ class Interface {
     int mouseX, mouseY;
     int menu_selected;
     Block* blocks_list_to_print[100];
+    int mouse_aux_x, mouse_aux_y; // usado para arrastar as imagens;
 
     void load_bitmap(ALLEGRO_BITMAP **bitmap, char *adress);
     void add_block(Block *b);

@@ -16,6 +16,8 @@ class Block {
 
     int x;
     int y;
+    int width;
+    int height;
     bool selected;
 
 protected:
@@ -32,7 +34,11 @@ public:
     int getType();
     void setSelected(bool s);
     bool getSelected();
-    void setTypeOfSensor(int t);
-    int getTypeOfSensor();
+    void setWidth(int w);
+    int getWidth();
+    void setHeight(int h);
+    int getHeight();
+    virtual void setTypeOfSensor(int t);
+    virtual int getTypeOfSensor();
 };
 #endif

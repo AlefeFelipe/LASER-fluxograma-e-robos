@@ -1,7 +1,11 @@
 #include "Block.hpp"
 
 Block :: Block() {
-
+    x = 0;
+    y = 0;
+    width = 0;
+    height = 0;
+    selected = false;
 }
 
 Block :: ~Block() {
@@ -40,6 +44,17 @@ void Block :: setTypeOfSensor(int t) {
 
 }
 int Block :: getTypeOfSensor() {
-    cout<<"block"<<endl;
     return 0;
+}
+void Block :: setWidth(int w) {
+    width = w;
+}
+int Block :: getWidth() {
+    return width;
+}
+void Block :: setHeight(int h) {
+    height = h;
+}
+int Block :: getHeight() {
+    return height;
 }

@@ -61,6 +61,5 @@ void ConditionalBlock :: setTypeOfSensor(int t) {
 }
 
 int ConditionalBlock :: getTypeOfSensor() {
-    cout<<"conditional"<<endl;
-    return 2;
+    return type_of_sensor;
 }
