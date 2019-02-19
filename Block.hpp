@@ -19,6 +19,7 @@ class Block {
     int width;
     int height;
     bool selected;
+    bool out_selected, in_selected;
 
 protected:
     int type;
@@ -34,6 +35,10 @@ public:
     int getType();
     void setSelected(bool s);
     bool getSelected();
+    void setOutSelected(bool s);
+    bool getOutSelected();
+    void setInSelected(bool s);
+    bool getInSelected();
     void setWidth(int w);
     int getWidth();
     void setHeight(int h);

@@ -36,6 +36,22 @@ bool Block :: getSelected() {
     return selected;
 }
 
+void Block :: setOutSelected(bool s) {
+    out_selected = s;
+}
+
+bool Block :: getOutSelected() {
+    return out_selected;
+}
+
+void Block :: setInSelected(bool s) {
+    in_selected = s;
+}
+
+bool Block :: getInSelected() {
+    return in_selected;
+}
+
 int Block :: getType() {
     return type;
 }
