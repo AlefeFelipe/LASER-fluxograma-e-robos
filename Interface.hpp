@@ -42,9 +42,9 @@ class Interface {
     ALLEGRO_BITMAP *vrep_button, *vrep_button_selected, *bluetooth_button, *bluetooth_button_selected, *mini_menu[6];
     ALLEGRO_BITMAP *action_walk, *action_turn, *sensor_black, *sensor_color, *sensor_ultrasonic;
     ALLEGRO_BITMAP *NUMBER[10], *logic_true, *logic_false;
-    ALLEGRO_BITMAP *DECISION_BLOCK[3], *DECISION_BLACK_SENSOR_BLOCK[3], *DECISION_COLOR_SENSOR_BLOCK[3], *DECISION_ULTRASONIC_SENSOR_BLOCK[3];
-    ALLEGRO_BITMAP *END_BLOCK[3], *FUNCTION_BLOCK[3], *LOOP_BLOCK[3], *MERGE_BLOCK[3], *START_BLOCK[3], *BLACK_SENSOR_BLOCK[3];
-    ALLEGRO_BITMAP *COLOR_SENSOR_BLOCK[3], *ULTRASONIC_SENSOR_BLOCK[3], *POINT[2];
+    ALLEGRO_BITMAP *DECISION_BLOCK[4], *DECISION_BLACK_SENSOR_BLOCK[4], *DECISION_COLOR_SENSOR_BLOCK[4], *DECISION_ULTRASONIC_SENSOR_BLOCK[4];
+    ALLEGRO_BITMAP *END_BLOCK[4], *FUNCTION_BLOCK[4], *LOOP_BLOCK[4], *MERGE_BLOCK[4], *START_BLOCK[4], *BLACK_SENSOR_BLOCK[4];
+    ALLEGRO_BITMAP *COLOR_SENSOR_BLOCK[4], *ULTRASONIC_SENSOR_BLOCK[4], *POINT[2];
     ALLEGRO_BITMAP *trash;
     ALLEGRO_FONT *font;
     bool executing;
@@ -56,6 +56,19 @@ class Interface {
     void load_bitmap(ALLEGRO_BITMAP **bitmap, char *adress);
     void add_block(Block *b);
     void remove_block(Block *b);
+    void print_primary_menu();
+    void print_secondary_menu();
+    void print_function_block(Block *b);
+    void print_ultrasonic_sensor_block(Block *b);
+    void print_black_sensor_block(Block *b);
+    void print_color_sensor_block(Block *b);
+    void print_end_block(Block *b);
+    void print_start_block(Block *b);
+    void print_loop_block(Block *b);
+    void print_decision_block(Block *b);
+    void print_merge_block(Block *b);
+    void load_program_images();
+    void destroy_program_images();
 
 public:
 

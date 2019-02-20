@@ -18,7 +18,7 @@ class Block {
     int y;
     int width;
     int height;
-    bool selected;
+    bool selected, dragging;
     bool out_selected, in_selected;
 
 protected:
@@ -33,6 +33,8 @@ public:
     void setY(int ny);
     int getY();
     int getType();
+    void setDragging(bool s);
+    bool getDragging();
     void setSelected(bool s);
     bool getSelected();
     void setOutSelected(bool s);

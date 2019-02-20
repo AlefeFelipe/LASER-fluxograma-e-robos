@@ -6,6 +6,7 @@ Block :: Block() {
     width = 0;
     height = 0;
     selected = false;
+    dragging = false;
 }
 
 Block :: ~Block() {
@@ -28,10 +29,17 @@ int Block :: getY() {
     return y;
 }
 
+void Block :: setDragging(bool s) {
+    dragging = s;
+}
+
+bool Block :: getDragging() {
+    return dragging;
+}
+
 void Block :: setSelected(bool s) {
     selected = s;
 }
-
 bool Block :: getSelected() {
     return selected;
 }
