@@ -32,19 +32,21 @@ using namespace std;
 
 class Interface {
     ALLEGRO_COLOR black;
-    ALLEGRO_COLOR grey;
+    ALLEGRO_COLOR backgroud_color;
     ALLEGRO_COLOR white;
-    ALLEGRO_COLOR menu_color;
+    ALLEGRO_COLOR primary_menu_color, blocks_menu_color, functions_menu_color, sensors_menu_color;
     ALLEGRO_DISPLAY *display;
     ALLEGRO_BITMAP *play_button, *play_button_selected, *pause_button, *pause_button_selected;
     ALLEGRO_BITMAP *stop_button, *stop_button_selected, *save_button, *save_button_selected;
     ALLEGRO_BITMAP *load_button, *load_button_selected, *save_as_button, *save_as_button_selected;
     ALLEGRO_BITMAP *vrep_button, *vrep_button_selected, *bluetooth_button, *bluetooth_button_selected, *mini_menu[6];
-    ALLEGRO_BITMAP *action_walk, *action_turn, *sensor_black, *sensor_color, *sensor_ultrasonic;
+    ALLEGRO_BITMAP *action_walk, *action_turn;
     ALLEGRO_BITMAP *NUMBER[10], *logic_true, *logic_false;
-    ALLEGRO_BITMAP *DECISION_BLOCK[4], *DECISION_BLACK_SENSOR_BLOCK[4], *DECISION_COLOR_SENSOR_BLOCK[4], *DECISION_ULTRASONIC_SENSOR_BLOCK[4];
-    ALLEGRO_BITMAP *END_BLOCK[4], *FUNCTION_BLOCK[4], *LOOP_BLOCK[4], *MERGE_BLOCK[4], *START_BLOCK[4], *BLACK_SENSOR_BLOCK[4];
-    ALLEGRO_BITMAP *COLOR_SENSOR_BLOCK[4], *ULTRASONIC_SENSOR_BLOCK[4], *POINT[2];
+    ALLEGRO_BITMAP *DECISION_BLOCK[4], *BLACK_SENSOR_FUNCTION, *BLACK_SENSOR_1_FUNCTION, *BLACK_SENSOR_2_FUNCTION, *BLACK_SENSOR_3_FUNCTION, *BLACK_SENSOR_4_FUNCTION;
+    ALLEGRO_BITMAP *BLACK_SENSOR_5_FUNCTION, *COLOR_SENSOR_FUNCTION, *COLOR_SENSOR_1_FUNCTION, *COLOR_SENSOR_2_FUNCTION, *ULTRASONIC_SENSOR_FUNCTION;
+    ALLEGRO_BITMAP *ULTRASONIC_SENSOR_1_FUNCTION, *ULTRASONIC_SENSOR_2_FUNCTION, *ULTRASONIC_SENSOR_3_FUNCTION;
+    ALLEGRO_BITMAP *END_BLOCK[4], *FUNCTION_BLOCK[4], *LOOP_BLOCK[4], *MERGE_BLOCK[4], *START_BLOCK[4];
+    ALLEGRO_BITMAP *POINT[2];
     ALLEGRO_BITMAP *trash;
     ALLEGRO_FONT *font;
     bool executing;
@@ -52,6 +54,12 @@ class Interface {
     int menu_selected;
     Block* blocks_list_to_print[100];
     int mouse_aux_x, mouse_aux_y; // usado para arrastar as imagens;
+    bool black_sensor_menu_selected, color_sensor_menu_selected, ultrasonic_sensor_menu_selected;
+    bool dragging_black_sensor1, dragging_black_sensor2, dragging_black_sensor3, dragging_black_sensor4, dragging_black_sensor5;
+    bool dragging_color_sensor1, dragging_color_sensor2;
+    bool dragging_ultrasonic_sensor1, dragging_ultrasonic_sensor2, dragging_ultrasonic_sensor3;
+    bool sub_menu;
+    int blocks_menu_X, blocks_menu_Y, sensors_menu_X, sensors_menu_Y, actions_menu_X, actions_menu_Y, extra_menu_X, extra_menu_Y;
 
     void load_bitmap(ALLEGRO_BITMAP **bitmap, char *adress);
     void add_block(Block *b);
@@ -59,9 +67,6 @@ class Interface {
     void print_primary_menu();
     void print_secondary_menu();
     void print_function_block(Block *b);
-    void print_ultrasonic_sensor_block(Block *b);
-    void print_black_sensor_block(Block *b);
-    void print_color_sensor_block(Block *b);
     void print_end_block(Block *b);
     void print_start_block(Block *b);
     void print_loop_block(Block *b);
@@ -69,6 +74,7 @@ class Interface {
     void print_merge_block(Block *b);
     void load_program_images();
     void destroy_program_images();
+    void reset_dragging_variables();
 
 public:
 
