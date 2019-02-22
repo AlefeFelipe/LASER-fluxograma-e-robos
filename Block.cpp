@@ -70,9 +70,18 @@ void Block :: setTypeOfSensor(int t) {
 int Block :: getTypeOfSensor() {
     return 0;
 }
+
+void Block :: setFunction(int f) {
+
+}
+int Block :: getFunction() {
+    return 0;
+}
+
 void Block :: setWidth(int w) {
     width = w;
 }
+
 int Block :: getWidth() {
     return width;
 }

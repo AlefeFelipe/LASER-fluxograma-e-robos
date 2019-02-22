@@ -47,5 +47,7 @@ public:
     int getHeight();
     virtual void setTypeOfSensor(int t);
     virtual int getTypeOfSensor();
+    virtual void setFunction(int f);
+    virtual int getFunction();
 };
 #endif

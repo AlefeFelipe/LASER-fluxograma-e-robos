@@ -29,6 +29,7 @@ using namespace std;
 #define display_width 700
 #define display_height 900
 #define roll_bar_width 20
+#define valor_maximo_blocos 100
 
 class Interface {
     ALLEGRO_COLOR black;
@@ -40,11 +41,14 @@ class Interface {
     ALLEGRO_BITMAP *stop_button, *stop_button_selected, *save_button, *save_button_selected;
     ALLEGRO_BITMAP *load_button, *load_button_selected, *save_as_button, *save_as_button_selected;
     ALLEGRO_BITMAP *vrep_button, *vrep_button_selected, *bluetooth_button, *bluetooth_button_selected, *mini_menu[6];
-    ALLEGRO_BITMAP *action_walk, *action_turn;
+    ALLEGRO_BITMAP *WALK_FOWARD_ACTION, *TURN_LEFT_ACTION, *TURN_RIGHT_ACTION;
     ALLEGRO_BITMAP *NUMBER[10], *logic_true, *logic_false;
     ALLEGRO_BITMAP *DECISION_BLOCK[4], *BLACK_SENSOR_FUNCTION, *BLACK_SENSOR_1_FUNCTION, *BLACK_SENSOR_2_FUNCTION, *BLACK_SENSOR_3_FUNCTION, *BLACK_SENSOR_4_FUNCTION;
     ALLEGRO_BITMAP *BLACK_SENSOR_5_FUNCTION, *COLOR_SENSOR_FUNCTION, *COLOR_SENSOR_1_FUNCTION, *COLOR_SENSOR_2_FUNCTION, *ULTRASONIC_SENSOR_FUNCTION;
     ALLEGRO_BITMAP *ULTRASONIC_SENSOR_1_FUNCTION, *ULTRASONIC_SENSOR_2_FUNCTION, *ULTRASONIC_SENSOR_3_FUNCTION;
+    ALLEGRO_BITMAP *MICRO_BLACK_SENSOR1, *MICRO_BLACK_SENSOR2, *MICRO_BLACK_SENSOR3, *MICRO_BLACK_SENSOR4, *MICRO_BLACK_SENSOR5;
+    ALLEGRO_BITMAP *MICRO_COLOR_SENSOR1, *MICRO_COLOR_SENSOR2, *MICRO_ULTRASONIC_SENSOR1, *MICRO_ULTRASONIC_SENSOR2, *MICRO_ULTRASONIC_SENSOR3;
+    ALLEGRO_BITMAP *MICRO_WALK_FOWARD, *MICRO_TURN_LEFT, *MICRO_TURN_RIGHT;
     ALLEGRO_BITMAP *END_BLOCK[4], *FUNCTION_BLOCK[4], *LOOP_BLOCK[4], *MERGE_BLOCK[4], *START_BLOCK[4];
     ALLEGRO_BITMAP *POINT[2];
     ALLEGRO_BITMAP *trash;
@@ -52,14 +56,27 @@ class Interface {
     bool executing;
     int mouseX, mouseY;
     int menu_selected;
-    Block* blocks_list_to_print[100];
+    Block* blocks_list_to_print[valor_maximo_blocos];
     int mouse_aux_x, mouse_aux_y; // usado para arrastar as imagens;
     bool black_sensor_menu_selected, color_sensor_menu_selected, ultrasonic_sensor_menu_selected;
     bool dragging_black_sensor1, dragging_black_sensor2, dragging_black_sensor3, dragging_black_sensor4, dragging_black_sensor5;
     bool dragging_color_sensor1, dragging_color_sensor2;
     bool dragging_ultrasonic_sensor1, dragging_ultrasonic_sensor2, dragging_ultrasonic_sensor3;
+    bool dragging_walk_foward, dragging_turn_left, dragging_turn_right;
     bool sub_menu;
-    int blocks_menu_X, blocks_menu_Y, sensors_menu_X, sensors_menu_Y, actions_menu_X, actions_menu_Y, extra_menu_X, extra_menu_Y;
+    int menu1_X_limit;
+    int menu1_Y_limit;
+    int menu_connect_X_begin;
+    int menu_connect_X_limit;
+    int menu2_X_limit;
+    int menu_blocks_Y_begin;
+    int menu_blocks_Y_limit;
+    int menu_sensors_Y_begin;
+    int menu_sensors_Y_limit;
+    int menu_actions_Y_begin;
+    int menu_actions_Y_limit;
+    int menu_extra_Y_begin;
+    int menu_extra_Y_limit;
 
     void load_bitmap(ALLEGRO_BITMAP **bitmap, char *adress);
     void add_block(Block *b);
@@ -75,6 +92,10 @@ class Interface {
     void load_program_images();
     void destroy_program_images();
     void reset_dragging_variables();
+    void check_dragging();
+    void draw_dragging();
+    void check_mouse_on_menus();
+    void print_list_of_blocks();
 
 public:
 
