@@ -77,6 +77,8 @@ class Interface {
     int menu_actions_Y_limit;
     int menu_extra_Y_begin;
     int menu_extra_Y_limit;
+    int temporary_line_X, temporary_line_Y;
+    bool drawing_line;
 
     void load_bitmap(ALLEGRO_BITMAP **bitmap, char *adress);
     void add_block(Block *b);
@@ -96,6 +98,8 @@ class Interface {
     void draw_dragging();
     void check_mouse_on_menus();
     void print_list_of_blocks();
+    void check_mouse_on_points(Block *b);
+    void draw_temporary_line();
 
 public:
 

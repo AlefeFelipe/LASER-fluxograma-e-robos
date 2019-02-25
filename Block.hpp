@@ -19,7 +19,7 @@ class Block {
     int width;
     int height;
     bool selected, dragging;
-    bool out_selected, in_selected;
+    bool out1_selected, out2_selected, in1_selected, in2_selected;
 
 protected:
     int type;
@@ -37,10 +37,14 @@ public:
     bool getDragging();
     void setSelected(bool s);
     bool getSelected();
-    void setOutSelected(bool s);
-    bool getOutSelected();
-    void setInSelected(bool s);
-    bool getInSelected();
+    void setOut1Selected(bool s);
+    bool getOut1Selected();
+    void setIn1Selected(bool s);
+    bool getIn1Selected();
+    void setOut2Selected(bool s);
+    bool getOut2Selected();
+    void setIn2Selected(bool s);
+    bool getIn2Selected();
     void setWidth(int w);
     int getWidth();
     void setHeight(int h);
@@ -49,5 +53,9 @@ public:
     virtual int getTypeOfSensor();
     virtual void setFunction(int f);
     virtual int getFunction();
+    //virtual void setNext1(Block *b);
+    //virtual Block getNext1();
+    //virtual void setNext2(Block *b);
+    //virtual Block getNext2();
 };
 #endif

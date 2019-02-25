@@ -65,6 +65,9 @@ Interface :: Interface()
     color_sensor_menu_selected = false;
     ultrasonic_sensor_menu_selected = false;
     sub_menu = false;
+    drawing_line = false;
+    temporary_line_X = 0;
+    temporary_line_Y = 0;
 
     // checa se o display foi inicializado corretamente, se não foi dá msg de erro
     if(!display) {
@@ -129,6 +132,8 @@ void Interface :: start() {
         //desenha objetos sendo arrastados
         draw_dragging();
 
+        draw_temporary_line();
+
         //atualiza o display
         al_flip_display();
 
@@ -156,22 +161,21 @@ void Interface :: start() {
             //se sim seta a variável dizendo que o bloco está selecionado para poder arrastá-lo
             for(int i=0; i<valor_maximo_blocos; i++) {
                 if(blocks_list_to_print[i] != NULL) {
-                    if(blocks_list_to_print[i]->getType() == 1) {
-                        if((mouseX > blocks_list_to_print[i]->getX()+40) && (mouseX < (blocks_list_to_print[i]->getX() + 53)) && (mouseY > blocks_list_to_print[i]->getY()-5) && (mouseY < (blocks_list_to_print[i]->getY()+8))) {
-                            cout<<"clicou na entrada do bloco de funcao"<<endl;
-                            blocks_list_to_print[i]->setInSelected(true);
-                            blocks_list_to_print[i]->setOutSelected(false);
-                        } else if((mouseX > blocks_list_to_print[i]->getX()+40) && (mouseX < (blocks_list_to_print[i]->getX() + 53)) && (mouseY > blocks_list_to_print[i]->getY()+35) && (mouseY < (blocks_list_to_print[i]->getY()+48))) {
-                            cout<<"clicou na saida do bloco de funcao"<<endl;
-                            blocks_list_to_print[i]->setInSelected(false);
-                            blocks_list_to_print[i]->setOutSelected(true);
-                        } else {
-                            blocks_list_to_print[i]->setInSelected(false);
-                            blocks_list_to_print[i]->setOutSelected(false);
-                        }
+
+                    check_mouse_on_points(blocks_list_to_print[i]);
+
+                    if(blocks_list_to_print[i]->getOut1Selected() == true) {
+                        temporary_line_X = mouseX;
+                        temporary_line_Y = mouseY;
+                        drawing_line = true;
+                    } else {
+                        temporary_line_X = 0;
+                        temporary_line_Y = 0;
+                        drawing_line = false;
                     }
+
                     if((mouseX > blocks_list_to_print[i]->getX()) && (mouseX < (blocks_list_to_print[i]->getX()+blocks_list_to_print[i]->getWidth())) && (mouseY > blocks_list_to_print[i]->getY()) && (mouseY < (blocks_list_to_print[i]->getY()+blocks_list_to_print[i]->getHeight()))) {
-                        if((blocks_list_to_print[i]->getInSelected() == false) && (blocks_list_to_print[i]->getOutSelected() == false)) {
+                        if((blocks_list_to_print[i]->getIn1Selected() == false) && (blocks_list_to_print[i]->getOut1Selected() == false) && (blocks_list_to_print[i]->getIn2Selected() == false) && (blocks_list_to_print[i]->getOut2Selected() == false)) {
                             blocks_list_to_print[i]->setDragging(true);
                             blocks_list_to_print[i]->setSelected(true);
                             mouse_aux_x = mouseX-blocks_list_to_print[i]->getX();
@@ -704,7 +708,6 @@ void Interface :: print_loop_block(Block *b) {
         al_draw_bitmap(POINT[0], b->getX()+35, b->getY()+81, 0);
         al_draw_bitmap(POINT[0], b->getX()+72, b->getY()-5, 0);
         al_draw_bitmap(POINT[0], b->getX()+72, b->getY()+81, 0);
-
     }
 }
 void Interface :: print_decision_block(Block *b) {
@@ -1185,5 +1188,133 @@ void Interface :: print_list_of_blocks() {
                 blocks_list_to_print[i]->setY(mouseY - mouse_aux_y);
             }
         }
+    }
+}
+void Interface :: check_mouse_on_points(Block *b) {
+    //função
+    if(b->getType() == 1) {
+        if((mouseX > b->getX()+40) && (mouseX < (b->getX() + 53)) && (mouseY > b->getY()-5) && (mouseY < (b->getY()+8))) {
+            cout<<"clicou na entrada do bloco de funcao"<<endl;
+            b->setIn1Selected(true);
+            b->setOut1Selected(false);
+        } else if((mouseX > b->getX()+40) && (mouseX < (b->getX() + 53)) && (mouseY > b->getY()+35) && (mouseY < (b->getY()+48))) {
+            cout<<"clicou na saida do bloco de funcao"<<endl;
+            b->setIn1Selected(false);
+            b->setOut1Selected(true);
+        } else {
+            b->setIn1Selected(false);
+            b->setOut1Selected(false);
+        }
+    }
+    //fim
+    if(b->getType() == 5) {
+        if((mouseX > b->getX()+37) && (mouseX < (b->getX() + 50)) && (mouseY > b->getY()-5) && (mouseY < (b->getY() + 8))) {
+            cout<<"clicou na entrada do bloco de fim"<<endl;
+            b->setIn1Selected(true);
+        } else {
+            b->setIn1Selected(false);
+        }
+    }
+    //inicio
+    if(b->getType() == 6) {
+        if((mouseX > b->getX()+37) && (mouseX < (b->getX() + 50)) && (mouseY > b->getY()+27) && (mouseY < (b->getY() + 40))) {
+            b->setOut1Selected(true);
+        } else {
+            b->setOut1Selected(false);
+        }
+    }
+    //loop
+    if(b->getType() == 7) {
+        if((mouseX > b->getX()+35) && (mouseX < (b->getX() + 48)) && (mouseY > b->getY()-5) && (mouseY < (b->getY()+8))) {
+            b->setIn1Selected(true);
+            b->setOut1Selected(false);
+            b->setIn2Selected(false);
+            b->setOut2Selected(false);
+        } else if((mouseX > b->getX()+35) && (mouseX < (b->getX() + 48)) && (mouseY > b->getY()+81) && (mouseY < (b->getY()+94))) {
+            b->setIn1Selected(false);
+            b->setOut1Selected(true);
+            b->setIn2Selected(false);
+            b->setOut2Selected(false);
+        } else if((mouseX > b->getX()+72) && (mouseX < (b->getX() + 85)) && (mouseY > b->getY()-5) && (mouseY < (b->getY()+8))) {
+            b->setIn1Selected(false);
+            b->setOut1Selected(false);
+            b->setIn2Selected(true);
+            b->setOut2Selected(false);
+        } else if((mouseX > b->getX()+72) && (mouseX < (b->getX() + 85)) && (mouseY > b->getY()+81) && (mouseY < (b->getY()+94))) {
+            b->setIn1Selected(false);
+            b->setOut1Selected(false);
+            b->setIn2Selected(false);
+            b->setOut2Selected(true);
+        } else {
+            b->setIn1Selected(false);
+            b->setOut1Selected(false);
+            b->setIn2Selected(false);
+            b->setOut2Selected(false);
+        }
+    }
+    //decisao
+    if(b->getType() == 8) {
+
+        if((mouseX > b->getX()+53) && (mouseX < (b->getX() + 66)) && (mouseY > b->getY()-6) && (mouseY < (b->getY()+7))) {
+            b->setIn1Selected(true);
+            b->setOut1Selected(false);
+            b->setOut2Selected(false);
+        } else if((mouseX > b->getX()+53) && (mouseX < (b->getX() + 66)) && (mouseY > b->getY()+62) && (mouseY < (b->getY()+75))) {
+            b->setIn1Selected(false);
+            b->setOut1Selected(false);
+            b->setOut2Selected(true);
+        } else if((mouseX > b->getX()+112) && (mouseX < (b->getX() + 125)) && (mouseY > b->getY()+28) && (mouseY < (b->getY()+41))) {
+            b->setIn1Selected(false);
+            b->setOut1Selected(true);
+            b->setOut2Selected(false);
+        } else {
+            b->setIn1Selected(false);
+            b->setOut1Selected(false);
+            b->setOut2Selected(false);
+        }
+    }
+    //junção
+    if(b->getType() == 9) {
+
+        if((mouseX > b->getX()-5) && (mouseX < (b->getX() + 8)) && (mouseY > b->getY()-5) && (mouseY < (b->getY()+8))) {
+            b->setIn1Selected(true);
+            b->setOut1Selected(false);
+            b->setIn2Selected(false);
+        } else if((mouseX > b->getX()+22) && (mouseX < (b->getX() + 35)) && (mouseY > b->getY()-5) && (mouseY < (b->getY()+8))) {
+            b->setIn1Selected(false);
+            b->setOut1Selected(false);
+            b->setIn2Selected(true);
+        } else if((mouseX > b->getX()+8) && (mouseX < (b->getX() + 21)) && (mouseY > b->getY()+17) && (mouseY < (b->getY()+30))) {
+            b->setIn1Selected(false);
+            b->setOut1Selected(true);
+            b->setIn2Selected(false);
+        } else {
+            b->setIn1Selected(false);
+            b->setOut1Selected(false);
+            b->setIn2Selected(false);
+        }
+    }
+}
+void Interface :: draw_temporary_line() {
+    if(drawing_line == true) {
+        int arrow_X1, arrow_Y1, arrow_X2, arrow_Y2;
+
+
+        int angulo = (atan2((mouseX - temporary_line_X), (mouseY - temporary_line_Y)))*180/M_PI;
+
+        int angulo1 = angulo + 45;
+        int angulo2 = angulo - 45;
+
+        //distancia entre os pontos = 10
+        //(distancia)2 = (xa - xb)2 + (ya - yb)2
+        100 = (mouseX - arrow_X1) + (mouseY - arrow_Y1)
+        //https://www.clubedohardware.com.br/forums/topic/780596-resolvido-ajuda-sistema-linear/
+
+
+        //eq da reta (y - y0) = m(x - x0)
+
+        //cout<<angulo<<endl;
+        al_draw_line(temporary_line_X, temporary_line_Y, mouseX, mouseY, black, 2);
+        al_draw_filled_triangle(mouseX, mouseY, mouseX-5, mouseY-5, mouseX+5, mouseY-5, black);
     }
 }
