@@ -52,6 +52,7 @@ class Interface {
     ALLEGRO_BITMAP *END_BLOCK[4], *FUNCTION_BLOCK[4], *LOOP_BLOCK[4], *MERGE_BLOCK[4], *START_BLOCK[4];
     ALLEGRO_BITMAP *POINT[2];
     ALLEGRO_BITMAP *trash;
+    ALLEGRO_BITMAP *arrow;
     ALLEGRO_FONT *font;
     bool executing;
     int mouseX, mouseY;
@@ -100,6 +101,7 @@ class Interface {
     void print_list_of_blocks();
     void check_mouse_on_points(Block *b);
     void draw_temporary_line();
+    bool check_colisions();
 
 public:
 
