@@ -2,7 +2,9 @@
 O projeto INCLUSÃO DIGITAL DE JOVENS PELO ESTUDO DA ROBÓTICA tem por objetivo ensinar a lógica de programação para jovens por meio de fluxograma próprio, usando para ver o resultado da programação robôs simulados e reais
 
 O projeto pertence ao LASER - Laboratório Avançado de Sistemas Embarcados e Robótica, da UTFPR - Universidade Tecnológica Federal do Paraná
-
+Para compilar os programas, entre na pasta fluxprog/fluxppprog5 pelo terminal e escreva make. Depois, vá para a pasta fluxprog/FluxProgBackend, crie a pasta build e entre nela pelo terminal. Depois de cmake .. e por fim make. A cena do V-REP está na pasta fluxprog
+Se estiver no Windows, basta executar o arquivo fluxprog.exe, na pasta Windows/executables. A cena do V-REP nesse mesmo diretório
+ 
 
 Dependências:
 
