@@ -111,17 +111,52 @@ void Block :: setHeight(int h) {
 int Block :: getHeight() {
     return height;
 }
-/*
 void Block :: setNext1(Block *b) {
 
 }
-Block Block :: getNext1() {
+Block* Block :: getNext1() {
+
     return NULL;
 }
 void Block :: setNext2(Block *b) {
 
 }
-Block Block :: getNext2() {
+Block* Block :: getNext2() {
     return NULL;
 }
-*/
+int Block :: getPointIn1X() {
+    return 0;
+}
+int Block :: getPointIn1Y() {
+    return 0;
+}
+int Block :: getPointIn2X() {
+    return 0;
+}
+int Block :: getPointIn2Y() {
+    return 0;
+}
+int Block :: getPointOut1X() {
+    return 0;
+}
+int Block :: getPointOut1Y() {
+    return 0;
+}
+int Block :: getPointOut2X() {
+    return 0;
+}
+int Block :: getPointOut2Y() {
+    return 0;
+}
+void Block :: setID(int i) {
+    id = i;
+}
+int Block :: getID() {
+    return id;
+}
+void Block :: setIn1(bool in) {
+
+}
+bool Block :: getIn1() {
+    return false;
+}

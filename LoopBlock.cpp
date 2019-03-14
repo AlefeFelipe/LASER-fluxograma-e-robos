@@ -2,6 +2,8 @@
 
 LoopBlock :: LoopBlock() {
     type = 7;
+    next_loop = NULL;
+    next_program = NULL;
 }
 
 LoopBlock :: ~LoopBlock() {
@@ -28,18 +30,53 @@ void LoopBlock :: decNumberOfLoops() {
     number_of_loops = number_of_loops - 1;
 }
 
-void LoopBlock :: setNextLoop(Block b) {
+void LoopBlock :: setNext1(Block *b) {
     next_loop = b;
 }
-
-Block LoopBlock :: getNextLoop() {
+Block* LoopBlock :: getNext1() {
     return next_loop;
 }
-
-void LoopBlock :: setNextProgram(Block b) {
+void LoopBlock :: setNext2(Block *b) {
     next_program = b;
 }
-
-Block LoopBlock :: getNextProgram() {
+Block* LoopBlock :: getNext2() {
     return next_program;
+}
+int LoopBlock :: getPointIn1X() {
+    pointIn1_x = x + 42;
+    return pointIn1_x;
+}
+int LoopBlock :: getPointIn1Y() {
+    pointIn1_y = y;
+    return pointIn1_y;
+}
+int LoopBlock :: getPointIn2X() {
+    pointIn2_x = x + 79;
+    return pointIn2_x;
+}
+int LoopBlock :: getPointIn2Y() {
+    pointIn2_y = y;
+    return pointIn2_y;
+}
+int LoopBlock :: getPointOut1X() {
+    pointOut1_x = x + 42;
+    return pointOut1_x;
+}
+int LoopBlock :: getPointOut1Y() {
+    pointOut1_y = y + 88;
+    return pointOut1_y;
+}
+int LoopBlock :: getPointOut2X() {
+    pointOut2_x = x + 79;
+    return pointOut2_x;
+}
+int LoopBlock :: getPointOut2Y() {
+    pointOut2_y = y + 88;
+    return pointOut2_y;
+}
+void LoopBlock :: setIn1(bool in) {
+    in_1 = in;
+}
+bool LoopBlock :: getIn1() {
+    return in_1;
 }

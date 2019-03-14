@@ -12,8 +12,8 @@ class ConditionalBlock : public ProgrammingBlock {
     float parameter2;
     int type_of_sensor;
     Block previous;
-    Block next_true;
-    Block next_false;
+    Block* next_true;
+    Block* next_false;
 
 public:
 
@@ -26,12 +26,21 @@ public:
     bool getResponse();
     void setPrevious(Block b);
     Block getPrevious();
-    void setNextTrue(Block b);
-    Block getNextTrue();
-    void setNextFalse(Block b);
-    Block getNextFalse();
+    void setNext1(Block *b);
+    Block* getNext1();
+    void setNext2(Block *b);
+    Block* getNext2();
     void setTypeOfSensor(int t);
     int getTypeOfSensor();
-
+    int getPointIn1X();
+    int getPointIn1Y();
+    int getPointIn2X();
+    int getPointIn2Y();
+    int getPointOut1X();
+    int getPointOut1Y();
+    int getPointOut2X();
+    int getPointOut2Y();
+    void setIn1(bool in);
+    bool getIn1();
 };
 #endif

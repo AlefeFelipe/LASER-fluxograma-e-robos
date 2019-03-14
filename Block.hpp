@@ -14,15 +14,18 @@ using namespace std;
 
 class Block {
 
-    int x;
-    int y;
     int width;
     int height;
     bool selected, dragging;
     bool out1_selected, out2_selected, in1_selected, in2_selected;
+    int id;
 
 protected:
     int type;
+    int x;
+    int y;
+    int pointIn1_x, pointIn1_y, pointIn2_x, pointIn2_y, pointOut1_x, pointOut1_y, pointOut2_x, pointOut2_y;
+    bool in_1;
 
 public:
 
@@ -53,9 +56,21 @@ public:
     virtual int getTypeOfSensor();
     virtual void setFunction(int f);
     virtual int getFunction();
-    //virtual void setNext1(Block *b);
-    //virtual Block getNext1();
-    //virtual void setNext2(Block *b);
-    //virtual Block getNext2();
+    virtual void setNext1(Block *b);
+    virtual Block* getNext1();
+    virtual void setNext2(Block *b);
+    virtual Block* getNext2();
+    virtual int getPointIn1X();
+    virtual int getPointIn1Y();
+    virtual int getPointIn2X();
+    virtual int getPointIn2Y();
+    virtual int getPointOut1X();
+    virtual int getPointOut1Y();
+    virtual int getPointOut2X();
+    virtual int getPointOut2Y();
+    virtual void setIn1(bool in);
+    virtual bool getIn1();
+    void setID(int i);
+    int getID();
 };
 #endif

@@ -80,6 +80,8 @@ class Interface {
     int menu_extra_Y_limit;
     int temporary_line_X, temporary_line_Y;
     bool drawing_line;
+    int block_selected;
+    int number_of_selected_out;
 
     void load_bitmap(ALLEGRO_BITMAP **bitmap, char *adress);
     void add_block(Block *b);
@@ -102,6 +104,7 @@ class Interface {
     void check_mouse_on_points(Block *b);
     void draw_temporary_line();
     bool check_colisions();
+    void draw_lines();
 
 public:
 

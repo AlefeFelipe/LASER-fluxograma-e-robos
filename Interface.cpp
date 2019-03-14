@@ -134,6 +134,9 @@ void Interface :: start() {
         //desenha linha de ligação
         draw_temporary_line();
 
+        //desenha ligações entre blocos
+        draw_lines();
+
         //atualiza o display
         al_flip_display();
 
@@ -156,7 +159,50 @@ void Interface :: start() {
             mouseX = events.mouse.x;
             mouseY = events.mouse.y;
         }
+
         if(events.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN) {
+
+            //checa se a flecha foi solta na entrada de algum bloco
+            if(drawing_line == true) {
+                for(int i=0; i<valor_maximo_blocos; i++) {
+                    if(blocks_list_to_print[i] != NULL) {
+
+                        check_mouse_on_points(blocks_list_to_print[i]);
+                        if(blocks_list_to_print[block_selected] != NULL) {
+                            if(blocks_list_to_print[i]->getIn1Selected() == true) {
+                                if(number_of_selected_out == 1) {
+                                    blocks_list_to_print[block_selected]->setNext1(blocks_list_to_print[i]);
+                                } else {
+                                    blocks_list_to_print[block_selected]->setNext2(blocks_list_to_print[i]);
+                                }
+
+                            } else if(blocks_list_to_print[i]->getIn2Selected() == true) {
+                                if(number_of_selected_out == 1) {
+                                    blocks_list_to_print[block_selected]->setNext1(blocks_list_to_print[i]);
+                                } else {
+                                    blocks_list_to_print[block_selected]->setNext2(blocks_list_to_print[i]);
+                                }
+                            }
+                            if(blocks_list_to_print[i]->getIn2Selected() == true) {
+                                if(number_of_selected_out == 1) {
+                                    blocks_list_to_print[block_selected]->setNext1(blocks_list_to_print[i]);
+                                } else {
+                                    blocks_list_to_print[block_selected]->setNext2(blocks_list_to_print[i]);
+                                }
+
+                            } else if(blocks_list_to_print[i]->getIn2Selected() == true) {
+                                if(number_of_selected_out == 1) {
+                                    blocks_list_to_print[block_selected]->setNext1(blocks_list_to_print[i]);
+                                } else {
+                                    blocks_list_to_print[block_selected]->setNext2(blocks_list_to_print[i]);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            bool line_test = drawing_line;
             //testa se pressionou o mouse sobre algum bloco existente,
             //se sim seta a variável dizendo que o bloco está selecionado para poder arrastá-lo
             for(int i=0; i<valor_maximo_blocos; i++) {
@@ -168,11 +214,15 @@ void Interface :: start() {
                         temporary_line_X = mouseX;
                         temporary_line_Y = mouseY;
                         drawing_line = true;
+                        block_selected = i;
+                        number_of_selected_out = 1;
                     } else if(blocks_list_to_print[i]->getOut2Selected() == true) {
                         temporary_line_X = mouseX;
                         temporary_line_Y = mouseY;
                         drawing_line = true;
-                    } else {
+                        block_selected = i;
+                        number_of_selected_out = 2;
+                    } else if(drawing_line == line_test) {
                         temporary_line_X = 0;
                         temporary_line_Y = 0;
                         drawing_line = false;
@@ -190,6 +240,7 @@ void Interface :: start() {
                     }
                 }
             }
+
             // caso tenha clicado sobre um dos menus de ação ou sensor, seta as variáveis para arrastar com o mouse.
             switch(menu_selected) {
                 case 18:
@@ -232,6 +283,7 @@ void Interface :: start() {
                     dragging_ultrasonic_sensor3 = true;
                     break;
             }
+
             //se o sub menu estava aberto e clicou fora, fecha o sub menu
             if(menu_selected != 15) {
                 black_sensor_menu_selected = false;
@@ -301,6 +353,8 @@ void Interface :: start() {
                 aux->setTypeOfSensor(0);
                 aux->setX(50);
                 aux->setY(100);
+                aux->setID(5);
+                aux->setSelected(true);
                 add_block(aux);
             }
             if(menu_selected == 10) {
@@ -310,6 +364,8 @@ void Interface :: start() {
                 aux->setFunction(0);
                 aux->setX(50);
                 aux->setY(100);
+                aux->setID(6);
+                aux->setSelected(true);
                 add_block(aux);
             }
             if(menu_selected == 11) {
@@ -318,6 +374,7 @@ void Interface :: start() {
                 aux->setHeight(al_get_bitmap_height(START_BLOCK[0]));
                 aux->setX(50);
                 aux->setY(100);
+                aux->setSelected(true);
                 add_block(aux);
             }
             if(menu_selected == 12) {
@@ -326,6 +383,7 @@ void Interface :: start() {
                 aux->setHeight(al_get_bitmap_height(END_BLOCK[0]));
                 aux->setX(50);
                 aux->setY(100);
+                aux->setSelected(true);
                 add_block(aux);
             }
             if(menu_selected == 13) {
@@ -334,6 +392,7 @@ void Interface :: start() {
                 aux->setHeight(al_get_bitmap_height(MERGE_BLOCK[0]));
                 aux->setX(50);
                 aux->setY(100);
+                aux->setSelected(true);
                 add_block(aux);
             }
             if(menu_selected == 14) {
@@ -342,6 +401,7 @@ void Interface :: start() {
                 aux->setHeight(al_get_bitmap_height(LOOP_BLOCK[0]));
                 aux->setX(50);
                 aux->setY(100);
+                aux->setSelected(true);
                 add_block(aux);
             }
             if(menu_selected == 15) {
@@ -376,8 +436,6 @@ void Interface :: start() {
 
             reset_dragging_variables();
 
-            while(check_colisions());
-
         }
 
         if(events.type == ALLEGRO_EVENT_KEY_DOWN) {
@@ -394,6 +452,7 @@ void Interface :: start() {
             }
         }
 
+        while(check_colisions());
     }
 }
 
@@ -417,7 +476,24 @@ void Interface :: add_block(Block *b) {
 
 }
 void Interface :: remove_block(Block *b) {
+    //percorre a lista de blocos em busca do bloco a ser excluido
     for(int i=0; i<valor_maximo_blocos; i++) {
+        if(blocks_list_to_print[i] != NULL) {
+            //se o bloco tiver relação com algum elimina essa relação
+            if(blocks_list_to_print[i]->getNext1() == b) {
+                blocks_list_to_print[i]->setNext1(NULL);
+                cout<<"exclui ligação next1"<<endl;
+            }
+            if(blocks_list_to_print[i]->getNext2() == b) {
+                blocks_list_to_print[i]->setNext2(NULL);
+                cout<<"exclui ligação next2"<<endl;
+            }
+        }
+    }
+    cout<<"removeu ligações"<<endl;
+    //percorre a lista de blocos em busca do bloco a ser excluido
+    for(int i=0; i<valor_maximo_blocos; i++) {
+        //encontra o bloco passado como parametro
         if(blocks_list_to_print[i] == b) {
             blocks_list_to_print[i] = NULL;
             delete b;
@@ -1268,12 +1344,12 @@ void Interface :: check_mouse_on_points(Block *b) {
             b->setOut2Selected(false);
         } else if((mouseX > b->getX()+53) && (mouseX < (b->getX() + 66)) && (mouseY > b->getY()+62) && (mouseY < (b->getY()+75))) {
             b->setIn1Selected(false);
-            b->setOut1Selected(false);
-            b->setOut2Selected(true);
-        } else if((mouseX > b->getX()+112) && (mouseX < (b->getX() + 125)) && (mouseY > b->getY()+28) && (mouseY < (b->getY()+41))) {
-            b->setIn1Selected(false);
             b->setOut1Selected(true);
             b->setOut2Selected(false);
+        } else if((mouseX > b->getX()+112) && (mouseX < (b->getX() + 125)) && (mouseY > b->getY()+28) && (mouseY < (b->getY()+41))) {
+            b->setIn1Selected(false);
+            b->setOut1Selected(false);
+            b->setOut2Selected(true);
         } else {
             b->setIn1Selected(false);
             b->setOut1Selected(false);
@@ -1310,20 +1386,52 @@ void Interface :: draw_temporary_line() {
     }
 }
 bool Interface :: check_colisions() {
+    int selected_block;
+    //procura o bloco selecionado
+    for(selected_block = 0; selected_block<valor_maximo_blocos; selected_block++) {
+        if(blocks_list_to_print[selected_block] != NULL) {
+            if((blocks_list_to_print[selected_block]->getSelected() == true) && (blocks_list_to_print[selected_block]->getDragging() == false)){
+                //cout<<"entrou no if"<<endl;
+                break;
+            }
+        }
+    }
     for(int i=0; i<valor_maximo_blocos; i++) {
-        for(int j=0; j<valor_maximo_blocos; j++) {
-            if((blocks_list_to_print[i] != NULL) && (blocks_list_to_print[j] != NULL)) {
-                if(i != j) {
-                    if((blocks_list_to_print[i]->getX() >= blocks_list_to_print[j]->getX()) && (blocks_list_to_print[i]->getX() < blocks_list_to_print[j]->getX()+blocks_list_to_print[j]->getWidth())) {
-                        if((blocks_list_to_print[i]->getY() >= blocks_list_to_print[j]->getY()) && (blocks_list_to_print[i]->getY() < blocks_list_to_print[j]->getY()+blocks_list_to_print[j]->getHeight())) {
+        if((blocks_list_to_print[i] != NULL) && (blocks_list_to_print[selected_block] != NULL)) {
+            if(i != selected_block) {
+                if((blocks_list_to_print[selected_block]->getX() >= blocks_list_to_print[i]->getX()) && (blocks_list_to_print[selected_block]->getX() < blocks_list_to_print[i]->getX()+blocks_list_to_print[i]->getWidth())) {
+                    if((blocks_list_to_print[selected_block]->getY() >= blocks_list_to_print[i]->getY()) && (blocks_list_to_print[selected_block]->getY() < blocks_list_to_print[i]->getY()+blocks_list_to_print[i]->getHeight())) {
 
-                            blocks_list_to_print[i]->setX(blocks_list_to_print[j]->getX() + blocks_list_to_print[j]->getWidth() + 10);
-                            return true;
-                        }
+                        blocks_list_to_print[selected_block]->setX(blocks_list_to_print[i]->getX() + blocks_list_to_print[i]->getWidth() + 10);
+                        return true;
                     }
                 }
             }
         }
     }
     return false;
+}
+void Interface :: draw_lines() {
+    for(int i=0; i<valor_maximo_blocos; i++) {
+        if(blocks_list_to_print[i] != NULL) {
+            if(blocks_list_to_print[i]->getNext1() != NULL) {
+                int start_x = blocks_list_to_print[i]->getPointOut1X();
+                int start_y = blocks_list_to_print[i]->getPointOut1Y();
+                int end_x = blocks_list_to_print[i]->getNext1()->getPointIn1X();
+                int end_y = blocks_list_to_print[i]->getNext1()->getPointIn1Y();
+                float angulo = -(atan2((end_x - start_x), (end_y - start_y)));
+                al_draw_line(start_x, start_y, end_x, end_y, black, 2);
+                al_draw_rotated_bitmap(arrow, (al_get_bitmap_width(arrow))/2, (al_get_bitmap_height(arrow))/2, end_x, end_y, angulo, 0);
+            }
+            if(blocks_list_to_print[i]->getNext2() != NULL) {
+                int start_x = blocks_list_to_print[i]->getPointOut2X();
+                int start_y = blocks_list_to_print[i]->getPointOut2Y();
+                int end_x = blocks_list_to_print[i]->getNext2()->getPointIn1X();
+                int end_y = blocks_list_to_print[i]->getNext2()->getPointIn1Y();
+                float angulo = -(atan2((end_x - start_x), (end_y - start_y)));
+                al_draw_line(start_x, start_y, end_x, end_y, black, 2);
+                al_draw_rotated_bitmap(arrow, (al_get_bitmap_width(arrow))/2, (al_get_bitmap_height(arrow))/2, end_x, end_y, angulo, 0);
+            }
+        }
+    }
 }
