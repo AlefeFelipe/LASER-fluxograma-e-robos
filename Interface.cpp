@@ -172,29 +172,19 @@ void Interface :: start() {
                             if(blocks_list_to_print[i]->getIn1Selected() == true) {
                                 if(number_of_selected_out == 1) {
                                     blocks_list_to_print[block_selected]->setNext1(blocks_list_to_print[i]);
+                                    blocks_list_to_print[i]->setPrevious1(blocks_list_to_print[block_selected]);
                                 } else {
                                     blocks_list_to_print[block_selected]->setNext2(blocks_list_to_print[i]);
+                                    blocks_list_to_print[i]->setPrevious1(blocks_list_to_print[block_selected]);
                                 }
 
                             } else if(blocks_list_to_print[i]->getIn2Selected() == true) {
                                 if(number_of_selected_out == 1) {
                                     blocks_list_to_print[block_selected]->setNext1(blocks_list_to_print[i]);
+                                    blocks_list_to_print[i]->setPrevious2(blocks_list_to_print[block_selected]);
                                 } else {
                                     blocks_list_to_print[block_selected]->setNext2(blocks_list_to_print[i]);
-                                }
-                            }
-                            if(blocks_list_to_print[i]->getIn2Selected() == true) {
-                                if(number_of_selected_out == 1) {
-                                    blocks_list_to_print[block_selected]->setNext1(blocks_list_to_print[i]);
-                                } else {
-                                    blocks_list_to_print[block_selected]->setNext2(blocks_list_to_print[i]);
-                                }
-
-                            } else if(blocks_list_to_print[i]->getIn2Selected() == true) {
-                                if(number_of_selected_out == 1) {
-                                    blocks_list_to_print[block_selected]->setNext1(blocks_list_to_print[i]);
-                                } else {
-                                    blocks_list_to_print[block_selected]->setNext2(blocks_list_to_print[i]);
+                                    blocks_list_to_print[i]->setPrevious2(blocks_list_to_print[block_selected]);
                                 }
                             }
                         }
@@ -487,6 +477,14 @@ void Interface :: remove_block(Block *b) {
             if(blocks_list_to_print[i]->getNext2() == b) {
                 blocks_list_to_print[i]->setNext2(NULL);
                 cout<<"exclui ligação next2"<<endl;
+            }
+            if(blocks_list_to_print[i]->getPrevious1() == b) {
+                blocks_list_to_print[i]->setPrevious1(NULL);
+                cout<<"exclui ligação previous1"<<endl;
+            }
+            if(blocks_list_to_print[i]->getPrevious2() == b) {
+                blocks_list_to_print[i]->setPrevious2(NULL);
+                cout<<"exclui ligação previous2"<<endl;
             }
         }
     }
@@ -1388,22 +1386,133 @@ void Interface :: draw_temporary_line() {
 bool Interface :: check_colisions() {
     int selected_block;
     //procura o bloco selecionado
-    for(selected_block = 0; selected_block<valor_maximo_blocos; selected_block++) {
-        if(blocks_list_to_print[selected_block] != NULL) {
-            if((blocks_list_to_print[selected_block]->getSelected() == true) && (blocks_list_to_print[selected_block]->getDragging() == false)){
-                //cout<<"entrou no if"<<endl;
+    for(int i = 0; i<valor_maximo_blocos; i++) {
+        if(blocks_list_to_print[i] != NULL) {
+            if(blocks_list_to_print[i]->getSelected() == true) {
+                //cout<<"encontrou o selecionado"<<endl;
+                selected_block = i;
                 break;
+            } else {
+                selected_block = -1;
             }
         }
     }
+    //percorre todos os blocos
     for(int i=0; i<valor_maximo_blocos; i++) {
-        if((blocks_list_to_print[i] != NULL) && (blocks_list_to_print[selected_block] != NULL)) {
-            if(i != selected_block) {
-                if((blocks_list_to_print[selected_block]->getX() >= blocks_list_to_print[i]->getX()) && (blocks_list_to_print[selected_block]->getX() < blocks_list_to_print[i]->getX()+blocks_list_to_print[i]->getWidth())) {
-                    if((blocks_list_to_print[selected_block]->getY() >= blocks_list_to_print[i]->getY()) && (blocks_list_to_print[selected_block]->getY() < blocks_list_to_print[i]->getY()+blocks_list_to_print[i]->getHeight())) {
+        //testa se tem algum selecionado
+        if(selected_block != -1) {
+            //testa se os blocos são válidos
+            if((blocks_list_to_print[i] != NULL) && (blocks_list_to_print[selected_block] != NULL)) {
+                //cout<<"passou teste de null"<<endl;
+                //exclui o bloco selecionado do teste para n testar colisão dele com ele mesmo
+                if(i != selected_block) {
+                    //cout<<"passou teste de diferente"<<endl;
+                    //teste se está sendo arrastado, pois o teste de colisão ocorre quando não está sendo arrastado
+                    if(blocks_list_to_print[selected_block]->getDragging() == false) {
+                        int selected_block_1_x = blocks_list_to_print[selected_block]->getX();
+                        int selected_block_1_y = blocks_list_to_print[selected_block]->getY();
+                        int selected_block_2_y = blocks_list_to_print[selected_block]->getY()+blocks_list_to_print[selected_block]->getHeight();
 
-                        blocks_list_to_print[selected_block]->setX(blocks_list_to_print[i]->getX() + blocks_list_to_print[i]->getWidth() + 10);
-                        return true;
+                        int selected_block_3_x = blocks_list_to_print[selected_block]->getX()+blocks_list_to_print[selected_block]->getWidth();
+                        int selected_block_3_y = blocks_list_to_print[selected_block]->getY();
+                        int selected_block_4_y = blocks_list_to_print[selected_block]->getY()+blocks_list_to_print[selected_block]->getHeight();
+
+                        int begin_x = blocks_list_to_print[i]->getX();
+                        int begin_y = blocks_list_to_print[i]->getY();
+                        int limit_x = blocks_list_to_print[i]->getX()+blocks_list_to_print[i]->getWidth();
+                        int limit_y = blocks_list_to_print[i]->getY()+blocks_list_to_print[i]->getHeight();
+                        //casos 1 e 2
+                        if(selected_block_1_x >= begin_x) {
+                            if(selected_block_1_x < limit_x) {
+                                //caso 1
+                                if(selected_block_1_y >= begin_y) {
+                                    if(selected_block_1_y < limit_y) {
+                                        cout<<"realizou operação de colisão caso 1"<<endl;
+                                        blocks_list_to_print[selected_block]->setX(blocks_list_to_print[i]->getX() + blocks_list_to_print[i]->getWidth() + 10);
+                                        return true;
+                                    }
+                                }
+                                //caso 2
+                                if(selected_block_2_y >= begin_y) {
+                                    if(selected_block_2_y < limit_y) {
+                                        cout<<"realizou operação de colisão caso 2"<<endl;
+                                        blocks_list_to_print[selected_block]->setX(blocks_list_to_print[i]->getX() + blocks_list_to_print[i]->getWidth() + 10);
+                                        return true;
+                                    }
+                                }
+                            }
+                        }
+                        //casos 3 e 4
+                        if(selected_block_3_x >= begin_x) {
+                            if(selected_block_3_x < limit_x) {
+                                //caso 3
+                                if(selected_block_3_y >= begin_y) {
+                                    if(selected_block_3_y < limit_y) {
+                                        cout<<"realizou operação de colisão caso 3"<<endl;
+                                        blocks_list_to_print[selected_block]->setX(blocks_list_to_print[i]->getX() + blocks_list_to_print[i]->getWidth() + 10);
+                                        return true;
+                                    }
+                                }
+                                //caso 4
+                                if(selected_block_4_y >= begin_y) {
+                                    if(selected_block_4_y < limit_y) {
+                                        cout<<"realizou operação de colisão caso 4"<<endl;
+                                        blocks_list_to_print[selected_block]->setX(blocks_list_to_print[i]->getX() + blocks_list_to_print[i]->getWidth() + 10);
+                                        return true;
+                                    }
+                                }
+                            }
+                        }
+                        //caso 5, 6 e 7
+                        if(selected_block_1_x < begin_x) {
+                            if(selected_block_3_x > limit_x) {
+                                //caso 5
+                                if(selected_block_1_y < begin_y) {
+                                    if(selected_block_2_y > limit_y) {
+                                        cout<<"realizou operação de colisão caso 5"<<endl;
+                                        blocks_list_to_print[selected_block]->setX(blocks_list_to_print[i]->getX() + blocks_list_to_print[i]->getWidth() + 10);
+                                        return true;
+                                    }
+                                }
+                                //caso 6
+                                if(selected_block_1_y > begin_y) {
+                                    if(selected_block_1_y < limit_y) {
+                                        cout<<"realizou operação de colisão caso 6"<<endl;
+                                        blocks_list_to_print[selected_block]->setX(blocks_list_to_print[i]->getX() + blocks_list_to_print[i]->getWidth() + 10);
+                                        return true;
+                                    }
+                                }
+                                //caso 7
+                                if(selected_block_2_y > begin_y) {
+                                    if(selected_block_2_y < limit_y) {
+                                        cout<<"realizou operação de colisão caso 7"<<endl;
+                                        blocks_list_to_print[selected_block]->setX(blocks_list_to_print[i]->getX() + blocks_list_to_print[i]->getWidth() + 10);
+                                        return true;
+                                    }
+                                }
+                            }
+                        }
+                        //caso 8 e 9
+                        if(selected_block_1_y < begin_y) {
+                            if(selected_block_2_y > limit_y) {
+                                //caso 8
+                                if(selected_block_1_x > begin_x) {
+                                    if(selected_block_1_x < limit_x) {
+                                        cout<<"realizou operação de colisão caso 8"<<endl;
+                                        blocks_list_to_print[selected_block]->setX(blocks_list_to_print[i]->getX() + blocks_list_to_print[i]->getWidth() + 10);
+                                        return true;
+                                    }
+                                }
+                                //caso 9
+                                if(selected_block_3_x > begin_x) {
+                                    if(selected_block_3_x < limit_x) {
+                                        cout<<"realizou operação de colisão caso 9"<<endl;
+                                        blocks_list_to_print[selected_block]->setX(blocks_list_to_print[i]->getX() + blocks_list_to_print[i]->getWidth() + 10);
+                                        return true;
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -1415,22 +1524,52 @@ void Interface :: draw_lines() {
     for(int i=0; i<valor_maximo_blocos; i++) {
         if(blocks_list_to_print[i] != NULL) {
             if(blocks_list_to_print[i]->getNext1() != NULL) {
-                int start_x = blocks_list_to_print[i]->getPointOut1X();
-                int start_y = blocks_list_to_print[i]->getPointOut1Y();
-                int end_x = blocks_list_to_print[i]->getNext1()->getPointIn1X();
-                int end_y = blocks_list_to_print[i]->getNext1()->getPointIn1Y();
-                float angulo = -(atan2((end_x - start_x), (end_y - start_y)));
-                al_draw_line(start_x, start_y, end_x, end_y, black, 2);
-                al_draw_rotated_bitmap(arrow, (al_get_bitmap_width(arrow))/2, (al_get_bitmap_height(arrow))/2, end_x, end_y, angulo, 0);
+                if(blocks_list_to_print[i]->getNext1()->getPrevious1() != NULL) {
+                    if(blocks_list_to_print[i]->getNext1()->getPrevious1() == blocks_list_to_print[i]) {
+                        int start_x = blocks_list_to_print[i]->getPointOut1X();
+                        int start_y = blocks_list_to_print[i]->getPointOut1Y();
+                        int end_x = blocks_list_to_print[i]->getNext1()->getPointIn1X();
+                        int end_y = blocks_list_to_print[i]->getNext1()->getPointIn1Y();
+                        float angulo = -(atan2((end_x - start_x), (end_y - start_y)));
+                        al_draw_line(start_x, start_y, end_x, end_y, black, 2);
+                        al_draw_rotated_bitmap(arrow, (al_get_bitmap_width(arrow))/2, (al_get_bitmap_height(arrow))/2, end_x, end_y, angulo, 0);
+                    }
+                }
+                if(blocks_list_to_print[i]->getNext1()->getPrevious2() != NULL) {
+                    if(blocks_list_to_print[i]->getNext1()->getPrevious2() == blocks_list_to_print[i]) {
+                        int start_x = blocks_list_to_print[i]->getPointOut1X();
+                        int start_y = blocks_list_to_print[i]->getPointOut1Y();
+                        int end_x = blocks_list_to_print[i]->getNext1()->getPointIn2X();
+                        int end_y = blocks_list_to_print[i]->getNext1()->getPointIn2Y();
+                        float angulo = -(atan2((end_x - start_x), (end_y - start_y)));
+                        al_draw_line(start_x, start_y, end_x, end_y, black, 2);
+                        al_draw_rotated_bitmap(arrow, (al_get_bitmap_width(arrow))/2, (al_get_bitmap_height(arrow))/2, end_x, end_y, angulo, 0);
+                    }
+                }
             }
             if(blocks_list_to_print[i]->getNext2() != NULL) {
-                int start_x = blocks_list_to_print[i]->getPointOut2X();
-                int start_y = blocks_list_to_print[i]->getPointOut2Y();
-                int end_x = blocks_list_to_print[i]->getNext2()->getPointIn1X();
-                int end_y = blocks_list_to_print[i]->getNext2()->getPointIn1Y();
-                float angulo = -(atan2((end_x - start_x), (end_y - start_y)));
-                al_draw_line(start_x, start_y, end_x, end_y, black, 2);
-                al_draw_rotated_bitmap(arrow, (al_get_bitmap_width(arrow))/2, (al_get_bitmap_height(arrow))/2, end_x, end_y, angulo, 0);
+                if(blocks_list_to_print[i]->getNext2()->getPrevious1() != NULL) {
+                    if(blocks_list_to_print[i]->getNext2()->getPrevious1() == blocks_list_to_print[i]) {
+                        int start_x = blocks_list_to_print[i]->getPointOut2X();
+                        int start_y = blocks_list_to_print[i]->getPointOut2Y();
+                        int end_x = blocks_list_to_print[i]->getNext1()->getPointIn1X();
+                        int end_y = blocks_list_to_print[i]->getNext1()->getPointIn1Y();
+                        float angulo = -(atan2((end_x - start_x), (end_y - start_y)));
+                        al_draw_line(start_x, start_y, end_x, end_y, black, 2);
+                        al_draw_rotated_bitmap(arrow, (al_get_bitmap_width(arrow))/2, (al_get_bitmap_height(arrow))/2, end_x, end_y, angulo, 0);
+                    }
+                }
+                if(blocks_list_to_print[i]->getNext2()->getPrevious2() != NULL) {
+                    if(blocks_list_to_print[i]->getNext2()->getPrevious2() == blocks_list_to_print[i]) {
+                        int start_x = blocks_list_to_print[i]->getPointOut2X();
+                        int start_y = blocks_list_to_print[i]->getPointOut2Y();
+                        int end_x = blocks_list_to_print[i]->getNext1()->getPointIn2X();
+                        int end_y = blocks_list_to_print[i]->getNext1()->getPointIn2Y();
+                        float angulo = -(atan2((end_x - start_x), (end_y - start_y)));
+                        al_draw_line(start_x, start_y, end_x, end_y, black, 2);
+                        al_draw_rotated_bitmap(arrow, (al_get_bitmap_width(arrow))/2, (al_get_bitmap_height(arrow))/2, end_x, end_y, angulo, 0);
+                    }
+                }
             }
         }
     }

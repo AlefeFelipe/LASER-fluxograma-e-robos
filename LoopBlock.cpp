@@ -31,16 +31,28 @@ void LoopBlock :: decNumberOfLoops() {
 }
 
 void LoopBlock :: setNext1(Block *b) {
-    next_loop = b;
-}
-Block* LoopBlock :: getNext1() {
-    return next_loop;
-}
-void LoopBlock :: setNext2(Block *b) {
     next_program = b;
 }
-Block* LoopBlock :: getNext2() {
+Block* LoopBlock :: getNext1() {
     return next_program;
+}
+void LoopBlock :: setNext2(Block *b) {
+    next_loop = b;
+}
+Block* LoopBlock :: getNext2() {
+    return next_loop;
+}
+void LoopBlock :: setPrevious1(Block *b) {
+    previous_program = b;
+}
+Block* LoopBlock :: getPrevious1() {
+    return previous_program;
+}
+void LoopBlock :: setPrevious2(Block *b) {
+    previous_loop = b;
+}
+Block* LoopBlock :: getPrevious2() {
+    return previous_loop;
 }
 int LoopBlock :: getPointIn1X() {
     pointIn1_x = x + 42;

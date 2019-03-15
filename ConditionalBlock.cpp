@@ -40,14 +40,6 @@ bool ConditionalBlock :: getResponse() {
     }
 }
 
-void ConditionalBlock :: setPrevious(Block b) {
-    previous = b;
-}
-
-Block ConditionalBlock :: getPrevious() {
-    return previous;
-}
-
 void ConditionalBlock :: setNext1(Block *b) {
     next_true = b;
     cout<<"setou o next corretamente"<<endl;
@@ -65,7 +57,18 @@ void ConditionalBlock :: setNext2(Block *b) {
 Block* ConditionalBlock :: getNext2() {
     return next_false;
 }
+void ConditionalBlock :: setPrevious1(Block *b) {
+    previous = b;
+}
+Block* ConditionalBlock :: getPrevious1() {
+    return previous;
+}
+void ConditionalBlock :: setPrevious2(Block *b) {
 
+}
+Block* ConditionalBlock :: getPrevious2() {
+    return NULL;
+}
 void ConditionalBlock :: setTypeOfSensor(int t) {
     type_of_sensor = t;
 }

@@ -11,6 +11,8 @@ class LoopBlock : public ProgrammingBlock {
     int number_of_loops;
     Block* next_loop;
     Block* next_program;
+    Block* previous_program;
+    Block* previous_loop;
     bool limited_loop;
 
 public:
@@ -24,6 +26,10 @@ public:
     void decNumberOfLoops();
     void setNext1(Block *b);
     Block* getNext1();
+    void setPrevious1(Block *b);
+    Block* getPrevious1();
+    void setPrevious2(Block *b);
+    Block* getPrevious2();
     void setNext2(Block *b);
     Block* getNext2();
     int getPointIn1X();

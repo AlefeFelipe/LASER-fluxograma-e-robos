@@ -60,6 +60,10 @@ public:
     virtual Block* getNext1();
     virtual void setNext2(Block *b);
     virtual Block* getNext2();
+    virtual void setPrevious1(Block *b);
+    virtual Block* getPrevious1();
+    virtual void setPrevious2(Block *b);
+    virtual Block* getPrevious2();
     virtual int getPointIn1X();
     virtual int getPointIn1Y();
     virtual int getPointIn2X();

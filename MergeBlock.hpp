@@ -9,6 +9,8 @@ using namespace std;
 class MergeBlock : public ProgrammingBlock {
 
     Block* next;
+    Block* previous1;
+    Block* previous2;
 
 public:
 
@@ -18,6 +20,10 @@ public:
     Block* getNext1();
     void setNext2(Block *b);
     Block* getNext2();
+    void setPrevious1(Block *b);
+    Block* getPrevious1();
+    void setPrevious2(Block *b);
+    Block* getPrevious2();
     int getPointIn1X();
     int getPointIn1Y();
     int getPointIn2X();

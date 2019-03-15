@@ -124,6 +124,18 @@ void Block :: setNext2(Block *b) {
 Block* Block :: getNext2() {
     return NULL;
 }
+void Block :: setPrevious1(Block *b) {
+
+}
+Block* Block :: getPrevious1() {
+    return NULL;
+}
+void Block :: setPrevious2(Block *b) {
+
+}
+Block* Block :: getPrevious2() {
+    return NULL;
+}
 int Block :: getPointIn1X() {
     return 0;
 }

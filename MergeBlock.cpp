@@ -23,6 +23,20 @@ Block* MergeBlock :: getNext2() {
     //não possui
     return NULL;
 }
+void MergeBlock :: setPrevious1(Block *b) {
+    previous1 = b;
+    cout<<"setou prev1 merge"<<endl;
+}
+Block* MergeBlock :: getPrevious1() {
+    return previous1;
+}
+void MergeBlock :: setPrevious2(Block *b) {
+    previous2 = b;
+    cout<<"setou prev2 merge"<<endl;
+}
+Block* MergeBlock :: getPrevious2() {
+    return previous2;
+}
 int MergeBlock :: getPointIn1X() {
     pointIn1_x = x + 2;
     return pointIn1_x;

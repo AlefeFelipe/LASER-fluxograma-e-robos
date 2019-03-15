@@ -21,6 +21,19 @@ Block* EndBlock :: getNext2() {
     //não possui
     return NULL;
 }
+void EndBlock :: setPrevious1(Block *b) {
+    previous = b;
+}
+Block* EndBlock :: getPrevious1() {
+    return previous;
+}
+void EndBlock :: setPrevious2(Block *b) {
+    //nao tem
+}
+Block* EndBlock :: getPrevious2() {
+    //nao tem
+    return NULL;
+}
 int EndBlock :: getPointIn1X() {
     pointIn1_x = x + 44;
     return pointIn1_x;

@@ -21,6 +21,20 @@ void StartBlock :: setNext2(Block *b) {
 Block* StartBlock :: getNext2() {
     return NULL;
 }
+void StartBlock :: setPrevious1(Block *b) {
+    //nao tem
+}
+Block* StartBlock :: getPrevious1() {
+    //nao tem
+    return NULL;
+}
+void StartBlock :: setPrevious2(Block *b) {
+    //nao tem
+}
+Block* StartBlock :: getPrevious2() {
+    //nao tem
+    return NULL;
+}
 int StartBlock :: getPointIn1X() {
     //nao tem
     return 0;

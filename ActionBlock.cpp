@@ -30,6 +30,19 @@ Block* ActionBlock :: getNext2() {
     //não possui
     return NULL;
 }
+void ActionBlock :: setPrevious1(Block *b) {
+    previous = b;
+}
+Block* ActionBlock :: getPrevious1() {
+    return previous;
+}
+void ActionBlock :: setPrevious2(Block *b) {
+    //nao tem
+}
+Block* ActionBlock :: getPrevious2() {
+    //nao tem
+    return NULL;
+}
 int ActionBlock :: getPointIn1X() {
     pointIn1_x = x + 47;
     return pointIn1_x;
