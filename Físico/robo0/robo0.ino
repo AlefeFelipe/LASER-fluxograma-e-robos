@@ -1,7 +1,6 @@
 #include "Principal.hpp"
 #include "robotCte.h"
 
-Principal principal = Principal();
 void setup()
 {
     Serial.begin(BDRATE);
@@ -30,5 +29,6 @@ void setup()
 
 void loop()
 {
+    Principal principal = Principal();
     principal.start();
 }

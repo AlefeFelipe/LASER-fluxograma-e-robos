@@ -25,16 +25,19 @@ void PhysicalRobot::setCommand(int _command)
     if(command)
     {
         sendCommand();
+        command = 1;//tirar depois
     }
 }
 
 void PhysicalRobot::sendCommand()
 {
-    RS232_SendByte(CPORT_NR, char(command));
+    while(1)
+        RS232_SendByte(CPORT_NR, char(command));
 }
 
 void PhysicalRobot::updateSensorsReading()
 {
+    std::cout << "recebendo"<<std::endl;
     receiveData();
 }
 

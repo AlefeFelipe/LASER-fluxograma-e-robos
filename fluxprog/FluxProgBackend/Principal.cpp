@@ -66,6 +66,7 @@ void Principal::start()
             if(virtual_robot)
             {
                 virtual_robot->setCommand(command);
+                virtual_robot->updateSensorsReading();
                 feedback = virtual_robot->isFinished();
                 if(feedback > 0)
                 {
@@ -82,6 +83,7 @@ void Principal::start()
             else
             {
                 physical_robot->setCommand(command);
+                physical_robot->updateSensorsReading();
                 feedback = physical_robot->isFinished();
                 communication->setFeedback(feedback);
                 communication->setUltrasonicReading(physical_robot->getUltrasonicReading());

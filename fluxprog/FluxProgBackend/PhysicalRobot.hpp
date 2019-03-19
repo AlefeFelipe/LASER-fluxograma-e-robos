@@ -5,6 +5,7 @@
 #include "fluxProgBackendCte.h"
 #include "rs232.h"
 #include "Robot.hpp"
+#include <iostream>
 
 class PhysicalRobot : public Robot{
     void sendCommand();

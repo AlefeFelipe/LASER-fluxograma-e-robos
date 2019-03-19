@@ -34,7 +34,7 @@ void Principal::start()
         }
         robot->getReadingBlackTypeSensor(readingBTS);
         robot->getReadingUltrasonic(detectedObjet_U);
-        robot->getReadingColorSensor(reading_color_sensor);
+        //robot->getReadingColorSensor(reading_color_sensor);
         bluetooth->sendPacket(readingBTS, detectedObjet_U);
         //robot.getReadingUltrasonic();
         //time = millis();

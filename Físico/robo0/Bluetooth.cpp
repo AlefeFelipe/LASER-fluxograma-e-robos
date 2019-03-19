@@ -11,8 +11,8 @@ uint8_t Bluetooth::getCommand()
     if(Serial1.available())
     {
         command = Serial1.read();
-        //Serial.print("comando");
-        //Serial.println(command);
+        Serial.print("comando");
+        Serial.println(command);
         return command;
     }
     return 0;
@@ -55,4 +55,5 @@ void Bluetooth::sendPacket(uint8_t *readingBTS, unsigned int *detectedObjet_U)
     //Serial.println();
     delay(COMMUNICATION_DELAY);
     Serial1.write(packet, PACKETSIZE);
+    //Serial1.flush();
 }
