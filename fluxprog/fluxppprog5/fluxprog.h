@@ -196,7 +196,7 @@ extern uint8_t tempo_max_clique_duplo;
 #define VF_estado       var_int[1] //define se o bloco indica verdadeiro (1) ou falso (-1)
 
 
-#define largura_barra_rolagem 20
+c
 
 #define sensibilidade_roda_mouse 20 //define quantos pixels a tela sobe ou desce para cada ponto na rolagem do mouse
 #define tolerancia_linha 10 // define a quantos pixels de distância o mouse pode estar de uma linha para que o programa considere que ele está sobre a linha
