@@ -37,11 +37,9 @@ VirtualRobot::VirtualRobot(int *error)
         }
 
         //inicializacao dos sensores ultrassom
-        if(simxGetObjectHandle(client_id, "Left_ultrasonic", &ultrasonic_sensors[0], simx_opmode_oneshot_wait )==simx_return_ok&&
-            simxGetObjectHandle(client_id, "LM_ultrasonic", &ultrasonic_sensors[1], simx_opmode_oneshot_wait )==simx_return_ok&&
-            simxGetObjectHandle(client_id, "Middle_ultrasonic", &ultrasonic_sensors[2], simx_opmode_oneshot_wait )==simx_return_ok&&
-            simxGetObjectHandle(client_id, "RM_ultrasonic", &ultrasonic_sensors[3], simx_opmode_oneshot_wait )==simx_return_ok&&
-            simxGetObjectHandle(client_id, "Right_ultrasonic", &ultrasonic_sensors[4], simx_opmode_oneshot_wait )==simx_return_ok)
+        if( simxGetObjectHandle(client_id, "LM_ultrasonic", &ultrasonic_sensors[0], simx_opmode_oneshot_wait )==simx_return_ok&&
+            simxGetObjectHandle(client_id, "Middle_ultrasonic", &ultrasonic_sensors[1], simx_opmode_oneshot_wait )==simx_return_ok&&
+            simxGetObjectHandle(client_id, "RM_ultrasonic", &ultrasonic_sensors[2], simx_opmode_oneshot_wait )==simx_return_ok)
         {
                 cout << "conectado aos sensores ultrassom" <<endl;
         }
@@ -72,7 +70,7 @@ VirtualRobot::VirtualRobot(int *error)
             for(i = 0; i < N_ULTRASONIC; i++)
             {
                 simxReadProximitySensor(client_id, ultrasonic_sensors[i], &is_there_obstacle[i], detected_objet[i], &detected_object_handle[i], detected_surface[i], simx_opmode_streaming);
-                ultrasonic_sensor_reading[i] = detected_objet[i][2];
+                ultrasonic_sensor_reading[i] = detected_objet[i][1];
             }
             for(i = 0; i < N_BLACK_TAPE_SENSOR; i++)
             {
@@ -133,125 +131,122 @@ void VirtualRobot::moveForward()
     {
         int turning_tight, turning_left;
         float first_x, first_y, dx, dy;
-        if (is_there_obstacle[2] == 0)
+        while(((black_type_sensor_reading[0]&&black_type_sensor_reading[2])||
+                (black_type_sensor_reading[2]&&black_type_sensor_reading[4])) &&
+                is_there_obstacle[1]==0)//verificar se ta no mesmo estado, tecnicamente inutil devido a funcao acima
         {
-            while(((black_type_sensor_reading[0]&&black_type_sensor_reading[2])||
-                    (black_type_sensor_reading[2]&&black_type_sensor_reading[4])) &&
-                    is_there_obstacle[2]==0)//verificar se ta no mesmo estado, tecnicamente inutil devido a funcao acima
+            motor_speed[0] = VEL_MOT;
+            motor_speed[1] = VEL_MOT;
+            simxSetJointTargetVelocity(client_id, motors[0], (simxFloat) motor_speed[0], simx_opmode_streaming);
+            simxSetJointTargetVelocity(client_id, motors[1], (simxFloat) motor_speed[1], simx_opmode_streaming);
+            updateVirtualData();
+            extApi_sleepMs(5);
+            if(is_there_obstacle[1])
             {
-                motor_speed[0] = VEL_MOT;
-                motor_speed[1] = VEL_MOT;
-                simxSetJointTargetVelocity(client_id, motors[0], (simxFloat) motor_speed[0], simx_opmode_streaming);
-                simxSetJointTargetVelocity(client_id, motors[1], (simxFloat) motor_speed[1], simx_opmode_streaming);
-                updateVirtualData();
-                extApi_sleepMs(5);
-                if(is_there_obstacle[2])
-                {
-                    cout<<"objeto "<<detected_object_handle[2]<<" na posicao "<<detected_objet[2][0]<<", "<<detected_objet[2][1]<<", "<<detected_objet[2][2]<<endl;
-                    cout<<"superficie em "<<detected_surface[2][0]<<", "<<detected_surface[2][1]<<", "<<detected_surface[2][2]<<endl;
-                }
+                cout<<"objeto "<<detected_object_handle[2]<<" na posicao "<<detected_objet[2][0]<<", "<<detected_objet[2][1]<<", "<<detected_objet[2][2]<<endl;
+                cout<<"superficie em "<<detected_surface[2][0]<<", "<<detected_surface[2][1]<<", "<<detected_surface[2][2]<<endl;
             }
-            while(!((black_type_sensor_reading[0]&&black_type_sensor_reading[2])||
-                    (black_type_sensor_reading[2]&&black_type_sensor_reading[4])) &&
-                    is_there_obstacle[2]==0)//anda ate os sensores captarem a linha ou obstaculo
+        }
+        while(!((black_type_sensor_reading[0]&&black_type_sensor_reading[2])||
+                (black_type_sensor_reading[2]&&black_type_sensor_reading[4])) &&
+                is_there_obstacle[1]==0)//anda ate os sensores captarem a linha ou obstaculo
+        {
+            motor_speed[0] = VEL_MOT;
+            motor_speed[1] = VEL_MOT;
+            simxSetJointTargetVelocity(client_id, motors[0], (simxFloat) motor_speed[0], simx_opmode_streaming);
+            simxSetJointTargetVelocity(client_id, motors[1], (simxFloat) motor_speed[1], simx_opmode_streaming);
+            updateVirtualData();
+            //if(!black_type_sensor_reading[2]&&(black_type_sensor_reading[3]||black_type_sensor_reading[4]))//robo esta desviando para a esquerda, gira direita
+            if(black_type_sensor_reading[4])
             {
                 motor_speed[0] = VEL_MOT;
+                motor_speed[1] = VEL_MOT/4;
+                simxSetJointTargetVelocity(client_id, motors[0], (simxFloat) motor_speed[0], simx_opmode_streaming);
+                simxSetJointTargetVelocity(client_id, motors[1], (simxFloat) motor_speed[1], simx_opmode_streaming);
+                updateVirtualData();
+                turning_tight = 1;
+                turning_left = 0;
+            }
+            else if(black_type_sensor_reading[3])
+            {
+                motor_speed[0] = VEL_MOT;
+                motor_speed[1] = VEL_MOT/2;
+                simxSetJointTargetVelocity(client_id, motors[0], (simxFloat) motor_speed[0], simx_opmode_streaming);
+                simxSetJointTargetVelocity(client_id, motors[1], (simxFloat) motor_speed[1], simx_opmode_streaming);
+                updateVirtualData();
+                turning_tight = 1;
+                turning_left = 0;
+            }
+            else if(black_type_sensor_reading[1])//robo ta desviando para a direita, gira esquerda
+            {
+                motor_speed[0] = VEL_MOT/2;
                 motor_speed[1] = VEL_MOT;
                 simxSetJointTargetVelocity(client_id, motors[0], (simxFloat) motor_speed[0], simx_opmode_streaming);
                 simxSetJointTargetVelocity(client_id, motors[1], (simxFloat) motor_speed[1], simx_opmode_streaming);
                 updateVirtualData();
-                //if(!black_type_sensor_reading[2]&&(black_type_sensor_reading[3]||black_type_sensor_reading[4]))//robo esta desviando para a esquerda, gira direita
-                if(black_type_sensor_reading[4])
+                turning_tight = 0;
+                turning_left = 1;
+            }
+            else if(black_type_sensor_reading[0])//robo ta desviando para a direita, gira esquerda
+            {
+                motor_speed[0] = VEL_MOT/4;
+                motor_speed[1] = VEL_MOT;
+                simxSetJointTargetVelocity(client_id, motors[0], (simxFloat) motor_speed[0], simx_opmode_streaming);
+                simxSetJointTargetVelocity(client_id, motors[1], (simxFloat) motor_speed[1], simx_opmode_streaming);
+                updateVirtualData();
+                turning_tight = 0;
+                turning_left = 1;
+            }
+            else if(!(black_type_sensor_reading[0]||black_type_sensor_reading[1]||
+                black_type_sensor_reading[2]||black_type_sensor_reading[3]||black_type_sensor_reading[3]))
+            {
+                if(turning_tight)
                 {
                     motor_speed[0] = VEL_MOT;
                     motor_speed[1] = VEL_MOT/4;
                     simxSetJointTargetVelocity(client_id, motors[0], (simxFloat) motor_speed[0], simx_opmode_streaming);
                     simxSetJointTargetVelocity(client_id, motors[1], (simxFloat) motor_speed[1], simx_opmode_streaming);
                     updateVirtualData();
-                    turning_tight = 1;
-                    turning_left = 0;
                 }
-                else if(black_type_sensor_reading[3])
-                {
-                    motor_speed[0] = VEL_MOT;
-                    motor_speed[1] = VEL_MOT/2;
-                    simxSetJointTargetVelocity(client_id, motors[0], (simxFloat) motor_speed[0], simx_opmode_streaming);
-                    simxSetJointTargetVelocity(client_id, motors[1], (simxFloat) motor_speed[1], simx_opmode_streaming);
-                    updateVirtualData();
-                    turning_tight = 1;
-                    turning_left = 0;
-                }
-                else if(black_type_sensor_reading[1])//robo ta desviando para a direita, gira esquerda
-                {
-                    motor_speed[0] = VEL_MOT/2;
-                    motor_speed[1] = VEL_MOT;
-                    simxSetJointTargetVelocity(client_id, motors[0], (simxFloat) motor_speed[0], simx_opmode_streaming);
-                    simxSetJointTargetVelocity(client_id, motors[1], (simxFloat) motor_speed[1], simx_opmode_streaming);
-                    updateVirtualData();
-                    turning_tight = 0;
-                    turning_left = 1;
-                }
-                else if(black_type_sensor_reading[0])//robo ta desviando para a direita, gira esquerda
+                else if(turning_left)
                 {
                     motor_speed[0] = VEL_MOT/4;
                     motor_speed[1] = VEL_MOT;
                     simxSetJointTargetVelocity(client_id, motors[0], (simxFloat) motor_speed[0], simx_opmode_streaming);
                     simxSetJointTargetVelocity(client_id, motors[1], (simxFloat) motor_speed[1], simx_opmode_streaming);
                     updateVirtualData();
-                    turning_tight = 0;
-                    turning_left = 1;
                 }
-                else if(!(black_type_sensor_reading[0]||black_type_sensor_reading[1]||
-                    black_type_sensor_reading[2]||black_type_sensor_reading[3]||black_type_sensor_reading[3]))
-                {
-                    if(turning_tight)
-                    {
-                        motor_speed[0] = VEL_MOT;
-                        motor_speed[1] = VEL_MOT/4;
-                        simxSetJointTargetVelocity(client_id, motors[0], (simxFloat) motor_speed[0], simx_opmode_streaming);
-                        simxSetJointTargetVelocity(client_id, motors[1], (simxFloat) motor_speed[1], simx_opmode_streaming);
-                        updateVirtualData();
-                    }
-                    else if(turning_left)
-                    {
-                        motor_speed[0] = VEL_MOT/4;
-                        motor_speed[1] = VEL_MOT;
-                        simxSetJointTargetVelocity(client_id, motors[0], (simxFloat) motor_speed[0], simx_opmode_streaming);
-                        simxSetJointTargetVelocity(client_id, motors[1], (simxFloat) motor_speed[1], simx_opmode_streaming);
-                        updateVirtualData();
-                    }
-                }
-                if(is_there_obstacle[2])
-                {
-                    cout<<"objeto "<<detected_object_handle[2]<<" na posicao "<<detected_objet[2][0]<<", "<<detected_objet[2][1]<<", "<<detected_objet[2][2]<<endl;
-                    cout<<"superficie em "<<detected_surface[2][0]<<", "<<detected_surface[2][1]<<", "<<detected_surface[2][2]<<endl;
-                }
-                extApi_sleepMs(5);
             }
-            first_x = robot_linear_position[0];
-            first_y = robot_linear_position[1];
-            dx = 0;
-            dy = 0;
-            while((dx < DIS_RETO && dy <DIS_RETO) && is_there_obstacle[2]==0)//chegar na linha
+            if(is_there_obstacle[1])
             {
-                //cout << "dx "<<dx <<" dy "<<dy<<endl;
-                motor_speed[0] = VEL_MOT;
-                motor_speed[1] = VEL_MOT;
-                simxSetJointTargetVelocity(client_id, motors[0], (simxFloat) motor_speed[0], simx_opmode_streaming);
-                simxSetJointTargetVelocity(client_id, motors[1], (simxFloat) motor_speed[1], simx_opmode_streaming);
-                updateVirtualData();
-                dx = abs(robot_linear_position[0]-first_x);
-                dy = abs(robot_linear_position[1]-first_y);
-                extApi_sleepMs(5);
-                if(is_there_obstacle[2])
-                {
-                    cout<<"objeto "<<detected_object_handle[2]<<" na posicao "<<detected_objet[2][0]<<", "<<detected_objet[2][1]<<", "<<detected_objet[2][2]<<endl;
-                    cout<<"superficie em "<<detected_surface[2][0]<<", "<<detected_surface[2][1]<<", "<<detected_surface[2][2]<<endl;
-                }
+                cout<<"objeto "<<detected_object_handle[2]<<" na posicao "<<detected_objet[2][0]<<", "<<detected_objet[2][1]<<", "<<detected_objet[2][2]<<endl;
+                cout<<"superficie em "<<detected_surface[2][0]<<", "<<detected_surface[2][1]<<", "<<detected_surface[2][2]<<endl;
             }
-            stop();
-            command = 1;
+            extApi_sleepMs(5);
         }
+        first_x = robot_linear_position[0];
+        first_y = robot_linear_position[1];
+        dx = 0;
+        dy = 0;
+        while((dx < DIS_RETO && dy <DIS_RETO) && is_there_obstacle[1]==0)//chegar na linha
+        {
+            //cout << "dx "<<dx <<" dy "<<dy<<endl;
+            motor_speed[0] = VEL_MOT;
+            motor_speed[1] = VEL_MOT;
+            simxSetJointTargetVelocity(client_id, motors[0], (simxFloat) motor_speed[0], simx_opmode_streaming);
+            simxSetJointTargetVelocity(client_id, motors[1], (simxFloat) motor_speed[1], simx_opmode_streaming);
+            updateVirtualData();
+            dx = abs(robot_linear_position[0]-first_x);
+            dy = abs(robot_linear_position[1]-first_y);
+            extApi_sleepMs(5);
+            if(is_there_obstacle[1])
+            {
+                cout<<"objeto "<<detected_object_handle[2]<<" na posicao "<<detected_objet[2][0]<<", "<<detected_objet[2][1]<<", "<<detected_objet[2][2]<<endl;
+                cout<<"superficie em "<<detected_surface[2][0]<<", "<<detected_surface[2][1]<<", "<<detected_surface[2][2]<<endl;
+            }
+        }
+        stop();
+        command = 1;
     }
 }
 
