@@ -1,0 +1,7 @@
+/home/laser/Desktop/fluxprog_v2/FluxProgBackend/build/CMakeFiles/install/strip.dir
+/home/laser/Desktop/fluxprog_v2/FluxProgBackend/build/CMakeFiles/edit_cache.dir
+/home/laser/Desktop/fluxprog_v2/FluxProgBackend/build/CMakeFiles/fluxprogbackend.dir
+/home/laser/Desktop/fluxprog_v2/FluxProgBackend/build/CMakeFiles/rebuild_cache.dir
+/home/laser/Desktop/fluxprog_v2/FluxProgBackend/build/CMakeFiles/list_install_components.dir
+/home/laser/Desktop/fluxprog_v2/FluxProgBackend/build/CMakeFiles/install/local.dir
+/home/laser/Desktop/fluxprog_v2/FluxProgBackend/build/CMakeFiles/install.dir
