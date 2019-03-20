@@ -1,6 +1,6 @@
-#include "Principal.hpp"
+#include "FluxProgBackend.hpp"
 
-Principal::Principal()
+FluxProgBackend::FluxProgBackend()
 {
     communication = new Communication();
     virtual_robot = NULL;
@@ -8,7 +8,7 @@ Principal::Principal()
     feedback = 0;
 }
 
-Principal::~Principal()
+FluxProgBackend::~FluxProgBackend()
 {
     delete communication;
     if(virtual_robot != NULL)
@@ -21,7 +21,7 @@ Principal::~Principal()
     }
 }
 
-void Principal::connect()
+void FluxProgBackend::connect()
 {
     //abertura das paradas
     int error = 0;
@@ -53,7 +53,7 @@ void Principal::connect()
     }
 }
 
-void Principal::start()
+void FluxProgBackend::start()
 {
     connect();
     int command = 0;

@@ -1,21 +1,21 @@
 //biblioteca feita para agregacao dos componentes do fluxprogbackend
 
-#ifndef _PRINCIPAL_HPP_
-#define _PRINCIPAL_HPP_
+#ifndef _FLUXPROGBACKEND_HPP_
+#define _FLUXPROGBACKEND_HPP_
 #include "Communication.hpp"
 #include "VirtualRobot.hpp"
 #include "PhysicalRobot.hpp"
 #include "fluxProgBackendCte.h"
 
-class Principal{
+class FluxProgBackend{
     int feedback;
     Communication *communication;
     VirtualRobot *virtual_robot;
     PhysicalRobot *physical_robot;
 
 public:
-    Principal();
-    ~Principal();
+    FluxProgBackend();
+    ~FluxProgBackend();
     void start();
     void connect();
 };

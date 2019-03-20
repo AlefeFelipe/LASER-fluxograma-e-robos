@@ -55,12 +55,12 @@ void PhysicalRobot::receiveData()
         for (i = 0; i < N_BLACK_TAPE_SENSOR; i++)
         {
             black_type_sensor_reading[i] = reading[i];
-            std::cout <<black_type_sensor_reading[i]<<" ";
+            //std::cout <<black_type_sensor_reading[i]<<" ";
         }
         for (i = 0; i < N_ULTRASONIC; i++)
         {
             ultrasonic_sensor_reading[i] = *(unsigned short int*)&reading[2*i + 5];
-            std::cout <<ultrasonic_sensor_reading[i]<<" ";
+            //std::cout <<ultrasonic_sensor_reading[i]<<" ";
         }
         std::cout<<std::endl;
         command = 1;

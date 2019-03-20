@@ -1,9 +1,8 @@
-#include "Principal.hpp"
+#include "FluxProgBackend.hpp"
 
 int main()
 {
-    Principal principal = Principal();
-    principal.start();
-    cout <<"oi de novo"<<endl;
+    FluxProgBackend backend = FluxProgBackend();
+    backend.start();
     return 0;
 }
