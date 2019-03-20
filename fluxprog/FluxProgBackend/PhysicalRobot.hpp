@@ -6,6 +6,7 @@
 #include "rs232.h"
 #include "Robot.hpp"
 #include <iostream>
+#include <ctime>
 
 class PhysicalRobot : public Robot{
     void sendCommand();

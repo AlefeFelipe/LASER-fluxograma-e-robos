@@ -6,7 +6,7 @@
 #include "robotCte.h"
 
 class Bluetooth{
-    char* packet;
+    char packet[PACKETSIZE];
     uint8_t command;
 
 public:

@@ -2,19 +2,24 @@
 
 Bluetooth::Bluetooth()
 {
-    packet = new char [PACKETSIZE];
     command = 0;
 }
 
 uint8_t Bluetooth::getCommand()
 {
+    //Serial.println("recebendo");
+    //int siz = Serial1.available();
+    //Serial.println(siz);
     if(Serial1.available())
     {
+        //Serial.print("entao ");
         command = Serial1.read();
-        Serial.print("comando");
+        //Serial.print("comando");
         Serial.println(command);
+        Serial1.flush();
         return command;
     }
+    Serial1.flush();    
     return 0;
 }
 
@@ -55,5 +60,5 @@ void Bluetooth::sendPacket(uint8_t *readingBTS, unsigned int *detectedObjet_U)
     //Serial.println();
     delay(COMMUNICATION_DELAY);
     Serial1.write(packet, PACKETSIZE);
-    //Serial1.flush();
+    Serial1.flush();
 }

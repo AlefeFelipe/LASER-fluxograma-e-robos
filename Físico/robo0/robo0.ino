@@ -24,7 +24,6 @@ void setup()
     pinMode(R_BLACK_TAPE_SENSOR, INPUT);
     pinMode(OBSTACLE_SENSOR, INPUT);
 
-
 }
 
 void loop()

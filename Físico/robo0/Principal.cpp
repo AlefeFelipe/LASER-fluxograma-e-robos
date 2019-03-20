@@ -9,6 +9,8 @@ Principal::Principal()
 
 void Principal::start()
 {
+    while(1)
+    {
         long time = millis();
         command = bluetooth->getCommand();
         if(command == MOVE_FORWARD)
@@ -32,15 +34,20 @@ void Principal::start()
             //Serial.println("robo parado");
             robot->stop();
         }
+        //delay(100);
         robot->getReadingBlackTypeSensor(readingBTS);
         robot->getReadingUltrasonic(detectedObjet_U);
         //robot->getReadingColorSensor(reading_color_sensor);
         bluetooth->sendPacket(readingBTS, detectedObjet_U);
         //robot.getReadingUltrasonic();
-        //time = millis();
-        //Serial.println("vou parar");
+//        if(millis()-time >=1000)
+  //      {
+            //Serial.println("oi");
+    //        time = millis();
+      //  }
         //while(millis()-time<=2000)
         //{
         //    robot->stop();
        //}
+    }
 }
