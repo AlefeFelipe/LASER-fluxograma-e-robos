@@ -2,26 +2,29 @@
 
 Communication::Communication()
 {
-    if(shared_memory!=NULL) //deletes the last opened vision shared memory if it exists
-    {
-        delete shared_memory;
-    }
-    try //tenta criar a memória
-    {
-        shared_memory = new managed_shared_memory (create_only, NOME_DA_MEMORIA, TAMANHO_DA_MEMORIA);
-    }
-    catch(...)
-    {
-        cout<<"erro ao criar memoria" << endl;
-    }
+    bool opened = false;
+    while(!opened) {
 
-    ultrasonic_sensor_reading = shared_memory->find<int>(SENSOR_ULTRASSOM);
-    black_type_sensor_reading = shared_memory->find<int>(SENSOR_VISAO);
+        if(shared_memory!=NULL) //deletes the last opened vision shared memory if it exists
+        {
+            cout<<"qqr cosia"<<endl;
+            delete shared_memory;
+            shared_memory_object::remove(NOME_DA_MEMORIA);
+        }
+        try //tenta criar a memória
+        {
+            shared_memory = new managed_shared_memory (create_only, NOME_DA_MEMORIA, TAMANHO_DA_MEMORIA);
+            opened = true;
+        }
+        catch(...)
+        {
+            shared_memory_object::remove(NOME_DA_MEMORIA);
+            cout<<"erro ao criar memoria" << endl;
+        }
+    }
     //color_sensor_reading = shared_memory->find'<unsigned short int >(POSICAO_DETECTADA).first;
     command = shared_memory->construct<int>(NOME_DO_INT_NA_MEMORIA1)();
-	feedback = shared_memory->construct<int>(NOME_DO_INT_NA_MEMORIA2)();
     virtual_robot = shared_memory->construct<int>(BLUETOOTH_ENABLE)();
-    *feedback = 0;
     *command = 0;
     *virtual_robot = 2;
 }
@@ -47,7 +50,16 @@ void Communication::setIfVirtual(int i)
 
 int Communication::getFeedback()
 {
-    return *feedback;
+    int oi = 0;
+    try
+    {
+        oi = *feedback.first;
+    }
+    catch(...)
+    {
+        cout<<"nao fuinc"<<endl;
+    }
+    return oi;
 }
 
 int* Communication::getUltrasonicReading()
@@ -64,3 +76,17 @@ int* Communication::getBlackTypeReading()
 {
     return color_sensor_reading.first;
 }*/
+
+void  Communication::upadateReadings()
+{
+    try
+    {
+        ultrasonic_sensor_reading = shared_memory->find<int>(SENSOR_ULTRASSOM);
+        black_type_sensor_reading = shared_memory->find<int>(SENSOR_VISAO);
+        feedback = shared_memory->find<int>(NOME_DO_INT_NA_MEMORIA2);
+    }
+    catch(...)
+    {
+        cout<<"programa nao abriu"<<endl;
+    }
+}

@@ -13,6 +13,7 @@
 #include <fstream>
 #include <cstring>
 #include <iostream>
+#include <signal.h>
 #include "Block.hpp"
 #include "StartBlock.hpp"
 #include "ActionBlock.hpp"

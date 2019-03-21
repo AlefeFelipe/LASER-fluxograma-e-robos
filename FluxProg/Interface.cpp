@@ -1761,17 +1761,47 @@ void Interface :: connect_robot() {
     simulator_connected = false;
 }
 void Interface :: connect() {
-    system(".//..//FluxProgBackend//build//fluxprogbackend");
-    cout<<"abriu o programa"<<endl;
-    int feedback = communication->getFeedback();
+    int feedback = 10;
+    int son_test = 1;
+    pid_t pid;
+    pid = fork();
+    switch (pid) {
+        case -1 :
+            //erro no fork
+            feedback = -1;
+            break;
+        case 0 :
+            //processo filho
+            execl(".//..//FluxProgBackend//build//fluxprogbackend", "fluxprogbackend", NULL);
+            cout<<"caminho incorreto"<<endl;
+            al_show_native_message_box(NULL, NULL, NULL, "ERRO.\nFalha ao abrir o programa BackEnd", NULL, NULL);
+            kill(getpid(), SIGKILL);
+            break;
+        default :
+            //processo pai
+            feedback = 0;
+    }
+
     if(feedback == 0) {
-        //não abriu o programa
-        cout<<"não abriu o programa"<<endl;
-    } else if(feedback == ERROR){
-        //não abriu o v-rep ou não tem bluetooth
-        cout<<"não abriu o v-rep ou não tem bluetooth"<<endl;
-    } else if(feedback == CONNECTED) {
-        //deu certo
-        cout<<"deu certo"<<endl;
+        try{
+            sleep(2);
+            communication->upadateReadings();
+            cout<<"abriu o programa"<<endl;
+            feedback = communication->getFeedback();
+            if(feedback == ERROR){
+                //não abriu o v-rep ou não tem bluetooth
+                cout<<"não abriu o v-rep ou não tem bluetooth"<<endl;
+            } else if(feedback == CONNECTED) {
+                //deu certo
+                cout<<"deu certo"<<endl;
+            }
+            else{
+                cout << "ainda deu problema, rein vr"<<endl;
+            }
+        }
+        catch(...)
+        {
+            cout <<"erro ao abrir o programa e eu sou o cara"<<endl;
+        }
     }
 }

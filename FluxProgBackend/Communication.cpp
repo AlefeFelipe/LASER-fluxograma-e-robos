@@ -22,9 +22,10 @@ Communication::Communication()
     }
     ultrasonic_sensor_reading = shared_memory->construct<int>(SENSOR_ULTRASSOM)[N_ULTRASONIC]();
     black_type_sensor_reading = shared_memory->construct<int>(SENSOR_VISAO)[N_BLACK_TAPE_SENSOR]();
+    feedback = shared_memory->construct<int>(NOME_DO_INT_NA_MEMORIA2)();
+    *feedback = 0;
     //color_sensor_reading = shared_memory->construct<unsigned short int >(POSICAO_DETECTADA)[N_ULTRASONIC]();
     command = shared_memory->find<int>(NOME_DO_INT_NA_MEMORIA1);
-	feedback = shared_memory->find<int>(NOME_DO_INT_NA_MEMORIA2);
     virtual_robot = shared_memory->find<int>(BLUETOOTH_ENABLE);
 }
 
@@ -49,8 +50,7 @@ int Communication::isVirtual()
 
 void Communication::setFeedback(int _feedback)
 {
-    *feedback.first = _feedback;
-    *command.first = 0;//desnecessario
+    *feedback = _feedback;
 }
 
 void Communication::setUltrasonicReading(int *ultrasonic_reading)

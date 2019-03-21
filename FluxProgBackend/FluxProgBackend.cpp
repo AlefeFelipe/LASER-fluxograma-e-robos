@@ -93,6 +93,7 @@ void FluxProgBackend::start()
         else if(command == CLOSE_PROGRAM)
         {
             feedback = CLOSE_PROGRAM;
+            std::cout <<"backend receive shutdown signal"<<std::endl;
             communication->setFeedback(feedback);
         }
     }
