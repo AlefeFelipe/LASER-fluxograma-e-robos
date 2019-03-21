@@ -11,6 +11,7 @@ Block :: Block() {
     in1_selected = false;
     out2_selected = false;
     in2_selected = false;
+    executing = false;
 }
 
 Block :: ~Block() {
@@ -187,4 +188,10 @@ void Block :: reset_loop_variables() {
 }
 int Block :: getCommand() {
     return 0;
+}
+void Block :: setExecuting(bool s) {
+    executing = s;
+}
+bool Block :: getExecuting() {
+    return executing;
 }

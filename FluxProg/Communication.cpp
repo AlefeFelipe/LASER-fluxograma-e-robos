@@ -50,16 +50,7 @@ void Communication::setIfVirtual(int i)
 
 int Communication::getFeedback()
 {
-    int oi = 0;
-    try
-    {
-        oi = *feedback.first;
-    }
-    catch(...)
-    {
-        cout<<"nao fuinc"<<endl;
-    }
-    return oi;
+    return *feedback.first;
 }
 
 int* Communication::getUltrasonicReading()

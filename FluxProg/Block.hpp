@@ -16,7 +16,7 @@ class Block {
 
     int width;
     int height;
-    bool selected, dragging;
+    bool selected, dragging, executing;
     bool out1_selected, out2_selected, in1_selected, in2_selected;
     char* name;
 
@@ -80,5 +80,7 @@ public:
     virtual Block* getExecutingNext();
     virtual void reset_loop_variables();
     virtual int getCommand();
+    void setExecuting(bool s);
+    bool getExecuting();
 };
 #endif

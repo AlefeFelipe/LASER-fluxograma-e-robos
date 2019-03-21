@@ -65,12 +65,14 @@ void FluxProgBackend::start()
         {
             if(virtual_robot)
             {
+                communication->setFeedback(0);
                 virtual_robot->setCommand(command);
                 virtual_robot->updateSensorsReading();
                 feedback = virtual_robot->isFinished();
                 if(feedback > 0)
                 {
                     communication->setFeedback(feedback);
+                    std::cout << "escrevendo feedbrack" <<feedback<<std::endl;
                     communication->setUltrasonicReading(virtual_robot->getUltrasonicReading());
                     communication->setBlackTypeReading(virtual_robot->getBlackTypeReading());
                 }
@@ -82,6 +84,7 @@ void FluxProgBackend::start()
             }
             else
             {
+                communication->setFeedback(0);
                 physical_robot->setCommand(command);
                 physical_robot->updateSensorsReading();
                 feedback = physical_robot->isFinished();

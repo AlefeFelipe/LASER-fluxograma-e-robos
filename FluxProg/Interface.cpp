@@ -68,7 +68,8 @@ Interface :: Interface() {
     temporary_line_X = 0;
     temporary_line_Y = 0;
     executing_fluxogram = false;
-    current_executing_block = false;
+    current_executing_block = NULL;
+    waiting_answer = false;
 
     // checa se o display foi inicializado corretamente, se não foi dá msg de erro
     if(!display) {
@@ -324,7 +325,7 @@ void Interface :: start() {
                 menu_selected == 22 >> lógico F
             */
             if(menu_selected == 1) {
-                cout<<"play"<<endl;
+                //cout<<"play"<<endl;
                 executing_fluxogram = true;
                 //teste bloco de inicio
                 if(check_if_only_one_startblock_exists() == false) {
@@ -338,6 +339,12 @@ void Interface :: start() {
                     al_show_native_message_box(NULL, NULL, NULL, "ERRO.\nDeve existir pelo menos um bloco de fim.", NULL, NULL);
                     executing_fluxogram = false;
                 }
+                //teste se todos os blocos estão ligados
+                if(check_if_all_the_blocks_have_connections() == false) {
+                    //erro blocos de fim
+                    al_show_native_message_box(NULL, NULL, NULL, "ERRO.\nTodos os blocos devem estar interligados.", NULL, NULL);
+                    executing_fluxogram = false;
+                }
                 for(int i=0; i<valor_maximo_blocos; i++) {
                     if(blocks_list_to_print[i] != NULL) {
                         if(blocks_list_to_print[i]->getType() == 7) {
@@ -348,11 +355,11 @@ void Interface :: start() {
                 reset_fluxogram_execution();
             }
             if(menu_selected == 2) {
-                cout<<"pause"<<endl;
+                //cout<<"pause"<<endl;
                 executing_fluxogram = false;
             }
             if(menu_selected == 3) {
-                cout<<"stop"<<endl;
+                //cout<<"stop"<<endl;
                 executing_fluxogram = false;
                 reset_fluxogram_execution();
             }
@@ -366,12 +373,12 @@ void Interface :: start() {
                 cout<<"save_as"<<endl;
             }
             if(menu_selected == 7) {
-                cout<<"bluetooth"<<endl;
+                //cout<<"bluetooth"<<endl;
                 connect_robot();
                 connect();
             }
             if(menu_selected == 8) {
-                cout<<"vrep"<<endl;
+                //cout<<"vrep"<<endl;
                 connect_simulator();
                 connect();
             }
@@ -504,7 +511,7 @@ void Interface :: add_block(Block *b) {
     for(int i=0; i<valor_maximo_blocos; i++) {
         if(blocks_list_to_print[i] == NULL) {
             blocks_list_to_print[i] = b;
-            cout<< "adicionou na lista" << endl;
+            //cout<< "adicionou na lista" << endl;
             break;
         }
     }
@@ -517,30 +524,30 @@ void Interface :: remove_block(Block *b) {
             //se o bloco tiver relação com algum elimina essa relação
             if(blocks_list_to_print[i]->getNext1() == b) {
                 blocks_list_to_print[i]->setNext1(NULL);
-                cout<<"exclui ligação next1"<<endl;
+                //cout<<"exclui ligação next1"<<endl;
             }
             if(blocks_list_to_print[i]->getNext2() == b) {
                 blocks_list_to_print[i]->setNext2(NULL);
-                cout<<"exclui ligação next2"<<endl;
+                //cout<<"exclui ligação next2"<<endl;
             }
             if(blocks_list_to_print[i]->getPrevious1() == b) {
                 blocks_list_to_print[i]->setPrevious1(NULL);
-                cout<<"exclui ligação previous1"<<endl;
+                //cout<<"exclui ligação previous1"<<endl;
             }
             if(blocks_list_to_print[i]->getPrevious2() == b) {
                 blocks_list_to_print[i]->setPrevious2(NULL);
-                cout<<"exclui ligação previous2"<<endl;
+                //cout<<"exclui ligação previous2"<<endl;
             }
         }
     }
-    cout<<"removeu ligações"<<endl;
+    //cout<<"removeu ligações"<<endl;
     //percorre a lista de blocos em busca do bloco a ser excluido
     for(int i=0; i<valor_maximo_blocos; i++) {
         //encontra o bloco passado como parametro
         if(blocks_list_to_print[i] == b) {
             blocks_list_to_print[i] = NULL;
             delete b;
-            cout<< "removeu da lista: " << i << endl;
+            //cout<< "removeu da lista: " << i << endl;
             break;
         }
     }
@@ -738,6 +745,8 @@ void Interface :: print_function_block(Block *b) {
 
     } else if(b->getSelected() == true) {
         al_draw_bitmap(FUNCTION_BLOCK[2], b->getX(), b->getY(), 0);
+    } else if(b->getExecuting() == true) {
+        al_draw_bitmap(FUNCTION_BLOCK[3], b->getX(), b->getY(), 0);
     } else {
         al_draw_bitmap(FUNCTION_BLOCK[0], b->getX(), b->getY(), 0);
     }
@@ -1213,6 +1222,17 @@ void Interface :: draw_dragging() {
         al_draw_bitmap(TURN_RIGHT_ACTION, mouseX-20, mouseY-20, 0);
     }
 }
+void Interface :: refresh_executing_block() {
+    for(int i=0; i<valor_maximo_blocos; i++) {
+        if(blocks_list_to_print[i] != NULL) {
+            if(blocks_list_to_print[i] == current_executing_block) {
+                blocks_list_to_print[i]->setExecuting(true);
+            } else {
+                blocks_list_to_print[i]->setExecuting(false);
+            }
+        }
+    }
+}
 void Interface :: check_mouse_on_menus() {
     menu1_X_limit = 14 + 6*al_get_bitmap_width(play_button);
     menu1_Y_limit = 4 + al_get_bitmap_height(play_button);
@@ -1320,11 +1340,11 @@ void Interface :: check_mouse_on_points(Block *b) {
     //função
     if(b->getType() == 1) {
         if((mouseX > b->getX()+40) && (mouseX < (b->getX() + 53)) && (mouseY > b->getY()-5) && (mouseY < (b->getY()+8))) {
-            cout<<"clicou na entrada do bloco de funcao"<<endl;
+            //cout<<"clicou na entrada do bloco de funcao"<<endl;
             b->setIn1Selected(true);
             b->setOut1Selected(false);
         } else if((mouseX > b->getX()+40) && (mouseX < (b->getX() + 53)) && (mouseY > b->getY()+35) && (mouseY < (b->getY()+48))) {
-            cout<<"clicou na saida do bloco de funcao"<<endl;
+            //cout<<"clicou na saida do bloco de funcao"<<endl;
             b->setIn1Selected(false);
             b->setOut1Selected(true);
         } else {
@@ -1335,7 +1355,7 @@ void Interface :: check_mouse_on_points(Block *b) {
     //fim
     if(b->getType() == 5) {
         if((mouseX > b->getX()+37) && (mouseX < (b->getX() + 50)) && (mouseY > b->getY()-5) && (mouseY < (b->getY() + 8))) {
-            cout<<"clicou na entrada do bloco de fim"<<endl;
+            //cout<<"clicou na entrada do bloco de fim"<<endl;
             b->setIn1Selected(true);
         } else {
             b->setIn1Selected(false);
@@ -1472,7 +1492,7 @@ bool Interface :: check_colisions() {
                                 //caso 1
                                 if(selected_block_1_y >= begin_y) {
                                     if(selected_block_1_y < limit_y) {
-                                        cout<<"realizou operação de colisão caso 1"<<endl;
+                                        //cout<<"realizou operação de colisão caso 1"<<endl;
                                         blocks_list_to_print[selected_block]->setX(blocks_list_to_print[i]->getX() + blocks_list_to_print[i]->getWidth() + 10);
                                         return true;
                                     }
@@ -1480,7 +1500,7 @@ bool Interface :: check_colisions() {
                                 //caso 2
                                 if(selected_block_2_y >= begin_y) {
                                     if(selected_block_2_y < limit_y) {
-                                        cout<<"realizou operação de colisão caso 2"<<endl;
+                                        //cout<<"realizou operação de colisão caso 2"<<endl;
                                         blocks_list_to_print[selected_block]->setX(blocks_list_to_print[i]->getX() + blocks_list_to_print[i]->getWidth() + 10);
                                         return true;
                                     }
@@ -1493,7 +1513,7 @@ bool Interface :: check_colisions() {
                                 //caso 3
                                 if(selected_block_3_y >= begin_y) {
                                     if(selected_block_3_y < limit_y) {
-                                        cout<<"realizou operação de colisão caso 3"<<endl;
+                                        //cout<<"realizou operação de colisão caso 3"<<endl;
                                         blocks_list_to_print[selected_block]->setX(blocks_list_to_print[i]->getX() + blocks_list_to_print[i]->getWidth() + 10);
                                         return true;
                                     }
@@ -1501,7 +1521,7 @@ bool Interface :: check_colisions() {
                                 //caso 4
                                 if(selected_block_4_y >= begin_y) {
                                     if(selected_block_4_y < limit_y) {
-                                        cout<<"realizou operação de colisão caso 4"<<endl;
+                                        //cout<<"realizou operação de colisão caso 4"<<endl;
                                         blocks_list_to_print[selected_block]->setX(blocks_list_to_print[i]->getX() + blocks_list_to_print[i]->getWidth() + 10);
                                         return true;
                                     }
@@ -1514,7 +1534,7 @@ bool Interface :: check_colisions() {
                                 //caso 5
                                 if(selected_block_1_y < begin_y) {
                                     if(selected_block_2_y > limit_y) {
-                                        cout<<"realizou operação de colisão caso 5"<<endl;
+                                        //cout<<"realizou operação de colisão caso 5"<<endl;
                                         blocks_list_to_print[selected_block]->setX(blocks_list_to_print[i]->getX() + blocks_list_to_print[i]->getWidth() + 10);
                                         return true;
                                     }
@@ -1522,7 +1542,7 @@ bool Interface :: check_colisions() {
                                 //caso 6
                                 if(selected_block_1_y > begin_y) {
                                     if(selected_block_1_y < limit_y) {
-                                        cout<<"realizou operação de colisão caso 6"<<endl;
+                                        //cout<<"realizou operação de colisão caso 6"<<endl;
                                         blocks_list_to_print[selected_block]->setX(blocks_list_to_print[i]->getX() + blocks_list_to_print[i]->getWidth() + 10);
                                         return true;
                                     }
@@ -1530,7 +1550,7 @@ bool Interface :: check_colisions() {
                                 //caso 7
                                 if(selected_block_2_y > begin_y) {
                                     if(selected_block_2_y < limit_y) {
-                                        cout<<"realizou operação de colisão caso 7"<<endl;
+                                        //cout<<"realizou operação de colisão caso 7"<<endl;
                                         blocks_list_to_print[selected_block]->setX(blocks_list_to_print[i]->getX() + blocks_list_to_print[i]->getWidth() + 10);
                                         return true;
                                     }
@@ -1543,7 +1563,7 @@ bool Interface :: check_colisions() {
                                 //caso 8
                                 if(selected_block_1_x > begin_x) {
                                     if(selected_block_1_x < limit_x) {
-                                        cout<<"realizou operação de colisão caso 8"<<endl;
+                                        //cout<<"realizou operação de colisão caso 8"<<endl;
                                         blocks_list_to_print[selected_block]->setX(blocks_list_to_print[i]->getX() + blocks_list_to_print[i]->getWidth() + 10);
                                         return true;
                                     }
@@ -1551,7 +1571,7 @@ bool Interface :: check_colisions() {
                                 //caso 9
                                 if(selected_block_3_x > begin_x) {
                                     if(selected_block_3_x < limit_x) {
-                                        cout<<"realizou operação de colisão caso 9"<<endl;
+                                        //cout<<"realizou operação de colisão caso 9"<<endl;
                                         blocks_list_to_print[selected_block]->setX(blocks_list_to_print[i]->getX() + blocks_list_to_print[i]->getWidth() + 10);
                                         return true;
                                     }
@@ -1682,54 +1702,163 @@ void Interface :: execute() {
                     break;
             }
         }
-        cout<<"executou bloco: "<<current_executing_block->getName()<<endl;
-        if(current_executing_block->getType() == 1) {
-            communication->setCommand(current_executing_block->getCommand());
-            if(communication->getFeedback() == 1) {
-                if(current_executing_block->getExecutingNext() != NULL) {
-                    current_executing_block = current_executing_block->getExecutingNext();
+
+        //testa se o bloco atual é de ação
+        if(current_executing_block->getType() == 1){
+            //se não está esperando resposta significa que ou é a primeira vez que entra ou a resposta já chegou
+            if(waiting_answer == false) {
+                cout<<"não está esperando resposta"<<endl;
+                //se for a primeira vez que entrou o feedback vai ser diferente de um e então vai pro else
+                //communication->upadateReadings();
+                if(communication->getFeedback() == 1) {
+                    //passa para o proximo bloco
+                    if(current_executing_block->getExecutingNext() != NULL) {
+                        cout<<"executou bloco: "<<current_executing_block->getName()<<endl;
+                        current_executing_block = current_executing_block->getExecutingNext();
+                        refresh_executing_block();
+                        waiting_answer = false;
+                        //*********************************************************tem que resetar o feedback********************************
+                    } else {
+                        cout<<"executou bloco: "<<current_executing_block->getName()<<endl;
+                        executing_fluxogram = false;
+                    }
                 } else {
-                    executing_fluxogram = false;
+                    communication->setCommand(current_executing_block->getCommand());
+                    waiting_answer = true;
+                    cout<<"enviou comando"<<endl;
                 }
-            } else if(communication->getFeedback() == ERROR){
-                cout<<"erro na execução"<<endl;
-            } else if(communication->getFeedback() == CLOSE_PROGRAM) {
-                cout<<"programa fechou"<<endl;
+            } else {
+                //communication->upadateReadings();
+                cout<<"está esperando resposta"<<endl;
+                cout<<"feedback recebido: "<<communication->getFeedback()<<endl;
+                //testa se a resposta chegou
+                if(communication->getFeedback() == 1) {
+                    waiting_answer = false;
+                    cout<<"resposta chegou"<<endl;
+                } else if(communication->getFeedback() == ERROR){
+                    waiting_answer = false;
+                    cout<<"erro na execução"<<endl;
+                } else if(communication->getFeedback() == CLOSE_PROGRAM) {
+                    waiting_answer = false;
+                    cout<<"programa fechou"<<endl;
+                }
             }
         } else if(current_executing_block->getExecutingNext() != NULL) {
+            cout<<"executou bloco: "<<current_executing_block->getName()<<endl;
             current_executing_block = current_executing_block->getExecutingNext();
+            refresh_executing_block();
         } else {
+            cout<<"executou bloco: "<<current_executing_block->getName()<<endl;
             executing_fluxogram = false;
         }
-
-
     }
 }
 bool Interface :: check_if_only_one_startblock_exists() {
-    int teste_start = 0;
+    int start_test = 0;
     for(int i=0; i<valor_maximo_blocos; i++) {
         if(blocks_list_to_print[i] != NULL) {
             if(blocks_list_to_print[i]->getType() == 6) {
-                teste_start = teste_start + 1;
+                start_test = start_test + 1;
             }
         }
     }
-    if(teste_start == 1) {
+    if(start_test == 1) {
         return true;
     } else {
         return false;
     }
 }
 bool Interface :: check_if_at_least_one_endblock_exist() {
-    int teste_end = 0;
+    int end_test = 0;
     for(int i=0; i<valor_maximo_blocos; i++) {
         if(blocks_list_to_print[i] != NULL) {
             if(blocks_list_to_print[i]->getType() == 5) {
-                teste_end = teste_end + 1;
+                end_test = end_test + 1;
             }
         }
     }
-    if(teste_end >= 1) {
+    if(end_test >= 1) {
+        return true;
+    } else {
+        return false;
+    }
+}
+bool Interface :: check_if_all_the_blocks_have_connections() {
+    int connections_test = 1;
+    for(int i=0; i<valor_maximo_blocos; i++) {
+        if(blocks_list_to_print[i] != NULL) {
+            if(blocks_list_to_print[i]->getType() == 1) {
+                //function
+                if(blocks_list_to_print[i]->getNext1() == NULL) {
+                    connections_test = 0;
+                    break;
+                }
+                if(blocks_list_to_print[i]->getPrevious1() == NULL) {
+                    connections_test = 0;
+                    break;
+                }
+            } else if(blocks_list_to_print[i]->getType() == 5) {
+                //end
+                if(blocks_list_to_print[i]->getPrevious1() == NULL) {
+                    connections_test = 0;
+                    break;
+                }
+            } else if(blocks_list_to_print[i]->getType() == 6) {
+                //start
+                if(blocks_list_to_print[i]->getNext1() == NULL) {
+                    connections_test = 0;
+                    break;
+                }
+            } else if(blocks_list_to_print[i]->getType() == 7) {
+                //loop
+                if(blocks_list_to_print[i]->getNext1() == NULL) {
+                    connections_test = 0;
+                    break;
+                }
+                if(blocks_list_to_print[i]->getNext2() == NULL) {
+                    connections_test = 0;
+                    break;
+                }
+                if(blocks_list_to_print[i]->getPrevious1() == NULL) {
+                    connections_test = 0;
+                    break;
+                }
+                if(blocks_list_to_print[i]->getPrevious2() == NULL) {
+                    connections_test = 0;
+                    break;
+                }
+            } else if(blocks_list_to_print[i]->getType() == 8) {
+                //decision
+                if(blocks_list_to_print[i]->getNext1() == NULL) {
+                    connections_test = 0;
+                    break;
+                }
+                if(blocks_list_to_print[i]->getNext2() == NULL) {
+                    connections_test = 0;
+                    break;
+                }
+                if(blocks_list_to_print[i]->getPrevious1() == NULL) {
+                    connections_test = 0;
+                    break;
+                }
+            } else if(blocks_list_to_print[i]->getType() == 9) {
+                //merge
+                if(blocks_list_to_print[i]->getNext1() == NULL) {
+                    connections_test = 0;
+                    break;
+                }
+                if(blocks_list_to_print[i]->getPrevious1() == NULL) {
+                    connections_test = 0;
+                    break;
+                }
+                if(blocks_list_to_print[i]->getPrevious2() == NULL) {
+                    connections_test = 0;
+                    break;
+                }
+            }
+        }
+    }
+    if(connections_test == 1) {
         return true;
     } else {
         return false;
@@ -1741,7 +1870,6 @@ void Interface :: reset_fluxogram_execution() {
     for(int i=0; i<valor_maximo_blocos; i++) {
         if(blocks_list_to_print[i] != NULL) {
             if(blocks_list_to_print[i]->getType() == 6) {
-                cout<<"achou o start"<<endl;
                 id_start = i;
                 break;
             }
@@ -1762,7 +1890,6 @@ void Interface :: connect_robot() {
 }
 void Interface :: connect() {
     int feedback = 10;
-    int son_test = 1;
     pid_t pid;
     pid = fork();
     switch (pid) {
@@ -1773,7 +1900,7 @@ void Interface :: connect() {
         case 0 :
             //processo filho
             execl(".//..//FluxProgBackend//build//fluxprogbackend", "fluxprogbackend", NULL);
-            cout<<"caminho incorreto"<<endl;
+            //cout<<"caminho incorreto"<<endl;
             al_show_native_message_box(NULL, NULL, NULL, "ERRO.\nFalha ao abrir o programa BackEnd", NULL, NULL);
             kill(getpid(), SIGKILL);
             break;
@@ -1783,25 +1910,26 @@ void Interface :: connect() {
     }
 
     if(feedback == 0) {
-        try{
-            sleep(2);
-            communication->upadateReadings();
-            cout<<"abriu o programa"<<endl;
-            feedback = communication->getFeedback();
-            if(feedback == ERROR){
-                //não abriu o v-rep ou não tem bluetooth
-                cout<<"não abriu o v-rep ou não tem bluetooth"<<endl;
-            } else if(feedback == CONNECTED) {
-                //deu certo
-                cout<<"deu certo"<<endl;
+        sleep(2);
+        communication->upadateReadings();
+        //cout<<"abriu o programa"<<endl;
+        feedback = communication->getFeedback();
+        if(feedback == ERROR){
+            //não abriu o v-rep ou não tem bluetooth
+            //cout<<"não abriu o v-rep ou não tem bluetooth"<<endl;
+            if(robot_connected == true) {
+                al_show_native_message_box(NULL, NULL, NULL, "ERRO.\nBluetooth não encontrado", NULL, NULL);
+            } else {
+                al_show_native_message_box(NULL, NULL, NULL, "ERRO.\nV-Rep não encontrado", NULL, NULL);
             }
-            else{
-                cout << "ainda deu problema, rein vr"<<endl;
-            }
+        } else if(feedback == CONNECTED) {
+            //deu certo
+            //cout<<"deu certo"<<endl;
+            al_show_native_message_box(NULL, NULL, NULL, "Conectado com sucesso", NULL, NULL);
         }
-        catch(...)
-        {
-            cout <<"erro ao abrir o programa e eu sou o cara"<<endl;
+        else{
+            //cout << "ainda deu problema, rein vr"<<endl;
+            al_show_native_message_box(NULL, NULL, NULL, "ERRO.\nReinicie a simulação do V-Rep e tente novamente", NULL, NULL);
         }
     }
 }

@@ -85,6 +85,7 @@ class Interface {
     Block* current_executing_block;
     bool simulator_connected, robot_connected;
     Communication* communication;
+    bool waiting_answer;
 
     void load_bitmap(ALLEGRO_BITMAP **bitmap, char *adress);
     void add_block(Block *b);
@@ -102,6 +103,7 @@ class Interface {
     void reset_dragging_variables();
     void check_dragging();
     void draw_dragging();
+    void refresh_executing_block();
     void check_mouse_on_menus();
     void print_list_of_blocks();
     void check_mouse_on_points(Block *b);
@@ -112,6 +114,7 @@ class Interface {
     void execute();
     bool check_if_only_one_startblock_exists();
     bool check_if_at_least_one_endblock_exist();
+    bool check_if_all_the_blocks_have_connections();
     void reset_fluxogram_execution();
 
     void connect_simulator();

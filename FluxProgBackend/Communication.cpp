@@ -3,7 +3,6 @@
 Communication::Communication()
 {
     bool opened = false;
-    int i;
     while(!opened)
     {
         if(shared_memory!=NULL) //deletes the last opened vision shared memory if it exists
@@ -17,7 +16,7 @@ Communication::Communication()
         }
         catch(...)
         {
-            cout<<"erro ao abrir memoria 1" << i++ << endl;
+            cout<<"erro ao abrir memoria 1" << endl;
         }
     }
     ultrasonic_sensor_reading = shared_memory->construct<int>(SENSOR_ULTRASSOM)[N_ULTRASONIC]();
@@ -51,6 +50,7 @@ int Communication::isVirtual()
 void Communication::setFeedback(int _feedback)
 {
     *feedback = _feedback;
+    *command.first = 0;
 }
 
 void Communication::setUltrasonicReading(int *ultrasonic_reading)
