@@ -36,6 +36,7 @@ class Interface {
     ALLEGRO_COLOR white;
     ALLEGRO_COLOR primary_menu_color, blocks_menu_color, functions_menu_color, sensors_menu_color;
     ALLEGRO_DISPLAY *display;
+    ALLEGRO_TIMER *timer;
     ALLEGRO_BITMAP *play_button, *play_button_selected, *pause_button, *pause_button_selected;
     ALLEGRO_BITMAP *stop_button, *stop_button_selected, *save_button, *save_button_selected;
     ALLEGRO_BITMAP *load_button, *load_button_selected, *save_as_button, *save_as_button_selected;
@@ -83,9 +84,8 @@ class Interface {
     int number_of_selected_out;
     bool executing_fluxogram;
     Block* current_executing_block;
-    bool simulator_connected, robot_connected;
+    bool simulator_connected, robot_connected, program_connected;
     Communication* communication;
-    bool waiting_answer;
 
     void load_bitmap(ALLEGRO_BITMAP **bitmap, char *adress);
     void add_block(Block *b);
@@ -110,11 +110,14 @@ class Interface {
     void draw_temporary_line();
     bool check_colisions();
     void draw_lines();
+    void delete_connections();
+    void draw_everything();
 
     void execute();
     bool check_if_only_one_startblock_exists();
     bool check_if_at_least_one_endblock_exist();
     bool check_if_all_the_blocks_have_connections();
+    bool check_if_all_blocks_have_functions_or_sensors();
     void reset_fluxogram_execution();
 
     void connect_simulator();

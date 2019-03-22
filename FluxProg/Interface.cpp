@@ -7,35 +7,35 @@ Interface :: Interface() {
 
     //inicializa o allegro, dá msg de erro caso falhe alguma inicializacao
     if(!al_init()) {
-        al_show_native_message_box(NULL, NULL, NULL, "Erro na inicializacao do Allegro", NULL, NULL);
+        al_show_native_message_box(NULL, "Fluxprog", "ERRO", "Erro na inicializacao do Allegro", "Ok", ALLEGRO_MESSAGEBOX_ERROR);
         executing = false;
     }
     if(!al_init_image_addon()) {
-        al_show_native_message_box(NULL, NULL, NULL, "Erro na inicializacao do Allegro_image", NULL, NULL);
+        al_show_native_message_box(NULL, "Fluxprog", "ERRO", "Erro na inicializacao do Allegro_image", "Ok", ALLEGRO_MESSAGEBOX_ERROR);
         executing = false;
     }
     if(!al_init_primitives_addon()) {
-        al_show_native_message_box(NULL, NULL, NULL, "Erro na inicializacao do Allegro_primitives", NULL, NULL);
+        al_show_native_message_box(NULL, "Fluxprog", "ERRO", "Erro na inicializacao do Allegro_primitives", "Ok", ALLEGRO_MESSAGEBOX_ERROR);
         executing = false;
     }
     if(!al_init_native_dialog_addon()) {
-        al_show_native_message_box(NULL, NULL, NULL, "Erro na inicializacao do Allegro_native_dialog", NULL, NULL);
+        al_show_native_message_box(NULL, "Fluxprog", "ERRO", "Erro na inicializacao do Allegro_native_dialog", "Ok", ALLEGRO_MESSAGEBOX_ERROR);
         executing = false;
     }
     if(!al_install_keyboard()) {
-        al_show_native_message_box(NULL, NULL, NULL, "Erro na inicializacao do Allegro_keyboard", NULL, NULL);
+        al_show_native_message_box(NULL, "Fluxprog", "ERRO", "Erro na inicializacao do Allegro_keyboard", "Ok", ALLEGRO_MESSAGEBOX_ERROR);
         executing = false;
     }
     if(!al_install_mouse()) {
-        al_show_native_message_box(NULL, NULL, NULL, "Erro na inicializacao do Allegro_mouse", NULL, NULL);
+        al_show_native_message_box(NULL, "Fluxprog", "ERRO", "Erro na inicializacao do Allegro_mouse", "Ok", ALLEGRO_MESSAGEBOX_ERROR);
         executing = false;
     }
     if(!al_init_font_addon()) {
-        al_show_native_message_box(NULL, NULL, NULL, "Erro na inicializacao do Allegro_font", NULL, NULL);
+        al_show_native_message_box(NULL, "Fluxprog", "ERRO", "Erro na inicializacao do Allegro_font", "Ok", ALLEGRO_MESSAGEBOX_ERROR);
         executing = false;
     }
     if(!al_init_ttf_addon()) {
-        al_show_native_message_box(NULL, NULL, NULL, "Erro na inicializacao do Allegro_ttf", NULL, NULL);
+        al_show_native_message_box(NULL, "Fluxprog", "ERRO", "Erro na inicializacao do Allegro_ttf", "Ok", ALLEGRO_MESSAGEBOX_ERROR);
         executing = false;
     }
 
@@ -48,6 +48,11 @@ Interface :: Interface() {
     al_set_window_constraints(display, 670, 600, 5000, 5000);
     al_apply_window_constraints(display, true);
 
+    timer = al_create_timer(0.5);
+   if(!timer) {
+       al_show_native_message_box(NULL, "Fluxprog", "ERRO", "Erro na inicializacao do timer", "Ok", ALLEGRO_MESSAGEBOX_ERROR);
+       executing = false;
+   }
 
     //inicialização das cores
     black = al_map_rgb(0, 0, 0);
@@ -69,11 +74,11 @@ Interface :: Interface() {
     temporary_line_Y = 0;
     executing_fluxogram = false;
     current_executing_block = NULL;
-    waiting_answer = false;
+    program_connected = false;
 
     // checa se o display foi inicializado corretamente, se não foi dá msg de erro
     if(!display) {
-        al_show_native_message_box(NULL, NULL, NULL, "Erro na inicializacao do display", NULL, NULL);
+        al_show_native_message_box(NULL, "Fluxprog", "ERRO", "Erro na inicializacao do display", "Ok", ALLEGRO_MESSAGEBOX_ERROR);
         executing = false;
     }
 
@@ -83,7 +88,7 @@ Interface :: Interface() {
     //carrega a fonte, dá msg de erro caso não consiga ser carregada
     font = al_load_font("OpenSans-Regular.ttf", 10, 0);
     if(!font) {
-        al_show_native_message_box(NULL, NULL, NULL, "Erro na inicializacao da fonte", NULL, NULL);
+        al_show_native_message_box(NULL, "Fluxprog", "ERRO", "Erro na inicializacao da fonte", "Ok", ALLEGRO_MESSAGEBOX_ERROR);
         executing = false;
     }
     for(int i=0; i<valor_maximo_blocos; i++) {
@@ -124,24 +129,9 @@ void Interface :: start() {
         al_acknowledge_resize(display);
         //seta a cor de fundo da tela
         al_clear_to_color(backgroud_color);
-        //imprime menu
-        print_primary_menu();
-        //imprime menu de blocos
-        print_secondary_menu();
 
-        //checa se o mouse está sobre os menus, para setar a variável de controle do menu_selected
-        check_mouse_on_menus();
-
-        //percorre toda a lista de impressão dos blocos
-        print_list_of_blocks();
-
-        //desenha objetos sendo arrastados
-        draw_dragging();
-        //desenha linha de ligação
-        draw_temporary_line();
-
-        //desenha ligações entre blocos
-        draw_lines();
+        //desenha
+        draw_everything();
 
         //atualiza o display
         al_flip_display();
@@ -156,6 +146,10 @@ void Interface :: start() {
         al_register_event_source(event_queue, al_get_display_event_source(display));
         al_register_event_source(event_queue, al_get_mouse_event_source());
         al_register_event_source(event_queue, al_get_keyboard_event_source());
+        al_register_event_source(event_queue, al_get_timer_event_source(timer));
+
+        al_start_timer(timer);
+
         //espera pelo próximo evento
         ALLEGRO_EVENT events;
         al_wait_for_event(event_queue, &events);
@@ -285,6 +279,88 @@ void Interface :: start() {
                     dragging_ultrasonic_sensor3 = true;
                     break;
             }
+            if(menu_selected == 9) {
+                mouse_aux_x = 60;
+                mouse_aux_y = 35;
+                ConditionalBlock *aux = new ConditionalBlock();
+                aux->setWidth(al_get_bitmap_width(DECISION_BLOCK[0]));
+                aux->setHeight(al_get_bitmap_height(DECISION_BLOCK[0]));
+                aux->setTypeOfSensor(0);
+                aux->setX(mouseX-60);
+                aux->setY(mouseY-35);
+                aux->setSelected(true);
+                aux->setDragging(true);
+                aux->setName("bloco condicional");
+                add_block(aux);
+            }
+            if(menu_selected == 10) {
+                mouse_aux_x = 45;
+                mouse_aux_y = 20;
+                ActionBlock *aux = new ActionBlock();
+                aux->setWidth(al_get_bitmap_width(FUNCTION_BLOCK[0]));
+                aux->setHeight(al_get_bitmap_height(FUNCTION_BLOCK[0]));
+                aux->setFunction(0);
+                aux->setX(mouseX-45);
+                aux->setY(mouseY-20);
+                aux->setSelected(true);
+                aux->setDragging(true);
+                aux->setName("bloco de ação");
+                add_block(aux);
+            }
+            if(menu_selected == 11) {
+                mouse_aux_x = 40;
+                mouse_aux_y = 15;
+                StartBlock *aux = new StartBlock();
+                aux->setWidth(al_get_bitmap_width(START_BLOCK[0]));
+                aux->setHeight(al_get_bitmap_height(START_BLOCK[0]));
+                aux->setName("bloco inicio");
+                aux->setX(mouseX-40);
+                aux->setY(mouseY-15);
+                aux->setSelected(true);
+                aux->setDragging(true);
+                add_block(aux);
+            }
+            if(menu_selected == 12) {
+                mouse_aux_x = 40;
+                mouse_aux_y = 15;
+                EndBlock *aux = new EndBlock();
+                aux->setWidth(al_get_bitmap_width(END_BLOCK[0]));
+                aux->setHeight(al_get_bitmap_height(END_BLOCK[0]));
+                aux->setX(mouseX-40);
+                aux->setY(mouseY-15);
+                aux->setName("bloco de fim");
+                aux->setSelected(true);
+                aux->setDragging(true);
+                add_block(aux);
+            }
+            if(menu_selected == 13) {
+                mouse_aux_x = 15;
+                mouse_aux_y = 10;
+                MergeBlock *aux = new MergeBlock();
+                aux->setWidth(al_get_bitmap_width(MERGE_BLOCK[0]));
+                aux->setHeight(al_get_bitmap_height(MERGE_BLOCK[0]));
+                aux->setX(mouseX-15);
+                aux->setY(mouseY-10);
+                aux->setName("bloco de junção");
+                aux->setSelected(true);
+                aux->setDragging(true);
+                add_block(aux);
+            }
+            if(menu_selected == 14) {
+                mouse_aux_x = 30;
+                mouse_aux_y = 40;
+                LoopBlock *aux = new LoopBlock();
+                aux->setWidth(al_get_bitmap_width(LOOP_BLOCK[0]));
+                aux->setHeight(al_get_bitmap_height(LOOP_BLOCK[0]));
+                aux->setX(mouseX-30);
+                aux->setY(mouseY-40);
+                aux->setName("bloco de loop");
+                aux->setLimitedLoop(true);
+                aux->setNumberOfLoops(2);
+                aux->setSelected(true);
+                aux->setDragging(true);
+                add_block(aux);
+            }
 
             //se o sub menu estava aberto e clicou fora, fecha o sub menu
             if(menu_selected != 15) {
@@ -330,21 +406,28 @@ void Interface :: start() {
                 //teste bloco de inicio
                 if(check_if_only_one_startblock_exists() == false) {
                     //erro blocos de inicio
-                    al_show_native_message_box(NULL, NULL, NULL, "ERRO.\nDeve existir um, e apenas um, bloco de início.", NULL, NULL);
+                    al_show_native_message_box(display, "Fluxprog", "ERRO", "Deve existir um, e apenas um, bloco de início.", "Ok", ALLEGRO_MESSAGEBOX_WARN);
                     executing_fluxogram = false;
                 }
                 //teste blocos de fim
                 if(check_if_at_least_one_endblock_exist() == false) {
                     //erro blocos de fim
-                    al_show_native_message_box(NULL, NULL, NULL, "ERRO.\nDeve existir pelo menos um bloco de fim.", NULL, NULL);
+                    al_show_native_message_box(display, "Fluxprog", "ERRO", "Deve existir pelo menos um bloco de fim.", "Ok", ALLEGRO_MESSAGEBOX_WARN);
                     executing_fluxogram = false;
                 }
                 //teste se todos os blocos estão ligados
                 if(check_if_all_the_blocks_have_connections() == false) {
                     //erro blocos de fim
-                    al_show_native_message_box(NULL, NULL, NULL, "ERRO.\nTodos os blocos devem estar interligados.", NULL, NULL);
+                    al_show_native_message_box(display, "Fluxprog", "ERRO", "Todos os blocos devem estar interligados.", "Ok", ALLEGRO_MESSAGEBOX_WARN);
                     executing_fluxogram = false;
                 }
+                //teste se todos os blocos estão com as funções setadas
+                if(check_if_all_blocks_have_functions_or_sensors() == false) {
+                    //erro blocos de fim
+                    al_show_native_message_box(display, "Fluxprog", "ERRO", "Todos os blocos devem estar com as suas funções ou sensores determinados.", "Ok", ALLEGRO_MESSAGEBOX_WARN);
+                    executing_fluxogram = false;
+                }
+                //reseta as variáveis do loops para a execução
                 for(int i=0; i<valor_maximo_blocos; i++) {
                     if(blocks_list_to_print[i] != NULL) {
                         if(blocks_list_to_print[i]->getType() == 7) {
@@ -381,70 +464,6 @@ void Interface :: start() {
                 //cout<<"vrep"<<endl;
                 connect_simulator();
                 connect();
-            }
-            if(menu_selected == 9) {
-                ConditionalBlock *aux = new ConditionalBlock();
-                aux->setWidth(al_get_bitmap_width(DECISION_BLOCK[0]));
-                aux->setHeight(al_get_bitmap_height(DECISION_BLOCK[0]));
-                aux->setTypeOfSensor(0);
-                aux->setX(50);
-                aux->setY(100);
-                aux->setName("bloco condicional");
-                aux->setSelected(true);
-                add_block(aux);
-            }
-            if(menu_selected == 10) {
-                ActionBlock *aux = new ActionBlock();
-                aux->setWidth(al_get_bitmap_width(FUNCTION_BLOCK[0]));
-                aux->setHeight(al_get_bitmap_height(FUNCTION_BLOCK[0]));
-                aux->setFunction(0);
-                aux->setX(50);
-                aux->setY(100);
-                aux->setName("bloco de ação");
-                aux->setSelected(true);
-                add_block(aux);
-            }
-            if(menu_selected == 11) {
-                StartBlock *aux = new StartBlock();
-                aux->setWidth(al_get_bitmap_width(START_BLOCK[0]));
-                aux->setHeight(al_get_bitmap_height(START_BLOCK[0]));
-                aux->setX(50);
-                aux->setY(100);
-                aux->setName("bloco inicio");
-                aux->setSelected(true);
-                add_block(aux);
-            }
-            if(menu_selected == 12) {
-                EndBlock *aux = new EndBlock();
-                aux->setWidth(al_get_bitmap_width(END_BLOCK[0]));
-                aux->setHeight(al_get_bitmap_height(END_BLOCK[0]));
-                aux->setX(50);
-                aux->setY(100);
-                aux->setName("bloco de fim");
-                aux->setSelected(true);
-                add_block(aux);
-            }
-            if(menu_selected == 13) {
-                MergeBlock *aux = new MergeBlock();
-                aux->setWidth(al_get_bitmap_width(MERGE_BLOCK[0]));
-                aux->setHeight(al_get_bitmap_height(MERGE_BLOCK[0]));
-                aux->setX(50);
-                aux->setY(100);
-                aux->setName("bloco de junção");
-                aux->setSelected(true);
-                add_block(aux);
-            }
-            if(menu_selected == 14) {
-                LoopBlock *aux = new LoopBlock();
-                aux->setWidth(al_get_bitmap_width(LOOP_BLOCK[0]));
-                aux->setHeight(al_get_bitmap_height(LOOP_BLOCK[0]));
-                aux->setX(50);
-                aux->setY(100);
-                aux->setName("bloco de loop");
-                aux->setLimitedLoop(true);
-                aux->setNumberOfLoops(2);
-                aux->setSelected(true);
-                add_block(aux);
             }
             if(menu_selected == 15) {
                 black_sensor_menu_selected = true;
@@ -484,13 +503,16 @@ void Interface :: start() {
 
             //cout<<"tecla apertada: " << events.keyboard.keycode <<endl;
             if((events.keyboard.keycode == 77) || (events.keyboard.keycode == 90)){
-                for(int i=0; i<valor_maximo_blocos; i++) {
-                    if(blocks_list_to_print[i] != NULL) {
-                        if(blocks_list_to_print[i]->getSelected() == true) {
-                            remove_block(blocks_list_to_print[i]);
+                if(drawing_line == false) {
+                    for(int i=0; i<valor_maximo_blocos; i++) {
+                        if(blocks_list_to_print[i] != NULL) {
+                            if(blocks_list_to_print[i]->getSelected() == true) {
+                                remove_block(blocks_list_to_print[i]);
+                            }
                         }
                     }
                 }
+                delete_connections();
             }
         }
 
@@ -501,7 +523,11 @@ void Interface :: start() {
 void Interface :: load_bitmap(ALLEGRO_BITMAP **bitmap, char *adress) {
     //se não achar a imagem no diretorio especificado dá msg de erro e para a execução
     if(!al_load_bitmap(adress)) {
-        al_show_native_message_box(NULL, NULL, NULL, adress, NULL, NULL);
+        char* str1 = "Não encontrou imagem: ";
+        char * str = (char *) malloc(1 + strlen(str1)+ strlen(adress));
+        strcpy(str, str1);
+        strcat(str, adress);
+        al_show_native_message_box(display, "Fluxprog", "ERRO", str, "Ok", ALLEGRO_MESSAGEBOX_ERROR);
         executing = false;
     } else {
         *bitmap = al_load_bitmap(adress);
@@ -982,10 +1008,10 @@ void Interface :: load_program_images() {
     load_bitmap(&FUNCTION_BLOCK[1], "images/blocks/function_block/function_block_mouse.png");
     load_bitmap(&FUNCTION_BLOCK[2], "images/blocks/function_block/function_block_selected.png");
     load_bitmap(&FUNCTION_BLOCK[3], "images/blocks/function_block/function_block_executing.png");
-    load_bitmap(&LOOP_BLOCK[0], "images/blocks/loop_block/loop_block.png");
-    load_bitmap(&LOOP_BLOCK[1], "images/blocks/loop_block/loop_block_mouse.png");
-    load_bitmap(&LOOP_BLOCK[2], "images/blocks/loop_block/loop_block_selected.png");
-    load_bitmap(&LOOP_BLOCK[3], "images/blocks/loop_block/loop_block_executing.png");
+    load_bitmap(&LOOP_BLOCK[0], "images/blocks/loop_block/loop_block2.png");
+    load_bitmap(&LOOP_BLOCK[1], "images/blocks/loop_block/loop_block2_mouse.png");
+    load_bitmap(&LOOP_BLOCK[2], "images/blocks/loop_block/loop_block2_selected.png");
+    load_bitmap(&LOOP_BLOCK[3], "images/blocks/loop_block/loop_block2_executing.png");
     load_bitmap(&MERGE_BLOCK[0], "images/blocks/merge_block/merge_block.png");
     load_bitmap(&MERGE_BLOCK[1], "images/blocks/merge_block/merge_block_mouse.png");
     load_bitmap(&MERGE_BLOCK[2], "images/blocks/merge_block/merge_block_selected.png");
@@ -1153,7 +1179,7 @@ void Interface :: check_dragging() {
                         blocks_list_to_print[i]->setTypeOfSensor(10);
                     } else if((dragging_walk_foward == true) || (dragging_turn_left == true) || (dragging_turn_right == true)) {
                         //erro
-                        al_show_native_message_box(NULL, NULL, NULL, "Essa ação não pode ser usado como entrada no bloco de decisão", NULL, NULL);
+                        al_show_native_message_box(display, "Fluxprog", "ERRO", "Essa ação não pode ser usado como entrada no bloco de decisão", "Ok", ALLEGRO_MESSAGEBOX_ERROR);
                     }
                 }
             }
@@ -1162,13 +1188,13 @@ void Interface :: check_dragging() {
                     //cout<<"soltou sobre o bloco certo"<<endl;
                     if((dragging_black_sensor1 == true) || (dragging_black_sensor2 == true) || (dragging_black_sensor3 == true)  || (dragging_black_sensor4 == true) || (dragging_black_sensor5 == true)){
                         //erro
-                        al_show_native_message_box(NULL, NULL, NULL, "O sensor de fita preta não pode ser usado como entrada no bloco de função", NULL, NULL);
+                        al_show_native_message_box(display, "Fluxprog", "ERRO", "O sensor de fita preta não pode ser usado como entrada no bloco de função", "Ok", ALLEGRO_MESSAGEBOX_ERROR);
                     }  else if((dragging_color_sensor1 == true) || (dragging_color_sensor2 == true)){
                         //erro
-                        al_show_native_message_box(NULL, NULL, NULL, "O sensor de cor não pode ser usado como entrada no bloco de função", NULL, NULL);
+                        al_show_native_message_box(display, "Fluxprog", "ERRO", "O sensor de cor não pode ser usado como entrada no bloco de função", "Ok", ALLEGRO_MESSAGEBOX_ERROR);
                     } else if((dragging_ultrasonic_sensor1 == true) || (dragging_ultrasonic_sensor2 == true) || (dragging_ultrasonic_sensor3 == true)) {
                         //erro
-                        al_show_native_message_box(NULL, NULL, NULL, "O sensor de ultrassom não pode ser usado como entrada no bloco de função", NULL, NULL);
+                        al_show_native_message_box(display, "Fluxprog", "ERRO", "O sensor de ultrassom não pode ser usado como entrada no bloco de função", "Ok", ALLEGRO_MESSAGEBOX_ERROR);
                     } else if(dragging_walk_foward == true) {
                         blocks_list_to_print[i]->setFunction(1);
                     } else if(dragging_turn_left == true) {
@@ -1332,6 +1358,10 @@ void Interface :: print_list_of_blocks() {
             if(blocks_list_to_print[i]->getDragging() == true) {
                 blocks_list_to_print[i]->setX(mouseX - mouse_aux_x);
                 blocks_list_to_print[i]->setY(mouseY - mouse_aux_y);
+            } else if(blocks_list_to_print[i]->getX() <= menu2_X_limit) {
+                blocks_list_to_print[i]->setX(menu2_X_limit + 20);
+            } else if(blocks_list_to_print[i]->getY() <= menu1_Y_limit) {
+                blocks_list_to_print[i]->setY(menu1_Y_limit + 20);
             }
         }
     }
@@ -1447,6 +1477,68 @@ void Interface :: draw_temporary_line() {
         al_draw_line(temporary_line_X, temporary_line_Y, mouseX, mouseY, black, 2);
         al_draw_rotated_bitmap(arrow, (al_get_bitmap_width(arrow))/2, (al_get_bitmap_height(arrow))/2, mouseX, mouseY, angulo, 0);
     }
+}
+void Interface :: delete_connections() {
+    if(drawing_line == true) {
+        if(blocks_list_to_print[block_selected] != NULL) {
+            if(number_of_selected_out == 1) {
+                int aux=0;
+                //procura bloco que tem relação
+                for(int i=0; i<valor_maximo_blocos; i++) {
+                    if(blocks_list_to_print[i] != NULL) {
+                        if(blocks_list_to_print[i] == blocks_list_to_print[block_selected]->getNext1()) {
+                            //achou o bloco
+                            aux = i;
+                        }
+                    }
+                }
+                blocks_list_to_print[block_selected]->setNext1(NULL);
+                if(blocks_list_to_print[aux]->getPrevious1() == blocks_list_to_print[block_selected]) {
+                    blocks_list_to_print[aux]->setPrevious1(NULL);
+                } else {
+                    blocks_list_to_print[aux]->setPrevious2(NULL);
+                }
+            } else {
+                int aux=0;
+                //procura bloco que tem relação
+                for(int i=0; i<valor_maximo_blocos; i++) {
+                    if(blocks_list_to_print[i] != NULL) {
+                        if(blocks_list_to_print[i] == blocks_list_to_print[block_selected]->getNext2()) {
+                            //achou o bloco
+                            aux = i;
+                        }
+                    }
+                }
+                blocks_list_to_print[block_selected]->setNext2(NULL);
+                if(blocks_list_to_print[aux]->getPrevious1() == blocks_list_to_print[block_selected]) {
+                    blocks_list_to_print[aux]->setPrevious1(NULL);
+                } else {
+                    blocks_list_to_print[aux]->setPrevious2(NULL);
+                }
+            }
+        }
+        drawing_line = false;
+    }
+}
+void Interface :: draw_everything() {
+    //imprime menu
+    print_primary_menu();
+    //imprime menu de blocos
+    print_secondary_menu();
+
+    //checa se o mouse está sobre os menus, para setar a variável de controle do menu_selected
+    check_mouse_on_menus();
+
+    //percorre toda a lista de impressão dos blocos
+    print_list_of_blocks();
+
+    //desenha objetos sendo arrastados
+    draw_dragging();
+    //desenha linha de ligação
+    draw_temporary_line();
+
+    //desenha ligações entre blocos
+    draw_lines();
 }
 bool Interface :: check_colisions() {
     int selected_block;
@@ -1586,53 +1678,109 @@ bool Interface :: check_colisions() {
     return false;
 }
 void Interface :: draw_lines() {
+    bool special_case = false;
+
     for(int i=0; i<valor_maximo_blocos; i++) {
         if(blocks_list_to_print[i] != NULL) {
+            //caso especial
             if(blocks_list_to_print[i]->getNext1() != NULL) {
-                if(blocks_list_to_print[i]->getNext1()->getPrevious1() != NULL) {
-                    if(blocks_list_to_print[i]->getNext1()->getPrevious1() == blocks_list_to_print[i]) {
-                        int start_x = blocks_list_to_print[i]->getPointOut1X();
-                        int start_y = blocks_list_to_print[i]->getPointOut1Y();
-                        int end_x = blocks_list_to_print[i]->getNext1()->getPointIn1X();
-                        int end_y = blocks_list_to_print[i]->getNext1()->getPointIn1Y();
-                        float angulo = -(atan2((end_x - start_x), (end_y - start_y)));
-                        al_draw_line(start_x, start_y, end_x, end_y, black, 2);
-                        al_draw_rotated_bitmap(arrow, (al_get_bitmap_width(arrow))/2, (al_get_bitmap_height(arrow))/2, end_x, end_y, angulo, 0);
+                if(blocks_list_to_print[i]->getNext2() != NULL) {
+                    if(blocks_list_to_print[i]->getNext1()->getPrevious1() != NULL) {
+                        if(blocks_list_to_print[i]->getNext1()->getPrevious2() != NULL) {
+                            if(blocks_list_to_print[i]->getNext2()->getPrevious1() != NULL) {
+                                if(blocks_list_to_print[i]->getNext2()->getPrevious2() != NULL) {
+                                    if(blocks_list_to_print[i]->getNext1()->getPrevious1() == blocks_list_to_print[i]) {
+                                        if(blocks_list_to_print[i]->getNext1()->getPrevious2() == blocks_list_to_print[i]) {
+                                            if(blocks_list_to_print[i]->getNext2()->getPrevious1() == blocks_list_to_print[i]) {
+                                                if(blocks_list_to_print[i]->getNext2()->getPrevious2() == blocks_list_to_print[i]) {
+                                                    int start_x = blocks_list_to_print[i]->getPointOut1X();
+                                                    int start_y = blocks_list_to_print[i]->getPointOut1Y();
+                                                    int end_x = blocks_list_to_print[i]->getNext1()->getPointIn1X();
+                                                    int end_y = blocks_list_to_print[i]->getNext1()->getPointIn1Y();
+                                                    float angulo = -(atan2((end_x - start_x), (end_y - start_y)));
+                                                    al_draw_line(start_x, start_y, end_x, end_y, black, 2);
+                                                    al_draw_rotated_bitmap(arrow, (al_get_bitmap_width(arrow))/2, (al_get_bitmap_height(arrow))/2, end_x, end_y, angulo, 0);
+                                                    start_x = blocks_list_to_print[i]->getPointOut2X();
+                                                    start_y = blocks_list_to_print[i]->getPointOut2Y();
+                                                    end_x = blocks_list_to_print[i]->getNext2()->getPointIn2X();
+                                                    end_y = blocks_list_to_print[i]->getNext2()->getPointIn2Y();
+                                                    angulo = -(atan2((end_x - start_x), (end_y - start_y)));
+                                                    al_draw_line(start_x, start_y, end_x, end_y, black, 2);
+                                                    al_draw_rotated_bitmap(arrow, (al_get_bitmap_width(arrow))/2, (al_get_bitmap_height(arrow))/2, end_x, end_y, angulo, 0);
+                                                    special_case = true;
+                                                }
+                                            }
+                                        } else {
+                                            special_case = false;
+                                        }
+                                    } else {
+                                        special_case = false;
+                                    }
+                                } else {
+                                    special_case = false;
+                                }
+                            } else {
+                                special_case = false;
+                            }
+                        } else {
+                            special_case = false;
+                        }
+                    } else {
+                        special_case = false;
                     }
+                } else {
+                    special_case = false;
                 }
-                if(blocks_list_to_print[i]->getNext1()->getPrevious2() != NULL) {
-                    if(blocks_list_to_print[i]->getNext1()->getPrevious2() == blocks_list_to_print[i]) {
-                        int start_x = blocks_list_to_print[i]->getPointOut1X();
-                        int start_y = blocks_list_to_print[i]->getPointOut1Y();
-                        int end_x = blocks_list_to_print[i]->getNext1()->getPointIn2X();
-                        int end_y = blocks_list_to_print[i]->getNext1()->getPointIn2Y();
-                        float angulo = -(atan2((end_x - start_x), (end_y - start_y)));
-                        al_draw_line(start_x, start_y, end_x, end_y, black, 2);
-                        al_draw_rotated_bitmap(arrow, (al_get_bitmap_width(arrow))/2, (al_get_bitmap_height(arrow))/2, end_x, end_y, angulo, 0);
-                    }
-                }
+            } else {
+                special_case = false;
             }
-            if(blocks_list_to_print[i]->getNext2() != NULL) {
-                if(blocks_list_to_print[i]->getNext2()->getPrevious1() != NULL) {
-                    if(blocks_list_to_print[i]->getNext2()->getPrevious1() == blocks_list_to_print[i]) {
-                        int start_x = blocks_list_to_print[i]->getPointOut2X();
-                        int start_y = blocks_list_to_print[i]->getPointOut2Y();
-                        int end_x = blocks_list_to_print[i]->getNext2()->getPointIn1X();
-                        int end_y = blocks_list_to_print[i]->getNext2()->getPointIn1Y();
-                        float angulo = -(atan2((end_x - start_x), (end_y - start_y)));
-                        al_draw_line(start_x, start_y, end_x, end_y, black, 2);
-                        al_draw_rotated_bitmap(arrow, (al_get_bitmap_width(arrow))/2, (al_get_bitmap_height(arrow))/2, end_x, end_y, angulo, 0);
+            if(special_case == false) {
+                if(blocks_list_to_print[i]->getNext1() != NULL) {
+                    if(blocks_list_to_print[i]->getNext1()->getPrevious1() != NULL) {
+                        if(blocks_list_to_print[i]->getNext1()->getPrevious1() == blocks_list_to_print[i]) {
+                            int start_x = blocks_list_to_print[i]->getPointOut1X();
+                            int start_y = blocks_list_to_print[i]->getPointOut1Y();
+                            int end_x = blocks_list_to_print[i]->getNext1()->getPointIn1X();
+                            int end_y = blocks_list_to_print[i]->getNext1()->getPointIn1Y();
+                            float angulo = -(atan2((end_x - start_x), (end_y - start_y)));
+                            al_draw_line(start_x, start_y, end_x, end_y, black, 2);
+                            al_draw_rotated_bitmap(arrow, (al_get_bitmap_width(arrow))/2, (al_get_bitmap_height(arrow))/2, end_x, end_y, angulo, 0);
+                        }
+                    }
+                    if(blocks_list_to_print[i]->getNext1()->getPrevious2() != NULL) {
+                        if(blocks_list_to_print[i]->getNext1()->getPrevious2() == blocks_list_to_print[i]) {
+                            int start_x = blocks_list_to_print[i]->getPointOut1X();
+                            int start_y = blocks_list_to_print[i]->getPointOut1Y();
+                            int end_x = blocks_list_to_print[i]->getNext1()->getPointIn2X();
+                            int end_y = blocks_list_to_print[i]->getNext1()->getPointIn2Y();
+                            float angulo = -(atan2((end_x - start_x), (end_y - start_y)));
+                            al_draw_line(start_x, start_y, end_x, end_y, black, 2);
+                            al_draw_rotated_bitmap(arrow, (al_get_bitmap_width(arrow))/2, (al_get_bitmap_height(arrow))/2, end_x, end_y, angulo, 0);
+                        }
                     }
                 }
-                if(blocks_list_to_print[i]->getNext2()->getPrevious2() != NULL) {
-                    if(blocks_list_to_print[i]->getNext2()->getPrevious2() == blocks_list_to_print[i]) {
-                        int start_x = blocks_list_to_print[i]->getPointOut2X();
-                        int start_y = blocks_list_to_print[i]->getPointOut2Y();
-                        int end_x = blocks_list_to_print[i]->getNext2()->getPointIn2X();
-                        int end_y = blocks_list_to_print[i]->getNext2()->getPointIn2Y();
-                        float angulo = -(atan2((end_x - start_x), (end_y - start_y)));
-                        al_draw_line(start_x, start_y, end_x, end_y, black, 2);
-                        al_draw_rotated_bitmap(arrow, (al_get_bitmap_width(arrow))/2, (al_get_bitmap_height(arrow))/2, end_x, end_y, angulo, 0);
+                if(blocks_list_to_print[i]->getNext2() != NULL) {
+                    if(blocks_list_to_print[i]->getNext2()->getPrevious1() != NULL) {
+                        if(blocks_list_to_print[i]->getNext2()->getPrevious1() == blocks_list_to_print[i]) {
+                            int start_x = blocks_list_to_print[i]->getPointOut2X();
+                            int start_y = blocks_list_to_print[i]->getPointOut2Y();
+                            int end_x = blocks_list_to_print[i]->getNext2()->getPointIn1X();
+                            int end_y = blocks_list_to_print[i]->getNext2()->getPointIn1Y();
+                            float angulo = -(atan2((end_x - start_x), (end_y - start_y)));
+                            al_draw_line(start_x, start_y, end_x, end_y, black, 2);
+                            al_draw_rotated_bitmap(arrow, (al_get_bitmap_width(arrow))/2, (al_get_bitmap_height(arrow))/2, end_x, end_y, angulo, 0);
+                        }
+                    }
+                    if(blocks_list_to_print[i]->getNext2()->getPrevious2() != NULL) {
+                        if(blocks_list_to_print[i]->getNext2()->getPrevious2() == blocks_list_to_print[i]) {
+                            int start_x = blocks_list_to_print[i]->getPointOut2X();
+                            int start_y = blocks_list_to_print[i]->getPointOut2Y();
+                            int end_x = blocks_list_to_print[i]->getNext2()->getPointIn2X();
+                            int end_y = blocks_list_to_print[i]->getNext2()->getPointIn2Y();
+                            float angulo = -(atan2((end_x - start_x), (end_y - start_y)));
+                            al_draw_line(start_x, start_y, end_x, end_y, black, 2);
+                            al_draw_rotated_bitmap(arrow, (al_get_bitmap_width(arrow))/2, (al_get_bitmap_height(arrow))/2, end_x, end_y, angulo, 0);
+                        }
                     }
                 }
             }
@@ -1640,117 +1788,154 @@ void Interface :: draw_lines() {
     }
 }
 void Interface :: execute() {
-
     if(current_executing_block != NULL) {
-        //se for do tipo 8 = condicional
-        //tem q fazer leitura de sensores para setar as variáveis de comparação
-        if(current_executing_block->getType() == 8) {
-            int* black_sensor_reading = communication->getBlackTypeReading();
-            int* ultrasonic_sensor_reading = communication->getUltrasonicReading();
-            //checa tipo de sensor
-            switch(current_executing_block->getTypeOfSensor()) {
-                case 1:
-                    //black sensor 1
-                    current_executing_block->setParameter1(black_sensor_reading[0]);
-                    current_executing_block->setParameter2(1);
-                    break;
 
-                case 2:
-                    //black sensor 2
-                    current_executing_block->setParameter1(black_sensor_reading[1]);
-                    current_executing_block->setParameter2(1);
-                    break;
-                case 3:
-                    //black sensor 3
-                    current_executing_block->setParameter1(black_sensor_reading[2]);
-                    current_executing_block->setParameter2(1);
-                    break;
-                case 4:
-                    //black sensor 4
-                    current_executing_block->setParameter1(black_sensor_reading[3]);
-                    current_executing_block->setParameter2(1);
-                    break;
-                case 5:
-                    //black sensor 5
-                    current_executing_block->setParameter1(black_sensor_reading[4]);
-                    current_executing_block->setParameter2(1);
-                    break;
-                case 6:
-                    //color sensor 1
-                    current_executing_block->setParameter1(1);
-                    current_executing_block->setParameter2(1);
-                    break;
-                case 7:
-                    //color sensor 2
-                    current_executing_block->setParameter1(0);
-                    current_executing_block->setParameter2(1);
-                    break;
-                case 8:
-                    //ultrasonic sensor 1
-                    current_executing_block->setParameter1(ultrasonic_sensor_reading[0]);
-                    current_executing_block->setParameter2(1);
-                    break;
-                case 9:
-                    //ultrasonic sensor 2
-                    current_executing_block->setParameter1(ultrasonic_sensor_reading[1]);
-                    current_executing_block->setParameter2(1);
-                    break;
-                case 10:
-                    //ultrasonic sensor 3
-                    current_executing_block->setParameter1(ultrasonic_sensor_reading[2]);
-                    current_executing_block->setParameter2(1);
-                    break;
+        if(program_connected == true) {
+            //se for do tipo 8 = condicional
+            //tem q fazer leitura de sensores para setar as variáveis de comparação
+            if(current_executing_block->getType() == 8) {
+                int* black_sensor_reading = communication->getBlackTypeReading();
+                int* ultrasonic_sensor_reading = communication->getUltrasonicReading();
+                //checa tipo de sensor
+                switch(current_executing_block->getTypeOfSensor()) {
+                    case 1:
+                        //black sensor 1
+                        current_executing_block->setParameter1(black_sensor_reading[0]);
+                        current_executing_block->setParameter2(1);
+                        break;
+
+                    case 2:
+                        //black sensor 2
+                        current_executing_block->setParameter1(black_sensor_reading[1]);
+                        current_executing_block->setParameter2(1);
+                        break;
+                    case 3:
+                        //black sensor 3
+                        current_executing_block->setParameter1(black_sensor_reading[2]);
+                        current_executing_block->setParameter2(1);
+                        break;
+                    case 4:
+                        //black sensor 4
+                        current_executing_block->setParameter1(black_sensor_reading[3]);
+                        current_executing_block->setParameter2(1);
+                        break;
+                    case 5:
+                        //black sensor 5
+                        current_executing_block->setParameter1(black_sensor_reading[4]);
+                        current_executing_block->setParameter2(1);
+                        break;
+                    case 6:
+                        //color sensor 1
+                        current_executing_block->setParameter1(1);
+                        current_executing_block->setParameter2(1);
+                        break;
+                    case 7:
+                        //color sensor 2
+                        current_executing_block->setParameter1(0);
+                        current_executing_block->setParameter2(1);
+                        break;
+                    case 8:
+                        //ultrasonic sensor 1
+                        current_executing_block->setParameter1(ultrasonic_sensor_reading[0]);
+                        current_executing_block->setParameter2(1);
+                        break;
+                    case 9:
+                        //ultrasonic sensor 2
+                        current_executing_block->setParameter1(ultrasonic_sensor_reading[1]);
+                        current_executing_block->setParameter2(1);
+                        break;
+                    case 10:
+                        //ultrasonic sensor 3
+                        current_executing_block->setParameter1(ultrasonic_sensor_reading[2]);
+                        current_executing_block->setParameter2(1);
+                        break;
+                }
             }
-        }
-
-        //testa se o bloco atual é de ação
-        if(current_executing_block->getType() == 1){
-            //se não está esperando resposta significa que ou é a primeira vez que entra ou a resposta já chegou
-            if(waiting_answer == false) {
-                cout<<"não está esperando resposta"<<endl;
-                //se for a primeira vez que entrou o feedback vai ser diferente de um e então vai pro else
-                //communication->upadateReadings();
-                if(communication->getFeedback() == 1) {
-                    //passa para o proximo bloco
-                    if(current_executing_block->getExecutingNext() != NULL) {
-                        cout<<"executou bloco: "<<current_executing_block->getName()<<endl;
-                        current_executing_block = current_executing_block->getExecutingNext();
-                        refresh_executing_block();
-                        waiting_answer = false;
-                        //*********************************************************tem que resetar o feedback********************************
-                    } else {
-                        cout<<"executou bloco: "<<current_executing_block->getName()<<endl;
-                        executing_fluxogram = false;
+            //se for 1 significa que terminou execução ou está pronto para receber
+            if((communication->getFeedback() == 1) || (communication->getFeedback() == -4)) {
+                //testa se o próximo é não nulo
+                if(current_executing_block->getExecutingNext() != NULL) {
+                    cout<<"executou bloco: "<<current_executing_block->getName()<<endl;
+                    current_executing_block = current_executing_block->getExecutingNext();
+                    refresh_executing_block();
+                    //bloco de ação
+                    if(current_executing_block->getType() == 1) {
+                        communication->setCommand(current_executing_block->getCommand());
                     }
                 } else {
-                    communication->setCommand(current_executing_block->getCommand());
-                    waiting_answer = true;
-                    cout<<"enviou comando"<<endl;
-                }
-            } else {
-                //communication->upadateReadings();
-                cout<<"está esperando resposta"<<endl;
-                cout<<"feedback recebido: "<<communication->getFeedback()<<endl;
-                //testa se a resposta chegou
-                if(communication->getFeedback() == 1) {
-                    waiting_answer = false;
-                    cout<<"resposta chegou"<<endl;
-                } else if(communication->getFeedback() == ERROR){
-                    waiting_answer = false;
-                    cout<<"erro na execução"<<endl;
-                } else if(communication->getFeedback() == CLOSE_PROGRAM) {
-                    waiting_answer = false;
-                    cout<<"programa fechou"<<endl;
+                    cout<<"executou bloco: "<<current_executing_block->getName()<<endl;
+                    executing_fluxogram = false;
                 }
             }
-        } else if(current_executing_block->getExecutingNext() != NULL) {
-            cout<<"executou bloco: "<<current_executing_block->getName()<<endl;
-            current_executing_block = current_executing_block->getExecutingNext();
-            refresh_executing_block();
         } else {
-            cout<<"executou bloco: "<<current_executing_block->getName()<<endl;
-            executing_fluxogram = false;
+            //se for do tipo 8 = condicional
+            //tem q fazer leitura de sensores para setar as variáveis de comparação
+            if(current_executing_block->getType() == 8) {
+                //checa tipo de sensor
+                switch(current_executing_block->getTypeOfSensor()) {
+                    case 1:
+                        //black sensor 1
+                        current_executing_block->setParameter1(0);
+                        current_executing_block->setParameter2(1);
+                        break;
+
+                    case 2:
+                        //black sensor 2
+                        current_executing_block->setParameter1(1);
+                        current_executing_block->setParameter2(1);
+                        break;
+                    case 3:
+                        //black sensor 3
+                        current_executing_block->setParameter1(0);
+                        current_executing_block->setParameter2(1);
+                        break;
+                    case 4:
+                        //black sensor 4
+                        current_executing_block->setParameter1(1);
+                        current_executing_block->setParameter2(1);
+                        break;
+                    case 5:
+                        //black sensor 5
+                        current_executing_block->setParameter1(0);
+                        current_executing_block->setParameter2(1);
+                        break;
+                    case 6:
+                        //color sensor 1
+                        current_executing_block->setParameter1(1);
+                        current_executing_block->setParameter2(1);
+                        break;
+                    case 7:
+                        //color sensor 2
+                        current_executing_block->setParameter1(0);
+                        current_executing_block->setParameter2(1);
+                        break;
+                    case 8:
+                        //ultrasonic sensor 1
+                        current_executing_block->setParameter1(1);
+                        current_executing_block->setParameter2(1);
+                        break;
+                    case 9:
+                        //ultrasonic sensor 2
+                        current_executing_block->setParameter1(0);
+                        current_executing_block->setParameter2(1);
+                        break;
+                    case 10:
+                        //ultrasonic sensor 3
+                        current_executing_block->setParameter1(1);
+                        current_executing_block->setParameter2(1);
+                        break;
+                }
+            }
+            if(current_executing_block->getExecutingNext() != NULL) {
+                cout<<"executou bloco: "<<current_executing_block->getName()<<endl;
+                current_executing_block = current_executing_block->getExecutingNext();
+                refresh_executing_block();
+            } else {
+                cout<<"executou bloco: "<<current_executing_block->getName()<<endl;
+                executing_fluxogram = false;
+            }
         }
+
     }
 }
 bool Interface :: check_if_only_one_startblock_exists() {
@@ -1864,6 +2049,25 @@ bool Interface :: check_if_all_the_blocks_have_connections() {
         return false;
     }
 }
+bool Interface :: check_if_all_blocks_have_functions_or_sensors() {
+    for(int i=0; i<valor_maximo_blocos; i++) {
+        if(blocks_list_to_print[i] != NULL) {
+            if(blocks_list_to_print[i]->getType() == 1) {
+                //ação
+                if(blocks_list_to_print[i]->getFunction() == 0) {
+                    return false;
+                }
+            } else if(blocks_list_to_print[i]->getType() == 8) {
+                //decisão
+                if(blocks_list_to_print[i]->getTypeOfSensor() == 0) {
+                    return false;
+                }
+            }
+
+        }
+    }
+    return true;
+}
 void Interface :: reset_fluxogram_execution() {
     int id_start = 0;
     //procura pelo bloco de inicio
@@ -1901,7 +2105,7 @@ void Interface :: connect() {
             //processo filho
             execl(".//..//FluxProgBackend//build//fluxprogbackend", "fluxprogbackend", NULL);
             //cout<<"caminho incorreto"<<endl;
-            al_show_native_message_box(NULL, NULL, NULL, "ERRO.\nFalha ao abrir o programa BackEnd", NULL, NULL);
+            al_show_native_message_box(display, "Fluxprog", "ERRO", "Falha ao abrir o programa BackEnd", "Ok", ALLEGRO_MESSAGEBOX_ERROR);
             kill(getpid(), SIGKILL);
             break;
         default :
@@ -1918,18 +2122,23 @@ void Interface :: connect() {
             //não abriu o v-rep ou não tem bluetooth
             //cout<<"não abriu o v-rep ou não tem bluetooth"<<endl;
             if(robot_connected == true) {
-                al_show_native_message_box(NULL, NULL, NULL, "ERRO.\nBluetooth não encontrado", NULL, NULL);
+                al_show_native_message_box(display, "Fluxprog", "ERRO", "Bluetooth não encontrado", "Ok", ALLEGRO_MESSAGEBOX_ERROR);
             } else {
-                al_show_native_message_box(NULL, NULL, NULL, "ERRO.\nV-Rep não encontrado", NULL, NULL);
+                al_show_native_message_box(display, "Fluxprog", "ERRO", "V-Rep não encontrado", "Ok", ALLEGRO_MESSAGEBOX_ERROR);
             }
         } else if(feedback == CONNECTED) {
             //deu certo
             //cout<<"deu certo"<<endl;
-            al_show_native_message_box(NULL, NULL, NULL, "Conectado com sucesso", NULL, NULL);
+            al_show_native_message_box(display, "Fluxprog", NULL, "Conectado com sucesso", "Ok", NULL);
+            program_connected = true;
         }
         else{
             //cout << "ainda deu problema, rein vr"<<endl;
-            al_show_native_message_box(NULL, NULL, NULL, "ERRO.\nReinicie a simulação do V-Rep e tente novamente", NULL, NULL);
+            al_show_native_message_box(display, "Fluxprog", "ERRO", "Reinicie a simulação do V-Rep e tente novamente", "Ok", ALLEGRO_MESSAGEBOX_ERROR);
         }
     }
 }
+
+//1. fazer submenu de numberos
+//2. setar bloco de loop com numeros
+//3. checar ligações entre blocos

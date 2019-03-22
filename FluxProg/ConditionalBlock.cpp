@@ -10,6 +10,7 @@ ConditionalBlock :: ConditionalBlock() {
     pointOut2_y = y + 69;
     next_true = NULL;
     next_false = NULL;
+    type_of_sensor = 0;
 }
 
 ConditionalBlock :: ~ConditionalBlock() {

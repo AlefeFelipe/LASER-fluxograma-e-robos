@@ -3,6 +3,7 @@
 ActionBlock :: ActionBlock() {
     type = 1;
     next = NULL;
+    function = 0;
 }
 
 ActionBlock :: ~ActionBlock() {
