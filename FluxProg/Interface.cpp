@@ -177,18 +177,54 @@ void Interface :: start() {
                         if(blocks_list_to_print[block_selected] != NULL) {
                             if(blocks_list_to_print[i]->getIn1Selected() == true) {
                                 if(number_of_selected_out == 1) {
+                                    //testa se não havia alguma ligação antes
+                                    if(blocks_list_to_print[block_selected]->getNext1() != NULL) {
+                                        //descobre se é o previous1 ou o 2
+                                        if(blocks_list_to_print[block_selected]->getNext1()->getPrevious1() == blocks_list_to_print[block_selected]) {
+                                            blocks_list_to_print[block_selected]->getNext1()->setPrevious1(NULL);
+                                        } else {
+                                            blocks_list_to_print[block_selected]->getNext1()->setPrevious2(NULL);
+                                        }
+                                    }
                                     blocks_list_to_print[block_selected]->setNext1(blocks_list_to_print[i]);
                                     blocks_list_to_print[i]->setPrevious1(blocks_list_to_print[block_selected]);
                                 } else {
+                                    //testa se não havia alguma ligação antes
+                                    if(blocks_list_to_print[block_selected]->getNext2() != NULL) {
+                                        //descobre se é o previous1 ou o 2
+                                        if(blocks_list_to_print[block_selected]->getNext2()->getPrevious1() == blocks_list_to_print[block_selected]) {
+                                            blocks_list_to_print[block_selected]->getNext2()->setPrevious1(NULL);
+                                        } else {
+                                            blocks_list_to_print[block_selected]->getNext2()->setPrevious2(NULL);
+                                        }
+                                    }
                                     blocks_list_to_print[block_selected]->setNext2(blocks_list_to_print[i]);
                                     blocks_list_to_print[i]->setPrevious1(blocks_list_to_print[block_selected]);
                                 }
 
                             } else if(blocks_list_to_print[i]->getIn2Selected() == true) {
                                 if(number_of_selected_out == 1) {
+                                    //testa se não havia alguma ligação antes
+                                    if(blocks_list_to_print[block_selected]->getNext1() != NULL) {
+                                        //descobre se é o previous1 ou o 2
+                                        if(blocks_list_to_print[block_selected]->getNext1()->getPrevious1() == blocks_list_to_print[block_selected]) {
+                                            blocks_list_to_print[block_selected]->getNext1()->setPrevious1(NULL);
+                                        } else {
+                                            blocks_list_to_print[block_selected]->getNext1()->setPrevious2(NULL);
+                                        }
+                                    }
                                     blocks_list_to_print[block_selected]->setNext1(blocks_list_to_print[i]);
                                     blocks_list_to_print[i]->setPrevious2(blocks_list_to_print[block_selected]);
                                 } else {
+                                    //testa se não havia alguma ligação antes
+                                    if(blocks_list_to_print[block_selected]->getNext2() != NULL) {
+                                        //descobre se é o previous1 ou o 2
+                                        if(blocks_list_to_print[block_selected]->getNext2()->getPrevious1() == blocks_list_to_print[block_selected]) {
+                                            blocks_list_to_print[block_selected]->getNext2()->setPrevious1(NULL);
+                                        } else {
+                                            blocks_list_to_print[block_selected]->getNext2()->setPrevious2(NULL);
+                                        }
+                                    }
                                     blocks_list_to_print[block_selected]->setNext2(blocks_list_to_print[i]);
                                     blocks_list_to_print[i]->setPrevious2(blocks_list_to_print[block_selected]);
                                 }
@@ -1474,7 +1510,7 @@ void Interface :: check_mouse_on_points(Block *b) {
 void Interface :: draw_temporary_line() {
     if(drawing_line == true) {
         float angulo = -(atan2((mouseX - temporary_line_X), (mouseY - temporary_line_Y)));
-        al_draw_line(temporary_line_X, temporary_line_Y, mouseX, mouseY, black, 2);
+        al_draw_line(temporary_line_X, temporary_line_Y, mouseX, mouseY, primary_menu_color, 2);
         al_draw_rotated_bitmap(arrow, (al_get_bitmap_width(arrow))/2, (al_get_bitmap_height(arrow))/2, mouseX, mouseY, angulo, 0);
     }
 }
@@ -1698,14 +1734,14 @@ void Interface :: draw_lines() {
                                                     int end_x = blocks_list_to_print[i]->getNext1()->getPointIn1X();
                                                     int end_y = blocks_list_to_print[i]->getNext1()->getPointIn1Y();
                                                     float angulo = -(atan2((end_x - start_x), (end_y - start_y)));
-                                                    al_draw_line(start_x, start_y, end_x, end_y, black, 2);
+                                                    al_draw_line(start_x, start_y, end_x, end_y, primary_menu_color, 2);
                                                     al_draw_rotated_bitmap(arrow, (al_get_bitmap_width(arrow))/2, (al_get_bitmap_height(arrow))/2, end_x, end_y, angulo, 0);
                                                     start_x = blocks_list_to_print[i]->getPointOut2X();
                                                     start_y = blocks_list_to_print[i]->getPointOut2Y();
                                                     end_x = blocks_list_to_print[i]->getNext2()->getPointIn2X();
                                                     end_y = blocks_list_to_print[i]->getNext2()->getPointIn2Y();
                                                     angulo = -(atan2((end_x - start_x), (end_y - start_y)));
-                                                    al_draw_line(start_x, start_y, end_x, end_y, black, 2);
+                                                    al_draw_line(start_x, start_y, end_x, end_y, primary_menu_color, 2);
                                                     al_draw_rotated_bitmap(arrow, (al_get_bitmap_width(arrow))/2, (al_get_bitmap_height(arrow))/2, end_x, end_y, angulo, 0);
                                                     special_case = true;
                                                 }
@@ -1743,7 +1779,7 @@ void Interface :: draw_lines() {
                             int end_x = blocks_list_to_print[i]->getNext1()->getPointIn1X();
                             int end_y = blocks_list_to_print[i]->getNext1()->getPointIn1Y();
                             float angulo = -(atan2((end_x - start_x), (end_y - start_y)));
-                            al_draw_line(start_x, start_y, end_x, end_y, black, 2);
+                            al_draw_line(start_x, start_y, end_x, end_y, primary_menu_color, 2);
                             al_draw_rotated_bitmap(arrow, (al_get_bitmap_width(arrow))/2, (al_get_bitmap_height(arrow))/2, end_x, end_y, angulo, 0);
                         }
                     }
@@ -1754,7 +1790,7 @@ void Interface :: draw_lines() {
                             int end_x = blocks_list_to_print[i]->getNext1()->getPointIn2X();
                             int end_y = blocks_list_to_print[i]->getNext1()->getPointIn2Y();
                             float angulo = -(atan2((end_x - start_x), (end_y - start_y)));
-                            al_draw_line(start_x, start_y, end_x, end_y, black, 2);
+                            al_draw_line(start_x, start_y, end_x, end_y, primary_menu_color, 2);
                             al_draw_rotated_bitmap(arrow, (al_get_bitmap_width(arrow))/2, (al_get_bitmap_height(arrow))/2, end_x, end_y, angulo, 0);
                         }
                     }
@@ -1767,7 +1803,7 @@ void Interface :: draw_lines() {
                             int end_x = blocks_list_to_print[i]->getNext2()->getPointIn1X();
                             int end_y = blocks_list_to_print[i]->getNext2()->getPointIn1Y();
                             float angulo = -(atan2((end_x - start_x), (end_y - start_y)));
-                            al_draw_line(start_x, start_y, end_x, end_y, black, 2);
+                            al_draw_line(start_x, start_y, end_x, end_y, primary_menu_color, 2);
                             al_draw_rotated_bitmap(arrow, (al_get_bitmap_width(arrow))/2, (al_get_bitmap_height(arrow))/2, end_x, end_y, angulo, 0);
                         }
                     }
@@ -1778,7 +1814,7 @@ void Interface :: draw_lines() {
                             int end_x = blocks_list_to_print[i]->getNext2()->getPointIn2X();
                             int end_y = blocks_list_to_print[i]->getNext2()->getPointIn2Y();
                             float angulo = -(atan2((end_x - start_x), (end_y - start_y)));
-                            al_draw_line(start_x, start_y, end_x, end_y, black, 2);
+                            al_draw_line(start_x, start_y, end_x, end_y, primary_menu_color, 2);
                             al_draw_rotated_bitmap(arrow, (al_get_bitmap_width(arrow))/2, (al_get_bitmap_height(arrow))/2, end_x, end_y, angulo, 0);
                         }
                     }
@@ -2129,7 +2165,7 @@ void Interface :: connect() {
         } else if(feedback == CONNECTED) {
             //deu certo
             //cout<<"deu certo"<<endl;
-            al_show_native_message_box(display, "Fluxprog", NULL, "Conectado com sucesso", "Ok", NULL);
+            al_show_native_message_box(display, "Fluxprog", " ", "Conectado com sucesso", "Ok", NULL);
             program_connected = true;
         }
         else{
@@ -2139,6 +2175,6 @@ void Interface :: connect() {
     }
 }
 
-//1. fazer submenu de numberos
+//1. fazer submenu de numeros
 //2. setar bloco de loop com numeros
 //3. checar ligações entre blocos
