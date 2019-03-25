@@ -1,5 +1,5 @@
-#ifndef _FLUX_PROG_BACKEND_CTE_H_
-#define _FLUX_PROG_BACKEND_CTE_H_
+#ifndef _FLUX_PROG_CTE_H_
+#define _FLUX_PROG_CTE_H_
 
 //variaveis para acesso e criacao de memoria
 #define NOME_DA_MEMORIA "memoria"
@@ -28,17 +28,18 @@
 #define BDRATE 115200
 #define CPORT_NR 16
 #define SIZEPACKET 15
-#define N_ULTRASONIC 3
-#define N_BLACK_TAPE_SENSOR 5
-#define N_COLOR_SENSOR 2
 #define ULTRASONIC_SENSOR_COMPONENTS 3
 #define VISION_SENSOR_COMPONENTS 15
 
 //variaveis de communicacao entre back e front end
 #define CLOSE_PROGRAM -10
 #define ERROR -5
-#define CONNECTED -4
+#define READY 1
+#define EXECUTING 0
 #define MOVE_FORWARD 8
 #define TURN_LEFT 4
 #define TURN_RIGHT 6
+#define N_ULTRASONIC 3
+#define N_BLACK_TAPE_SENSOR 5
+#define N_COLOR_SENSOR 2
 #endif

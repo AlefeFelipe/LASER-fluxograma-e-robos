@@ -1,6 +1,6 @@
-#include "Interface.hpp"
+#include "FluxProg.hpp"
 
-Interface :: Interface() {
+FluxProg :: FluxProg() {
 
     //variavel que diz se o programa ainda está executando ou não
     executing = true;
@@ -99,7 +99,7 @@ Interface :: Interface() {
 
 }
 
-Interface :: ~Interface() {
+FluxProg :: ~FluxProg() {
 
     for(int i=0; i<valor_maximo_blocos; i++) {
         if(blocks_list_to_print[i] != NULL) {
@@ -122,7 +122,7 @@ Interface :: ~Interface() {
     delete communication;
 }
 
-void Interface :: start() {
+void FluxProg :: start() {
 
     while(executing) {
         //avisa o allegro sobre a mudança de tamanho do display para que as variáveis sejam atualizadas
@@ -556,7 +556,7 @@ void Interface :: start() {
     }
 }
 
-void Interface :: load_bitmap(ALLEGRO_BITMAP **bitmap, char *adress) {
+void FluxProg :: load_bitmap(ALLEGRO_BITMAP **bitmap, char *adress) {
     //se não achar a imagem no diretorio especificado dá msg de erro e para a execução
     if(!al_load_bitmap(adress)) {
         char* str1 = "Não encontrou imagem: ";
@@ -569,7 +569,7 @@ void Interface :: load_bitmap(ALLEGRO_BITMAP **bitmap, char *adress) {
         *bitmap = al_load_bitmap(adress);
     }
 }
-void Interface :: add_block(Block *b) {
+void FluxProg :: add_block(Block *b) {
     for(int i=0; i<valor_maximo_blocos; i++) {
         if(blocks_list_to_print[i] == NULL) {
             blocks_list_to_print[i] = b;
@@ -579,7 +579,7 @@ void Interface :: add_block(Block *b) {
     }
 
 }
-void Interface :: remove_block(Block *b) {
+void FluxProg :: remove_block(Block *b) {
     //percorre a lista de blocos em busca do bloco a ser excluido
     for(int i=0; i<valor_maximo_blocos; i++) {
         if(blocks_list_to_print[i] != NULL) {
@@ -614,7 +614,7 @@ void Interface :: remove_block(Block *b) {
         }
     }
 }
-void Interface :: print_primary_menu() {
+void FluxProg :: print_primary_menu() {
     //desenha o retangulo no qual ficam os botões de opções
     al_draw_filled_rectangle(0, 0, al_get_display_width(display), (4 + al_get_bitmap_height(play_button)), primary_menu_color);
 
@@ -671,7 +671,7 @@ void Interface :: print_primary_menu() {
     }
 
 }
-void Interface :: print_secondary_menu() {
+void FluxProg :: print_secondary_menu() {
 
     int blocks_menu_Y = (al_get_bitmap_height(play_button)+4);
     int sensors_menu_Y = blocks_menu_Y + 15 + 6*al_get_bitmap_height(mini_menu[0]);
@@ -801,7 +801,7 @@ void Interface :: print_secondary_menu() {
 
     al_draw_bitmap(trash, 0, al_get_display_height(display)-70, 0);
 }
-void Interface :: print_function_block(Block *b) {
+void FluxProg :: print_function_block(Block *b) {
     if((mouseX > b->getX()) && (mouseX < (b->getX() + b->getWidth())) && (mouseY > b->getY()) && (mouseY < (b->getY() + b->getHeight()))) {
         al_draw_bitmap(FUNCTION_BLOCK[1], b->getX(), b->getY(), 0);
 
@@ -838,7 +838,7 @@ void Interface :: print_function_block(Block *b) {
         al_draw_bitmap(POINT[0], b->getX()+40, b->getY()+35, 0);
     }
 }
-void Interface :: print_end_block(Block *b) {
+void FluxProg :: print_end_block(Block *b) {
     if((mouseX > b->getX()) && (mouseX < (b->getX() + b->getWidth())) && (mouseY > b->getY()) && (mouseY < (b->getY() + b->getHeight()))) {
         al_draw_bitmap(END_BLOCK[1], b->getX(), b->getY(), 0);
     } else if(b->getSelected() == true) {
@@ -853,7 +853,7 @@ void Interface :: print_end_block(Block *b) {
         al_draw_bitmap(POINT[0], b->getX()+37, b->getY()-5, 0);
     }
 }
-void Interface :: print_start_block(Block *b) {
+void FluxProg :: print_start_block(Block *b) {
     if((mouseX > b->getX()) && (mouseX < (b->getX() + b->getWidth())) && (mouseY > b->getY()) && (mouseY < (b->getY() + b->getHeight()))) {
         al_draw_bitmap(START_BLOCK[1], b->getX(), b->getY(), 0);
     } else if(b->getSelected() == true) {
@@ -868,7 +868,7 @@ void Interface :: print_start_block(Block *b) {
         al_draw_bitmap(POINT[0], b->getX()+37, b->getY()+27, 0);
     }
 }
-void Interface :: print_loop_block(Block *b) {
+void FluxProg :: print_loop_block(Block *b) {
     if((mouseX > b->getX()) && (mouseX < (b->getX() + b->getWidth())) && (mouseY > b->getY()) && (mouseY < (b->getY() + b->getHeight()))) {
         al_draw_bitmap(LOOP_BLOCK[1], b->getX(), b->getY(), 0);
     } else if(b->getSelected() == true) {
@@ -904,7 +904,7 @@ void Interface :: print_loop_block(Block *b) {
         al_draw_bitmap(POINT[0], b->getX()+72, b->getY()+81, 0);
     }
 }
-void Interface :: print_decision_block(Block *b) {
+void FluxProg :: print_decision_block(Block *b) {
 
     //desenha o bloco
     if((mouseX > b->getX()) && (mouseX < (b->getX() + b->getWidth())) && (mouseY > b->getY()) && (mouseY < (b->getY() + b->getHeight()))) {
@@ -968,7 +968,7 @@ void Interface :: print_decision_block(Block *b) {
         al_draw_bitmap(POINT[0], b->getX()+112, b->getY()+28, 0);
     }
 }
-void Interface :: print_merge_block(Block *b) {
+void FluxProg :: print_merge_block(Block *b) {
     if((mouseX > b->getX()) && (mouseX < (b->getX() + b->getWidth())) && (mouseY > b->getY()) && (mouseY < (b->getY() + b->getHeight()))) {
         al_draw_bitmap(MERGE_BLOCK[1], b->getX(), b->getY(), 0);
     } else if(b->getSelected() == true) {
@@ -995,7 +995,7 @@ void Interface :: print_merge_block(Block *b) {
         al_draw_bitmap(POINT[0], b->getX()+8, b->getY()+17, 0);
     }
 }
-void Interface :: load_program_images() {
+void FluxProg :: load_program_images() {
     //load_bitmap(&menu, "images/menu.png");
     load_bitmap(&play_button, "images/menu_buttons/play_button.png");
     load_bitmap(&play_button_selected, "images/menu_buttons/play_button_selected.png");
@@ -1093,7 +1093,7 @@ void Interface :: load_program_images() {
 
     load_bitmap(&trash, "images/trash_icon.png");
 }
-void Interface :: destroy_program_images() {
+void FluxProg :: destroy_program_images() {
     al_destroy_bitmap(play_button);
     al_destroy_bitmap(play_button_selected);
 	al_destroy_bitmap(pause_button);
@@ -1171,7 +1171,7 @@ void Interface :: destroy_program_images() {
         al_destroy_bitmap(NUMBER[i]);
     }
 }
-void Interface :: reset_dragging_variables() {
+void FluxProg :: reset_dragging_variables() {
     dragging_black_sensor1 = false;
     dragging_black_sensor2 = false;
     dragging_black_sensor3 = false;
@@ -1186,7 +1186,7 @@ void Interface :: reset_dragging_variables() {
     dragging_turn_left = false;
     dragging_turn_right = false;
 }
-void Interface :: check_dragging() {
+void FluxProg :: check_dragging() {
 
     for(int i=0; i<valor_maximo_blocos; i++) {
         if(blocks_list_to_print[i] != NULL) {
@@ -1243,7 +1243,7 @@ void Interface :: check_dragging() {
         }
     }
 }
-void Interface :: draw_dragging() {
+void FluxProg :: draw_dragging() {
     if(dragging_black_sensor1 == true) {
         al_draw_bitmap(BLACK_SENSOR_1_FUNCTION, mouseX-20, mouseY-20, 0);
     }
@@ -1284,7 +1284,7 @@ void Interface :: draw_dragging() {
         al_draw_bitmap(TURN_RIGHT_ACTION, mouseX-20, mouseY-20, 0);
     }
 }
-void Interface :: refresh_executing_block() {
+void FluxProg :: refresh_executing_block() {
     for(int i=0; i<valor_maximo_blocos; i++) {
         if(blocks_list_to_print[i] != NULL) {
             if(blocks_list_to_print[i] == current_executing_block) {
@@ -1295,7 +1295,7 @@ void Interface :: refresh_executing_block() {
         }
     }
 }
-void Interface :: check_mouse_on_menus() {
+void FluxProg :: check_mouse_on_menus() {
     menu1_X_limit = 14 + 6*al_get_bitmap_width(play_button);
     menu1_Y_limit = 4 + al_get_bitmap_height(play_button);
 
@@ -1347,7 +1347,7 @@ void Interface :: check_mouse_on_menus() {
         menu_selected = 0;
     }
 }
-void Interface :: print_list_of_blocks() {
+void FluxProg :: print_list_of_blocks() {
     for(int i=0; i<valor_maximo_blocos; i++) {
         //testa se na posição do array existe mesmo um bloco
         if(blocks_list_to_print[i] != NULL) {
@@ -1402,7 +1402,7 @@ void Interface :: print_list_of_blocks() {
         }
     }
 }
-void Interface :: check_mouse_on_points(Block *b) {
+void FluxProg :: check_mouse_on_points(Block *b) {
     //função
     if(b->getType() == 1) {
         if((mouseX > b->getX()+40) && (mouseX < (b->getX() + 53)) && (mouseY > b->getY()-5) && (mouseY < (b->getY()+8))) {
@@ -1507,14 +1507,14 @@ void Interface :: check_mouse_on_points(Block *b) {
         }
     }
 }
-void Interface :: draw_temporary_line() {
+void FluxProg :: draw_temporary_line() {
     if(drawing_line == true) {
         float angulo = -(atan2((mouseX - temporary_line_X), (mouseY - temporary_line_Y)));
         al_draw_line(temporary_line_X, temporary_line_Y, mouseX, mouseY, primary_menu_color, 2);
         al_draw_rotated_bitmap(arrow, (al_get_bitmap_width(arrow))/2, (al_get_bitmap_height(arrow))/2, mouseX, mouseY, angulo, 0);
     }
 }
-void Interface :: delete_connections() {
+void FluxProg :: delete_connections() {
     if(drawing_line == true) {
         if(blocks_list_to_print[block_selected] != NULL) {
             if(number_of_selected_out == 1) {
@@ -1556,7 +1556,7 @@ void Interface :: delete_connections() {
         drawing_line = false;
     }
 }
-void Interface :: draw_everything() {
+void FluxProg :: draw_everything() {
     //imprime menu
     print_primary_menu();
     //imprime menu de blocos
@@ -1576,7 +1576,7 @@ void Interface :: draw_everything() {
     //desenha ligações entre blocos
     draw_lines();
 }
-bool Interface :: check_colisions() {
+bool FluxProg :: check_colisions() {
     int selected_block;
     //procura o bloco selecionado
     for(int i = 0; i<valor_maximo_blocos; i++) {
@@ -1713,7 +1713,7 @@ bool Interface :: check_colisions() {
     }
     return false;
 }
-void Interface :: draw_lines() {
+void FluxProg :: draw_lines() {
     bool special_case = false;
 
     for(int i=0; i<valor_maximo_blocos; i++) {
@@ -1823,7 +1823,7 @@ void Interface :: draw_lines() {
         }
     }
 }
-void Interface :: execute() {
+void FluxProg :: execute() {
     if(current_executing_block != NULL) {
 
         if(program_connected == true) {
@@ -1888,7 +1888,7 @@ void Interface :: execute() {
                 }
             }
             //se for 1 significa que terminou execução ou está pronto para receber
-            if((communication->getFeedback() == 1) || (communication->getFeedback() == -4)) {
+            if(communication->getFeedback() == READY) {
                 //testa se o próximo é não nulo
                 if(current_executing_block->getExecutingNext() != NULL) {
                     cout<<"executou bloco: "<<current_executing_block->getName()<<endl;
@@ -1974,7 +1974,7 @@ void Interface :: execute() {
 
     }
 }
-bool Interface :: check_if_only_one_startblock_exists() {
+bool FluxProg :: check_if_only_one_startblock_exists() {
     int start_test = 0;
     for(int i=0; i<valor_maximo_blocos; i++) {
         if(blocks_list_to_print[i] != NULL) {
@@ -1989,7 +1989,7 @@ bool Interface :: check_if_only_one_startblock_exists() {
         return false;
     }
 }
-bool Interface :: check_if_at_least_one_endblock_exist() {
+bool FluxProg :: check_if_at_least_one_endblock_exist() {
     int end_test = 0;
     for(int i=0; i<valor_maximo_blocos; i++) {
         if(blocks_list_to_print[i] != NULL) {
@@ -2004,7 +2004,7 @@ bool Interface :: check_if_at_least_one_endblock_exist() {
         return false;
     }
 }
-bool Interface :: check_if_all_the_blocks_have_connections() {
+bool FluxProg :: check_if_all_the_blocks_have_connections() {
     int connections_test = 1;
     for(int i=0; i<valor_maximo_blocos; i++) {
         if(blocks_list_to_print[i] != NULL) {
@@ -2085,7 +2085,7 @@ bool Interface :: check_if_all_the_blocks_have_connections() {
         return false;
     }
 }
-bool Interface :: check_if_all_blocks_have_functions_or_sensors() {
+bool FluxProg :: check_if_all_blocks_have_functions_or_sensors() {
     for(int i=0; i<valor_maximo_blocos; i++) {
         if(blocks_list_to_print[i] != NULL) {
             if(blocks_list_to_print[i]->getType() == 1) {
@@ -2104,7 +2104,7 @@ bool Interface :: check_if_all_blocks_have_functions_or_sensors() {
     }
     return true;
 }
-void Interface :: reset_fluxogram_execution() {
+void FluxProg :: reset_fluxogram_execution() {
     int id_start = 0;
     //procura pelo bloco de inicio
     for(int i=0; i<valor_maximo_blocos; i++) {
@@ -2118,17 +2118,17 @@ void Interface :: reset_fluxogram_execution() {
     //seta start como bloco atual
     current_executing_block = blocks_list_to_print[id_start];
 }
-void Interface :: connect_simulator() {
+void FluxProg :: connect_simulator() {
     communication->setIfVirtual(1);
     robot_connected = false;
     simulator_connected = true;
 }
-void Interface :: connect_robot() {
+void FluxProg :: connect_robot() {
     communication->setIfVirtual(0);
     robot_connected = true;
     simulator_connected = false;
 }
-void Interface :: connect() {
+void FluxProg :: connect() {
     int feedback = 10;
     pid_t pid;
     pid = fork();
@@ -2142,7 +2142,7 @@ void Interface :: connect() {
             execl(".//..//FluxProgBackend//build//fluxprogbackend", "fluxprogbackend", NULL);
             //cout<<"caminho incorreto"<<endl;
             al_show_native_message_box(display, "Fluxprog", "ERRO", "Falha ao abrir o programa BackEnd", "Ok", ALLEGRO_MESSAGEBOX_ERROR);
-            kill(getpid(), SIGKILL);
+            kill(getpid(), SIGTERM);
             break;
         default :
             //processo pai
@@ -2162,7 +2162,7 @@ void Interface :: connect() {
             } else {
                 al_show_native_message_box(display, "Fluxprog", "ERRO", "V-Rep não encontrado", "Ok", ALLEGRO_MESSAGEBOX_ERROR);
             }
-        } else if(feedback == CONNECTED) {
+        } else if(feedback == READY) {
             //deu certo
             //cout<<"deu certo"<<endl;
             al_show_native_message_box(display, "Fluxprog", " ", "Conectado com sucesso", "Ok", NULL);

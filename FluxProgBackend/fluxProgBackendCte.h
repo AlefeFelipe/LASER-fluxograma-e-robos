@@ -37,7 +37,8 @@
 //variaveis de communicacao entre back e front end
 #define CLOSE_PROGRAM -10
 #define ERROR -5
-#define CONNECTED -4
+#define READY 1
+#define EXECUTING 0
 #define MOVE_FORWARD 8
 #define TURN_LEFT 4
 #define TURN_RIGHT 6

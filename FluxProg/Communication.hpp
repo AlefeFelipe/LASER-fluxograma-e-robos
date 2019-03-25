@@ -2,7 +2,7 @@
 
 #ifndef _COMMUNICATION_HPP_
 #define _COMMUNICATION_HPP_
-#include "fluxProgBackendCte.h"
+#include "fluxProgCte.h"
 #include <boost/interprocess/managed_shared_memory.hpp>
 #include <boost/interprocess/offset_ptr.hpp>
 #include <iostream>

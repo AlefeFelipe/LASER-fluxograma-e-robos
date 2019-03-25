@@ -1,5 +1,5 @@
-#ifndef INTERFACE_HPP_
-#define INTERFACE_HPP_
+#ifndef _FLUXPROG_HPP_
+#define _FLUXPROG_HPP_
 
 #include <allegro5/allegro.h> //biblioteca matriz do allegro
 #include <allegro5/allegro_color.h> //biblioteca para rotinas de cor
@@ -9,7 +9,7 @@
 #include <allegro5/allegro_font.h> // biblioteca para escrita/ uso de fontes
 #include <allegro5/allegro_ttf.h> // biblioteca para uso de fontes TrueType
 #include <iostream> // usada para debugging
-#include <math.h>
+#include <cmath>
 #include <fstream>
 #include <cstring>
 #include <iostream>
@@ -22,6 +22,7 @@
 #include "LoopBlock.hpp"
 #include "MergeBlock.hpp"
 #include "Communication.hpp"
+#include "fluxProgCte.h"
 
 using namespace std;
 
@@ -30,7 +31,7 @@ using namespace std;
 #define roll_bar_width 20
 #define valor_maximo_blocos 100
 
-class Interface {
+class FluxProg {
     ALLEGRO_COLOR black;
     ALLEGRO_COLOR backgroud_color;
     ALLEGRO_COLOR white;
@@ -126,8 +127,8 @@ class Interface {
 
 public:
 
-    Interface();
-    ~Interface();
+    FluxProg();
+    ~FluxProg();
     void start();
 };
 #endif

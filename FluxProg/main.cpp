@@ -1,9 +1,9 @@
-#include "Interface.hpp"
+#include "FluxProg.hpp"
 
 int main()
 {
-    Interface interface = Interface();
-    interface.start();
+    FluxProg fluxprog = FluxProg();
+    fluxprog.start();
 
 
     return 0; //por enquanto só formalidade
