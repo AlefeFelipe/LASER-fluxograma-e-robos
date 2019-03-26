@@ -18,7 +18,8 @@ class Block {
     int height;
     bool selected, dragging, executing;
     bool out1_selected, out2_selected, in1_selected, in2_selected;
-    char* name;
+    const char* name;
+    bool toDelete;
 
 protected:
     int type;
@@ -75,12 +76,14 @@ public:
     virtual int getPointOut1Y();
     virtual int getPointOut2X();
     virtual int getPointOut2Y();
-    void setName(char *n);
+    void setName(const char *n);
     char* getName();
     virtual Block* getExecutingNext();
     virtual void reset_loop_variables();
     virtual int getCommand();
     void setExecuting(bool s);
     bool getExecuting();
+    void setDelete(bool t);
+    bool getDelete();
 };
 #endif

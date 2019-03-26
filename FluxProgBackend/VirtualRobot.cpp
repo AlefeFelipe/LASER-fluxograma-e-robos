@@ -13,12 +13,12 @@ VirtualRobot::VirtualRobot(int *error)
     if (client_id != -1)
 	{
         bool conected = true;
-		cout << "Servidor conectado!" << std::endl;
+		//cout << "Servidor conectado!" << std::endl;
 
         // inicializacao do robo
         if(simxGetObjectHandle(client_id,"bubbleRob",&robot, simx_opmode_oneshot_wait)==simx_return_ok)
         {
-            cout << "conectado ao robot" <<endl;
+            //cout << "conectado ao robot" <<endl;
         }
         else
         {
@@ -29,7 +29,7 @@ VirtualRobot::VirtualRobot(int *error)
         if(simxGetObjectHandle(client_id, "bubbleRob_leftMotor", &motors[0], simx_opmode_oneshot_wait) == simx_return_ok&&
             simxGetObjectHandle(client_id, "bubbleRob_rightMotor", &motors[1], simx_opmode_oneshot_wait) == simx_return_ok)
         {
-            cout << "conectado aos motores" << std::endl;
+            //cout << "conectado aos motores" << std::endl;
         }
         else
         {
@@ -41,7 +41,7 @@ VirtualRobot::VirtualRobot(int *error)
             simxGetObjectHandle(client_id, "Middle_ultrasonic", &ultrasonic_sensors[1], simx_opmode_oneshot_wait )==simx_return_ok&&
             simxGetObjectHandle(client_id, "RM_ultrasonic", &ultrasonic_sensors[2], simx_opmode_oneshot_wait )==simx_return_ok)
         {
-                cout << "conectado aos sensores ultrassom" <<endl;
+                //cout << "conectado aos sensores ultrassom" <<endl;
         }
         else
         {
@@ -55,7 +55,7 @@ VirtualRobot::VirtualRobot(int *error)
             simxGetObjectHandle(client_id, "RM_Vision_sensor", &vision_sensors[3], simx_opmode_oneshot_wait)==simx_return_ok&&
             simxGetObjectHandle(client_id, "Right_Vision_sensor", &vision_sensors[4], simx_opmode_oneshot_wait)==simx_return_ok)
         {
-                cout << "conectado aos sensores de visao" <<endl;
+                //cout << "conectado aos sensores de visao" <<endl;
         }
         else
         {
@@ -131,6 +131,7 @@ void VirtualRobot::moveForward()
     {
         int turning_tight, turning_left;
         float first_x, first_y, dx, dy;
+        updateVirtualData();
         while(((black_type_sensor_reading[0]&&black_type_sensor_reading[2])||
                 (black_type_sensor_reading[2]&&black_type_sensor_reading[4])) &&
                 is_there_obstacle[1]==0)//verificar se ta no mesmo estado, tecnicamente inutil devido a funcao acima
@@ -143,8 +144,8 @@ void VirtualRobot::moveForward()
             extApi_sleepMs(5);
             if(is_there_obstacle[1])
             {
-                cout<<"objeto "<<detected_object_handle[2]<<" na posicao "<<detected_objet[2][0]<<", "<<detected_objet[2][1]<<", "<<detected_objet[2][2]<<endl;
-                cout<<"superficie em "<<detected_surface[2][0]<<", "<<detected_surface[2][1]<<", "<<detected_surface[2][2]<<endl;
+                //cout<<"objeto "<<detected_object_handle[2]<<" na posicao "<<detected_objet[2][0]<<", "<<detected_objet[2][1]<<", "<<detected_objet[2][2]<<endl;
+                //cout<<"superficie em "<<detected_surface[2][0]<<", "<<detected_surface[2][1]<<", "<<detected_surface[2][2]<<endl;
             }
         }
         while(!((black_type_sensor_reading[0]&&black_type_sensor_reading[2])||
@@ -219,8 +220,8 @@ void VirtualRobot::moveForward()
             }
             if(is_there_obstacle[1])
             {
-                cout<<"objeto "<<detected_object_handle[2]<<" na posicao "<<detected_objet[2][0]<<", "<<detected_objet[2][1]<<", "<<detected_objet[2][2]<<endl;
-                cout<<"superficie em "<<detected_surface[2][0]<<", "<<detected_surface[2][1]<<", "<<detected_surface[2][2]<<endl;
+                //cout<<"objeto "<<detected_object_handle[2]<<" na posicao "<<detected_objet[2][0]<<", "<<detected_objet[2][1]<<", "<<detected_objet[2][2]<<endl;
+                //cout<<"superficie em "<<detected_surface[2][0]<<", "<<detected_surface[2][1]<<", "<<detected_surface[2][2]<<endl;
             }
             extApi_sleepMs(5);
         }
@@ -230,19 +231,18 @@ void VirtualRobot::moveForward()
         dy = 0;
         while((dx < DIS_RETO && dy <DIS_RETO) && is_there_obstacle[1]==0)//chegar na linha
         {
-            //cout << "dx "<<dx <<" dy "<<dy<<endl;
             motor_speed[0] = VEL_MOT;
             motor_speed[1] = VEL_MOT;
             simxSetJointTargetVelocity(client_id, motors[0], (simxFloat) motor_speed[0], simx_opmode_streaming);
             simxSetJointTargetVelocity(client_id, motors[1], (simxFloat) motor_speed[1], simx_opmode_streaming);
             updateVirtualData();
-            dx = abs(robot_linear_position[0]-first_x);
-            dy = abs(robot_linear_position[1]-first_y);
+            dx = fabs(robot_linear_position[0]-first_x);
+            dy = fabs(robot_linear_position[1]-first_y);
             extApi_sleepMs(5);
             if(is_there_obstacle[1])
             {
-                cout<<"objeto "<<detected_object_handle[2]<<" na posicao "<<detected_objet[2][0]<<", "<<detected_objet[2][1]<<", "<<detected_objet[2][2]<<endl;
-                cout<<"superficie em "<<detected_surface[2][0]<<", "<<detected_surface[2][1]<<", "<<detected_surface[2][2]<<endl;
+                //cout<<"objeto "<<detected_object_handle[2]<<" na posicao "<<detected_objet[2][0]<<", "<<detected_objet[2][1]<<", "<<detected_objet[2][2]<<endl;
+                //cout<<"superficie em "<<detected_surface[2][0]<<", "<<detected_surface[2][1]<<", "<<detected_surface[2][2]<<endl;
             }
         }
         stop();
@@ -258,7 +258,8 @@ void VirtualRobot::turnRight()
     }
     else
     {
-        float first_ang, d_ang;
+        float first_ang = 0, d_ang = 0;
+        updateVirtualData();
         first_ang = robot_angle[2];
         while(d_ang < (M_PI/4-DIS_CURVA))//escapar do estado de verificacao dos sensores
         {
@@ -267,12 +268,12 @@ void VirtualRobot::turnRight()
             simxSetJointTargetVelocity(client_id, motors[0], (simxFloat) motor_speed[0], simx_opmode_streaming);
             simxSetJointTargetVelocity(client_id, motors[1], (simxFloat) motor_speed[1], simx_opmode_streaming);
             updateVirtualData();
-            d_ang = abs(robot_angle[2] - first_ang);
-            //se houve salto da atan, ignora colocando o salto na posicao normal. Como abs, mas funciona melhor
+            d_ang = fabs(robot_angle[2] - first_ang);
+            //se houve salto da atan, ignora colocando o salto na posicao normal. Como fabs, mas funciona melhor
             if(d_ang>(M_PI/2-D_ANG))
             {
                 robot_angle[2] = -robot_angle[2];
-                d_ang = abs(robot_angle[2] - first_ang);
+                d_ang = fabs(robot_angle[2] - first_ang);
             }
             extApi_sleepMs(5);
         }
@@ -307,7 +308,8 @@ void VirtualRobot::turnLeft()
     }
     else
     {
-        float first_ang, d_ang;
+        float first_ang = 0, d_ang = 0;
+        updateVirtualData();
         first_ang = robot_angle[2];
         while(d_ang < (M_PI/4-DIS_CURVA))//escapar do estado de verificacao dos sensores
         {
@@ -316,12 +318,12 @@ void VirtualRobot::turnLeft()
             simxSetJointTargetVelocity(client_id, motors[0], (simxFloat) motor_speed[0], simx_opmode_streaming);
             simxSetJointTargetVelocity(client_id, motors[1], (simxFloat) motor_speed[1], simx_opmode_streaming);
             updateVirtualData();
-            d_ang = abs(robot_angle[2] - first_ang);
-            //se houve salto da atan, ignora colocando o salto na posicao normal. Como abs, mas funciona melhor
+            d_ang = fabs(robot_angle[2] - first_ang);
+            //se houve salto da atan, ignora colocando o salto na posicao normal. Como fabs, mas funciona melhor
             if(d_ang>(M_PI/2-D_ANG))
             {
                 robot_angle[2] = -robot_angle[2];
-                d_ang = abs(robot_angle[2] - first_ang);
+                d_ang = fabs(robot_angle[2] - first_ang);
             }
             extApi_sleepMs(5);
         }

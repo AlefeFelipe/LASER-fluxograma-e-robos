@@ -12,6 +12,7 @@ Block :: Block() {
     out2_selected = false;
     in2_selected = false;
     executing = false;
+    toDelete = false;
 }
 
 Block :: ~Block() {
@@ -174,11 +175,11 @@ int Block :: getPointOut2X() {
 int Block :: getPointOut2Y() {
     return 0;
 }
-void Block :: setName(char *n) {
+void Block :: setName(const char *n) {
     name = n;
 }
 char* Block :: getName() {
-    return name;
+    return (char*) name;
 }
 Block* Block :: getExecutingNext() {
     return NULL;
@@ -194,4 +195,10 @@ void Block :: setExecuting(bool s) {
 }
 bool Block :: getExecuting() {
     return executing;
+}
+void Block :: setDelete(bool t) {
+    toDelete = t;
+}
+bool Block :: getDelete() {
+    return toDelete;
 }
