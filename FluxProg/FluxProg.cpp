@@ -36,7 +36,7 @@ void FluxProg :: start() {
 
         interface->draw();
 
-        if(interface->getMenuClick() == 1) {
+        if(interface->getMenuClick() == PLAY) {
             //cout<<"play"<<endl;
             executing_fluxogram = true;
             //teste bloco de inicio
@@ -73,37 +73,37 @@ void FluxProg :: start() {
             }
             reset_fluxogram_execution();
         }
-        if(interface->getMenuClick() == 2) {
+        if(interface->getMenuClick() == PAUSE) {
             //cout<<"pause"<<endl;
             executing_fluxogram = false;
         }
-        if(interface->getMenuClick() == 3) {
+        if(interface->getMenuClick() == STOP) {
             //cout<<"stop"<<endl;
             executing_fluxogram = false;
             reset_fluxogram_execution();
         }
-        if(interface->getMenuClick() == 4) {
+        if(interface->getMenuClick() == SAVE) {
             cout<<"save"<<endl;
         }
-        if(interface->getMenuClick() == 5) {
+        if(interface->getMenuClick() == LOAD) {
             cout<<"load"<<endl;
         }
-        if(interface->getMenuClick() == 6) {
+        if(interface->getMenuClick() == SAVE_AS) {
             cout<<"save_as"<<endl;
         }
-        if(interface->getMenuClick() == 7) {
+        if(interface->getMenuClick() == PHYSICAL_ROBOT) {
             //cout<<"bluetooth"<<endl;
             connect_robot();
             connect();
         }
-        if(interface->getMenuClick() == 8) {
+        if(interface->getMenuClick() == VIRTUAL_ROBOT) {
             //cout<<"vrep"<<endl;
             connect_simulator();
             connect();
         }
 
 
-        if(interface->getMenuClick() == 9) {
+        if(interface->getMenuClick() == CONDICIONAL_BLOCK) {
             ConditionalBlock *aux = new ConditionalBlock();
             aux->setWidth(interface->getImageWidth(1));
             aux->setHeight(interface->getImageHeight(1));
@@ -115,7 +115,7 @@ void FluxProg :: start() {
             aux->setName("bloco condicional");
             add_block(aux);
         }
-        if(interface->getMenuClick() == 10) {
+        if(interface->getMenuClick() == ACTION_BLOCK) {
             ActionBlock *aux = new ActionBlock();
             aux->setWidth(interface->getImageWidth(2));
             aux->setHeight(interface->getImageHeight(2));
@@ -127,7 +127,7 @@ void FluxProg :: start() {
             aux->setName("bloco de ação");
             add_block(aux);
         }
-        if(interface->getMenuClick() == 11) {
+        if(interface->getMenuClick() == STARTER_BLOCK) {
             StartBlock *aux = new StartBlock();
             aux->setWidth(interface->getImageWidth(3));
             aux->setHeight(interface->getImageHeight(3));
@@ -138,7 +138,7 @@ void FluxProg :: start() {
             aux->setDragging(true);
             add_block(aux);
         }
-        if(interface->getMenuClick() == 12) {
+        if(interface->getMenuClick() == END_BLOCK) {
             EndBlock *aux = new EndBlock();
             aux->setWidth(interface->getImageWidth(4));
             aux->setHeight(interface->getImageHeight(4));
@@ -149,7 +149,7 @@ void FluxProg :: start() {
             aux->setDragging(true);
             add_block(aux);
         }
-        if(interface->getMenuClick() == 13) {
+        if(interface->getMenuClick() == JUNCTION_BLOCK) {
             MergeBlock *aux = new MergeBlock();
             aux->setWidth(interface->getImageWidth(5));
             aux->setHeight(interface->getImageHeight(5));
@@ -160,7 +160,7 @@ void FluxProg :: start() {
             aux->setDragging(true);
             add_block(aux);
         }
-        if(interface->getMenuClick() == 14) {
+        if(interface->getMenuClick() == LOOP_BLOCK) {
             LoopBlock *aux = new LoopBlock();
             aux->setWidth(interface->getImageWidth(6));
             aux->setHeight(interface->getImageHeight(6));
