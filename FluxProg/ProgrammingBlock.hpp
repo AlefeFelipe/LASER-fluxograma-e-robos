@@ -12,7 +12,7 @@ class ProgrammingBlock : public Block {
 public:
 
     ProgrammingBlock();
-    ~ProgrammingBlock();
+    ~ProgrammingBlock(){};
     int getProgrammingType();
 
 };

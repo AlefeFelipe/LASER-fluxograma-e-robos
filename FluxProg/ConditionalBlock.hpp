@@ -20,7 +20,7 @@ class ConditionalBlock : public ProgrammingBlock {
 public:
 
     ConditionalBlock();
-    ~ConditionalBlock();
+    ~ConditionalBlock(){};
     void setParameter1(int p);
     int getParameter1();
     void setParameter2(int p);

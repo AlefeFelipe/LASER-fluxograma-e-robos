@@ -1,12 +1,9 @@
 #include "EndBlock.hpp"
 
 EndBlock :: EndBlock() {
-    type = 5;
+    type = END_BLOCK;
 }
 
-EndBlock :: ~EndBlock() {
-
-}
 void EndBlock :: setNext1(Block *b) {
     //não possui
 }

@@ -13,7 +13,7 @@ class EndBlock : public ProgrammingBlock {
 public:
 
     EndBlock();
-    ~EndBlock();
+    ~EndBlock(){};
     void setNext1(Block *b);
     Block* getNext1();
     void setNext2(Block *b);

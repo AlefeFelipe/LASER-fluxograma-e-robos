@@ -1,12 +1,8 @@
 #include "StartBlock.hpp"
 
 StartBlock :: StartBlock() {
-    type = 6;
+    type = START_BLOCK;
     next = NULL;
-}
-
-StartBlock :: ~StartBlock() {
-
 }
 
 void StartBlock :: setNext1(Block *b) {

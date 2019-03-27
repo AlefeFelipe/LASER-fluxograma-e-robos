@@ -2,7 +2,6 @@
 #define ACTIONBLOCK_HPP_
 
 #include "Block.hpp"
-#include "fluxProgCte.h"
 using namespace std;
 
 
@@ -14,7 +13,7 @@ class ActionBlock : public Block {
 public:
 
     ActionBlock();
-    ~ActionBlock();
+    ~ActionBlock(){};
     void setFunction(int f);
     int getFunction();
     void setNext1(Block *b);

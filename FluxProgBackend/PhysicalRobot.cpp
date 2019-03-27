@@ -42,7 +42,9 @@ void PhysicalRobot::updateSensorsReading()
 void PhysicalRobot::receiveData()
 {
     //std::cout << "recebendo"<<std::endl;
-    unsigned char* reading;
+    unsigned char* reading = 0;
+    //reading[2] = 'A';
+    //std::cout <<"louco "<< reading<<std::endl;
     RS232_flushRXTX(CPORT_NR);
     clock_t t = clock();
     int i, there_is_packet = 0;

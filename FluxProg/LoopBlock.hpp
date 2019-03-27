@@ -20,7 +20,7 @@ class LoopBlock : public ProgrammingBlock {
 public:
 
     LoopBlock();
-    ~LoopBlock();
+    ~LoopBlock(){};
     void setLimitedLoop(bool l);
     bool getLimitedLoop();
     void setNumberOfLoops(int n);

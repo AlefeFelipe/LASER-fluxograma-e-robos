@@ -13,7 +13,7 @@ class StartBlock : public ProgrammingBlock {
 public:
 
     StartBlock();
-    ~StartBlock();
+    ~StartBlock(){};
     void setNext1(Block *b);
     Block* getNext1();
     void setNext2(Block *b);

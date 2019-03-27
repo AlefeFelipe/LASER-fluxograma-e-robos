@@ -1,13 +1,9 @@
 #include "ActionBlock.hpp"
 
 ActionBlock :: ActionBlock() {
-    type = 1;
+    type = ACTION_BLOCK;
     next = NULL;
     function = 0;
-}
-
-ActionBlock :: ~ActionBlock() {
-
 }
 
 void ActionBlock :: setFunction(int f) {
@@ -80,17 +76,5 @@ Block* ActionBlock :: getExecutingNext() {
     return next;
 }
 int ActionBlock :: getCommand() {
-
-    if(function == 1) {
-        return MOVE_FORWARD;
-    } else if(function == 2) {
-        return TURN_LEFT;
-    } else if(function == 3) {
-        return TURN_RIGHT;
-    } else {
-        return 0;
-    }
-
-
-    return 0;
+    return function;
 }

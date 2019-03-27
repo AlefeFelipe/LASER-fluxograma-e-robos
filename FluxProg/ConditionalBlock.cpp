@@ -1,7 +1,7 @@
 #include "ConditionalBlock.hpp"
 
 ConditionalBlock :: ConditionalBlock() {
-    type = 8;
+    type = CONDITIONAL_BLOCK;
     pointIn1_x = x + 60;
     pointIn1_y = y;
     pointOut1_x = x + 119;
@@ -11,10 +11,6 @@ ConditionalBlock :: ConditionalBlock() {
     next_true = NULL;
     next_false = NULL;
     type_of_sensor = 0;
-}
-
-ConditionalBlock :: ~ConditionalBlock() {
-
 }
 
 void ConditionalBlock :: setParameter1(int p) {

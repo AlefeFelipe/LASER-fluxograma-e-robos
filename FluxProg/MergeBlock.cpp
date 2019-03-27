@@ -1,12 +1,8 @@
 #include "MergeBlock.hpp"
 
 MergeBlock :: MergeBlock() {
-    type = 9;
+    type = MERGE_BLOCK;
     next = NULL;
-}
-
-MergeBlock :: ~MergeBlock() {
-
 }
 
 

@@ -297,35 +297,35 @@ void Interface :: draw() {
                 dragging_ultrasonic_sensor3 = true;
                 break;
         }
-        if(menu_selected == 9) {
+        if(menu_selected == CONDITIONAL_BLOCK) {
             mouse_aux_x = 60;
             mouse_aux_y = 35;
-            menu_click = 9;
+            menu_click = CONDITIONAL_BLOCK;
         }
-        if(menu_selected == 10) {
+        if(menu_selected == ACTION_BLOCK) {
             mouse_aux_x = 45;
             mouse_aux_y = 20;
-            menu_click = 10;
+            menu_click = ACTION_BLOCK;
         }
-        if(menu_selected == 11) {
+        if(menu_selected == START_BLOCK) {
             mouse_aux_x = 40;
             mouse_aux_y = 15;
-            menu_click = 11;
+            menu_click = START_BLOCK;
         }
-        if(menu_selected == 12) {
+        if(menu_selected == END_BLOCK) {
             mouse_aux_x = 40;
             mouse_aux_y = 15;
-            menu_click = 12;
+            menu_click = END_BLOCK;
         }
-        if(menu_selected == 13) {
+        if(menu_selected == MERGE_BLOCK) {
             mouse_aux_x = 15;
             mouse_aux_y = 10;
-            menu_click = 13;
+            menu_click = MERGE_BLOCK;
         }
-        if(menu_selected == 14) {
+        if(menu_selected == LOOP_BLOCK) {
             mouse_aux_x = 30;
             mouse_aux_y = 40;
-            menu_click = 14;
+            menu_click = LOOP_BLOCK;
         }
 
         //se o sub menu estava aberto e clicou fora, fecha o sub menu
@@ -643,13 +643,13 @@ void Interface :: print_function_block(Block *b) {
 
     //testa qual o tipo de sensor da comparação para imprimir a imagem certa
     switch(b->getFunction()) {
-        case 1:
+        case MOVE_FORWARD:
             al_draw_bitmap(MICRO_WALK_FOWARD, b->getX()+32, b->getY()+7, 0);
             break;
-        case 2:
+        case TURN_LEFT:
             al_draw_bitmap(MICRO_TURN_LEFT, b->getX()+32, b->getY()+7, 0);
             break;
-        case 3:
+        case TURN_RIGHT:
             al_draw_bitmap(MICRO_TURN_RIGHT, b->getX()+32, b->getY()+7, 0);
             break;
     }
@@ -798,11 +798,11 @@ void Interface :: print_decision_block(Block *b) {
 }
 void Interface :: print_merge_block(Block *b) {
     if((mouseX > b->getX()) && (mouseX < (b->getX() + b->getWidth())) && (mouseY > b->getY()) && (mouseY < (b->getY() + b->getHeight()))) {
-        al_draw_bitmap(MERGE_BLOCK[1], b->getX(), b->getY(), 0);
+        al_draw_bitmap(MERGE_BLOCK_IMG[1], b->getX(), b->getY(), 0);
     } else if(b->getSelected() == true) {
-        al_draw_bitmap(MERGE_BLOCK[2], b->getX(), b->getY(), 0);
+        al_draw_bitmap(MERGE_BLOCK_IMG[2], b->getX(), b->getY(), 0);
     } else {
-        al_draw_bitmap(MERGE_BLOCK[0], b->getX(), b->getY(), 0);
+        al_draw_bitmap(MERGE_BLOCK_IMG[0], b->getX(), b->getY(), 0);
     }
     //desenha as bolinhas onde são ligadas as linhas
     if((mouseX > b->getX()-5) && (mouseX < (b->getX() + 8)) && (mouseY > b->getY()-5) && (mouseY < (b->getY()+8))) {
@@ -876,10 +876,10 @@ void Interface :: load_program_images() {
     load_bitmap(&LOOP_BLOCK_IMG[1], "images/blocks/loop_block/loop_block2_mouse.png");
     load_bitmap(&LOOP_BLOCK_IMG[2], "images/blocks/loop_block/loop_block2_selected.png");
     load_bitmap(&LOOP_BLOCK_IMG[3], "images/blocks/loop_block/loop_block2_executing.png");
-    load_bitmap(&MERGE_BLOCK[0], "images/blocks/merge_block/merge_block.png");
-    load_bitmap(&MERGE_BLOCK[1], "images/blocks/merge_block/merge_block_mouse.png");
-    load_bitmap(&MERGE_BLOCK[2], "images/blocks/merge_block/merge_block_selected.png");
-    load_bitmap(&MERGE_BLOCK[3], "images/blocks/merge_block/merge_block_executing.png");
+    load_bitmap(&MERGE_BLOCK_IMG[0], "images/blocks/merge_block/merge_block.png");
+    load_bitmap(&MERGE_BLOCK_IMG[1], "images/blocks/merge_block/merge_block_mouse.png");
+    load_bitmap(&MERGE_BLOCK_IMG[2], "images/blocks/merge_block/merge_block_selected.png");
+    load_bitmap(&MERGE_BLOCK_IMG[3], "images/blocks/merge_block/merge_block_executing.png");
     load_bitmap(&START_BLOCK_IMG[0], "images/blocks/start_block/start_block.png");
     load_bitmap(&START_BLOCK_IMG[1], "images/blocks/start_block/start_block_mouse.png");
     load_bitmap(&START_BLOCK_IMG[2], "images/blocks/start_block/start_block_selected.png");
@@ -990,7 +990,7 @@ void Interface :: destroy_program_images() {
         al_destroy_bitmap(LOOP_BLOCK_IMG[i]);
     }
     for(int i=0; i<3; i++) {
-        al_destroy_bitmap(MERGE_BLOCK[i]);
+        al_destroy_bitmap(MERGE_BLOCK_IMG[i]);
     }
     for(int i=0; i<3; i++) {
         al_destroy_bitmap(START_BLOCK_IMG[i]);
@@ -1018,7 +1018,7 @@ void Interface :: check_dragging() {
 
     for(int i=0; i<valor_maximo_blocos; i++) {
         if(blocks_list_to_print[i] != NULL) {
-            if(blocks_list_to_print[i]->getType() == 8) {
+            if(blocks_list_to_print[i]->getType() == CONDITIONAL_BLOCK) {
                 if((mouseX > blocks_list_to_print[i]->getX()) && (mouseX < (blocks_list_to_print[i]->getX() + blocks_list_to_print[i]->getWidth())) && (mouseY > blocks_list_to_print[i]->getY()) && (mouseY < (blocks_list_to_print[i]->getY() + blocks_list_to_print[i]->getHeight()))) {
                     //cout<<"soltou sobre o bloco certo"<<endl;
                     if(dragging_black_sensor1 == true) {
@@ -1047,7 +1047,7 @@ void Interface :: check_dragging() {
                     }
                 }
             }
-            if(blocks_list_to_print[i]->getType() == 1) {
+            if(blocks_list_to_print[i]->getType() == ACTION_BLOCK) {
                 if((mouseX > blocks_list_to_print[i]->getX()) && (mouseX < (blocks_list_to_print[i]->getX() + blocks_list_to_print[i]->getWidth())) && (mouseY > blocks_list_to_print[i]->getY()) && (mouseY < (blocks_list_to_print[i]->getY() + blocks_list_to_print[i]->getHeight()))) {
                     //cout<<"soltou sobre o bloco certo"<<endl;
                     if((dragging_black_sensor1 == true) || (dragging_black_sensor2 == true) || (dragging_black_sensor3 == true)  || (dragging_black_sensor4 == true) || (dragging_black_sensor5 == true)){
@@ -1060,11 +1060,11 @@ void Interface :: check_dragging() {
                         //erro
                         al_show_native_message_box(display, "Fluxprog", "ERRO", "O sensor de ultrassom não pode ser usado como entrada no bloco de função", "Ok", ALLEGRO_MESSAGEBOX_ERROR);
                     } else if(dragging_walk_foward == true) {
-                        blocks_list_to_print[i]->setFunction(1);
+                        blocks_list_to_print[i]->setFunction(MOVE_FORWARD);
                     } else if(dragging_turn_left == true) {
-                        blocks_list_to_print[i]->setFunction(2);
+                        blocks_list_to_print[i]->setFunction(TURN_LEFT);
                     } else if(dragging_turn_right == true) {
-                        blocks_list_to_print[i]->setFunction(3);
+                        blocks_list_to_print[i]->setFunction(TURN_RIGHT);
                     }
                 }
             }
@@ -1180,31 +1180,22 @@ void Interface :: print_list_of_blocks() {
                 tipo 8 = bloco de decisão
                 tipo 9 = bloco de junção
             */
-            if(blocks_list_to_print[i]->getType() == 1) {
+            if(blocks_list_to_print[i]->getType() == ACTION_BLOCK) {
                 print_function_block(blocks_list_to_print[i]);
             }
-            if(blocks_list_to_print[i]->getType() == 2) {
-
-            }
-            if(blocks_list_to_print[i]->getType() == 3) {
-
-            }
-            if(blocks_list_to_print[i]->getType() == 4) {
-
-            }
-            if(blocks_list_to_print[i]->getType() == 5) {
+            if(blocks_list_to_print[i]->getType() == END_BLOCK) {
                 print_end_block(blocks_list_to_print[i]);
             }
-            if(blocks_list_to_print[i]->getType() == 6) {
+            if(blocks_list_to_print[i]->getType() == START_BLOCK) {
                 print_start_block(blocks_list_to_print[i]);
             }
-            if(blocks_list_to_print[i]->getType() == 7) {
+            if(blocks_list_to_print[i]->getType() == LOOP_BLOCK) {
                 print_loop_block(blocks_list_to_print[i]);
             }
-            if(blocks_list_to_print[i]->getType() == 8) {
+            if(blocks_list_to_print[i]->getType() == CONDITIONAL_BLOCK) {
                 print_decision_block(blocks_list_to_print[i]);
             }
-            if(blocks_list_to_print[i]->getType() == 9) {
+            if(blocks_list_to_print[i]->getType() == MERGE_BLOCK) {
                 print_merge_block(blocks_list_to_print[i]);
             }
             //se o block estiver sendo arrastado, atualiza as cordenadas
@@ -1221,7 +1212,7 @@ void Interface :: print_list_of_blocks() {
 }
 void Interface :: check_mouse_on_points(Block *b) {
     //função
-    if(b->getType() == 1) {
+    if(b->getType() == ACTION_BLOCK) {
         if((mouseX > b->getX()+40) && (mouseX < (b->getX() + 53)) && (mouseY > b->getY()-5) && (mouseY < (b->getY()+8))) {
             //cout<<"clicou na entrada do bloco de funcao"<<endl;
             b->setIn1Selected(true);
@@ -1236,7 +1227,7 @@ void Interface :: check_mouse_on_points(Block *b) {
         }
     }
     //fim
-    if(b->getType() == 5) {
+    if(b->getType() == END_BLOCK) {
         if((mouseX > b->getX()+37) && (mouseX < (b->getX() + 50)) && (mouseY > b->getY()-5) && (mouseY < (b->getY() + 8))) {
             //cout<<"clicou na entrada do bloco de fim"<<endl;
             b->setIn1Selected(true);
@@ -1245,7 +1236,7 @@ void Interface :: check_mouse_on_points(Block *b) {
         }
     }
     //inicio
-    if(b->getType() == 6) {
+    if(b->getType() == START_BLOCK) {
         if((mouseX > b->getX()+37) && (mouseX < (b->getX() + 50)) && (mouseY > b->getY()+27) && (mouseY < (b->getY() + 40))) {
             b->setOut1Selected(true);
         } else {
@@ -1253,7 +1244,7 @@ void Interface :: check_mouse_on_points(Block *b) {
         }
     }
     //loop
-    if(b->getType() == 7) {
+    if(b->getType() == LOOP_BLOCK) {
         if((mouseX > b->getX()+35) && (mouseX < (b->getX() + 48)) && (mouseY > b->getY()-5) && (mouseY < (b->getY()+8))) {
             b->setIn1Selected(true);
             b->setOut1Selected(false);
@@ -1282,7 +1273,7 @@ void Interface :: check_mouse_on_points(Block *b) {
         }
     }
     //decisao
-    if(b->getType() == 8) {
+    if(b->getType() == CONDITIONAL_BLOCK) {
 
         if((mouseX > b->getX()+53) && (mouseX < (b->getX() + 66)) && (mouseY > b->getY()-6) && (mouseY < (b->getY()+7))) {
             b->setIn1Selected(true);
@@ -1303,7 +1294,7 @@ void Interface :: check_mouse_on_points(Block *b) {
         }
     }
     //junção
-    if(b->getType() == 9) {
+    if(b->getType() == MERGE_BLOCK) {
 
         if((mouseX > b->getX()-5) && (mouseX < (b->getX() + 8)) && (mouseY > b->getY()-5) && (mouseY < (b->getY()+8))) {
             b->setIn1Selected(true);
@@ -1703,7 +1694,7 @@ int Interface :: getImageHeight(int i) {
             height = al_get_bitmap_height(END_BLOCK_IMG[0]);
             break;
         case 5:
-            height = al_get_bitmap_height(MERGE_BLOCK[0]);
+            height = al_get_bitmap_height(MERGE_BLOCK_IMG[0]);
             break;
         case 6:
             height = al_get_bitmap_height(LOOP_BLOCK_IMG[0]);
@@ -1727,7 +1718,7 @@ int Interface :: getImageWidth(int i) {
             width = al_get_bitmap_width(END_BLOCK_IMG[0]);
             break;
         case 5:
-            width = al_get_bitmap_width(MERGE_BLOCK[0]);
+            width = al_get_bitmap_width(MERGE_BLOCK_IMG[0]);
             break;
         case 6:
             width = al_get_bitmap_width(LOOP_BLOCK_IMG[0]);

@@ -66,7 +66,7 @@ void FluxProg :: start() {
             //reseta as variáveis do loops para a execução
             for(int i=0; i<valor_maximo_blocos; i++) {
                 if(blocks_list_to_print[i] != NULL) {
-                    if(blocks_list_to_print[i]->getType() == 7) {
+                    if(blocks_list_to_print[i]->getType() == LOOP_BLOCK) {
                         blocks_list_to_print[i]->reset_loop_variables();
                     }
                 }
@@ -103,7 +103,7 @@ void FluxProg :: start() {
         }
 
 
-        if(interface->getMenuClick() == CONDICIONAL_BLOCK) {
+        if(interface->getMenuClick() == CONDITIONAL_BLOCK) {
             ConditionalBlock *aux = new ConditionalBlock();
             aux->setWidth(interface->getImageWidth(1));
             aux->setHeight(interface->getImageHeight(1));
@@ -127,7 +127,7 @@ void FluxProg :: start() {
             aux->setName("bloco de ação");
             add_block(aux);
         }
-        if(interface->getMenuClick() == STARTER_BLOCK) {
+        if(interface->getMenuClick() == START_BLOCK) {
             StartBlock *aux = new StartBlock();
             aux->setWidth(interface->getImageWidth(3));
             aux->setHeight(interface->getImageHeight(3));
@@ -149,7 +149,7 @@ void FluxProg :: start() {
             aux->setDragging(true);
             add_block(aux);
         }
-        if(interface->getMenuClick() == JUNCTION_BLOCK) {
+        if(interface->getMenuClick() == MERGE_BLOCK) {
             MergeBlock *aux = new MergeBlock();
             aux->setWidth(interface->getImageWidth(5));
             aux->setHeight(interface->getImageHeight(5));
@@ -242,7 +242,7 @@ void FluxProg :: execute() {
         if(program_connected == true) {
             //se for do tipo 8 = condicional
             //tem q fazer leitura de sensores para setar as variáveis de comparação
-            if(current_executing_block->getType() == 8) {
+            if(current_executing_block->getType() == CONDITIONAL_BLOCK) {
                 int* black_sensor_reading = communication->getBlackTypeReading();
                 int* ultrasonic_sensor_reading = communication->getUltrasonicReading();
                 //checa tipo de sensor
@@ -308,7 +308,7 @@ void FluxProg :: execute() {
                     current_executing_block = current_executing_block->getExecutingNext();
                     refresh_executing_block();
                     //bloco de ação
-                    if(current_executing_block->getType() == 1) {
+                    if(current_executing_block->getType() == ACTION_BLOCK) {
                         communication->setCommand(current_executing_block->getCommand());
                     }
                 } else {
@@ -319,7 +319,7 @@ void FluxProg :: execute() {
         } else {
             //se for do tipo 8 = condicional
             //tem q fazer leitura de sensores para setar as variáveis de comparação
-            if(current_executing_block->getType() == 8) {
+            if(current_executing_block->getType() == CONDITIONAL_BLOCK) {
                 //checa tipo de sensor
                 switch(current_executing_block->getTypeOfSensor()) {
                     case 1:
@@ -391,7 +391,7 @@ bool FluxProg :: check_if_only_one_startblock_exists() {
     int start_test = 0;
     for(int i=0; i<valor_maximo_blocos; i++) {
         if(blocks_list_to_print[i] != NULL) {
-            if(blocks_list_to_print[i]->getType() == 6) {
+            if(blocks_list_to_print[i]->getType() == START_BLOCK) {
                 start_test = start_test + 1;
             }
         }
@@ -406,7 +406,7 @@ bool FluxProg :: check_if_at_least_one_endblock_exist() {
     int end_test = 0;
     for(int i=0; i<valor_maximo_blocos; i++) {
         if(blocks_list_to_print[i] != NULL) {
-            if(blocks_list_to_print[i]->getType() == 5) {
+            if(blocks_list_to_print[i]->getType() == END_BLOCK) {
                 end_test = end_test + 1;
             }
         }
@@ -421,7 +421,7 @@ bool FluxProg :: check_if_all_the_blocks_have_connections() {
     int connections_test = 1;
     for(int i=0; i<valor_maximo_blocos; i++) {
         if(blocks_list_to_print[i] != NULL) {
-            if(blocks_list_to_print[i]->getType() == 1) {
+            if(blocks_list_to_print[i]->getType() == ACTION_BLOCK) {
                 //function
                 if(blocks_list_to_print[i]->getNext1() == NULL) {
                     connections_test = 0;
@@ -431,19 +431,19 @@ bool FluxProg :: check_if_all_the_blocks_have_connections() {
                     connections_test = 0;
                     break;
                 }
-            } else if(blocks_list_to_print[i]->getType() == 5) {
+            } else if(blocks_list_to_print[i]->getType() == END_BLOCK) {
                 //end
                 if(blocks_list_to_print[i]->getPrevious1() == NULL) {
                     connections_test = 0;
                     break;
                 }
-            } else if(blocks_list_to_print[i]->getType() == 6) {
+            } else if(blocks_list_to_print[i]->getType() == START_BLOCK) {
                 //start
                 if(blocks_list_to_print[i]->getNext1() == NULL) {
                     connections_test = 0;
                     break;
                 }
-            } else if(blocks_list_to_print[i]->getType() == 7) {
+            } else if(blocks_list_to_print[i]->getType() == LOOP_BLOCK) {
                 //loop
                 if(blocks_list_to_print[i]->getNext1() == NULL) {
                     connections_test = 0;
@@ -461,7 +461,7 @@ bool FluxProg :: check_if_all_the_blocks_have_connections() {
                     connections_test = 0;
                     break;
                 }
-            } else if(blocks_list_to_print[i]->getType() == 8) {
+            } else if(blocks_list_to_print[i]->getType() == CONDITIONAL_BLOCK) {
                 //decision
                 if(blocks_list_to_print[i]->getNext1() == NULL) {
                     connections_test = 0;
@@ -475,7 +475,7 @@ bool FluxProg :: check_if_all_the_blocks_have_connections() {
                     connections_test = 0;
                     break;
                 }
-            } else if(blocks_list_to_print[i]->getType() == 9) {
+            } else if(blocks_list_to_print[i]->getType() == MERGE_BLOCK) {
                 //merge
                 if(blocks_list_to_print[i]->getNext1() == NULL) {
                     connections_test = 0;
@@ -501,12 +501,12 @@ bool FluxProg :: check_if_all_the_blocks_have_connections() {
 bool FluxProg :: check_if_all_blocks_have_functions_or_sensors() {
     for(int i=0; i<valor_maximo_blocos; i++) {
         if(blocks_list_to_print[i] != NULL) {
-            if(blocks_list_to_print[i]->getType() == 1) {
+            if(blocks_list_to_print[i]->getType() == ACTION_BLOCK) {
                 //ação
                 if(blocks_list_to_print[i]->getFunction() == 0) {
                     return false;
                 }
-            } else if(blocks_list_to_print[i]->getType() == 8) {
+            } else if(blocks_list_to_print[i]->getType() == CONDITIONAL_BLOCK) {
                 //decisão
                 if(blocks_list_to_print[i]->getTypeOfSensor() == 0) {
                     return false;
@@ -522,7 +522,7 @@ void FluxProg :: reset_fluxogram_execution() {
     //procura pelo bloco de inicio
     for(int i=0; i<valor_maximo_blocos; i++) {
         if(blocks_list_to_print[i] != NULL) {
-            if(blocks_list_to_print[i]->getType() == 6) {
+            if(blocks_list_to_print[i]->getType() == START_BLOCK) {
                 id_start = i;
                 break;
             }

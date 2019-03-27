@@ -8,6 +8,7 @@
 #include <fstream>
 #include <cstring>
 #include <iostream>
+#include "fluxProgCte.h"
 
 using namespace std;
 
@@ -30,7 +31,7 @@ protected:
 public:
 
     Block();
-    ~Block();
+    virtual ~Block();
     void setX(int nx);
     int getX();
     void setY(int ny);

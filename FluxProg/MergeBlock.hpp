@@ -15,7 +15,7 @@ class MergeBlock : public ProgrammingBlock {
 public:
 
     MergeBlock();
-    ~MergeBlock();
+    ~MergeBlock(){};
     void setNext1(Block *b);
     Block* getNext1();
     void setNext2(Block *b);

@@ -1,15 +1,11 @@
 #include "LoopBlock.hpp"
 
 LoopBlock :: LoopBlock() {
-    type = 7;
+    type = LOOP_BLOCK;
     next_loop = NULL;
     next_program = NULL;
     number_of_loops = 1;
     limited_loop = false;
-}
-
-LoopBlock :: ~LoopBlock() {
-
 }
 
 void LoopBlock :: setLimitedLoop(bool l) {
