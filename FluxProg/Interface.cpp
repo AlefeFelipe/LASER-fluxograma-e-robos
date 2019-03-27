@@ -58,6 +58,7 @@ Interface :: Interface(Block** _blocks_list_to_print) {
     black = al_map_rgb(0, 0, 0);
     backgroud_color = al_map_rgb(128, 128, 128);
     white = al_map_rgb(255, 255, 255);
+    strange_color = al_map_rgb(0, 255, 255);
     primary_menu_color = al_map_rgb(176, 175, 175);
     blocks_menu_color = al_map_rgb(255, 0, 0);
     functions_menu_color = al_map_rgb(255, 0, 0);
@@ -1383,6 +1384,29 @@ void Interface :: draw_everything() {
 
     //desenha ligações entre blocos
     draw_lines();
+
+    if(connected_simulator == true) {
+        int x_init = al_get_display_width(display) + 10 - al_get_bitmap_width(vrep_button) - roll_bar_width;
+        int y_init = 2;
+        int x_end = x_init + al_get_bitmap_width(vrep_button);
+        int y_end = y_init + al_get_bitmap_height(vrep_button);
+        al_draw_rectangle(x_init, y_init, x_end, y_end, strange_color, 2);
+    }
+    if(connected_robot == true) {
+        int x_init = al_get_display_width(display) - 73.5 - al_get_bitmap_width(bluetooth_button) - roll_bar_width;
+        int y_init = 2;
+        int x_end = x_init + al_get_bitmap_width(bluetooth_button);
+        int y_end = y_init + al_get_bitmap_height(bluetooth_button);
+        al_draw_rectangle(x_init, y_init, x_end, y_end, strange_color, 2);
+    }
+
+    if(executing_fluxogram == true) {
+        int x_init = 14 + 0*al_get_bitmap_width(play_button);
+        int y_init = 2;
+        int x_end = x_init + al_get_bitmap_width(play_button);
+        int y_end = y_init + al_get_bitmap_height(play_button);
+        al_draw_rectangle(x_init, y_init, x_end, y_end, strange_color, 2);
+    }
 }
 bool Interface :: check_colisions() {
     int selected_block;
@@ -1631,22 +1655,18 @@ void Interface :: draw_lines() {
         }
     }
 }
-
 int Interface :: getMenuClick() {
     return menu_click;
 }
-
 int Interface :: getMouseX() {
     return mouseX;
 }
 int Interface :: getMouseY() {
     return mouseY;
 }
-
 bool Interface :: getExecuting() {
     return executing;
 }
-
 void Interface :: callMessage(int i) {
     switch(i) {
         case 1:
@@ -1682,9 +1702,14 @@ void Interface :: callMessage(int i) {
         case 11:
             al_show_native_message_box(display, "Fluxprog", "ERRO", "Troque a porta onde o bluetooth está conectado e tente novamente", "Ok", ALLEGRO_MESSAGEBOX_ERROR);
             break;
+        case 12:
+            al_show_native_message_box(display, "Fluxprog", " ", "Desconectado ao V-Rep", "Ok", 0);
+            break;
+        case 13:
+            al_show_native_message_box(display, "Fluxprog", " ", "Desconectado ao Robo", "Ok", 0);
+            break;
     }
 }
-
 int Interface :: getImageHeight(int i) {
     int height = 0;
     switch(i) {
@@ -1733,7 +1758,15 @@ int Interface :: getImageWidth(int i) {
     }
     return width;
 }
+void Interface :: setConnectedSimulator(bool c) {
+    connected_simulator = c;
+}
+void Interface :: setConnectedRobot(bool c) {
+    connected_robot = c;
+}
+void Interface :: setExecutingFluxogram(bool e) {
+    executing_fluxogram = e;
+}
 
 //1. fazer submenu de numeros
 //2. setar bloco de loop com numeros
-//3. checar ligações entre blocos

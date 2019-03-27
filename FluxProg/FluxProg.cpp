@@ -92,17 +92,44 @@ void FluxProg :: start() {
             cout<<"save_as"<<endl;
         }
         if(interface->getMenuClick() == PHYSICAL_ROBOT) {
-            //cout<<"bluetooth"<<endl;
-            connect_robot();
-            connect();
+            if((program_connected == true) && (simulator_connected == false)){
+                communication->setCommand(CLOSE_PROGRAM);
+                interface->setConnectedRobot(false);
+                program_connected = false;
+                interface->callMessage(13);
+
+            } else if((program_connected == true) && (simulator_connected == true)){
+                communication->setCommand(CLOSE_PROGRAM);
+                interface->setConnectedSimulator(false);
+                communication->inicialize();
+                connect_robot();
+                connect();
+            } else {
+                communication->inicialize();
+                connect_robot();
+                connect();
+            }
         }
         if(interface->getMenuClick() == VIRTUAL_ROBOT) {
             //cout<<"vrep"<<endl;
-            connect_simulator();
-            connect();
+            if((program_connected == true) && (simulator_connected == true)){
+                communication->setCommand(CLOSE_PROGRAM);
+                interface->setConnectedSimulator(false);
+                program_connected = false;
+                interface->callMessage(12);
+
+            } else if((program_connected == true) && (simulator_connected == false)){
+                communication->setCommand(CLOSE_PROGRAM);
+                interface->setConnectedRobot(false);
+                communication->inicialize();
+                connect_simulator();
+                connect();
+            } else {
+                communication->inicialize();
+                connect_simulator();
+                connect();
+            }
         }
-
-
         if(interface->getMenuClick() == CONDITIONAL_BLOCK) {
             ConditionalBlock *aux = new ConditionalBlock();
             aux->setWidth(interface->getImageWidth(1));
@@ -185,6 +212,8 @@ void FluxProg :: start() {
                 }
             }
         }
+
+        interface->setExecutingFluxogram(executing_fluxogram);
 
     }
 
@@ -540,28 +569,12 @@ void FluxProg :: connect_robot() {
     simulator_connected = false;
 }
 void FluxProg :: connect() {
-    int feedback = 10;
-    pid_t pid;
-    pid = fork();
-    switch (pid) {
-        case -1 :
-            //erro no fork
-            feedback = -1;
-            break;
-        case 0 :
-            //processo filho
-            execl(".//..//FluxProgBackend//build//fluxprogbackend", "fluxprogbackend", NULL);
-            //cout<<"caminho incorreto"<<endl;
-            interface->callMessage(5);
-            kill(getpid(), SIGTERM);
-            break;
-        default :
-            //processo pai
-            feedback = 0;
-    }
+    int feedback = 0;
+    system(".//..//FluxProgBackend//build//fluxprogbackend &");
+    sleep(2);
+    feedback = communication->getFeedback();
+    if(feedback != 0) {
 
-    if(feedback == 0) {
-        sleep(2);
         communication->upadateReadings();
         //cout<<"abriu o programa"<<endl;
         feedback = communication->getFeedback();
@@ -573,22 +586,31 @@ void FluxProg :: connect() {
             } else {
                 interface->callMessage(6);
             }
+            program_connected = false;
         } else if(feedback == READY) {
             if(simulator_connected == true) {
                 interface->callMessage(8);
+                interface->setConnectedSimulator(true);
+                interface->setConnectedRobot(false);
             } else {
                 interface->callMessage(9);
+                interface->setConnectedSimulator(false);
+                interface->setConnectedRobot(true);
             }
             program_connected = true;
-        }
-        else{
+        } else{
             //cout << "ainda deu problema, rein vr"<<endl;
             if(simulator_connected == true) {
                 interface->callMessage(10);
+                communication->inicialize();
             } else {
                 interface->callMessage(11);
             }
+            program_connected = false;
         }
+    } else {
+        interface->callMessage(5);
+        program_connected = false;
     }
 }
 void FluxProg :: refresh_executing_block() {

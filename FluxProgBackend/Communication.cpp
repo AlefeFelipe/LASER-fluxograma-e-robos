@@ -21,11 +21,11 @@ Communication::Communication()
     }
     ultrasonic_sensor_reading = shared_memory->construct<int>(MEMORY_ULTRASONIC_SENSOR)[N_ULTRASONIC]();
     black_type_sensor_reading = shared_memory->construct<int>(MEMORY_VISION_SENSOR)[N_BLACK_TAPE_SENSOR]();
-    feedback = shared_memory->construct<int>(MEMORY_FEEDBACK)();
-    *feedback = 0;
     //color_sensor_reading = shared_memory->construct<unsigned short int >(POSICAO_DETECTADA)[N_ULTRASONIC]();
     command = shared_memory->find<int>(MEMORY_COMMAND);
     virtual_robot = shared_memory->find<int>(MEMORY_ROBOT_TYPE);
+    feedback = shared_memory->find<int>(MEMORY_FEEDBACK);
+    setFeedback(CONNECT);
 }
 
 Communication::~Communication()
@@ -48,7 +48,7 @@ int Communication::isVirtual()
 
 void Communication::setFeedback(int _feedback)
 {
-    *feedback = _feedback;
+    *feedback.first = _feedback;
     *command.first = 0;
 }
 

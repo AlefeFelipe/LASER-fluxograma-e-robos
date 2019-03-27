@@ -2,31 +2,7 @@
 
 Communication::Communication()
 {
-    bool opened = false;
-    while(!opened) {
-
-        if(shared_memory!=NULL) //deletes the last opened vision shared memory if it exists
-        {
-            cout<<"qqr cosia"<<endl;
-            delete shared_memory;
-            shared_memory_object::remove(MEMORY_BLOCK);
-        }
-        try //tenta criar a memória
-        {
-            shared_memory = new managed_shared_memory (create_only, MEMORY_BLOCK, MEMORY_BLOCK_SIZE);
-            opened = true;
-        }
-        catch(...)
-        {
-            shared_memory_object::remove(MEMORY_BLOCK);
-            cout<<"erro ao criar memoria" << endl;
-        }
-    }
-    //color_sensor_reading = shared_memory->find'<unsigned short int >(POSICAO_DETECTADA).first;
-    command = shared_memory->construct<int>(MEMORY_COMMAND)();
-    virtual_robot = shared_memory->construct<int>(MEMORY_ROBOT_TYPE)();
-    *command = 0;
-    *virtual_robot = 2;
+    inicialize();
 }
 
 Communication::~Communication()
@@ -50,7 +26,7 @@ void Communication::setIfVirtual(int i)
 
 int Communication::getFeedback()
 {
-    return *feedback.first;
+    return *feedback;
 }
 
 int* Communication::getUltrasonicReading()
@@ -74,10 +50,38 @@ void  Communication::upadateReadings()
     {
         ultrasonic_sensor_reading = shared_memory->find<int>(MEMORY_ULTRASONIC_SENSOR);
         black_type_sensor_reading = shared_memory->find<int>(MEMORY_VISION_SENSOR);
-        feedback = shared_memory->find<int>(MEMORY_FEEDBACK);
     }
     catch(...)
     {
         cout<<"programa nao abriu"<<endl;
     }
+}
+void Communication :: inicialize() {
+    bool opened = false;
+    while(!opened) {
+
+        if(shared_memory!=NULL) //deletes the last opened vision shared memory if it exists
+        {
+            cout<<"qqr cosia"<<endl;
+            delete shared_memory;
+            shared_memory_object::remove(MEMORY_BLOCK);
+        }
+        try //tenta criar a memória
+        {
+            shared_memory = new managed_shared_memory (create_only, MEMORY_BLOCK, MEMORY_BLOCK_SIZE);
+            opened = true;
+        }
+        catch(...)
+        {
+            shared_memory_object::remove(MEMORY_BLOCK);
+            cout<<"erro ao criar memoria" << endl;
+        }
+    }
+    //color_sensor_reading = shared_memory->find'<unsigned short int >(POSICAO_DETECTADA).first;
+    command = shared_memory->construct<int>(MEMORY_COMMAND)();
+    virtual_robot = shared_memory->construct<int>(MEMORY_ROBOT_TYPE)();
+    feedback = shared_memory->construct<int>(MEMORY_FEEDBACK)();
+    *feedback = 0;
+    *command = 0;
+    *virtual_robot = 2;
 }

@@ -26,7 +26,7 @@ using namespace std;
 class Interface {
     ALLEGRO_COLOR black;
     ALLEGRO_COLOR backgroud_color;
-    ALLEGRO_COLOR white;
+    ALLEGRO_COLOR white, strange_color;
     ALLEGRO_COLOR primary_menu_color, blocks_menu_color, functions_menu_color, sensors_menu_color;
     ALLEGRO_DISPLAY *display;
     ALLEGRO_TIMER *timer;
@@ -76,6 +76,9 @@ class Interface {
     Block** blocks_list_to_print;
     int menu_click;
     bool executing;
+    bool connected_simulator;
+    bool connected_robot;
+    bool executing_fluxogram;
 
     void load_bitmap(ALLEGRO_BITMAP **bitmap, const char *adress);
     void print_primary_menu();
@@ -113,6 +116,9 @@ public:
     void callMessage(int i);
     int getImageHeight(int i);
     int getImageWidth(int i);
+    void setConnectedSimulator(bool c);
+    void setConnectedRobot(bool c);
+    void setExecutingFluxogram(bool e);
 
 };
 #endif

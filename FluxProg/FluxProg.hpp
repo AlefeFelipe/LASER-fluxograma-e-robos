@@ -7,6 +7,7 @@
 #include <cstring>
 #include <iostream>
 #include <signal.h>
+#include <stdlib.h>
 #include "Block.hpp"
 #include "StartBlock.hpp"
 #include "ActionBlock.hpp"
