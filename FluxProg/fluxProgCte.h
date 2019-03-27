@@ -2,17 +2,13 @@
 #define _FLUX_PROG_CTE_H_
 
 //acesso e criacao de memoria
-#define NOME_DA_MEMORIA "memoria"
-#define NOME_DA_MEMORIA2 "memoria2"
-#define TAMANHO_DA_MEMORIA 65536
-#define NOME_DO_INT_NA_MEMORIA1 "comando1"
-#define NOME_DO_INT_NA_MEMORIA2 "comando2"
-#define SENSOR_VISAO "reading_VS"
-#define SENSOR_ULTRASSOM "readin_U"
-#define POSICAO_DETECTADA "detectedObjet_U"
-#define POSICAO "linPosition"
-#define ANGULAR "angPosition"
-#define BLUETOOTH_ENABLE "bluetooth"
+#define MEMORY_BLOCK "memory"
+#define MEMORY_BLOCK_SIZE 65536
+#define MEMORY_COMMAND "command"
+#define MEMORY_FEEDBACK "feedback"
+#define MEMORY_VISION_SENSOR "reading_VS"
+#define MEMORY_ULTRASONIC_SENSOR "readin_US"
+#define MEMORY_ROBOT_TYPE "robot_type"
 
 //fisicas
 #define N_ULTRASONIC 3

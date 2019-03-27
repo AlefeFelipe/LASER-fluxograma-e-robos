@@ -27,7 +27,7 @@ class FluxProg {
     Block* blocks_list_to_print[valor_maximo_blocos];
     bool executing_fluxogram;
     Block* current_executing_block;
-    bool simulator_connected, robot_connected, program_connected;
+    bool simulator_connected, program_connected;
     Communication* communication;
     Interface* interface;
 

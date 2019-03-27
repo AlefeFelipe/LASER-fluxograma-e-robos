@@ -1671,13 +1671,20 @@ void Interface :: callMessage(int i) {
             al_show_native_message_box(display, "Fluxprog", "ERRO", "V-Rep não encontrado", "Ok", ALLEGRO_MESSAGEBOX_ERROR);
             break;
         case 8:
-            al_show_native_message_box(display, "Fluxprog", " ", "Conectado com sucesso", "Ok", 0);
+            al_show_native_message_box(display, "Fluxprog", " ", "Conectado ao V-REP com sucesso", "Ok", 0);
             break;
         case 9:
+            al_show_native_message_box(display, "Fluxprog", " ", "Conectado ao robô físico com sucesso", "Ok", 0);
+            break;
+        case 10:
             al_show_native_message_box(display, "Fluxprog", "ERRO", "Reinicie a simulação do V-Rep e tente novamente", "Ok", ALLEGRO_MESSAGEBOX_ERROR);
+            break;
+        case 11:
+            al_show_native_message_box(display, "Fluxprog", "ERRO", "Troque a porta onde o bluetooth está conectado e tente novamente", "Ok", ALLEGRO_MESSAGEBOX_ERROR);
             break;
     }
 }
+
 int Interface :: getImageHeight(int i) {
     int height = 0;
     switch(i) {

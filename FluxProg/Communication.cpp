@@ -9,22 +9,22 @@ Communication::Communication()
         {
             cout<<"qqr cosia"<<endl;
             delete shared_memory;
-            shared_memory_object::remove(NOME_DA_MEMORIA);
+            shared_memory_object::remove(MEMORY_BLOCK);
         }
         try //tenta criar a memória
         {
-            shared_memory = new managed_shared_memory (create_only, NOME_DA_MEMORIA, TAMANHO_DA_MEMORIA);
+            shared_memory = new managed_shared_memory (create_only, MEMORY_BLOCK, MEMORY_BLOCK_SIZE);
             opened = true;
         }
         catch(...)
         {
-            shared_memory_object::remove(NOME_DA_MEMORIA);
+            shared_memory_object::remove(MEMORY_BLOCK);
             cout<<"erro ao criar memoria" << endl;
         }
     }
     //color_sensor_reading = shared_memory->find'<unsigned short int >(POSICAO_DETECTADA).first;
-    command = shared_memory->construct<int>(NOME_DO_INT_NA_MEMORIA1)();
-    virtual_robot = shared_memory->construct<int>(BLUETOOTH_ENABLE)();
+    command = shared_memory->construct<int>(MEMORY_COMMAND)();
+    virtual_robot = shared_memory->construct<int>(MEMORY_ROBOT_TYPE)();
     *command = 0;
     *virtual_robot = 2;
 }
@@ -35,7 +35,7 @@ Communication::~Communication()
     {
         delete shared_memory;
     }
-    shared_memory_object::remove(NOME_DA_MEMORIA);
+    shared_memory_object::remove(MEMORY_BLOCK);
 }
 
 void Communication::setCommand(int c)
@@ -72,9 +72,9 @@ void  Communication::upadateReadings()
 {
     try
     {
-        ultrasonic_sensor_reading = shared_memory->find<int>(SENSOR_ULTRASSOM);
-        black_type_sensor_reading = shared_memory->find<int>(SENSOR_VISAO);
-        feedback = shared_memory->find<int>(NOME_DO_INT_NA_MEMORIA2);
+        ultrasonic_sensor_reading = shared_memory->find<int>(MEMORY_ULTRASONIC_SENSOR);
+        black_type_sensor_reading = shared_memory->find<int>(MEMORY_VISION_SENSOR);
+        feedback = shared_memory->find<int>(MEMORY_FEEDBACK);
     }
     catch(...)
     {

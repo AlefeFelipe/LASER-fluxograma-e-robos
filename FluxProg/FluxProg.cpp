@@ -533,12 +533,10 @@ void FluxProg :: reset_fluxogram_execution() {
 }
 void FluxProg :: connect_simulator() {
     communication->setIfVirtual(1);
-    robot_connected = false;
     simulator_connected = true;
 }
 void FluxProg :: connect_robot() {
     communication->setIfVirtual(0);
-    robot_connected = true;
     simulator_connected = false;
 }
 void FluxProg :: connect() {
@@ -570,20 +568,26 @@ void FluxProg :: connect() {
         if(feedback == ERROR){
             //não abriu o v-rep ou não tem bluetooth
             //cout<<"não abriu o v-rep ou não tem bluetooth"<<endl;
-            if(robot_connected == true) {
-                interface->callMessage(6);
-            } else {
+            if(simulator_connected == true) {
                 interface->callMessage(7);
+            } else {
+                interface->callMessage(6);
             }
         } else if(feedback == READY) {
-            //deu certo
-            //cout<<"deu certo"<<endl;
-            interface->callMessage(8);
+            if(simulator_connected == true) {
+                interface->callMessage(8);
+            } else {
+                interface->callMessage(9);
+            }
             program_connected = true;
         }
         else{
             //cout << "ainda deu problema, rein vr"<<endl;
-            interface->callMessage(9);
+            if(simulator_connected == true) {
+                interface->callMessage(10);
+            } else {
+                interface->callMessage(11);
+            }
         }
     }
 }

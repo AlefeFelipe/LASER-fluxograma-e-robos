@@ -11,7 +11,7 @@ Communication::Communication()
         }
         try //tries to open the vision shared memory until it succeeds
         {
-            shared_memory = new managed_shared_memory (open_only, NOME_DA_MEMORIA);
+            shared_memory = new managed_shared_memory (open_only, MEMORY_BLOCK);
             opened = true;
         }
         catch(...)
@@ -19,13 +19,13 @@ Communication::Communication()
             cout<<"erro ao abrir memoria 1" << endl;
         }
     }
-    ultrasonic_sensor_reading = shared_memory->construct<int>(SENSOR_ULTRASSOM)[N_ULTRASONIC]();
-    black_type_sensor_reading = shared_memory->construct<int>(SENSOR_VISAO)[N_BLACK_TAPE_SENSOR]();
-    feedback = shared_memory->construct<int>(NOME_DO_INT_NA_MEMORIA2)();
+    ultrasonic_sensor_reading = shared_memory->construct<int>(MEMORY_ULTRASONIC_SENSOR)[N_ULTRASONIC]();
+    black_type_sensor_reading = shared_memory->construct<int>(MEMORY_VISION_SENSOR)[N_BLACK_TAPE_SENSOR]();
+    feedback = shared_memory->construct<int>(MEMORY_FEEDBACK)();
     *feedback = 0;
     //color_sensor_reading = shared_memory->construct<unsigned short int >(POSICAO_DETECTADA)[N_ULTRASONIC]();
-    command = shared_memory->find<int>(NOME_DO_INT_NA_MEMORIA1);
-    virtual_robot = shared_memory->find<int>(BLUETOOTH_ENABLE);
+    command = shared_memory->find<int>(MEMORY_COMMAND);
+    virtual_robot = shared_memory->find<int>(MEMORY_ROBOT_TYPE);
 }
 
 Communication::~Communication()
@@ -34,7 +34,6 @@ Communication::~Communication()
     {
         delete shared_memory;
     }
-    shared_memory_object::remove(NOME_DA_MEMORIA);
 }
 
 int Communication::getCommand()
