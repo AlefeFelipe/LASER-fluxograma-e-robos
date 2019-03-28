@@ -4,7 +4,7 @@
 #include <iostream> // usada para debugging
 #include <cmath>
 #include <fstream>
-#include <cstring>
+#include <string>
 #include <iostream>
 #include <signal.h>
 #include <stdlib.h>
@@ -18,8 +18,7 @@
 #include "Communication.hpp"
 #include "fluxProgCte.h"
 #include "Interface.hpp"
-
-using namespace std;
+#include <algorithm>
 
 #define valor_maximo_blocos 100
 

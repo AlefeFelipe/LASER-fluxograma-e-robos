@@ -2,6 +2,7 @@
 
 Communication::Communication()
 {
+    shared_memory = NULL;
     inicialize();
 }
 
@@ -63,8 +64,8 @@ void Communication :: inicialize() {
         if(shared_memory!=NULL) //deletes the last opened vision shared memory if it exists
         {
             cout<<"qqr cosia"<<endl;
-            delete shared_memory;
             shared_memory_object::remove(MEMORY_BLOCK);
+            delete shared_memory;
         }
         try //tenta criar a memória
         {

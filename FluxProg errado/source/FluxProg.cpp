@@ -38,7 +38,7 @@ void FluxProg :: start() {
         interface->draw();
 
         if(interface->getMenuClick() == PLAY) {
-            //cout<<"play"<<endl;
+            //std::cout<<"play"<<std::endl;
             executing_fluxogram = true;
             //teste bloco de inicio
             if(check_if_only_one_startblock_exists() == false) {
@@ -69,23 +69,23 @@ void FluxProg :: start() {
             }
         }
         if(interface->getMenuClick() == PAUSE) {
-            //cout<<"pause"<<endl;
+            //std::cout<<"pause"<<std::endl;
             executing_fluxogram = false;
             paused = true;
         }
         if(interface->getMenuClick() == STOP) {
-            //cout<<"stop"<<endl;
+            //std::cout<<"stop"<<std::endl;
             executing_fluxogram = false;
             reset_fluxogram_execution();
         }
         if(interface->getMenuClick() == SAVE) {
-            cout<<"save"<<endl;
+            std::cout<<"save"<<std::endl;
         }
         if(interface->getMenuClick() == LOAD) {
-            cout<<"load"<<endl;
+            std::cout<<"load"<<std::endl;
         }
         if(interface->getMenuClick() == SAVE_AS) {
-            cout<<"save_as"<<endl;
+            std::cout<<"save_as"<<std::endl;
         }
         if(interface->getMenuClick() == PHYSICAL_ROBOT) {
             if((program_connected == true) && (simulator_connected == false)){
@@ -107,7 +107,7 @@ void FluxProg :: start() {
             }
         }
         if(interface->getMenuClick() == VIRTUAL_ROBOT) {
-            //cout<<"vrep"<<endl;
+            //std::cout<<"vrep"<<std::endl;
             if((program_connected == true) && (simulator_connected == true)){
                 communication->setCommand(CLOSE_PROGRAM);
                 interface->setConnectedSimulator(false);
@@ -220,7 +220,7 @@ void FluxProg :: add_block(Block *b) {
     for(int i=0; i<valor_maximo_blocos; i++) {
         if(blocks_list_to_print[i] == NULL) {
             blocks_list_to_print[i] = b;
-            //cout<< "adicionou na lista" << endl;
+            //std::cout<< "adicionou na lista" << std::endl;
             break;
         }
     }
@@ -233,30 +233,30 @@ void FluxProg :: remove_block(Block *b) {
             //se o bloco tiver relação com algum elimina essa relação
             if(blocks_list_to_print[i]->getNext1() == b) {
                 blocks_list_to_print[i]->setNext1(NULL);
-                //cout<<"exclui ligação next1"<<endl;
+                //std::cout<<"exclui ligação next1"<<std::endl;
             }
             if(blocks_list_to_print[i]->getNext2() == b) {
                 blocks_list_to_print[i]->setNext2(NULL);
-                //cout<<"exclui ligação next2"<<endl;
+                //std::cout<<"exclui ligação next2"<<std::endl;
             }
             if(blocks_list_to_print[i]->getPrevious1() == b) {
                 blocks_list_to_print[i]->setPrevious1(NULL);
-                //cout<<"exclui ligação previous1"<<endl;
+                //std::cout<<"exclui ligação previous1"<<std::endl;
             }
             if(blocks_list_to_print[i]->getPrevious2() == b) {
                 blocks_list_to_print[i]->setPrevious2(NULL);
-                //cout<<"exclui ligação previous2"<<endl;
+                //std::cout<<"exclui ligação previous2"<<std::endl;
             }
         }
     }
-    //cout<<"removeu ligações"<<endl;
+    //std::cout<<"removeu ligações"<<std::endl;
     //percorre a lista de blocos em busca do bloco a ser excluido
     for(int i=0; i<valor_maximo_blocos; i++) {
         //encontra o bloco passado como parametro
         if(blocks_list_to_print[i] == b) {
             blocks_list_to_print[i] = NULL;
             delete b;
-            //cout<< "removeu da lista: " << i << endl;
+            //std::cout<< "removeu da lista: " << i << std::endl;
             break;
         }
     }
@@ -329,7 +329,7 @@ void FluxProg :: execute() {
             if(communication->getFeedback() == READY) {
                 //testa se o próximo é não nulo
                 if(current_executing_block->getExecutingNext() != NULL) {
-                    cout<<"executou bloco: "<<current_executing_block->getName()<<endl;
+                    std::cout<<"executou bloco: "<<current_executing_block->getName()<<std::endl;
                     current_executing_block = current_executing_block->getExecutingNext();
                     refresh_executing_block();
                     //bloco de ação
@@ -337,7 +337,7 @@ void FluxProg :: execute() {
                         communication->setCommand(current_executing_block->getCommand());
                     }
                 } else {
-                    cout<<"executou bloco: "<<current_executing_block->getName()<<endl;
+                    std::cout<<"executou bloco: "<<current_executing_block->getName()<<std::endl;
                     executing_fluxogram = false;
                     //reseta as variáveis execução
                     reset_fluxogram_execution();
@@ -403,11 +403,11 @@ void FluxProg :: execute() {
                 }
             }
             if(current_executing_block->getExecutingNext() != NULL) {
-                cout<<"executou bloco: "<<current_executing_block->getName()<<endl;
+                std::cout<<"executou bloco: "<<current_executing_block->getName()<<std::endl;
                 current_executing_block = current_executing_block->getExecutingNext();
                 refresh_executing_block();
             } else {
-                cout<<"executou bloco: "<<current_executing_block->getName()<<endl;
+                std::cout<<"executou bloco: "<<current_executing_block->getName()<<std::endl;
                 executing_fluxogram = false;
             }
         }
@@ -576,19 +576,21 @@ void FluxProg :: connect_robot() {
 }
 void FluxProg :: connect() {
     int feedback = 0;
-    string address = interface->getExecutablePath();
-    address = address + "//..//..//..//FluxProgBackend//build//bin//FluxProgBackend &";
+    std::string address = interface->getExecutablePath();
+    address = address + "/../../../FluxProgBackend/build/bin/FluxProgBackend &";
+    std::replace( address.begin(), address.end(), '/', '//'); // replace all 'x' to 'y'
+    std::cout << address <<std::endl;
     system(address.c_str());
     sleep(2);
     feedback = communication->getFeedback();
     if(feedback != 0) {
 
         communication->upadateReadings();
-        //cout<<"abriu o programa"<<endl;
+        //std::cout<<"abriu o programa"<<std::endl;
         feedback = communication->getFeedback();
         if(feedback == ERROR){
             //não abriu o v-rep ou não tem bluetooth
-            //cout<<"não abriu o v-rep ou não tem bluetooth"<<endl;
+            //std::cout<<"não abriu o v-rep ou não tem bluetooth"<<std::endl;
             if(simulator_connected == true) {
                 interface->callMessage(7);
             } else {
@@ -607,7 +609,7 @@ void FluxProg :: connect() {
             }
             program_connected = true;
         } else{
-            //cout << "ainda deu problema, rein vr"<<endl;
+            //std::cout << "ainda deu problema, rein vr"<<std::endl;
             if(simulator_connected == true) {
                 interface->callMessage(10);
                 communication->inicialize();

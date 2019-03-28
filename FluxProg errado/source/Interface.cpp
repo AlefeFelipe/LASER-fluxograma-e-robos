@@ -87,6 +87,7 @@ Interface :: Interface(Block** _blocks_list_to_print) {
     //carrega a fonte, dá msg de erro caso não consiga ser carregada
     string address = getExecutablePath();
     address = address + "/../../GUI_files/OpenSans-Regular.ttf";
+    //cout << address <<endl;
     font = al_load_font(address.c_str(), 10, 0);
     if(!font) {
         al_show_native_message_box(NULL, "Fluxprog", "ERRO", "Erro na inicializacao da fonte", "Ok", ALLEGRO_MESSAGEBOX_ERROR);
