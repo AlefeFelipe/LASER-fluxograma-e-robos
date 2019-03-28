@@ -1,61 +1,42 @@
 cmake_minimum_required(VERSION 2.6)
-project(fluxprogbackend)
+project(FluxProgBackend)
 
 INCLUDE(FindPkgConfig)
-
-
 
 IF(CMAKE_COMPILER_IS_GNUCC)
 SET(CMAKE_CXX_FLAGS
 "${CMAKE_CXX_FLAGS}  -Wall -std=c++0x -DBUILD_SHARED_LIBS=OFF ")
 ENDIF(CMAKE_COMPILER_IS_GNUCC)
 
-# definicoes da remoteAPI para CPP
+#Setting directory for the outputted executable
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
+
+#Defining useful directory macros
+set(HEADER_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include)
+set(SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/source)
+#set(FORMS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/forms)
+
+# definicoes
 add_definitions(-DNON_MATLAB_PARSING)
 add_definitions(-DMAX_EXT_API_CONNECTIONS=255)
 
-
-set(SOURCES
-    remoteApi/extApi.c
-    #remoteApi/extApiCustom.c
-    remoteApi/extApiPlatform.c
-    rs232.c
+#Including the project's headers directories
+include_directories(
+    ${PROJECT_SOURCE_DIR}/include
+    ${PROJECT_SOURCE_DIR}/include/remoteApi
+    ${PROJECT_BINARY_DIR}/include
 )
 
-set(HEADERS
-    remoteApi/extApi.h
-    #remoteApi/extApiCustom.h
-    remoteApi/extApiInternal.h
-    remoteApi/extApiPlatform.h
-    remoteApi/v_repConst.h
-    remoteApi/v_repLib.h
-    rs232.h
+#Including Boost
+#find_package(Boost COMPONENTS serialization system filesystem REQUIRED)
+include_directories(${Boost_INCLUDE_DIR})
 
-)
-
-include_directories("remoteApi/")
-aux_source_directory(. SRC_LIST)
-
+#Including pthread
+set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
 
-
-
-
-add_executable(${PROJECT_NAME}
-               ${SOURCES}
-	       ${HEADERS}
-       ${SRC_LIST})
-
-if(THREADS_HAVE_PTHREAD_ARG)
-  target_compile_options(${PROJECT_NAME} PUBLIC "-pthread")
-endif()
-if(CMAKE_THREAD_LIBS_INIT)
-  target_link_libraries(${PROJECT_NAME} "${CMAKE_THREAD_LIBS_INIT}")
-endif()
-
-TARGET_LINK_LIBRARIES(${PROJECT_NAME} ${Boost_LIBRARIES} rt)
-
-
-target_link_libraries (${PROJECT_NAME} ${CMAKE_THREAD_LIBS_INIT})
-
-install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION bin)
+add_subdirectory(include)
+add_subdirectory(source)
+#add_subdirectory(forms)

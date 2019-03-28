@@ -6,8 +6,8 @@
 #include <iostream>
 #include "Robot.hpp"
 extern "C" {
-    #include "remoteApi/extApi.h"
-    #include "remoteApi/extApiPlatform.h"
+    #include "extApi.h"
+    #include "extApiPlatform.h"
 }
 
 using namespace std;
