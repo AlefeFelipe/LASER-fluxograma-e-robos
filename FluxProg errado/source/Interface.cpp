@@ -771,11 +771,10 @@ void Interface :: print_loop_block(Block *b) {
         al_draw_bitmap(LOOP_BLOCK_IMG[0], b->getX(), b->getY(), 0);
     }
     //desenha unidade
-    //al_draw_bitmap(MICRO_NUMBER[b->getUnit()], b->getX()+43, b->getY()+42, 0);
+    al_draw_bitmap(MICRO_NUMBER[b->getUnit()], b->getX()+43, b->getY()+42, 0);
     //desenha dezena
     //al_draw_bitmap(MICRO_NUMBER[b->getTen()], b->getX()+28, b->getY()+42, 0);
 
-    al_draw_bitmap(MICRO_NUMBER[b->getUnit()], b->getX()+35, b->getY()+42, 0);
 
     //desenha as bolinhas onde são ligadas as linhas
     if((mouseX > b->getX()+35) && (mouseX < (b->getX() + 48)) && (mouseY > b->getY()-5) && (mouseY < (b->getY()+8))) {
@@ -945,10 +944,10 @@ void Interface :: load_program_images() {
     load_bitmap(&FUNCTION_BLOCK[1], "images/blocks/function_block/function_block_mouse.png");
     load_bitmap(&FUNCTION_BLOCK[2], "images/blocks/function_block/function_block_selected.png");
     load_bitmap(&FUNCTION_BLOCK[3], "images/blocks/function_block/function_block_executing.png");
-    load_bitmap(&LOOP_BLOCK_IMG[0], "images/blocks/loop_block/loop_block2_1.png");
-    load_bitmap(&LOOP_BLOCK_IMG[1], "images/blocks/loop_block/loop_block2_1_mouse.png");
-    load_bitmap(&LOOP_BLOCK_IMG[2], "images/blocks/loop_block/loop_block2_1_selected.png");
-    load_bitmap(&LOOP_BLOCK_IMG[3], "images/blocks/loop_block/loop_block2_1_executing.png");
+    load_bitmap(&LOOP_BLOCK_IMG[0], "images/blocks/loop_block/loop_block2.png");
+    load_bitmap(&LOOP_BLOCK_IMG[1], "images/blocks/loop_block/loop_block2_mouse.png");
+    load_bitmap(&LOOP_BLOCK_IMG[2], "images/blocks/loop_block/loop_block2_selected.png");
+    load_bitmap(&LOOP_BLOCK_IMG[3], "images/blocks/loop_block/loop_block2_executing.png");
     load_bitmap(&MERGE_BLOCK_IMG[0], "images/blocks/merge_block/merge_block.png");
     load_bitmap(&MERGE_BLOCK_IMG[1], "images/blocks/merge_block/merge_block_mouse.png");
     load_bitmap(&MERGE_BLOCK_IMG[2], "images/blocks/merge_block/merge_block_selected.png");

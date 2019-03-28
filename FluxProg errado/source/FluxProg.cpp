@@ -195,7 +195,7 @@ void FluxProg :: start() {
             aux->setY(interface->getMouseY()-40);
             aux->setName("bloco de loop");
             aux->setLimitedLoop(true);
-            aux->setValue(0);
+            //aux->setNumberOfLoops(2);
             aux->setSelected(true);
             aux->setDragging(true);
             add_block(aux);
@@ -343,14 +343,6 @@ void FluxProg :: execute() {
                 } else {
                     cout<<"executou bloco: "<<current_executing_block->getName()<<endl;
                     executing_fluxogram = false;
-                    //reseta as variáveis do loops para a execução
-                    for(int i=0; i<valor_maximo_blocos; i++) {
-                        if(blocks_list_to_print[i] != NULL) {
-                            if(blocks_list_to_print[i]->getType() == LOOP_BLOCK) {
-                                blocks_list_to_print[i]->reset_loop_variables();
-                            }
-                        }
-                    }
                 }
             }
         } else {

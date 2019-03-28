@@ -4,7 +4,7 @@ LoopBlock :: LoopBlock() {
     type = LOOP_BLOCK;
     next_loop = NULL;
     next_program = NULL;
-    number_of_loops = 0;
+    number_of_loops = 1;
     limited_loop = false;
     unit = 0;
     ten = 0;
@@ -101,9 +101,7 @@ Block* LoopBlock :: getExecutingNext() {
     }
 }
 void LoopBlock :: reset_loop_variables() {
-    //number_of_loops = number_of_loops_initial;
-    setUnit((number_of_loops_initial/2)%10);
-    //setTen(number_of_loops_initial/10);
+    number_of_loops = number_of_loops_initial;
 }
 void LoopBlock :: setUnit(int u) {
     unit = u;
