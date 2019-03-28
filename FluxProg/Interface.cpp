@@ -155,7 +155,7 @@ void Interface :: draw() {
         //checa se a flecha foi solta na entrada de algum bloco
         if(drawing_line == true) {
             for(int i=0; i<valor_maximo_blocos; i++) {
-                if(blocks_list_to_print[i] != NULL) {
+                if((blocks_list_to_print[i] != NULL) && (block_selected != i)){
 
                     check_mouse_on_points(blocks_list_to_print[i]);
                     if(blocks_list_to_print[block_selected] != NULL) {
@@ -244,7 +244,9 @@ void Interface :: draw() {
                     drawing_line = false;
                 }
                 //checa se clicou sobre os blocos, se sim, seta as variáveis de seleção e seta as variáveis para poder arrastar
-                if((mouseX > blocks_list_to_print[i]->getX()) && (mouseX < (blocks_list_to_print[i]->getX()+blocks_list_to_print[i]->getWidth())) && (mouseY > blocks_list_to_print[i]->getY()) && (mouseY < (blocks_list_to_print[i]->getY()+blocks_list_to_print[i]->getHeight()))) {
+                if(black_sensor_menu_selected || color_sensor_menu_selected || ultrasonic_sensor_menu_selected || number_menu_selected) {
+
+                } else if((mouseX > blocks_list_to_print[i]->getX()) && (mouseX < (blocks_list_to_print[i]->getX()+blocks_list_to_print[i]->getWidth())) && (mouseY > blocks_list_to_print[i]->getY()) && (mouseY < (blocks_list_to_print[i]->getY()+blocks_list_to_print[i]->getHeight()))) {
                     if((blocks_list_to_print[i]->getIn1Selected() == false) && (blocks_list_to_print[i]->getOut1Selected() == false) && (blocks_list_to_print[i]->getIn2Selected() == false) && (blocks_list_to_print[i]->getOut2Selected() == false)) {
                         blocks_list_to_print[i]->setDragging(true);
                         blocks_list_to_print[i]->setSelected(true);
@@ -376,55 +378,57 @@ void Interface :: draw() {
     }
 
     if(events.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP) {
-        if(menu_selected == PLAY) {
-            //cout<<"play"<<endl;
-            menu_click = PLAY;
-        }
-        if(menu_selected == PAUSE) {
-            //cout<<"pause"<<endl;
-            menu_click = PAUSE;
-        }
-        if(menu_selected == STOP) {
-            //cout<<"stop"<<endl;
-            menu_click = STOP;
-        }
-        if(menu_selected == SAVE) {
-            cout<<"save"<<endl;
-            menu_click = SAVE;
-        }
-        if(menu_selected == LOAD) {
-            cout<<"load"<<endl;
-            menu_click = LOAD;
-        }
-        if(menu_selected == SAVE_AS) {
-            cout<<"save_as"<<endl;
-            menu_click = SAVE_AS;
-        }
-        if(menu_selected == PHYSICAL_ROBOT) {
-            //cout<<"bluetooth"<<endl;
-            menu_click = PHYSICAL_ROBOT;
-        }
-        if(menu_selected == VIRTUAL_ROBOT) {
-            //cout<<"vrep"<<endl;
-            menu_click = VIRTUAL_ROBOT;
-        }
-        if(menu_selected == BLACK_TAPE_SENSOR_MENU) {
-            black_sensor_menu_selected = true;
-        }
-        if(menu_selected == SENSOR_COLOR_MENU) {
-            color_sensor_menu_selected = true;
-        }
-        if(menu_selected == ULTRASONIC_SENSOR_MENU) {
-            ultrasonic_sensor_menu_selected = true;
-        }
-        if(menu_selected == N_LOOP_BLOCK) {
-            number_menu_selected = true;
-        }
-        if(menu_selected == T_LOGIC_BLOCK) {
-            cout<<"verdadeiro"<<endl;
-        }
-        if(menu_selected == F_LOGIC_BLOCK) {
-            cout<<"falso"<<endl;
+        if(check_enable_menu() == true) {
+            if(menu_selected == PLAY) {
+                //cout<<"play"<<endl;
+                menu_click = PLAY;
+            }
+            if(menu_selected == PAUSE) {
+                //cout<<"pause"<<endl;
+                menu_click = PAUSE;
+            }
+            if(menu_selected == STOP) {
+                //cout<<"stop"<<endl;
+                menu_click = STOP;
+            }
+            if(menu_selected == SAVE) {
+                cout<<"save"<<endl;
+                menu_click = SAVE;
+            }
+            if(menu_selected == LOAD) {
+                cout<<"load"<<endl;
+                menu_click = LOAD;
+            }
+            if(menu_selected == SAVE_AS) {
+                cout<<"save_as"<<endl;
+                menu_click = SAVE_AS;
+            }
+            if(menu_selected == PHYSICAL_ROBOT) {
+                //cout<<"bluetooth"<<endl;
+                menu_click = PHYSICAL_ROBOT;
+            }
+            if(menu_selected == VIRTUAL_ROBOT) {
+                //cout<<"vrep"<<endl;
+                menu_click = VIRTUAL_ROBOT;
+            }
+            if(menu_selected == BLACK_TAPE_SENSOR_MENU) {
+                black_sensor_menu_selected = true;
+            }
+            if(menu_selected == SENSOR_COLOR_MENU) {
+                color_sensor_menu_selected = true;
+            }
+            if(menu_selected == ULTRASONIC_SENSOR_MENU) {
+                ultrasonic_sensor_menu_selected = true;
+            }
+            if(menu_selected == N_LOOP_BLOCK) {
+                number_menu_selected = true;
+            }
+            if(menu_selected == T_LOGIC_BLOCK) {
+                cout<<"verdadeiro"<<endl;
+            }
+            if(menu_selected == F_LOGIC_BLOCK) {
+                cout<<"falso"<<endl;
+            }
         }
         //testa se soltou o bloco na lixeira
         for(int i=0; i<valor_maximo_blocos; i++) {
@@ -697,7 +701,11 @@ void Interface :: print_secondary_menu() {
 }
 void Interface :: print_function_block(Block *b) {
     if((mouseX > b->getX()) && (mouseX < (b->getX() + b->getWidth())) && (mouseY > b->getY()) && (mouseY < (b->getY() + b->getHeight()))) {
-        al_draw_bitmap(FUNCTION_BLOCK[1], b->getX(), b->getY(), 0);
+        if(black_sensor_menu_selected || color_sensor_menu_selected || ultrasonic_sensor_menu_selected || number_menu_selected) {
+            al_draw_bitmap(FUNCTION_BLOCK[0], b->getX(), b->getY(), 0);
+        } else {
+            al_draw_bitmap(FUNCTION_BLOCK[1], b->getX(), b->getY(), 0);
+        }
 
     } else if(b->getSelected() == true) {
         al_draw_bitmap(FUNCTION_BLOCK[2], b->getX(), b->getY(), 0);
@@ -734,7 +742,11 @@ void Interface :: print_function_block(Block *b) {
 }
 void Interface :: print_end_block(Block *b) {
     if((mouseX > b->getX()) && (mouseX < (b->getX() + b->getWidth())) && (mouseY > b->getY()) && (mouseY < (b->getY() + b->getHeight()))) {
-        al_draw_bitmap(END_BLOCK_IMG[1], b->getX(), b->getY(), 0);
+        if(black_sensor_menu_selected || color_sensor_menu_selected || ultrasonic_sensor_menu_selected || number_menu_selected) {
+            al_draw_bitmap(END_BLOCK_IMG[0], b->getX(), b->getY(), 0);
+        } else {
+            al_draw_bitmap(END_BLOCK_IMG[1], b->getX(), b->getY(), 0);
+        }
     } else if(b->getSelected() == true) {
         al_draw_bitmap(END_BLOCK_IMG[2], b->getX(), b->getY(), 0);
     } else {
@@ -749,7 +761,11 @@ void Interface :: print_end_block(Block *b) {
 }
 void Interface :: print_start_block(Block *b) {
     if((mouseX > b->getX()) && (mouseX < (b->getX() + b->getWidth())) && (mouseY > b->getY()) && (mouseY < (b->getY() + b->getHeight()))) {
-        al_draw_bitmap(START_BLOCK_IMG[1], b->getX(), b->getY(), 0);
+        if(black_sensor_menu_selected || color_sensor_menu_selected || ultrasonic_sensor_menu_selected || number_menu_selected) {
+            al_draw_bitmap(START_BLOCK_IMG[0], b->getX(), b->getY(), 0);
+        } else {
+            al_draw_bitmap(START_BLOCK_IMG[1], b->getX(), b->getY(), 0);
+        }
     } else if(b->getSelected() == true) {
         al_draw_bitmap(START_BLOCK_IMG[2], b->getX(), b->getY(), 0);
     } else {
@@ -764,7 +780,11 @@ void Interface :: print_start_block(Block *b) {
 }
 void Interface :: print_loop_block(Block *b) {
     if((mouseX > b->getX()) && (mouseX < (b->getX() + b->getWidth())) && (mouseY > b->getY()) && (mouseY < (b->getY() + b->getHeight()))) {
-        al_draw_bitmap(LOOP_BLOCK_IMG[1], b->getX(), b->getY(), 0);
+        if(black_sensor_menu_selected || color_sensor_menu_selected || ultrasonic_sensor_menu_selected || number_menu_selected) {
+            al_draw_bitmap(LOOP_BLOCK_IMG[0], b->getX(), b->getY(), 0);
+        } else {
+            al_draw_bitmap(LOOP_BLOCK_IMG[1], b->getX(), b->getY(), 0);
+        }
     } else if(b->getSelected() == true) {
         al_draw_bitmap(LOOP_BLOCK_IMG[2], b->getX(), b->getY(), 0);
     } else {
@@ -809,7 +829,11 @@ void Interface :: print_decision_block(Block *b) {
 
     //desenha o bloco
     if((mouseX > b->getX()) && (mouseX < (b->getX() + b->getWidth())) && (mouseY > b->getY()) && (mouseY < (b->getY() + b->getHeight()))) {
-        al_draw_bitmap(DECISION_BLOCK[1], b->getX(), b->getY(), 0);
+        if(black_sensor_menu_selected || color_sensor_menu_selected || ultrasonic_sensor_menu_selected || number_menu_selected) {
+            al_draw_bitmap(DECISION_BLOCK[0], b->getX(), b->getY(), 0);
+        } else {
+            al_draw_bitmap(DECISION_BLOCK[1], b->getX(), b->getY(), 0);
+        }
     } else if(b->getSelected() == true) {
         al_draw_bitmap(DECISION_BLOCK[2], b->getX(), b->getY(), 0);
     } else {
@@ -871,7 +895,11 @@ void Interface :: print_decision_block(Block *b) {
 }
 void Interface :: print_merge_block(Block *b) {
     if((mouseX > b->getX()) && (mouseX < (b->getX() + b->getWidth())) && (mouseY > b->getY()) && (mouseY < (b->getY() + b->getHeight()))) {
-        al_draw_bitmap(MERGE_BLOCK_IMG[1], b->getX(), b->getY(), 0);
+        if(black_sensor_menu_selected || color_sensor_menu_selected || ultrasonic_sensor_menu_selected || number_menu_selected) {
+            al_draw_bitmap(MERGE_BLOCK_IMG[0], b->getX(), b->getY(), 0);
+        } else {
+            al_draw_bitmap(MERGE_BLOCK_IMG[1], b->getX(), b->getY(), 0);
+        }
     } else if(b->getSelected() == true) {
         al_draw_bitmap(MERGE_BLOCK_IMG[2], b->getX(), b->getY(), 0);
     } else {
@@ -1529,16 +1557,25 @@ void Interface :: delete_connections() {
     }
 }
 void Interface :: draw_everything() {
-    //imprime menu
-    print_primary_menu();
-    //imprime menu de blocos
-    print_secondary_menu();
-
-    //checa se o mouse está sobre os menus, para setar a variável de controle do menu_selected
-    check_mouse_on_menus();
-
-    //percorre toda a lista de impressão dos blocos
-    print_list_of_blocks();
+    if(black_sensor_menu_selected || color_sensor_menu_selected || ultrasonic_sensor_menu_selected || number_menu_selected) {
+        //percorre toda a lista de impressão dos blocos
+        print_list_of_blocks();
+        //imprime menu
+        print_primary_menu();
+        //imprime menu de blocos
+        print_secondary_menu();
+        //checa se o mouse está sobre os menus, para setar a variável de controle do menu_selected
+        check_mouse_on_menus();
+    } else {
+        //imprime menu
+        print_primary_menu();
+        //imprime menu de blocos
+        print_secondary_menu();
+        //checa se o mouse está sobre os menus, para setar a variável de controle do menu_selected
+        check_mouse_on_menus();
+        //percorre toda a lista de impressão dos blocos
+        print_list_of_blocks();
+    }
 
     //desenha objetos sendo arrastados
     draw_dragging();
@@ -1930,5 +1967,27 @@ void Interface :: setConnectedRobot(bool c) {
 void Interface :: setExecutingFluxogram(bool e) {
     executing_fluxogram = e;
 }
-
-//2. setar bloco de loop com numeros
+bool Interface :: check_enable_menu() {
+    if(dragging_number_0 || dragging_number_1 || dragging_number_2 || dragging_number_3 || dragging_number_4) {
+        return false;
+    } else if(dragging_number_5 || dragging_number_6 || dragging_number_7 || dragging_number_8 || dragging_number_9) {
+        return false;
+    } else if(dragging_black_sensor1 || dragging_black_sensor2 || dragging_black_sensor3 || dragging_black_sensor4 || dragging_black_sensor5) {
+        return false;
+    } else if(dragging_color_sensor1 || dragging_color_sensor2) {
+        return false;
+    } else if(dragging_ultrasonic_sensor1 || dragging_ultrasonic_sensor2 || dragging_ultrasonic_sensor3) {
+        return false;
+    } else if(dragging_walk_foward || dragging_turn_left || dragging_turn_right) {
+        return false;
+    } else {
+        for(int i=0; i<valor_maximo_blocos; i++) {
+            if(blocks_list_to_print[i] != NULL) {
+                if(blocks_list_to_print[i]->getDragging() == true) {
+                    return false;
+                }
+            }
+        }
+    }
+    return true;
+}

@@ -106,6 +106,7 @@ class Interface {
     void draw_lines();
     void delete_connections();
     void draw_everything();
+    bool check_enable_menu();
 
 public:
 
