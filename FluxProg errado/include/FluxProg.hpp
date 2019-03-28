@@ -31,6 +31,7 @@ class FluxProg {
     bool simulator_connected, program_connected;
     Communication* communication;
     Interface* interface;
+    bool paused;
 
     void add_block(Block* b);
     void remove_block(Block* b);

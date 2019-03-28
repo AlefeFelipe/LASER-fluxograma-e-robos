@@ -15,6 +15,7 @@
 #include <signal.h>
 #include "Block.hpp"
 #include "fluxProgCte.h"
+#include <libgen.h>
 
 using namespace std;
 
@@ -106,6 +107,7 @@ class Interface {
     void draw_lines();
     void delete_connections();
     void draw_everything();
+    bool check_enable_menu();
 
 public:
 
@@ -123,6 +125,7 @@ public:
     void setConnectedSimulator(bool c);
     void setConnectedRobot(bool c);
     void setExecutingFluxogram(bool e);
+    string getExecutablePath();
 
 };
 #endif

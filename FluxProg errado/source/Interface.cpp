@@ -85,7 +85,9 @@ Interface :: Interface(Block** _blocks_list_to_print) {
     load_program_images();
 
     //carrega a fonte, dá msg de erro caso não consiga ser carregada
-    font = al_load_font("OpenSans-Regular.ttf", 10, 0);
+    string address = getExecutablePath();
+    address = address + "/../../GUI_files/OpenSans-Regular.ttf";
+    font = al_load_font(address.c_str(), 10, 0);
     if(!font) {
         al_show_native_message_box(NULL, "Fluxprog", "ERRO", "Erro na inicializacao da fonte", "Ok", ALLEGRO_MESSAGEBOX_ERROR);
         executing = false;;
@@ -155,7 +157,7 @@ void Interface :: draw() {
         //checa se a flecha foi solta na entrada de algum bloco
         if(drawing_line == true) {
             for(int i=0; i<valor_maximo_blocos; i++) {
-                if(blocks_list_to_print[i] != NULL) {
+                if((blocks_list_to_print[i] != NULL) && (block_selected != i)){
 
                     check_mouse_on_points(blocks_list_to_print[i]);
                     if(blocks_list_to_print[block_selected] != NULL) {
@@ -244,7 +246,9 @@ void Interface :: draw() {
                     drawing_line = false;
                 }
                 //checa se clicou sobre os blocos, se sim, seta as variáveis de seleção e seta as variáveis para poder arrastar
-                if((mouseX > blocks_list_to_print[i]->getX()) && (mouseX < (blocks_list_to_print[i]->getX()+blocks_list_to_print[i]->getWidth())) && (mouseY > blocks_list_to_print[i]->getY()) && (mouseY < (blocks_list_to_print[i]->getY()+blocks_list_to_print[i]->getHeight()))) {
+                if(black_sensor_menu_selected || color_sensor_menu_selected || ultrasonic_sensor_menu_selected || number_menu_selected) {
+
+                } else if((mouseX > blocks_list_to_print[i]->getX()) && (mouseX < (blocks_list_to_print[i]->getX()+blocks_list_to_print[i]->getWidth())) && (mouseY > blocks_list_to_print[i]->getY()) && (mouseY < (blocks_list_to_print[i]->getY()+blocks_list_to_print[i]->getHeight()))) {
                     if((blocks_list_to_print[i]->getIn1Selected() == false) && (blocks_list_to_print[i]->getOut1Selected() == false) && (blocks_list_to_print[i]->getIn2Selected() == false) && (blocks_list_to_print[i]->getOut2Selected() == false)) {
                         blocks_list_to_print[i]->setDragging(true);
                         blocks_list_to_print[i]->setSelected(true);
@@ -376,55 +380,57 @@ void Interface :: draw() {
     }
 
     if(events.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP) {
-        if(menu_selected == PLAY) {
-            //cout<<"play"<<endl;
-            menu_click = PLAY;
-        }
-        if(menu_selected == PAUSE) {
-            //cout<<"pause"<<endl;
-            menu_click = PAUSE;
-        }
-        if(menu_selected == STOP) {
-            //cout<<"stop"<<endl;
-            menu_click = STOP;
-        }
-        if(menu_selected == SAVE) {
-            cout<<"save"<<endl;
-            menu_click = SAVE;
-        }
-        if(menu_selected == LOAD) {
-            cout<<"load"<<endl;
-            menu_click = LOAD;
-        }
-        if(menu_selected == SAVE_AS) {
-            cout<<"save_as"<<endl;
-            menu_click = SAVE_AS;
-        }
-        if(menu_selected == PHYSICAL_ROBOT) {
-            //cout<<"bluetooth"<<endl;
-            menu_click = PHYSICAL_ROBOT;
-        }
-        if(menu_selected == VIRTUAL_ROBOT) {
-            //cout<<"vrep"<<endl;
-            menu_click = VIRTUAL_ROBOT;
-        }
-        if(menu_selected == BLACK_TAPE_SENSOR_MENU) {
-            black_sensor_menu_selected = true;
-        }
-        if(menu_selected == SENSOR_COLOR_MENU) {
-            color_sensor_menu_selected = true;
-        }
-        if(menu_selected == ULTRASONIC_SENSOR_MENU) {
-            ultrasonic_sensor_menu_selected = true;
-        }
-        if(menu_selected == N_LOOP_BLOCK) {
-            number_menu_selected = true;
-        }
-        if(menu_selected == T_LOGIC_BLOCK) {
-            cout<<"verdadeiro"<<endl;
-        }
-        if(menu_selected == F_LOGIC_BLOCK) {
-            cout<<"falso"<<endl;
+        if(check_enable_menu() == true) {
+            if(menu_selected == PLAY) {
+                //cout<<"play"<<endl;
+                menu_click = PLAY;
+            }
+            if(menu_selected == PAUSE) {
+                //cout<<"pause"<<endl;
+                menu_click = PAUSE;
+            }
+            if(menu_selected == STOP) {
+                //cout<<"stop"<<endl;
+                menu_click = STOP;
+            }
+            if(menu_selected == SAVE) {
+                cout<<"save"<<endl;
+                menu_click = SAVE;
+            }
+            if(menu_selected == LOAD) {
+                cout<<"load"<<endl;
+                menu_click = LOAD;
+            }
+            if(menu_selected == SAVE_AS) {
+                cout<<"save_as"<<endl;
+                menu_click = SAVE_AS;
+            }
+            if(menu_selected == PHYSICAL_ROBOT) {
+                //cout<<"bluetooth"<<endl;
+                menu_click = PHYSICAL_ROBOT;
+            }
+            if(menu_selected == VIRTUAL_ROBOT) {
+                //cout<<"vrep"<<endl;
+                menu_click = VIRTUAL_ROBOT;
+            }
+            if(menu_selected == BLACK_TAPE_SENSOR_MENU) {
+                black_sensor_menu_selected = true;
+            }
+            if(menu_selected == SENSOR_COLOR_MENU) {
+                color_sensor_menu_selected = true;
+            }
+            if(menu_selected == ULTRASONIC_SENSOR_MENU) {
+                ultrasonic_sensor_menu_selected = true;
+            }
+            if(menu_selected == N_LOOP_BLOCK) {
+                number_menu_selected = true;
+            }
+            if(menu_selected == T_LOGIC_BLOCK) {
+                cout<<"verdadeiro"<<endl;
+            }
+            if(menu_selected == F_LOGIC_BLOCK) {
+                cout<<"falso"<<endl;
+            }
         }
         //testa se soltou o bloco na lixeira
         for(int i=0; i<valor_maximo_blocos; i++) {
@@ -468,8 +474,10 @@ void Interface :: draw() {
 }
 
 void Interface :: load_bitmap(ALLEGRO_BITMAP **bitmap, const char *adress) {
+    string address = getExecutablePath();
+    address = address + "/"+ adress;
     //se não achar a imagem no diretorio especificado dá msg de erro e para a execução
-    if(!al_load_bitmap(adress)) {
+    if(!al_load_bitmap(address.c_str())) {
         const char* str1 = "Não encontrou imagem: ";
         char * str = (char *) malloc(1 + strlen(str1)+ strlen(adress));
         strcpy(str, str1);
@@ -477,7 +485,7 @@ void Interface :: load_bitmap(ALLEGRO_BITMAP **bitmap, const char *adress) {
         al_show_native_message_box(display, "Fluxprog", "ERRO", str, "Ok", ALLEGRO_MESSAGEBOX_ERROR);
         executing = false;
     } else {
-        *bitmap = al_load_bitmap(adress);
+        *bitmap = al_load_bitmap(address.c_str());
     }
 }
 void Interface :: print_primary_menu() {
@@ -697,7 +705,11 @@ void Interface :: print_secondary_menu() {
 }
 void Interface :: print_function_block(Block *b) {
     if((mouseX > b->getX()) && (mouseX < (b->getX() + b->getWidth())) && (mouseY > b->getY()) && (mouseY < (b->getY() + b->getHeight()))) {
-        al_draw_bitmap(FUNCTION_BLOCK[1], b->getX(), b->getY(), 0);
+        if(black_sensor_menu_selected || color_sensor_menu_selected || ultrasonic_sensor_menu_selected || number_menu_selected) {
+            al_draw_bitmap(FUNCTION_BLOCK[0], b->getX(), b->getY(), 0);
+        } else {
+            al_draw_bitmap(FUNCTION_BLOCK[1], b->getX(), b->getY(), 0);
+        }
 
     } else if(b->getSelected() == true) {
         al_draw_bitmap(FUNCTION_BLOCK[2], b->getX(), b->getY(), 0);
@@ -734,7 +746,11 @@ void Interface :: print_function_block(Block *b) {
 }
 void Interface :: print_end_block(Block *b) {
     if((mouseX > b->getX()) && (mouseX < (b->getX() + b->getWidth())) && (mouseY > b->getY()) && (mouseY < (b->getY() + b->getHeight()))) {
-        al_draw_bitmap(END_BLOCK_IMG[1], b->getX(), b->getY(), 0);
+        if(black_sensor_menu_selected || color_sensor_menu_selected || ultrasonic_sensor_menu_selected || number_menu_selected) {
+            al_draw_bitmap(END_BLOCK_IMG[0], b->getX(), b->getY(), 0);
+        } else {
+            al_draw_bitmap(END_BLOCK_IMG[1], b->getX(), b->getY(), 0);
+        }
     } else if(b->getSelected() == true) {
         al_draw_bitmap(END_BLOCK_IMG[2], b->getX(), b->getY(), 0);
     } else {
@@ -749,7 +765,11 @@ void Interface :: print_end_block(Block *b) {
 }
 void Interface :: print_start_block(Block *b) {
     if((mouseX > b->getX()) && (mouseX < (b->getX() + b->getWidth())) && (mouseY > b->getY()) && (mouseY < (b->getY() + b->getHeight()))) {
-        al_draw_bitmap(START_BLOCK_IMG[1], b->getX(), b->getY(), 0);
+        if(black_sensor_menu_selected || color_sensor_menu_selected || ultrasonic_sensor_menu_selected || number_menu_selected) {
+            al_draw_bitmap(START_BLOCK_IMG[0], b->getX(), b->getY(), 0);
+        } else {
+            al_draw_bitmap(START_BLOCK_IMG[1], b->getX(), b->getY(), 0);
+        }
     } else if(b->getSelected() == true) {
         al_draw_bitmap(START_BLOCK_IMG[2], b->getX(), b->getY(), 0);
     } else {
@@ -764,17 +784,22 @@ void Interface :: print_start_block(Block *b) {
 }
 void Interface :: print_loop_block(Block *b) {
     if((mouseX > b->getX()) && (mouseX < (b->getX() + b->getWidth())) && (mouseY > b->getY()) && (mouseY < (b->getY() + b->getHeight()))) {
-        al_draw_bitmap(LOOP_BLOCK_IMG[1], b->getX(), b->getY(), 0);
+        if(black_sensor_menu_selected || color_sensor_menu_selected || ultrasonic_sensor_menu_selected || number_menu_selected) {
+            al_draw_bitmap(LOOP_BLOCK_IMG[0], b->getX(), b->getY(), 0);
+        } else {
+            al_draw_bitmap(LOOP_BLOCK_IMG[1], b->getX(), b->getY(), 0);
+        }
     } else if(b->getSelected() == true) {
         al_draw_bitmap(LOOP_BLOCK_IMG[2], b->getX(), b->getY(), 0);
     } else {
         al_draw_bitmap(LOOP_BLOCK_IMG[0], b->getX(), b->getY(), 0);
     }
     //desenha unidade
-    al_draw_bitmap(MICRO_NUMBER[b->getUnit()], b->getX()+43, b->getY()+42, 0);
+    //al_draw_bitmap(MICRO_NUMBER[b->getUnit()], b->getX()+43, b->getY()+42, 0);
     //desenha dezena
     //al_draw_bitmap(MICRO_NUMBER[b->getTen()], b->getX()+28, b->getY()+42, 0);
 
+    al_draw_bitmap(MICRO_NUMBER[b->getUnit()], b->getX()+35, b->getY()+42, 0);
 
     //desenha as bolinhas onde são ligadas as linhas
     if((mouseX > b->getX()+35) && (mouseX < (b->getX() + 48)) && (mouseY > b->getY()-5) && (mouseY < (b->getY()+8))) {
@@ -808,7 +833,11 @@ void Interface :: print_decision_block(Block *b) {
 
     //desenha o bloco
     if((mouseX > b->getX()) && (mouseX < (b->getX() + b->getWidth())) && (mouseY > b->getY()) && (mouseY < (b->getY() + b->getHeight()))) {
-        al_draw_bitmap(DECISION_BLOCK[1], b->getX(), b->getY(), 0);
+        if(black_sensor_menu_selected || color_sensor_menu_selected || ultrasonic_sensor_menu_selected || number_menu_selected) {
+            al_draw_bitmap(DECISION_BLOCK[0], b->getX(), b->getY(), 0);
+        } else {
+            al_draw_bitmap(DECISION_BLOCK[1], b->getX(), b->getY(), 0);
+        }
     } else if(b->getSelected() == true) {
         al_draw_bitmap(DECISION_BLOCK[2], b->getX(), b->getY(), 0);
     } else {
@@ -870,7 +899,11 @@ void Interface :: print_decision_block(Block *b) {
 }
 void Interface :: print_merge_block(Block *b) {
     if((mouseX > b->getX()) && (mouseX < (b->getX() + b->getWidth())) && (mouseY > b->getY()) && (mouseY < (b->getY() + b->getHeight()))) {
-        al_draw_bitmap(MERGE_BLOCK_IMG[1], b->getX(), b->getY(), 0);
+        if(black_sensor_menu_selected || color_sensor_menu_selected || ultrasonic_sensor_menu_selected || number_menu_selected) {
+            al_draw_bitmap(MERGE_BLOCK_IMG[0], b->getX(), b->getY(), 0);
+        } else {
+            al_draw_bitmap(MERGE_BLOCK_IMG[1], b->getX(), b->getY(), 0);
+        }
     } else if(b->getSelected() == true) {
         al_draw_bitmap(MERGE_BLOCK_IMG[2], b->getX(), b->getY(), 0);
     } else {
@@ -896,113 +929,114 @@ void Interface :: print_merge_block(Block *b) {
     }
 }
 void Interface :: load_program_images() {
-    //load_bitmap(&menu, "images/menu.png");
-    load_bitmap(&play_button, "images/menu_buttons/play_button.png");
-    load_bitmap(&play_button_selected, "images/menu_buttons/play_button_selected.png");
-    load_bitmap(&pause_button, "images/menu_buttons/pause_button.png");
-    load_bitmap(&pause_button_selected, "images/menu_buttons/pause_button_selected.png");
-    load_bitmap(&stop_button, "images/menu_buttons/stop_button.png");
-    load_bitmap(&stop_button_selected, "images/menu_buttons/stop_button_selected.png");
-    load_bitmap(&save_button, "images/menu_buttons/save_button.png");
-    load_bitmap(&save_button_selected, "images/menu_buttons/save_button_selected.png");
-    load_bitmap(&load_button, "images/menu_buttons/load_button.png");
-    load_bitmap(&load_button_selected, "images/menu_buttons/load_button_selected.png");
-    load_bitmap(&save_as_button, "images/menu_buttons/save_as_button.png");
-    load_bitmap(&save_as_button_selected, "images/menu_buttons/save_as_button_selected.png");
-    load_bitmap(&vrep_button, "images/menu_buttons/vrep_button.png");
-    load_bitmap(&vrep_button_selected, "images/menu_buttons/vrep_button_selected.png");
-    load_bitmap(&bluetooth_button, "images/menu_buttons/bluetooth_button.png");
-    load_bitmap(&bluetooth_button_selected, "images/menu_buttons/bluetooth_button_selected.png");
+    //load_bitmap(&menu, "../../GUI_files/images/menu.png");
 
-    load_bitmap(&mini_menu[0], "images/blocks/decision_block/mini_decision_block.png");
-    load_bitmap(&mini_menu[1], "images/blocks/function_block/mini_function_block.png");
-    load_bitmap(&mini_menu[2], "images/blocks/start_block/mini_start_block.png");
-    load_bitmap(&mini_menu[3], "images/blocks/end_block/mini_end_block.png");
-    load_bitmap(&mini_menu[4], "images/blocks/merge_block/mini_merge_block.png");
-    load_bitmap(&mini_menu[5], "images/blocks/loop_block/mini_loop_block.png");
-    load_bitmap(&WALK_FOWARD_ACTION, "images/functions/mini_action_walk_foward.png");
-    load_bitmap(&MICRO_WALK_FOWARD, "images/functions/micro_action_walk_foward.png");
-    load_bitmap(&TURN_LEFT_ACTION, "images/functions/mini_action_turn_left.png");
-    load_bitmap(&MICRO_TURN_LEFT, "images/functions/micro_action_turn_left.png");
-    load_bitmap(&TURN_RIGHT_ACTION, "images/functions/mini_action_turn_right.png");
-    load_bitmap(&MICRO_TURN_RIGHT, "images/functions/micro_action_turn_right.png");
-    load_bitmap(&logic_true, "images/functions/mini_logic_true.png");
-    load_bitmap(&logic_false, "images/functions/mini_logic_false.png");
-    load_bitmap(&POINT[0], "images/point.png");
-    load_bitmap(&POINT[1], "images/hpoint.png");
-    load_bitmap(&arrow, "images/arrow.png");
+    load_bitmap(&play_button, "../../GUI_files/images/menu_buttons/play_button.png");
+    load_bitmap(&play_button_selected, "../../GUI_files/images/menu_buttons/play_button_selected.png");
+    load_bitmap(&pause_button, "../../GUI_files/images/menu_buttons/pause_button.png");
+    load_bitmap(&pause_button_selected, "../../GUI_files/images/menu_buttons/pause_button_selected.png");
+    load_bitmap(&stop_button, "../../GUI_files/images/menu_buttons/stop_button.png");
+    load_bitmap(&stop_button_selected, "../../GUI_files/images/menu_buttons/stop_button_selected.png");
+    load_bitmap(&save_button, "../../GUI_files/images/menu_buttons/save_button.png");
+    load_bitmap(&save_button_selected, "../../GUI_files/images/menu_buttons/save_button_selected.png");
+    load_bitmap(&load_button, "../../GUI_files/images/menu_buttons/load_button.png");
+    load_bitmap(&load_button_selected, "../../GUI_files/images/menu_buttons/load_button_selected.png");
+    load_bitmap(&save_as_button, "../../GUI_files/images/menu_buttons/save_as_button.png");
+    load_bitmap(&save_as_button_selected, "../../GUI_files/images/menu_buttons/save_as_button_selected.png");
+    load_bitmap(&vrep_button, "../../GUI_files/images/menu_buttons/vrep_button.png");
+    load_bitmap(&vrep_button_selected, "../../GUI_files/images/menu_buttons/vrep_button_selected.png");
+    load_bitmap(&bluetooth_button, "../../GUI_files/images/menu_buttons/bluetooth_button.png");
+    load_bitmap(&bluetooth_button_selected, "../../GUI_files/images/menu_buttons/bluetooth_button_selected.png");
 
-    load_bitmap(&DECISION_BLOCK[0], "images/blocks/decision_block/decision_block.png");
-    load_bitmap(&DECISION_BLOCK[1], "images/blocks/decision_block/decision_block_mouse.png");
-    load_bitmap(&DECISION_BLOCK[2], "images/blocks/decision_block/decision_block_selected.png");
-    load_bitmap(&DECISION_BLOCK[3], "images/blocks/decision_block/decision_block_executing.png");
-    load_bitmap(&END_BLOCK_IMG[0], "images/blocks/end_block/end_block.png");
-    load_bitmap(&END_BLOCK_IMG[1], "images/blocks/end_block/end_block_mouse.png");
-    load_bitmap(&END_BLOCK_IMG[2], "images/blocks/end_block/end_block_selected.png");
-    load_bitmap(&END_BLOCK_IMG[3], "images/blocks/end_block/end_block_executing.png");
-    load_bitmap(&FUNCTION_BLOCK[0], "images/blocks/function_block/function_block.png");
-    load_bitmap(&FUNCTION_BLOCK[1], "images/blocks/function_block/function_block_mouse.png");
-    load_bitmap(&FUNCTION_BLOCK[2], "images/blocks/function_block/function_block_selected.png");
-    load_bitmap(&FUNCTION_BLOCK[3], "images/blocks/function_block/function_block_executing.png");
-    load_bitmap(&LOOP_BLOCK_IMG[0], "images/blocks/loop_block/loop_block2.png");
-    load_bitmap(&LOOP_BLOCK_IMG[1], "images/blocks/loop_block/loop_block2_mouse.png");
-    load_bitmap(&LOOP_BLOCK_IMG[2], "images/blocks/loop_block/loop_block2_selected.png");
-    load_bitmap(&LOOP_BLOCK_IMG[3], "images/blocks/loop_block/loop_block2_executing.png");
-    load_bitmap(&MERGE_BLOCK_IMG[0], "images/blocks/merge_block/merge_block.png");
-    load_bitmap(&MERGE_BLOCK_IMG[1], "images/blocks/merge_block/merge_block_mouse.png");
-    load_bitmap(&MERGE_BLOCK_IMG[2], "images/blocks/merge_block/merge_block_selected.png");
-    load_bitmap(&MERGE_BLOCK_IMG[3], "images/blocks/merge_block/merge_block_executing.png");
-    load_bitmap(&START_BLOCK_IMG[0], "images/blocks/start_block/start_block.png");
-    load_bitmap(&START_BLOCK_IMG[1], "images/blocks/start_block/start_block_mouse.png");
-    load_bitmap(&START_BLOCK_IMG[2], "images/blocks/start_block/start_block_selected.png");
-    load_bitmap(&START_BLOCK_IMG[3], "images/blocks/start_block/start_block_executing.png");
-    load_bitmap(&BLACK_SENSOR_FUNCTION, "images/blocks/black_sensor_block/mini_black_sensor.png");
-    load_bitmap(&BLACK_SENSOR_1_FUNCTION, "images/blocks/black_sensor_block/mini_black_sensor1.png");
-    load_bitmap(&BLACK_SENSOR_2_FUNCTION, "images/blocks/black_sensor_block/mini_black_sensor2.png");
-    load_bitmap(&BLACK_SENSOR_3_FUNCTION, "images/blocks/black_sensor_block/mini_black_sensor3.png");
-    load_bitmap(&BLACK_SENSOR_4_FUNCTION, "images/blocks/black_sensor_block/mini_black_sensor4.png");
-    load_bitmap(&BLACK_SENSOR_5_FUNCTION, "images/blocks/black_sensor_block/mini_black_sensor5.png");
-    load_bitmap(&MICRO_BLACK_SENSOR1, "images/blocks/black_sensor_block/micro_black_sensor1.png");
-    load_bitmap(&MICRO_BLACK_SENSOR2, "images/blocks/black_sensor_block/micro_black_sensor2.png");
-    load_bitmap(&MICRO_BLACK_SENSOR3, "images/blocks/black_sensor_block/micro_black_sensor3.png");
-    load_bitmap(&MICRO_BLACK_SENSOR4, "images/blocks/black_sensor_block/micro_black_sensor4.png");
-    load_bitmap(&MICRO_BLACK_SENSOR5, "images/blocks/black_sensor_block/micro_black_sensor5.png");
-    load_bitmap(&COLOR_SENSOR_FUNCTION, "images/blocks/color_sensor_block/mini_color_sensor.png");
-    load_bitmap(&COLOR_SENSOR_1_FUNCTION, "images/blocks/color_sensor_block/mini_color_sensor1.png");
-    load_bitmap(&COLOR_SENSOR_2_FUNCTION, "images/blocks/color_sensor_block/mini_color_sensor2.png");
-    load_bitmap(&MICRO_COLOR_SENSOR1, "images/blocks/color_sensor_block/micro_color_sensor1.png");
-    load_bitmap(&MICRO_COLOR_SENSOR2, "images/blocks/color_sensor_block/micro_color_sensor2.png");
-    load_bitmap(&ULTRASONIC_SENSOR_FUNCTION, "images/blocks/ultrasonic_sensor_block/mini_ultrasonic_sensor.png");
-    load_bitmap(&ULTRASONIC_SENSOR_1_FUNCTION, "images/blocks/ultrasonic_sensor_block/mini_ultrasonic_sensor1.png");
-    load_bitmap(&ULTRASONIC_SENSOR_2_FUNCTION, "images/blocks/ultrasonic_sensor_block/mini_ultrasonic_sensor2.png");
-    load_bitmap(&ULTRASONIC_SENSOR_3_FUNCTION, "images/blocks/ultrasonic_sensor_block/mini_ultrasonic_sensor3.png");
-    load_bitmap(&MICRO_ULTRASONIC_SENSOR1, "images/blocks/ultrasonic_sensor_block/micro_ultrasonic_sensor1.png");
-    load_bitmap(&MICRO_ULTRASONIC_SENSOR2, "images/blocks/ultrasonic_sensor_block/micro_ultrasonic_sensor2.png");
-    load_bitmap(&MICRO_ULTRASONIC_SENSOR3, "images/blocks/ultrasonic_sensor_block/micro_ultrasonic_sensor3.png");
+    load_bitmap(&mini_menu[0], "../../GUI_files/images/blocks/decision_block/mini_decision_block.png");
+    load_bitmap(&mini_menu[1], "../../GUI_files/images/blocks/function_block/mini_function_block.png");
+    load_bitmap(&mini_menu[2], "../../GUI_files/images/blocks/start_block/mini_start_block.png");
+    load_bitmap(&mini_menu[3], "../../GUI_files/images/blocks/end_block/mini_end_block.png");
+    load_bitmap(&mini_menu[4], "../../GUI_files/images/blocks/merge_block/mini_merge_block.png");
+    load_bitmap(&mini_menu[5], "../../GUI_files/images/blocks/loop_block/mini_loop_block.png");
+    load_bitmap(&WALK_FOWARD_ACTION, "../../GUI_files/images/functions/mini_action_walk_foward.png");
+    load_bitmap(&MICRO_WALK_FOWARD, "../../GUI_files/images/functions/micro_action_walk_foward.png");
+    load_bitmap(&TURN_LEFT_ACTION, "../../GUI_files/images/functions/mini_action_turn_left.png");
+    load_bitmap(&MICRO_TURN_LEFT, "../../GUI_files/images/functions/micro_action_turn_left.png");
+    load_bitmap(&TURN_RIGHT_ACTION, "../../GUI_files/images/functions/mini_action_turn_right.png");
+    load_bitmap(&MICRO_TURN_RIGHT, "../../GUI_files/images/functions/micro_action_turn_right.png");
+    load_bitmap(&logic_true, "../../GUI_files/images/functions/mini_logic_true.png");
+    load_bitmap(&logic_false, "../../GUI_files/images/functions/mini_logic_false.png");
+    load_bitmap(&POINT[0], "../../GUI_files/images/point.png");
+    load_bitmap(&POINT[1], "../../GUI_files/images/hpoint.png");
+    load_bitmap(&arrow, "../../GUI_files/images/arrow.png");
 
-    load_bitmap(&NUMBER[0], "images/functions/mini_number_0.png");
-    load_bitmap(&NUMBER[1], "images/functions/mini_number_1.png");
-    load_bitmap(&NUMBER[2], "images/functions/mini_number_2.png");
-    load_bitmap(&NUMBER[3], "images/functions/mini_number_3.png");
-    load_bitmap(&NUMBER[4], "images/functions/mini_number_4.png");
-    load_bitmap(&NUMBER[5], "images/functions/mini_number_5.png");
-    load_bitmap(&NUMBER[6], "images/functions/mini_number_6.png");
-    load_bitmap(&NUMBER[7], "images/functions/mini_number_7.png");
-    load_bitmap(&NUMBER[8], "images/functions/mini_number_8.png");
-    load_bitmap(&NUMBER[9], "images/functions/mini_number_9.png");
+    load_bitmap(&DECISION_BLOCK[0], "../../GUI_files/images/blocks/decision_block/decision_block.png");
+    load_bitmap(&DECISION_BLOCK[1], "../../GUI_files/images/blocks/decision_block/decision_block_mouse.png");
+    load_bitmap(&DECISION_BLOCK[2], "../../GUI_files/images/blocks/decision_block/decision_block_selected.png");
+    load_bitmap(&DECISION_BLOCK[3], "../../GUI_files/images/blocks/decision_block/decision_block_executing.png");
+    load_bitmap(&END_BLOCK_IMG[0], "../../GUI_files/images/blocks/end_block/end_block.png");
+    load_bitmap(&END_BLOCK_IMG[1], "../../GUI_files/images/blocks/end_block/end_block_mouse.png");
+    load_bitmap(&END_BLOCK_IMG[2], "../../GUI_files/images/blocks/end_block/end_block_selected.png");
+    load_bitmap(&END_BLOCK_IMG[3], "../../GUI_files/images/blocks/end_block/end_block_executing.png");
+    load_bitmap(&FUNCTION_BLOCK[0], "../../GUI_files/images/blocks/function_block/function_block.png");
+    load_bitmap(&FUNCTION_BLOCK[1], "../../GUI_files/images/blocks/function_block/function_block_mouse.png");
+    load_bitmap(&FUNCTION_BLOCK[2], "../../GUI_files/images/blocks/function_block/function_block_selected.png");
+    load_bitmap(&FUNCTION_BLOCK[3], "../../GUI_files/images/blocks/function_block/function_block_executing.png");
+    load_bitmap(&LOOP_BLOCK_IMG[0], "../../GUI_files/images/blocks/loop_block/loop_block2_1.png");
+    load_bitmap(&LOOP_BLOCK_IMG[1], "../../GUI_files/images/blocks/loop_block/loop_block2_1_mouse.png");
+    load_bitmap(&LOOP_BLOCK_IMG[2], "../../GUI_files/images/blocks/loop_block/loop_block2_1_selected.png");
+    load_bitmap(&LOOP_BLOCK_IMG[3], "../../GUI_files/images/blocks/loop_block/loop_block2_1_executing.png");
+    load_bitmap(&MERGE_BLOCK_IMG[0], "../../GUI_files/images/blocks/merge_block/merge_block.png");
+    load_bitmap(&MERGE_BLOCK_IMG[1], "../../GUI_files/images/blocks/merge_block/merge_block_mouse.png");
+    load_bitmap(&MERGE_BLOCK_IMG[2], "../../GUI_files/images/blocks/merge_block/merge_block_selected.png");
+    load_bitmap(&MERGE_BLOCK_IMG[3], "../../GUI_files/images/blocks/merge_block/merge_block_executing.png");
+    load_bitmap(&START_BLOCK_IMG[0], "../../GUI_files/images/blocks/start_block/start_block.png");
+    load_bitmap(&START_BLOCK_IMG[1], "../../GUI_files/images/blocks/start_block/start_block_mouse.png");
+    load_bitmap(&START_BLOCK_IMG[2], "../../GUI_files/images/blocks/start_block/start_block_selected.png");
+    load_bitmap(&START_BLOCK_IMG[3], "../../GUI_files/images/blocks/start_block/start_block_executing.png");
+    load_bitmap(&BLACK_SENSOR_FUNCTION, "../../GUI_files/images/blocks/black_sensor_block/mini_black_sensor.png");
+    load_bitmap(&BLACK_SENSOR_1_FUNCTION, "../../GUI_files/images/blocks/black_sensor_block/mini_black_sensor1.png");
+    load_bitmap(&BLACK_SENSOR_2_FUNCTION, "../../GUI_files/images/blocks/black_sensor_block/mini_black_sensor2.png");
+    load_bitmap(&BLACK_SENSOR_3_FUNCTION, "../../GUI_files/images/blocks/black_sensor_block/mini_black_sensor3.png");
+    load_bitmap(&BLACK_SENSOR_4_FUNCTION, "../../GUI_files/images/blocks/black_sensor_block/mini_black_sensor4.png");
+    load_bitmap(&BLACK_SENSOR_5_FUNCTION, "../../GUI_files/images/blocks/black_sensor_block/mini_black_sensor5.png");
+    load_bitmap(&MICRO_BLACK_SENSOR1, "../../GUI_files/images/blocks/black_sensor_block/micro_black_sensor1.png");
+    load_bitmap(&MICRO_BLACK_SENSOR2, "../../GUI_files/images/blocks/black_sensor_block/micro_black_sensor2.png");
+    load_bitmap(&MICRO_BLACK_SENSOR3, "../../GUI_files/images/blocks/black_sensor_block/micro_black_sensor3.png");
+    load_bitmap(&MICRO_BLACK_SENSOR4, "../../GUI_files/images/blocks/black_sensor_block/micro_black_sensor4.png");
+    load_bitmap(&MICRO_BLACK_SENSOR5, "../../GUI_files/images/blocks/black_sensor_block/micro_black_sensor5.png");
+    load_bitmap(&COLOR_SENSOR_FUNCTION, "../../GUI_files/images/blocks/color_sensor_block/mini_color_sensor.png");
+    load_bitmap(&COLOR_SENSOR_1_FUNCTION, "../../GUI_files/images/blocks/color_sensor_block/mini_color_sensor1.png");
+    load_bitmap(&COLOR_SENSOR_2_FUNCTION, "../../GUI_files/images/blocks/color_sensor_block/mini_color_sensor2.png");
+    load_bitmap(&MICRO_COLOR_SENSOR1, "../../GUI_files/images/blocks/color_sensor_block/micro_color_sensor1.png");
+    load_bitmap(&MICRO_COLOR_SENSOR2, "../../GUI_files/images/blocks/color_sensor_block/micro_color_sensor2.png");
+    load_bitmap(&ULTRASONIC_SENSOR_FUNCTION, "../../GUI_files/images/blocks/ultrasonic_sensor_block/mini_ultrasonic_sensor.png");
+    load_bitmap(&ULTRASONIC_SENSOR_1_FUNCTION, "../../GUI_files/images/blocks/ultrasonic_sensor_block/mini_ultrasonic_sensor1.png");
+    load_bitmap(&ULTRASONIC_SENSOR_2_FUNCTION, "../../GUI_files/images/blocks/ultrasonic_sensor_block/mini_ultrasonic_sensor2.png");
+    load_bitmap(&ULTRASONIC_SENSOR_3_FUNCTION, "../../GUI_files/images/blocks/ultrasonic_sensor_block/mini_ultrasonic_sensor3.png");
+    load_bitmap(&MICRO_ULTRASONIC_SENSOR1, "../../GUI_files/images/blocks/ultrasonic_sensor_block/micro_ultrasonic_sensor1.png");
+    load_bitmap(&MICRO_ULTRASONIC_SENSOR2, "../../GUI_files/images/blocks/ultrasonic_sensor_block/micro_ultrasonic_sensor2.png");
+    load_bitmap(&MICRO_ULTRASONIC_SENSOR3, "../../GUI_files/images/blocks/ultrasonic_sensor_block/micro_ultrasonic_sensor3.png");
 
-    load_bitmap(&MICRO_NUMBER[0], "images/functions/micro_number_0.png");
-    load_bitmap(&MICRO_NUMBER[1], "images/functions/micro_number_1.png");
-    load_bitmap(&MICRO_NUMBER[2], "images/functions/micro_number_2.png");
-    load_bitmap(&MICRO_NUMBER[3], "images/functions/micro_number_3.png");
-    load_bitmap(&MICRO_NUMBER[4], "images/functions/micro_number_4.png");
-    load_bitmap(&MICRO_NUMBER[5], "images/functions/micro_number_5.png");
-    load_bitmap(&MICRO_NUMBER[6], "images/functions/micro_number_6.png");
-    load_bitmap(&MICRO_NUMBER[7], "images/functions/micro_number_7.png");
-    load_bitmap(&MICRO_NUMBER[8], "images/functions/micro_number_8.png");
-    load_bitmap(&MICRO_NUMBER[9], "images/functions/micro_number_9.png");
+    load_bitmap(&NUMBER[0], "../../GUI_files/images/functions/mini_number_0.png");
+    load_bitmap(&NUMBER[1], "../../GUI_files/images/functions/mini_number_1.png");
+    load_bitmap(&NUMBER[2], "../../GUI_files/images/functions/mini_number_2.png");
+    load_bitmap(&NUMBER[3], "../../GUI_files/images/functions/mini_number_3.png");
+    load_bitmap(&NUMBER[4], "../../GUI_files/images/functions/mini_number_4.png");
+    load_bitmap(&NUMBER[5], "../../GUI_files/images/functions/mini_number_5.png");
+    load_bitmap(&NUMBER[6], "../../GUI_files/images/functions/mini_number_6.png");
+    load_bitmap(&NUMBER[7], "../../GUI_files/images/functions/mini_number_7.png");
+    load_bitmap(&NUMBER[8], "../../GUI_files/images/functions/mini_number_8.png");
+    load_bitmap(&NUMBER[9], "../../GUI_files/images/functions/mini_number_9.png");
 
-    load_bitmap(&trash, "images/trash_icon.png");
+    load_bitmap(&MICRO_NUMBER[0], "../../GUI_files/images/functions/micro_number_0.png");
+    load_bitmap(&MICRO_NUMBER[1], "../../GUI_files/images/functions/micro_number_1.png");
+    load_bitmap(&MICRO_NUMBER[2], "../../GUI_files/images/functions/micro_number_2.png");
+    load_bitmap(&MICRO_NUMBER[3], "../../GUI_files/images/functions/micro_number_3.png");
+    load_bitmap(&MICRO_NUMBER[4], "../../GUI_files/images/functions/micro_number_4.png");
+    load_bitmap(&MICRO_NUMBER[5], "../../GUI_files/images/functions/micro_number_5.png");
+    load_bitmap(&MICRO_NUMBER[6], "../../GUI_files/images/functions/micro_number_6.png");
+    load_bitmap(&MICRO_NUMBER[7], "../../GUI_files/images/functions/micro_number_7.png");
+    load_bitmap(&MICRO_NUMBER[8], "../../GUI_files/images/functions/micro_number_8.png");
+    load_bitmap(&MICRO_NUMBER[9], "../../GUI_files/images/functions/micro_number_9.png");
+
+    load_bitmap(&trash, "../../GUI_files/images/trash_icon.png");
 }
 void Interface :: destroy_program_images() {
     al_destroy_bitmap(play_button);
@@ -1528,16 +1562,25 @@ void Interface :: delete_connections() {
     }
 }
 void Interface :: draw_everything() {
-    //imprime menu
-    print_primary_menu();
-    //imprime menu de blocos
-    print_secondary_menu();
-
-    //checa se o mouse está sobre os menus, para setar a variável de controle do menu_selected
-    check_mouse_on_menus();
-
-    //percorre toda a lista de impressão dos blocos
-    print_list_of_blocks();
+    if(black_sensor_menu_selected || color_sensor_menu_selected || ultrasonic_sensor_menu_selected || number_menu_selected) {
+        //percorre toda a lista de impressão dos blocos
+        print_list_of_blocks();
+        //imprime menu
+        print_primary_menu();
+        //imprime menu de blocos
+        print_secondary_menu();
+        //checa se o mouse está sobre os menus, para setar a variável de controle do menu_selected
+        check_mouse_on_menus();
+    } else {
+        //imprime menu
+        print_primary_menu();
+        //imprime menu de blocos
+        print_secondary_menu();
+        //checa se o mouse está sobre os menus, para setar a variável de controle do menu_selected
+        check_mouse_on_menus();
+        //percorre toda a lista de impressão dos blocos
+        print_list_of_blocks();
+    }
 
     //desenha objetos sendo arrastados
     draw_dragging();
@@ -1929,5 +1972,39 @@ void Interface :: setConnectedRobot(bool c) {
 void Interface :: setExecutingFluxogram(bool e) {
     executing_fluxogram = e;
 }
+bool Interface :: check_enable_menu() {
+    if(dragging_number_0 || dragging_number_1 || dragging_number_2 || dragging_number_3 || dragging_number_4) {
+        return false;
+    } else if(dragging_number_5 || dragging_number_6 || dragging_number_7 || dragging_number_8 || dragging_number_9) {
+        return false;
+    } else if(dragging_black_sensor1 || dragging_black_sensor2 || dragging_black_sensor3 || dragging_black_sensor4 || dragging_black_sensor5) {
+        return false;
+    } else if(dragging_color_sensor1 || dragging_color_sensor2) {
+        return false;
+    } else if(dragging_ultrasonic_sensor1 || dragging_ultrasonic_sensor2 || dragging_ultrasonic_sensor3) {
+        return false;
+    } else if(dragging_walk_foward || dragging_turn_left || dragging_turn_right) {
+        return false;
+    } else {
+        for(int i=0; i<valor_maximo_blocos; i++) {
+            if(blocks_list_to_print[i] != NULL) {
+                if(blocks_list_to_print[i]->getDragging() == true) {
+                    return false;
+                }
+            }
+        }
+    }
+    return true;
+}
 
-//2. setar bloco de loop com numeros
+string Interface :: getExecutablePath()
+{
+    char result[ PATH_MAX ];
+    ssize_t count = readlink("/proc/self/exe", result, PATH_MAX);
+    string path;
+    if (count != -1)
+    {
+        path = dirname(result);
+    }
+    return path;
+}

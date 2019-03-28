@@ -5,6 +5,7 @@ FluxProg :: FluxProg() {
     executing_fluxogram = false;
     current_executing_block = NULL;
     program_connected = false;
+    paused = false;
 
 
     for(int i=0; i<valor_maximo_blocos; i++) {
@@ -63,19 +64,14 @@ void FluxProg :: start() {
                 interface->callMessage(4);
                 executing_fluxogram = false;
             }
-            //reseta as variáveis do loops para a execução
-            for(int i=0; i<valor_maximo_blocos; i++) {
-                if(blocks_list_to_print[i] != NULL) {
-                    if(blocks_list_to_print[i]->getType() == LOOP_BLOCK) {
-                        blocks_list_to_print[i]->reset_loop_variables();
-                    }
-                }
+            if(paused == false) {
+                reset_fluxogram_execution();
             }
-            reset_fluxogram_execution();
         }
         if(interface->getMenuClick() == PAUSE) {
             //cout<<"pause"<<endl;
             executing_fluxogram = false;
+            paused = true;
         }
         if(interface->getMenuClick() == STOP) {
             //cout<<"stop"<<endl;
@@ -195,7 +191,7 @@ void FluxProg :: start() {
             aux->setY(interface->getMouseY()-40);
             aux->setName("bloco de loop");
             aux->setLimitedLoop(true);
-            //aux->setNumberOfLoops(2);
+            aux->setValue(0);
             aux->setSelected(true);
             aux->setDragging(true);
             add_block(aux);
@@ -343,6 +339,8 @@ void FluxProg :: execute() {
                 } else {
                     cout<<"executou bloco: "<<current_executing_block->getName()<<endl;
                     executing_fluxogram = false;
+                    //reseta as variáveis execução
+                    reset_fluxogram_execution();
                 }
             }
         } else {
@@ -559,6 +557,14 @@ void FluxProg :: reset_fluxogram_execution() {
     }
     //seta start como bloco atual
     current_executing_block = blocks_list_to_print[id_start];
+    //reseta as variáveis do loops para a execução
+    for(int i=0; i<valor_maximo_blocos; i++) {
+        if(blocks_list_to_print[i] != NULL) {
+            if(blocks_list_to_print[i]->getType() == LOOP_BLOCK) {
+                blocks_list_to_print[i]->reset_loop_variables();
+            }
+        }
+    }
 }
 void FluxProg :: connect_simulator() {
     communication->setIfVirtual(1);
@@ -570,7 +576,9 @@ void FluxProg :: connect_robot() {
 }
 void FluxProg :: connect() {
     int feedback = 0;
-    system(".//..//FluxProgBackend//build//bin//FluxProgBackend &");
+    string address = interface->getExecutablePath();
+    address = address + "//..//..//..//FluxProgBackend//build//bin//FluxProgBackend &";
+    system(address.c_str());
     sleep(2);
     feedback = communication->getFeedback();
     if(feedback != 0) {
