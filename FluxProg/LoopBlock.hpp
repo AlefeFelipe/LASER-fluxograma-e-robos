@@ -14,6 +14,9 @@ class LoopBlock : public ProgrammingBlock {
     Block* previous_program;
     Block* previous_loop;
     bool limited_loop;
+    int unit;
+    int ten;
+    bool setting_unit;
 
     void decNumberOfLoops();
 
@@ -43,5 +46,10 @@ public:
     int getPointOut2Y();
     Block* getExecutingNext();
     void reset_loop_variables();
+    void setUnit(int u);
+    int getUnit();
+    void setTen(int t);
+    int getTen();
+    void setValue(int v);
 };
 #endif

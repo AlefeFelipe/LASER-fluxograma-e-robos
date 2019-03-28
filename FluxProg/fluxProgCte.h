@@ -36,9 +36,9 @@
 #define MOVE_FORWARD_BLOCK 18
 #define TURN_LEFT_BLOCK 19
 #define TURN_RIGHT_BLOCK 20
-#define N_LOOP_BLOCK 21
-#define T_LOGIC_BLOCK 22
-#define F_LOGIC_BLOCK 23
+#define N_LOOP_BLOCK 23
+#define T_LOGIC_BLOCK 21
+#define F_LOGIC_BLOCK 22
 
 //communicacao entre back e front end
 #define CLOSE_PROGRAM -10

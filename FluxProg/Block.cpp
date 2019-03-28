@@ -202,3 +202,12 @@ void Block :: setDelete(bool t) {
 bool Block :: getDelete() {
     return toDelete;
 }
+void Block :: setValue(int v) {
+
+}
+int Block :: getUnit() {
+    return 0;
+}
+int Block :: getTen() {
+    return 0;
+}

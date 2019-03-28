@@ -86,5 +86,8 @@ public:
     bool getExecuting();
     void setDelete(bool t);
     bool getDelete();
+    virtual void setValue(int v);
+    virtual int getUnit();
+    virtual int getTen();
 };
 #endif

@@ -36,6 +36,7 @@ class Interface {
     ALLEGRO_BITMAP *vrep_button, *vrep_button_selected, *bluetooth_button, *bluetooth_button_selected, *mini_menu[6];
     ALLEGRO_BITMAP *WALK_FOWARD_ACTION, *TURN_LEFT_ACTION, *TURN_RIGHT_ACTION;
     ALLEGRO_BITMAP *NUMBER[10], *logic_true, *logic_false;
+    ALLEGRO_BITMAP *MICRO_NUMBER[10];
     ALLEGRO_BITMAP *DECISION_BLOCK[4], *BLACK_SENSOR_FUNCTION, *BLACK_SENSOR_1_FUNCTION, *BLACK_SENSOR_2_FUNCTION, *BLACK_SENSOR_3_FUNCTION, *BLACK_SENSOR_4_FUNCTION;
     ALLEGRO_BITMAP *BLACK_SENSOR_5_FUNCTION, *COLOR_SENSOR_FUNCTION, *COLOR_SENSOR_1_FUNCTION, *COLOR_SENSOR_2_FUNCTION, *ULTRASONIC_SENSOR_FUNCTION;
     ALLEGRO_BITMAP *ULTRASONIC_SENSOR_1_FUNCTION, *ULTRASONIC_SENSOR_2_FUNCTION, *ULTRASONIC_SENSOR_3_FUNCTION;
@@ -51,6 +52,9 @@ class Interface {
     int menu_selected;
     int mouse_aux_x, mouse_aux_y; // usado para arrastar as imagens;
     bool black_sensor_menu_selected, color_sensor_menu_selected, ultrasonic_sensor_menu_selected;
+    bool number_menu_selected;
+    bool dragging_number_0, dragging_number_1, dragging_number_2, dragging_number_3, dragging_number_4;
+    bool dragging_number_5, dragging_number_6, dragging_number_7, dragging_number_8, dragging_number_9;
     bool dragging_black_sensor1, dragging_black_sensor2, dragging_black_sensor3, dragging_black_sensor4, dragging_black_sensor5;
     bool dragging_color_sensor1, dragging_color_sensor2;
     bool dragging_ultrasonic_sensor1, dragging_ultrasonic_sensor2, dragging_ultrasonic_sensor3;

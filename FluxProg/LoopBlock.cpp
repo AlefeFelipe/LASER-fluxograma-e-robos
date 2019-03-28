@@ -6,6 +6,9 @@ LoopBlock :: LoopBlock() {
     next_program = NULL;
     number_of_loops = 1;
     limited_loop = false;
+    unit = 0;
+    ten = 0;
+    setting_unit = true;
 }
 
 void LoopBlock :: setLimitedLoop(bool l) {
@@ -29,6 +32,8 @@ void LoopBlock :: decNumberOfLoops() {
     if(limited_loop == true) {
         number_of_loops = number_of_loops - 1;
     }
+    ten = (number_of_loops/2)/10;
+    unit = ((number_of_loops/2)%10)+1;
 }
 
 void LoopBlock :: setNext1(Block *b) {
@@ -97,4 +102,31 @@ Block* LoopBlock :: getExecutingNext() {
 }
 void LoopBlock :: reset_loop_variables() {
     number_of_loops = number_of_loops_initial;
+}
+void LoopBlock :: setUnit(int u) {
+    unit = u;
+    int n = 10*ten + unit;
+    setNumberOfLoops(n);
+}
+int LoopBlock :: getUnit() {
+    return unit;
+}
+void LoopBlock :: setTen(int t) {
+    ten = t;
+    int n = 10*ten + unit;
+    setNumberOfLoops(n);
+}
+int LoopBlock :: getTen() {
+    return ten;
+}
+void LoopBlock :: setValue(int v) {
+    if(setting_unit == true) {
+        setUnit(v);
+        //setting_unit = false;
+        cout<<"setado unidade para "<<v<<endl;
+    } else {
+        setTen(v);
+        setting_unit = true;
+        cout<<"setado dezena para "<<v<<endl;
+    }
 }

@@ -195,7 +195,7 @@ void FluxProg :: start() {
             aux->setY(interface->getMouseY()-40);
             aux->setName("bloco de loop");
             aux->setLimitedLoop(true);
-            aux->setNumberOfLoops(2);
+            //aux->setNumberOfLoops(2);
             aux->setSelected(true);
             aux->setDragging(true);
             add_block(aux);
@@ -570,7 +570,7 @@ void FluxProg :: connect_robot() {
 }
 void FluxProg :: connect() {
     int feedback = 0;
-    system(".//..//FluxProgBackend//build//fluxprogbackend &");
+    system(".//..//FluxProgBackend//build//bin//FluxProgBackend &");
     sleep(2);
     feedback = communication->getFeedback();
     if(feedback != 0) {

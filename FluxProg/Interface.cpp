@@ -69,6 +69,7 @@ Interface :: Interface(Block** _blocks_list_to_print) {
     black_sensor_menu_selected = false;
     color_sensor_menu_selected = false;
     ultrasonic_sensor_menu_selected = false;
+    number_menu_selected = false;
     sub_menu = false;
     drawing_line = false;
     temporary_line_X = 0;
@@ -297,6 +298,36 @@ void Interface :: draw() {
             case 33:
                 dragging_ultrasonic_sensor3 = true;
                 break;
+            case 34:
+                dragging_number_0 = true;
+                break;
+            case 35:
+                dragging_number_1 = true;
+                break;
+            case 36:
+                dragging_number_2 = true;
+                break;
+            case 37:
+                dragging_number_3 = true;
+                break;
+            case 38:
+                dragging_number_4 = true;
+                break;
+            case 39:
+                dragging_number_5 = true;
+                break;
+            case 40:
+                dragging_number_6 = true;
+                break;
+            case 41:
+                dragging_number_7 = true;
+                break;
+            case 42:
+                dragging_number_8 = true;
+                break;
+            case 43:
+                dragging_number_9 = true;
+                break;
         }
         if(menu_selected == CONDITIONAL_BLOCK) {
             mouse_aux_x = 60;
@@ -330,14 +361,17 @@ void Interface :: draw() {
         }
 
         //se o sub menu estava aberto e clicou fora, fecha o sub menu
-        if(menu_selected != 15) {
+        if(menu_selected != BLACK_TAPE_SENSOR_MENU) {
             black_sensor_menu_selected = false;
         }
-        if(menu_selected != 16) {
+        if(menu_selected != SENSOR_COLOR_MENU) {
             color_sensor_menu_selected = false;
         }
-        if(menu_selected != 17) {
+        if(menu_selected != ULTRASONIC_SENSOR_MENU) {
             ultrasonic_sensor_menu_selected = false;
+        }
+        if(menu_selected != N_LOOP_BLOCK) {
+            number_menu_selected = false;
         }
     }
 
@@ -382,6 +416,9 @@ void Interface :: draw() {
         }
         if(menu_selected == ULTRASONIC_SENSOR_MENU) {
             ultrasonic_sensor_menu_selected = true;
+        }
+        if(menu_selected == N_LOOP_BLOCK) {
+            number_menu_selected = true;
         }
         if(menu_selected == T_LOGIC_BLOCK) {
             cout<<"verdadeiro"<<endl;
@@ -628,6 +665,34 @@ void Interface :: print_secondary_menu() {
         }
     }
 
+    //variaveis usadas para facilitar a impressao das imagens
+    int number_submenu_X = al_get_bitmap_width(mini_menu[0]) + 5;
+    int number_submenu_Y = extra_menu_Y + 2 * al_get_bitmap_height(WALK_FOWARD_ACTION)+5;
+
+    //desenha submenu de numberos
+    if(number_menu_selected == true) {
+        sub_menu = true;
+        al_draw_bitmap(NUMBER[0], number_submenu_X + 0 * al_get_bitmap_height(WALK_FOWARD_ACTION), number_submenu_Y, 0);
+        al_draw_bitmap(NUMBER[1], number_submenu_X + 1 * al_get_bitmap_height(WALK_FOWARD_ACTION), number_submenu_Y, 0);
+        al_draw_bitmap(NUMBER[2], number_submenu_X + 2 * al_get_bitmap_height(WALK_FOWARD_ACTION), number_submenu_Y, 0);
+        al_draw_bitmap(NUMBER[3], number_submenu_X + 3 * al_get_bitmap_height(WALK_FOWARD_ACTION), number_submenu_Y, 0);
+        al_draw_bitmap(NUMBER[4], number_submenu_X + 4 * al_get_bitmap_height(WALK_FOWARD_ACTION), number_submenu_Y, 0);
+        al_draw_bitmap(NUMBER[5], number_submenu_X + 5 * al_get_bitmap_height(WALK_FOWARD_ACTION), number_submenu_Y, 0);
+        al_draw_bitmap(NUMBER[6], number_submenu_X + 6 * al_get_bitmap_height(WALK_FOWARD_ACTION), number_submenu_Y, 0);
+        al_draw_bitmap(NUMBER[7], number_submenu_X + 7 * al_get_bitmap_height(WALK_FOWARD_ACTION), number_submenu_Y, 0);
+        al_draw_bitmap(NUMBER[8], number_submenu_X + 8 * al_get_bitmap_height(WALK_FOWARD_ACTION), number_submenu_Y, 0);
+        al_draw_bitmap(NUMBER[9], number_submenu_X + 9 * al_get_bitmap_height(WALK_FOWARD_ACTION), number_submenu_Y, 0);
+        for(int i=0; i<10; i++) {
+            // checa se o mouse está sobre o menu de blocos e desenha um retangulo selecionando o botao que o mouse está sobre
+            if((mouseX > number_submenu_X + i * al_get_bitmap_height(WALK_FOWARD_ACTION)) && (mouseX < number_submenu_X + (i+1) * al_get_bitmap_height(WALK_FOWARD_ACTION))) {
+                if((mouseY > number_submenu_Y) && (mouseY < number_submenu_Y+ 5 + al_get_bitmap_height(mini_menu[0]))) {
+                    al_draw_rectangle(number_submenu_X + i * al_get_bitmap_height(WALK_FOWARD_ACTION), number_submenu_Y, number_submenu_X + (i+1) * al_get_bitmap_height(WALK_FOWARD_ACTION), number_submenu_Y + al_get_bitmap_height(mini_menu[0]), black, 3);
+                    menu_selected = 34 + i;
+                }
+            }
+        }
+    }
+
     al_draw_bitmap(trash, 0, al_get_display_height(display)-70, 0);
 }
 void Interface :: print_function_block(Block *b) {
@@ -705,6 +770,12 @@ void Interface :: print_loop_block(Block *b) {
     } else {
         al_draw_bitmap(LOOP_BLOCK_IMG[0], b->getX(), b->getY(), 0);
     }
+    //desenha unidade
+    al_draw_bitmap(MICRO_NUMBER[b->getUnit()], b->getX()+43, b->getY()+42, 0);
+    //desenha dezena
+    //al_draw_bitmap(MICRO_NUMBER[b->getTen()], b->getX()+28, b->getY()+42, 0);
+
+
     //desenha as bolinhas onde são ligadas as linhas
     if((mouseX > b->getX()+35) && (mouseX < (b->getX() + 48)) && (mouseY > b->getY()-5) && (mouseY < (b->getY()+8))) {
         al_draw_bitmap(POINT[1], b->getX()+35, b->getY()-5, 0);
@@ -920,6 +991,17 @@ void Interface :: load_program_images() {
     load_bitmap(&NUMBER[8], "images/functions/mini_number_8.png");
     load_bitmap(&NUMBER[9], "images/functions/mini_number_9.png");
 
+    load_bitmap(&MICRO_NUMBER[0], "images/functions/micro_number_0.png");
+    load_bitmap(&MICRO_NUMBER[1], "images/functions/micro_number_1.png");
+    load_bitmap(&MICRO_NUMBER[2], "images/functions/micro_number_2.png");
+    load_bitmap(&MICRO_NUMBER[3], "images/functions/micro_number_3.png");
+    load_bitmap(&MICRO_NUMBER[4], "images/functions/micro_number_4.png");
+    load_bitmap(&MICRO_NUMBER[5], "images/functions/micro_number_5.png");
+    load_bitmap(&MICRO_NUMBER[6], "images/functions/micro_number_6.png");
+    load_bitmap(&MICRO_NUMBER[7], "images/functions/micro_number_7.png");
+    load_bitmap(&MICRO_NUMBER[8], "images/functions/micro_number_8.png");
+    load_bitmap(&MICRO_NUMBER[9], "images/functions/micro_number_9.png");
+
     load_bitmap(&trash, "images/trash_icon.png");
 }
 void Interface :: destroy_program_images() {
@@ -1014,6 +1096,16 @@ void Interface :: reset_dragging_variables() {
     dragging_walk_foward = false;
     dragging_turn_left = false;
     dragging_turn_right = false;
+    dragging_number_0 = false;
+    dragging_number_1 = false;
+    dragging_number_2 = false;
+    dragging_number_3 = false;
+    dragging_number_4 = false;
+    dragging_number_5 = false;
+    dragging_number_6 = false;
+    dragging_number_7 = false;
+    dragging_number_8 = false;
+    dragging_number_9 = false;
 }
 void Interface :: check_dragging() {
 
@@ -1069,6 +1161,44 @@ void Interface :: check_dragging() {
                     }
                 }
             }
+            if(blocks_list_to_print[i]->getType() == LOOP_BLOCK) {
+                if((mouseX > blocks_list_to_print[i]->getX()) && (mouseX < (blocks_list_to_print[i]->getX() + blocks_list_to_print[i]->getWidth())) && (mouseY > blocks_list_to_print[i]->getY()) && (mouseY < (blocks_list_to_print[i]->getY() + blocks_list_to_print[i]->getHeight()))) {
+                    //cout<<"soltou sobre o bloco certo"<<endl;
+                    if((dragging_black_sensor1 == true) || (dragging_black_sensor2 == true) || (dragging_black_sensor3 == true)  || (dragging_black_sensor4 == true) || (dragging_black_sensor5 == true)){
+                        //erro
+                        al_show_native_message_box(display, "Fluxprog", "ERRO", "O sensor de fita preta não pode ser usado como entrada no bloco de loop", "Ok", ALLEGRO_MESSAGEBOX_ERROR);
+                    }  else if((dragging_color_sensor1 == true) || (dragging_color_sensor2 == true)){
+                        //erro
+                        al_show_native_message_box(display, "Fluxprog", "ERRO", "O sensor de cor não pode ser usado como entrada no bloco de loop", "Ok", ALLEGRO_MESSAGEBOX_ERROR);
+                    } else if((dragging_ultrasonic_sensor1 == true) || (dragging_ultrasonic_sensor2 == true) || (dragging_ultrasonic_sensor3 == true)) {
+                        //erro
+                        al_show_native_message_box(display, "Fluxprog", "ERRO", "O sensor de ultrassom não pode ser usado como entrada no bloco de loop", "Ok", ALLEGRO_MESSAGEBOX_ERROR);
+                    } else if((dragging_walk_foward == true) || (dragging_turn_left == true) || (dragging_turn_right == true)) {
+                        //erro
+                        al_show_native_message_box(display, "Fluxprog", "ERRO", "Uma ação não pode ser usado como entrada no bloco de loop", "Ok", ALLEGRO_MESSAGEBOX_ERROR);
+                    } else if(dragging_number_0 == true) {
+                        blocks_list_to_print[i]->setValue(0);
+                    } else if(dragging_number_1 == true) {
+                        blocks_list_to_print[i]->setValue(1);
+                    } else if(dragging_number_2 == true) {
+                        blocks_list_to_print[i]->setValue(2);
+                    } else if(dragging_number_3 == true) {
+                        blocks_list_to_print[i]->setValue(3);
+                    } else if(dragging_number_4 == true) {
+                        blocks_list_to_print[i]->setValue(4);
+                    } else if(dragging_number_5 == true) {
+                        blocks_list_to_print[i]->setValue(5);
+                    } else if(dragging_number_6 == true) {
+                        blocks_list_to_print[i]->setValue(6);
+                    } else if(dragging_number_7 == true) {
+                        blocks_list_to_print[i]->setValue(7);
+                    } else if(dragging_number_8 == true) {
+                        blocks_list_to_print[i]->setValue(8);
+                    } else if(dragging_number_9 == true) {
+                        blocks_list_to_print[i]->setValue(9);
+                    }
+                }
+            }
         }
     }
 }
@@ -1111,6 +1241,36 @@ void Interface :: draw_dragging() {
     }
     if(dragging_turn_right == true) {
         al_draw_bitmap(TURN_RIGHT_ACTION, mouseX-20, mouseY-20, 0);
+    }
+    if(dragging_number_0 == true) {
+        al_draw_bitmap(NUMBER[0], mouseX-20, mouseY-20, 0);
+    }
+    if(dragging_number_1 == true) {
+        al_draw_bitmap(NUMBER[1], mouseX-20, mouseY-20, 0);
+    }
+    if(dragging_number_2 == true) {
+        al_draw_bitmap(NUMBER[2], mouseX-20, mouseY-20, 0);
+    }
+    if(dragging_number_3 == true) {
+        al_draw_bitmap(NUMBER[3], mouseX-20, mouseY-20, 0);
+    }
+    if(dragging_number_4 == true) {
+        al_draw_bitmap(NUMBER[4], mouseX-20, mouseY-20, 0);
+    }
+    if(dragging_number_5 == true) {
+        al_draw_bitmap(NUMBER[5], mouseX-20, mouseY-20, 0);
+    }
+    if(dragging_number_6 == true) {
+        al_draw_bitmap(NUMBER[6], mouseX-20, mouseY-20, 0);
+    }
+    if(dragging_number_7 == true) {
+        al_draw_bitmap(NUMBER[7], mouseX-20, mouseY-20, 0);
+    }
+    if(dragging_number_8 == true) {
+        al_draw_bitmap(NUMBER[8], mouseX-20, mouseY-20, 0);
+    }
+    if(dragging_number_9 == true) {
+        al_draw_bitmap(NUMBER[9], mouseX-20, mouseY-20, 0);
     }
 }
 void Interface :: check_mouse_on_menus() {
@@ -1160,6 +1320,8 @@ void Interface :: check_mouse_on_menus() {
     } else if((color_sensor_menu_selected == true) && ((mouseX < 3*menu2_X_limit) && (mouseY > (menu_sensors_Y_begin+al_get_bitmap_width(WALK_FOWARD_ACTION))) && (mouseY < (menu_sensors_Y_begin+2*al_get_bitmap_height(WALK_FOWARD_ACTION))))) {
         //submenu sensor de cor
     } else if((ultrasonic_sensor_menu_selected == true) && ((mouseX < 4*menu2_X_limit) && (mouseY > (menu_sensors_Y_begin+2*al_get_bitmap_width(WALK_FOWARD_ACTION))) && (mouseY < (menu_sensors_Y_begin+3*al_get_bitmap_height(WALK_FOWARD_ACTION))))) {
+        //submenu sensor de ultrassom
+    } else if((number_menu_selected == true) && ((mouseX < 11*menu2_X_limit) && (mouseY > (menu_extra_Y_begin+2*al_get_bitmap_width(WALK_FOWARD_ACTION))) && (mouseY < (menu_extra_Y_begin+3*al_get_bitmap_height(WALK_FOWARD_ACTION))))) {
         //submenu sensor de ultrassom
     } else {
         menu_selected = 0;
@@ -1768,5 +1930,4 @@ void Interface :: setExecutingFluxogram(bool e) {
     executing_fluxogram = e;
 }
 
-//1. fazer submenu de numeros
 //2. setar bloco de loop com numeros
