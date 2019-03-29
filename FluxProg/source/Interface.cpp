@@ -172,29 +172,29 @@ void Interface :: draw() {
             mouseZ = 8;
             mouseZaux = events.mouse.z;
         }
+
         bool superior_limit = false;
         bool at_limit = false;
         cout<<"mouseZ: "<<mouseZ<<endl;
-        if((scroll_bar_y >= 80) && (at_limit == false)){
+        if(scroll_bar_y >= 80) {
             scroll_bar_y = scroll_bar_y - mouseZ;
             superior_limit = false;
+            at_limit = false;
         }
         if(scroll_bar_y < 80) {
             scroll_bar_y = 80;
             superior_limit = true;
+        }
+        if((at_limit == true) && (mouseZ == 8)) {
+            scroll_bar_size = scroll_bar_size+1;
+            superior_limit = false;
+            at_limit = false;
         }
         if(scroll_bar_y > (al_get_display_height(display)-al_get_bitmap_height(trash) - scroll_bar_size)) {
             scroll_bar_y = al_get_display_height(display)-al_get_bitmap_height(trash) - scroll_bar_size;
             scroll_bar_size = scroll_bar_size-1;
             superior_limit = false;
             at_limit = true;
-        }
-        if(scroll_bar_size < roll_bar_height_begin) {
-            if(mouseZ == -8)  {
-                scroll_bar_size = scroll_bar_size+1;
-            }
-        } else {
-            at_limit = false;
         }
         if(superior_limit == false) {
             check_scrolling();
