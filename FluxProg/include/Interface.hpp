@@ -22,6 +22,7 @@ using namespace std;
 #define display_width 670
 #define display_height 720
 #define roll_bar_width 20
+#define roll_bar_height_begin 50
 #define valor_maximo_blocos 100
 
 class Interface {
@@ -49,7 +50,8 @@ class Interface {
     ALLEGRO_BITMAP *trash;
     ALLEGRO_BITMAP *arrow;
     ALLEGRO_FONT *font;
-    int mouseX, mouseY;
+    int mouseX, mouseY, mouseZ, mouseZaux;
+    bool inicialize_mouseZ;
     int menu_selected;
     int mouse_aux_x, mouse_aux_y; // usado para arrastar as imagens;
     bool black_sensor_menu_selected, color_sensor_menu_selected, ultrasonic_sensor_menu_selected;
@@ -85,6 +87,7 @@ class Interface {
     bool connected_robot;
     bool executing_fluxogram;
     string program_path;
+    int scroll_bar_x, scroll_bar_y, scroll_bar_size;
 
     void load_bitmap(ALLEGRO_BITMAP **bitmap, const char *adress);
     void print_primary_menu();
@@ -112,6 +115,8 @@ class Interface {
     void check_drop_arrow();
     void check_drag_block_or_begin_arrow();
     void check_menu_selected();
+    void check_scrolling();
+    void draw_scroll_bar();
 
 public:
 

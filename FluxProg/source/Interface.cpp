@@ -75,6 +75,10 @@ Interface :: Interface(Block** _blocks_list_to_print, string _program_path) {
     drawing_line = false;
     temporary_line_X = 0;
     temporary_line_Y = 0;
+    inicialize_mouseZ = false;
+    scroll_bar_x = al_get_display_width(display)-roll_bar_width;
+    scroll_bar_y = 80;
+    scroll_bar_size = roll_bar_height_begin;
 
     // checa se o display foi inicializado corretamente, se não foi dá msg de erro
     if(!display) {
@@ -151,6 +155,50 @@ void Interface :: draw() {
         //atualiza as variaveis com as posições do mouse
         mouseX = events.mouse.x;
         mouseY = events.mouse.y;
+
+        if(inicialize_mouseZ == false) {
+            mouseZ = events.mouse.z;
+            mouseZaux = events.mouse.z;
+            inicialize_mouseZ = true;
+        }
+        if(mouseZaux == events.mouse.z) {
+            mouseZ = 0;
+        }
+        if(mouseZaux > events.mouse.z) {
+                mouseZ = -8;
+                mouseZaux = events.mouse.z;
+        }
+        if (mouseZaux < events.mouse.z){
+            mouseZ = 8;
+            mouseZaux = events.mouse.z;
+        }
+        bool superior_limit = false;
+        bool at_limit = false;
+        cout<<"mouseZ: "<<mouseZ<<endl;
+        if((scroll_bar_y >= 80) && (at_limit == false)){
+            scroll_bar_y = scroll_bar_y - mouseZ;
+            superior_limit = false;
+        }
+        if(scroll_bar_y < 80) {
+            scroll_bar_y = 80;
+            superior_limit = true;
+        }
+        if(scroll_bar_y > (al_get_display_height(display)-al_get_bitmap_height(trash) - scroll_bar_size)) {
+            scroll_bar_y = al_get_display_height(display)-al_get_bitmap_height(trash) - scroll_bar_size;
+            scroll_bar_size = scroll_bar_size-1;
+            superior_limit = false;
+            at_limit = true;
+        }
+        if(scroll_bar_size < roll_bar_height_begin) {
+            if(mouseZ == -8)  {
+                scroll_bar_size = scroll_bar_size+1;
+            }
+        } else {
+            at_limit = false;
+        }
+        if(superior_limit == false) {
+            check_scrolling();
+        }
     }
 
     if(events.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN) {
@@ -1153,18 +1201,6 @@ void Interface :: print_list_of_blocks() {
     for(int i=0; i<valor_maximo_blocos; i++) {
         //testa se na posição do array existe mesmo um bloco
         if(blocks_list_to_print[i] != NULL) {
-            //check_colisions(blocks_list_to_print[i], i);
-            /*
-                tipo 1 = bloco de ação
-                tipo 2 = bloco de sensor de ultrassom
-                tipo 3 = bloco de sensor de fita preta
-                tipo 4 = bloco de sensor de cor
-                tipo 5 = bloco de fim
-                tipo 6 = bloco de início
-                tipo 7 = bloco de loop
-                tipo 8 = bloco de decisão
-                tipo 9 = bloco de junção
-            */
             if(blocks_list_to_print[i]->getType() == ACTION_BLOCK) {
                 print_function_block(blocks_list_to_print[i]);
             }
@@ -1189,8 +1225,9 @@ void Interface :: print_list_of_blocks() {
                 blocks_list_to_print[i]->setY(mouseY - mouse_aux_y);
             } else if(blocks_list_to_print[i]->getX() <= menu2_X_limit) {
                 blocks_list_to_print[i]->setX(menu2_X_limit + 20);
-            } else if(blocks_list_to_print[i]->getY() <= menu1_Y_limit) {
-                blocks_list_to_print[i]->setY(menu1_Y_limit + 20);
+            }
+            if((blocks_list_to_print[i]->getY() <= menu1_Y_limit) && (blocks_list_to_print[i]->getDragging() == true)){
+                blocks_list_to_print[i]->setY(menu1_Y_limit);
             }
         }
     }
@@ -1360,14 +1397,14 @@ void Interface :: draw_everything() {
         //checa se o mouse está sobre os menus, para setar a variável de controle do menu_selected
         check_mouse_on_menus();
     } else {
-        //imprime menu
-        print_primary_menu();
         //imprime menu de blocos
         print_secondary_menu();
         //checa se o mouse está sobre os menus, para setar a variável de controle do menu_selected
         check_mouse_on_menus();
         //percorre toda a lista de impressão dos blocos
         print_list_of_blocks();
+        //imprime menu
+        print_primary_menu();
     }
 
     //desenha objetos sendo arrastados
@@ -1400,6 +1437,8 @@ void Interface :: draw_everything() {
         int y_end = y_init + al_get_bitmap_height(play_button);
         al_draw_rectangle(x_init, y_init, x_end, y_end, strange_color, 2);
     }
+
+    draw_scroll_bar();
 }
 bool Interface :: check_colisions() {
     int selected_block;
@@ -1421,10 +1460,8 @@ bool Interface :: check_colisions() {
         if(selected_block != -1) {
             //testa se os blocos são válidos
             if((blocks_list_to_print[i] != NULL) && (blocks_list_to_print[selected_block] != NULL)) {
-                //cout<<"passou teste de null"<<endl;
                 //exclui o bloco selecionado do teste para n testar colisão dele com ele mesmo
                 if(i != selected_block) {
-                    //cout<<"passou teste de diferente"<<endl;
                     //teste se está sendo arrastado, pois o teste de colisão ocorre quando não está sendo arrastado
                     if(blocks_list_to_print[selected_block]->getDragging() == false) {
                         int selected_block_1_x = blocks_list_to_print[selected_block]->getX();
@@ -1764,12 +1801,14 @@ void Interface :: check_drag_block_or_begin_arrow() {
             //checa se clicou sobre os blocos, se sim, seta as variáveis de seleção e seta as variáveis para poder arrastar
             if(black_sensor_menu_selected || color_sensor_menu_selected || ultrasonic_sensor_menu_selected || number_menu_selected) {
 
-            } else if((mouseX > blocks_list_to_print[i]->getX()) && (mouseX < (blocks_list_to_print[i]->getX()+blocks_list_to_print[i]->getWidth())) && (mouseY > blocks_list_to_print[i]->getY()) && (mouseY < (blocks_list_to_print[i]->getY()+blocks_list_to_print[i]->getHeight()))) {
-                if((blocks_list_to_print[i]->getIn1Selected() == false) && (blocks_list_to_print[i]->getOut1Selected() == false) && (blocks_list_to_print[i]->getIn2Selected() == false) && (blocks_list_to_print[i]->getOut2Selected() == false)) {
-                    blocks_list_to_print[i]->setDragging(true);
-                    blocks_list_to_print[i]->setSelected(true);
-                    mouse_aux_x = mouseX-blocks_list_to_print[i]->getX();
-                    mouse_aux_y = mouseY-blocks_list_to_print[i]->getY();
+            } else if(mouseY > menu1_Y_limit) {
+                if((mouseX > blocks_list_to_print[i]->getX()) && (mouseX < (blocks_list_to_print[i]->getX()+blocks_list_to_print[i]->getWidth())) && (mouseY > blocks_list_to_print[i]->getY()) && (mouseY < (blocks_list_to_print[i]->getY()+blocks_list_to_print[i]->getHeight()))) {
+                    if((blocks_list_to_print[i]->getIn1Selected() == false) && (blocks_list_to_print[i]->getOut1Selected() == false) && (blocks_list_to_print[i]->getIn2Selected() == false) && (blocks_list_to_print[i]->getOut2Selected() == false)) {
+                        blocks_list_to_print[i]->setDragging(true);
+                        blocks_list_to_print[i]->setSelected(true);
+                        mouse_aux_x = mouseX-blocks_list_to_print[i]->getX();
+                        mouse_aux_y = mouseY-blocks_list_to_print[i]->getY();
+                    }
                 }
             } else {
                 blocks_list_to_print[i]->setSelected(false);
@@ -2033,4 +2072,15 @@ bool Interface :: check_enable_menu() {
         }
     }
     return true;
+}
+void Interface :: check_scrolling() {
+    for(int i=0; i<valor_maximo_blocos; i++) {
+        if(blocks_list_to_print[i] != NULL) {
+            int old_y = blocks_list_to_print[i]->getY();
+            blocks_list_to_print[i]->setY(old_y + mouseZ);
+        }
+    }
+}
+void Interface :: draw_scroll_bar() {
+    al_draw_filled_rectangle(scroll_bar_x, scroll_bar_y, al_get_display_width(display), scroll_bar_y+scroll_bar_size, primary_menu_color);
 }
