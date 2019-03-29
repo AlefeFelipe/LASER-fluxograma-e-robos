@@ -377,7 +377,7 @@ void VirtualRobot::updateVirtualData()
         for(i = 0; i < N_ULTRASONIC; i++)
         {
             simxReadProximitySensor(client_id, ultrasonic_sensors[i], &is_there_obstacle[i], detected_objet[i], &detected_object_handle[i], detected_surface[i], simx_opmode_buffer);
-            ultrasonic_sensor_reading[i] = detected_objet[i][2];
+            ultrasonic_sensor_reading[i] = detected_objet[i][2] * 100;
         }
         for(i = 0; i < N_BLACK_TAPE_SENSOR; i++)
         {

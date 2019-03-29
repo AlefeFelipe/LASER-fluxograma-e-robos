@@ -2,14 +2,9 @@
 
 Communication::Communication()
 {
-    shared_memory = NULL;
     bool opened = false;
     while(!opened)
     {
-        if(shared_memory!=NULL) //deletes the last opened vision shared memory if it exists
-        {
-            delete shared_memory;
-        }
         try //tries to open the vision shared memory until it succeeds
         {
             shared_memory = new managed_shared_memory (open_only, MEMORY_BLOCK);
@@ -55,21 +50,24 @@ void Communication::setFeedback(int _feedback)
 
 void Communication::setUltrasonicReading(int *ultrasonic_reading)
 {
-    ultrasonic_sensor_reading = ultrasonic_reading;
+    for(int i=0; i < N_ULTRASONIC; i++)
+    {
+        ultrasonic_sensor_reading[i] = ultrasonic_reading[i];
+    }
 }
 
 void Communication::setBlackTypeReading(int *black_type_reading)
 {
-    black_type_sensor_reading = black_type_reading;
-    for(int i=0; i< 5; i++)
+    for(int i=0; i < N_BLACK_TAPE_SENSOR; i++)
     {
-        //std::cout <<"leitura recebida na posicao "<<i<<": "<<black_type_reading[i]<<std::endl;
-        //std::cout <<"leitura atual"<<black_type_sensor_reading[i]<<std::endl;
-        //usleep(100000);
+        black_type_sensor_reading[i] = black_type_reading[i];
     }
 }
 
 /*void Communication::setColorReading(int **color_reading)
 {
-    color_sensor_reading = color_reading;
+    for(int i=0; i < N_COLOR_SENSOR; i++)
+    {
+        color_sensor_reading[i] = color_reading[i];
+    }
 }*/

@@ -57,6 +57,7 @@ void  Communication::upadateReadings()
         cout<<"programa nao abriu"<<endl;
     }
 }
+
 void Communication :: inicialize() {
     bool opened = false;
     while(!opened) {
