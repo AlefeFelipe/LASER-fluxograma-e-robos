@@ -1934,6 +1934,9 @@ void Interface :: callMessage(int i) {
         case 13:
             al_show_native_message_box(display, "Fluxprog", " ", "Desconectado ao Robo", "Ok", 0);
             break;
+        case 14:
+            al_show_native_message_box(display, "Fluxprog", "ERRO", "O programa não está conectado.", "Ok", ALLEGRO_MESSAGEBOX_ERROR);
+            break;
     }
 }
 int Interface :: getImageHeight(int i) {

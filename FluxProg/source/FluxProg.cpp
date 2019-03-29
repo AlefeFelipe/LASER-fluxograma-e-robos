@@ -359,6 +359,9 @@ void FluxProg :: execute() {
                 }
             }
         } else {
+            interface->callMessage(14);
+            executing_fluxogram = false;
+            /*
             //se for do tipo 8 = condicional
             //tem q fazer leitura de sensores para setar as variáveis de comparação
             if(current_executing_block->getType() == CONDITIONAL_BLOCK) {
@@ -425,6 +428,7 @@ void FluxProg :: execute() {
                 std::cout<<"executou bloco: "<<current_executing_block->getName()<<std::endl;
                 executing_fluxogram = false;
             }
+            */
         }
 
     }
@@ -659,6 +663,6 @@ string FluxProg :: getExecutablePath() {
 
 /*
 1. Ler sensores
-2. Fazer salvar
+2. Salvar
 3. Barra de rolagem
 */
