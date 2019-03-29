@@ -129,7 +129,7 @@ void VirtualRobot::moveForward()
     }
     else
     {
-        int turning_tight, turning_left;
+        int turning_tight = 0, turning_left = 0;
         float first_x, first_y, dx, dy;
         updateVirtualData();
         while(((black_type_sensor_reading[0]&&black_type_sensor_reading[2])||

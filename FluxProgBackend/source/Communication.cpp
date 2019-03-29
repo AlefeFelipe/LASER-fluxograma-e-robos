@@ -2,6 +2,7 @@
 
 Communication::Communication()
 {
+    shared_memory = NULL;
     bool opened = false;
     while(!opened)
     {

@@ -3,10 +3,13 @@ project(FluxProgBackend)
 
 INCLUDE(FindPkgConfig)
 
-IF(CMAKE_COMPILER_IS_GNUCC)
-SET(CMAKE_CXX_FLAGS
-"${CMAKE_CXX_FLAGS}  -Wall -std=c++0x -DBUILD_SHARED_LIBS=OFF ")
-ENDIF(CMAKE_COMPILER_IS_GNUCC)
+set(CMAKE_CXX_STANDARD 11)
+
+#Setting build type to release
+set(CMAKE_BUILD_TYPE Release)
+
+
+set(CMAKE_CXX_FLAGS "-Wall")
 
 #Setting directory for the outputted executable
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
