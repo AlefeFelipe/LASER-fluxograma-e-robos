@@ -39,7 +39,7 @@ bool ConditionalBlock :: getResponse() {
 
 void ConditionalBlock :: setNext1(Block *b) {
     next_true = b;
-    cout<<"setou o next corretamente"<<endl;
+    //cout<<"setou o next corretamente"<<endl;
     //cout<<"origem: "<<getID()<<" ---- destino: "<<b->getID()<<endl;
 }
 

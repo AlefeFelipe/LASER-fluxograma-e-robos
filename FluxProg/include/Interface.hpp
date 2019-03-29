@@ -19,8 +19,8 @@
 
 using namespace std;
 
-#define display_width 700
-#define display_height 900
+#define display_width 670
+#define display_height 720
 #define roll_bar_width 20
 #define valor_maximo_blocos 100
 
@@ -126,7 +126,7 @@ public:
     void setConnectedSimulator(bool c);
     void setConnectedRobot(bool c);
     void setExecutingFluxogram(bool e);
-    
+
 
 };
 #endif

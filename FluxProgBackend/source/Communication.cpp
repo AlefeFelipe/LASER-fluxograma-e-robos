@@ -61,6 +61,12 @@ void Communication::setUltrasonicReading(int *ultrasonic_reading)
 void Communication::setBlackTypeReading(int *black_type_reading)
 {
     black_type_sensor_reading = black_type_reading;
+    for(int i=0; i< 5; i++)
+    {
+        //std::cout <<"leitura recebida na posicao "<<i<<": "<<black_type_reading[i]<<std::endl;
+        //std::cout <<"leitura atual"<<black_type_sensor_reading[i]<<std::endl;
+        //usleep(100000);
+    }
 }
 
 /*void Communication::setColorReading(int **color_reading)

@@ -61,6 +61,18 @@ void FluxProgBackend::start()
     {
         feedback = 0;
         command = communication->getCommand();
+        if(virtual_robot)
+        {
+            virtual_robot->updateSensorsReading();
+            communication->setUltrasonicReading(virtual_robot->getUltrasonicReading());
+            communication->setBlackTypeReading(virtual_robot->getBlackTypeReading());
+        }
+        else
+        {
+            physical_robot->updateSensorsReading();
+            communication->setUltrasonicReading(physical_robot->getUltrasonicReading());
+            communication->setBlackTypeReading(physical_robot->getBlackTypeReading());
+        }
         if(command > 0)
         {
             if(virtual_robot)

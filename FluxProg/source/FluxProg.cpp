@@ -274,6 +274,7 @@ void FluxProg :: execute() {
             //se for do tipo 8 = condicional
             //tem q fazer leitura de sensores para setar as variáveis de comparação
             if(current_executing_block->getType() == CONDITIONAL_BLOCK) {
+                communication->upadateReadings();
                 int* black_sensor_reading = communication->getBlackTypeReading();
                 int* ultrasonic_sensor_reading = communication->getUltrasonicReading();
                 //checa tipo de sensor
@@ -282,27 +283,32 @@ void FluxProg :: execute() {
                         //black sensor 1
                         current_executing_block->setParameter1(black_sensor_reading[0]);
                         current_executing_block->setParameter2(1);
+                        cout<<"sensor: "<<black_sensor_reading[0]<<endl;
                         break;
 
                     case 2:
                         //black sensor 2
                         current_executing_block->setParameter1(black_sensor_reading[1]);
                         current_executing_block->setParameter2(1);
+                        cout<<"sensor: "<<black_sensor_reading[1]<<endl;
                         break;
                     case 3:
                         //black sensor 3
                         current_executing_block->setParameter1(black_sensor_reading[2]);
                         current_executing_block->setParameter2(1);
+                        cout<<"sensor: "<<black_sensor_reading[2]<<endl;
                         break;
                     case 4:
                         //black sensor 4
                         current_executing_block->setParameter1(black_sensor_reading[3]);
                         current_executing_block->setParameter2(1);
+                        cout<<"sensor: "<<black_sensor_reading[3]<<endl;
                         break;
                     case 5:
                         //black sensor 5
                         current_executing_block->setParameter1(black_sensor_reading[4]);
                         current_executing_block->setParameter2(1);
+                        cout<<"sensor: "<<black_sensor_reading[4]<<endl;
                         break;
                     case 6:
                         //color sensor 1
@@ -318,16 +324,19 @@ void FluxProg :: execute() {
                         //ultrasonic sensor 1
                         current_executing_block->setParameter1(ultrasonic_sensor_reading[0]);
                         current_executing_block->setParameter2(1);
+                        cout<<"sensor: "<<ultrasonic_sensor_reading[0]<<endl;
                         break;
                     case 9:
                         //ultrasonic sensor 2
                         current_executing_block->setParameter1(ultrasonic_sensor_reading[1]);
                         current_executing_block->setParameter2(1);
+                        cout<<"sensor: "<<ultrasonic_sensor_reading[1]<<endl;
                         break;
                     case 10:
                         //ultrasonic sensor 3
                         current_executing_block->setParameter1(ultrasonic_sensor_reading[2]);
                         current_executing_block->setParameter2(1);
+                        cout<<"sensor: "<<ultrasonic_sensor_reading[2]<<endl;
                         break;
                 }
             }

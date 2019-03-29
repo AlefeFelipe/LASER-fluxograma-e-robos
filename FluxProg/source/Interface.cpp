@@ -175,6 +175,11 @@ void Interface :: draw() {
                                 }
                                 blocks_list_to_print[block_selected]->setNext1(blocks_list_to_print[i]);
                                 blocks_list_to_print[i]->setPrevious1(blocks_list_to_print[block_selected]);
+                                //teste se não está setando o mesmo bloco nas duas saídas
+                                if(blocks_list_to_print[block_selected]->getNext1() == blocks_list_to_print[block_selected]->getNext2()) {
+                                    blocks_list_to_print[block_selected]->getNext2()->setPrevious2(NULL);
+                                    blocks_list_to_print[block_selected]->setNext2(NULL);
+                                }
                             } else {
                                 //testa se não havia alguma ligação antes
                                 if(blocks_list_to_print[block_selected]->getNext2() != NULL) {
@@ -187,6 +192,11 @@ void Interface :: draw() {
                                 }
                                 blocks_list_to_print[block_selected]->setNext2(blocks_list_to_print[i]);
                                 blocks_list_to_print[i]->setPrevious1(blocks_list_to_print[block_selected]);
+                                //teste se não está setando o mesmo bloco nas duas saídas
+                                if(blocks_list_to_print[block_selected]->getNext1() == blocks_list_to_print[block_selected]->getNext2()) {
+                                    blocks_list_to_print[block_selected]->getNext1()->setPrevious2(NULL);
+                                    blocks_list_to_print[block_selected]->setNext1(NULL);
+                                }
                             }
 
                         } else if(blocks_list_to_print[i]->getIn2Selected() == true) {
@@ -202,6 +212,11 @@ void Interface :: draw() {
                                 }
                                 blocks_list_to_print[block_selected]->setNext1(blocks_list_to_print[i]);
                                 blocks_list_to_print[i]->setPrevious2(blocks_list_to_print[block_selected]);
+                                //teste se não está setando o mesmo bloco nas duas saídas
+                                if(blocks_list_to_print[block_selected]->getNext1() == blocks_list_to_print[block_selected]->getNext2()) {
+                                    blocks_list_to_print[block_selected]->getNext2()->setPrevious1(NULL);
+                                    blocks_list_to_print[block_selected]->setNext2(NULL);
+                                }
                             } else {
                                 //testa se não havia alguma ligação antes
                                 if(blocks_list_to_print[block_selected]->getNext2() != NULL) {
@@ -214,6 +229,11 @@ void Interface :: draw() {
                                 }
                                 blocks_list_to_print[block_selected]->setNext2(blocks_list_to_print[i]);
                                 blocks_list_to_print[i]->setPrevious2(blocks_list_to_print[block_selected]);
+                                //teste se não está setando o mesmo bloco nas duas saídas
+                                if(blocks_list_to_print[block_selected]->getNext1() == blocks_list_to_print[block_selected]->getNext2()) {
+                                    blocks_list_to_print[block_selected]->getNext1()->setPrevious1(NULL);
+                                    blocks_list_to_print[block_selected]->setNext1(NULL);
+                                }
                             }
                         }
                     }
