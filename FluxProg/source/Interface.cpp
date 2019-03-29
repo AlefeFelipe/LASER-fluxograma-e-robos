@@ -46,7 +46,7 @@ Interface :: Interface(Block** _blocks_list_to_print, string _program_path) {
     al_set_window_position(display, 40, 40);
     al_set_window_title(display, "Fluxprog_v2");
     al_clear_to_color(al_map_rgb(0, 0, 0));
-    al_set_window_constraints(display, 670, 600, 5000, 5000);
+    al_set_window_constraints(display, 670, 720, 5000, 5000);
     al_apply_window_constraints(display, true);
 
     timer = al_create_timer(0.5);
@@ -99,7 +99,6 @@ Interface :: Interface(Block** _blocks_list_to_print, string _program_path) {
 
 
 }
-
 Interface :: ~Interface() {
 
     //destroi os objetos usados pelo allegro
@@ -438,7 +437,7 @@ void Interface :: draw() {
         for(int i=0; i<valor_maximo_blocos; i++) {
             if(blocks_list_to_print[i] != NULL) {
                 if(blocks_list_to_print[i]->getDragging() == true) {
-                    if((mouseX > 0) && (mouseX < 70) && (mouseY > (al_get_display_height(display)-70)) && (mouseY < al_get_display_height(display))) {
+                    if((mouseX > (al_get_display_width(display)-al_get_bitmap_width(trash))) && (mouseX < al_get_display_width(display)) && (mouseY > (al_get_display_height(display)-al_get_bitmap_height(trash))) && (mouseY < al_get_display_height(display))) {
                         //remove_block(blocks_list_to_print[i]);
                         blocks_list_to_print[i]->setDelete(true);
                     } else {
@@ -550,9 +549,9 @@ void Interface :: print_primary_menu() {
 void Interface :: print_secondary_menu() {
 
     int blocks_menu_Y = (al_get_bitmap_height(play_button)+4);
-    int sensors_menu_Y = blocks_menu_Y + 15 + 6*al_get_bitmap_height(mini_menu[0]);
-    int actions_menu_Y = sensors_menu_Y + 3 * al_get_bitmap_height(WALK_FOWARD_ACTION)+20;
-    int extra_menu_Y = actions_menu_Y + 3 * al_get_bitmap_height(WALK_FOWARD_ACTION)+20;
+    int sensors_menu_Y = blocks_menu_Y + 6*al_get_bitmap_height(mini_menu[0]);
+    int actions_menu_Y = sensors_menu_Y + 3 * al_get_bitmap_height(WALK_FOWARD_ACTION)+10;
+    int extra_menu_Y = actions_menu_Y + 3 * al_get_bitmap_height(WALK_FOWARD_ACTION)+10;
 
     //desenha o retangulo no qual ficam os botões de opções
     al_draw_filled_rectangle(0, blocks_menu_Y, al_get_bitmap_width(mini_menu[0])+5, blocks_menu_Y + 6*al_get_bitmap_height(mini_menu[0])+5, primary_menu_color);
@@ -596,7 +595,7 @@ void Interface :: print_secondary_menu() {
         for(int i=0; i<5; i++) {
             // checa se o mouse está sobre o menu de blocos e desenha um retangulo selecionando o botao que o mouse está sobre
             if((mouseX > black_sensor_submenu_X + i * al_get_bitmap_height(WALK_FOWARD_ACTION)) && (mouseX < black_sensor_submenu_X + (i+1) * al_get_bitmap_height(WALK_FOWARD_ACTION))) {
-                if((mouseY > black_sensor_submenu_Y) && (mouseY < black_sensor_submenu_Y+5 + al_get_bitmap_height(mini_menu[0]))) {
+                if((mouseY > black_sensor_submenu_Y) && (mouseY < black_sensor_submenu_Y + 5 + al_get_bitmap_height(mini_menu[0]))) {
                     al_draw_rectangle(black_sensor_submenu_X + i * al_get_bitmap_height(WALK_FOWARD_ACTION), black_sensor_submenu_Y, black_sensor_submenu_X + (i+1) * al_get_bitmap_height(WALK_FOWARD_ACTION), black_sensor_submenu_Y + al_get_bitmap_height(mini_menu[0]), black, 3);
                     menu_selected = 24 + i;
                 }
@@ -648,8 +647,8 @@ void Interface :: print_secondary_menu() {
     for(int i=6; i<9; i++) {
         // checa se o mouse está sobre o menu de sensores e desenha um retangulo selecionando o botao que o mouse está sobre
         if((mouseX > 0) && (mouseX < al_get_bitmap_width(WALK_FOWARD_ACTION))) {
-            if((mouseY > al_get_bitmap_height(play_button) + 24 + i*al_get_bitmap_height(mini_menu[0])) && (mouseY < al_get_bitmap_height(play_button) + 24 + (i+1)*al_get_bitmap_height(mini_menu[0]))) {
-                al_draw_rectangle(0, al_get_bitmap_height(play_button) + 24 + i*al_get_bitmap_height(mini_menu[0]), al_get_bitmap_width(mini_menu[0]), al_get_bitmap_height(play_button)+ 24 + (i+1)*al_get_bitmap_height(mini_menu[0]), black, 3);
+            if((mouseY > al_get_bitmap_height(play_button) + 9 + i*al_get_bitmap_height(mini_menu[0])) && (mouseY < al_get_bitmap_height(play_button) + 9 + (i+1)*al_get_bitmap_height(mini_menu[0]))) {
+                al_draw_rectangle(0, al_get_bitmap_height(play_button) + 9 + i*al_get_bitmap_height(mini_menu[0]), al_get_bitmap_width(mini_menu[0]), al_get_bitmap_height(play_button)+ 9 + (i+1)*al_get_bitmap_height(mini_menu[0]), black, 3);
                 menu_selected = 9 + i;
             }
         }
@@ -658,8 +657,8 @@ void Interface :: print_secondary_menu() {
     for(int i=9; i<12; i++) {
         // checa se o mouse está sobre o menu e desenha um retangulo selecionando o botao que o mouse está sobre
         if((mouseX > 0) && (mouseX < al_get_bitmap_width(WALK_FOWARD_ACTION))) {
-            if((mouseY > al_get_bitmap_height(play_button) + 44 + i*al_get_bitmap_height(mini_menu[0])) && (mouseY < al_get_bitmap_height(play_button) + 44 + (i+1)*al_get_bitmap_height(mini_menu[0]))) {
-                al_draw_rectangle(0, al_get_bitmap_height(play_button) + 44 + i*al_get_bitmap_height(mini_menu[0]), al_get_bitmap_width(mini_menu[0]), al_get_bitmap_height(play_button)+ 44 + (i+1)*al_get_bitmap_height(mini_menu[0]), black, 3);
+            if((mouseY > al_get_bitmap_height(play_button) + 19 + i*al_get_bitmap_height(mini_menu[0])) && (mouseY < al_get_bitmap_height(play_button) + 19 + (i+1)*al_get_bitmap_height(mini_menu[0]))) {
+                al_draw_rectangle(0, al_get_bitmap_height(play_button) + 19 + i*al_get_bitmap_height(mini_menu[0]), al_get_bitmap_width(mini_menu[0]), al_get_bitmap_height(play_button)+ 19 + (i+1)*al_get_bitmap_height(mini_menu[0]), black, 3);
                 menu_selected = 9 + i;
             }
         }
@@ -668,8 +667,8 @@ void Interface :: print_secondary_menu() {
     for(int i=12; i<15; i++) {
         // checa se o mouse está sobre o menu e desenha um retangulo selecionando o botao que o mouse está sobre
         if((mouseX > 0) && (mouseX < al_get_bitmap_width(WALK_FOWARD_ACTION))) {
-            if((mouseY > al_get_bitmap_height(play_button) + 64 + i*al_get_bitmap_height(mini_menu[0])) && (mouseY < al_get_bitmap_height(play_button) + 64 + (i+1)*al_get_bitmap_height(mini_menu[0]))) {
-                al_draw_rectangle(0, al_get_bitmap_height(play_button) + 64 + i*al_get_bitmap_height(mini_menu[0]), al_get_bitmap_width(mini_menu[0]), al_get_bitmap_height(play_button)+ 64 + (i+1)*al_get_bitmap_height(mini_menu[0]), black, 3);
+            if((mouseY > al_get_bitmap_height(play_button) + 29 + i*al_get_bitmap_height(mini_menu[0])) && (mouseY < al_get_bitmap_height(play_button) + 29 + (i+1)*al_get_bitmap_height(mini_menu[0]))) {
+                al_draw_rectangle(0, al_get_bitmap_height(play_button) + 29 + i*al_get_bitmap_height(mini_menu[0]), al_get_bitmap_width(mini_menu[0]), al_get_bitmap_height(play_button)+ 29 + (i+1)*al_get_bitmap_height(mini_menu[0]), black, 3);
                 menu_selected = 9 + i;
             }
         }
@@ -703,7 +702,7 @@ void Interface :: print_secondary_menu() {
         }
     }
 
-    al_draw_bitmap(trash, 0, al_get_display_height(display)-70, 0);
+    al_draw_bitmap(trash, al_get_display_width(display)-al_get_bitmap_width(trash), al_get_display_height(display)-al_get_bitmap_height(trash), 0);
 }
 void Interface :: print_function_block(Block *b) {
     if((mouseX > b->getX()) && (mouseX < (b->getX() + b->getWidth())) && (mouseY > b->getY()) && (mouseY < (b->getY() + b->getHeight()))) {
@@ -1321,14 +1320,14 @@ void Interface :: check_mouse_on_menus() {
     menu_blocks_Y_begin = 4 + al_get_bitmap_height(play_button);
     menu_blocks_Y_limit = menu1_Y_limit + 6*al_get_bitmap_height(WALK_FOWARD_ACTION);
 
-    menu_sensors_Y_begin = menu_blocks_Y_limit + 20;
-    menu_sensors_Y_limit = menu_sensors_Y_begin + 3*al_get_bitmap_height(WALK_FOWARD_ACTION);
+    menu_sensors_Y_begin = menu_blocks_Y_limit;
+    menu_sensors_Y_limit = menu_sensors_Y_begin + 3*al_get_bitmap_height(WALK_FOWARD_ACTION)+10;
 
-    menu_actions_Y_begin = menu_sensors_Y_limit + 20;
-    menu_actions_Y_limit = menu_actions_Y_begin + 3*al_get_bitmap_height(WALK_FOWARD_ACTION);
+    menu_actions_Y_begin = menu_sensors_Y_limit;
+    menu_actions_Y_limit = menu_actions_Y_begin + 3*al_get_bitmap_height(WALK_FOWARD_ACTION)+10;
 
-    menu_extra_Y_begin = menu_actions_Y_limit + 20;
-    menu_extra_Y_limit = menu_extra_Y_begin + 3*al_get_bitmap_height(WALK_FOWARD_ACTION);
+    menu_extra_Y_begin = menu_actions_Y_limit;
+    menu_extra_Y_limit = menu_extra_Y_begin + 3*al_get_bitmap_height(WALK_FOWARD_ACTION)+10;
 
     //se o mouse não está sobre os menus seta a variável de teste para zero
     if(mouseY < menu1_Y_limit) {

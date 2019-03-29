@@ -24,7 +24,6 @@ FluxProg :: FluxProg() {
     communication = new Communication();
 
 }
-
 FluxProg :: ~FluxProg() {
 
     for(int i=0; i<valor_maximo_blocos; i++) {
@@ -638,9 +637,7 @@ void FluxProg :: refresh_executing_block() {
         }
     }
 }
-
-string FluxProg :: getExecutablePath()
-{
+string FluxProg :: getExecutablePath() {
     char result[ PATH_MAX ];
     ssize_t count = readlink("/proc/self/exe", result, PATH_MAX);
     string path;
@@ -651,6 +648,8 @@ string FluxProg :: getExecutablePath()
     return path;
 }
 
-//1. fazer submenu de numeros
-//2. setar bloco de loop com numeros
-//3. checar ligações entre blocos
+/*
+1. Ler sensores
+2. Fazer salvar
+3. Barra de rolagem
+*/
