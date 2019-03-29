@@ -15,6 +15,7 @@
 #include <signal.h>
 #include "Block.hpp"
 #include "fluxProgCte.h"
+#include <libgen.h>
 
 using namespace std;
 
@@ -83,6 +84,7 @@ class Interface {
     bool connected_simulator;
     bool connected_robot;
     bool executing_fluxogram;
+    string program_path;
 
     void load_bitmap(ALLEGRO_BITMAP **bitmap, const char *adress);
     void print_primary_menu();
@@ -106,10 +108,11 @@ class Interface {
     void draw_lines();
     void delete_connections();
     void draw_everything();
+    bool check_enable_menu();
 
 public:
 
-    Interface(Block** _blocks_list_to_print);
+    Interface(Block** _blocks_list_to_print, string _program_path);
     //Interface();
     ~Interface();
     void draw();
@@ -123,6 +126,7 @@ public:
     void setConnectedSimulator(bool c);
     void setConnectedRobot(bool c);
     void setExecutingFluxogram(bool e);
+    
 
 };
 #endif
