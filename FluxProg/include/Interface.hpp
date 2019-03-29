@@ -109,11 +109,13 @@ class Interface {
     void delete_connections();
     void draw_everything();
     bool check_enable_menu();
+    void check_drop_arrow();
+    void check_drag_block_or_begin_arrow();
+    void check_menu_selected();
 
 public:
 
     Interface(Block** _blocks_list_to_print, string _program_path);
-    //Interface();
     ~Interface();
     void draw();
     int getMenuClick();

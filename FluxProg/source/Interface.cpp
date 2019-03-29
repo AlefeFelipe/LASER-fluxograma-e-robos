@@ -155,321 +155,88 @@ void Interface :: draw() {
 
     if(events.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN) {
 
-        //checa se a flecha foi solta na entrada de algum bloco
-        if(drawing_line == true) {
-            for(int i=0; i<valor_maximo_blocos; i++) {
-                if((blocks_list_to_print[i] != NULL) && (block_selected != i)){
+        cout<<"mouse: "<<events.mouse.button<<endl;
+        if(events.mouse.button == 1) {
+            check_drop_arrow();
 
-                    check_mouse_on_points(blocks_list_to_print[i]);
-                    if(blocks_list_to_print[block_selected] != NULL) {
-                        if(blocks_list_to_print[i]->getIn1Selected() == true) {
-                            if(number_of_selected_out == 1) {
-                                //testa se não havia alguma ligação antes
-                                if(blocks_list_to_print[block_selected]->getNext1() != NULL) {
-                                    //descobre se é o previous1 ou o 2
-                                    if(blocks_list_to_print[block_selected]->getNext1()->getPrevious1() == blocks_list_to_print[block_selected]) {
-                                        blocks_list_to_print[block_selected]->getNext1()->setPrevious1(NULL);
-                                    } else {
-                                        blocks_list_to_print[block_selected]->getNext1()->setPrevious2(NULL);
-                                    }
-                                }
-                                blocks_list_to_print[block_selected]->setNext1(blocks_list_to_print[i]);
-                                blocks_list_to_print[i]->setPrevious1(blocks_list_to_print[block_selected]);
-                                //teste se não está setando o mesmo bloco nas duas saídas
-                                if(blocks_list_to_print[block_selected]->getNext1() == blocks_list_to_print[block_selected]->getNext2()) {
-                                    blocks_list_to_print[block_selected]->getNext2()->setPrevious2(NULL);
-                                    blocks_list_to_print[block_selected]->setNext2(NULL);
-                                }
-                            } else {
-                                //testa se não havia alguma ligação antes
-                                if(blocks_list_to_print[block_selected]->getNext2() != NULL) {
-                                    //descobre se é o previous1 ou o 2
-                                    if(blocks_list_to_print[block_selected]->getNext2()->getPrevious1() == blocks_list_to_print[block_selected]) {
-                                        blocks_list_to_print[block_selected]->getNext2()->setPrevious1(NULL);
-                                    } else {
-                                        blocks_list_to_print[block_selected]->getNext2()->setPrevious2(NULL);
-                                    }
-                                }
-                                blocks_list_to_print[block_selected]->setNext2(blocks_list_to_print[i]);
-                                blocks_list_to_print[i]->setPrevious1(blocks_list_to_print[block_selected]);
-                                //teste se não está setando o mesmo bloco nas duas saídas
-                                if(blocks_list_to_print[block_selected]->getNext1() == blocks_list_to_print[block_selected]->getNext2()) {
-                                    blocks_list_to_print[block_selected]->getNext1()->setPrevious2(NULL);
-                                    blocks_list_to_print[block_selected]->setNext1(NULL);
-                                }
-                            }
+            check_drag_block_or_begin_arrow();
 
-                        } else if(blocks_list_to_print[i]->getIn2Selected() == true) {
-                            if(number_of_selected_out == 1) {
-                                //testa se não havia alguma ligação antes
-                                if(blocks_list_to_print[block_selected]->getNext1() != NULL) {
-                                    //descobre se é o previous1 ou o 2
-                                    if(blocks_list_to_print[block_selected]->getNext1()->getPrevious1() == blocks_list_to_print[block_selected]) {
-                                        blocks_list_to_print[block_selected]->getNext1()->setPrevious1(NULL);
-                                    } else {
-                                        blocks_list_to_print[block_selected]->getNext1()->setPrevious2(NULL);
-                                    }
-                                }
-                                blocks_list_to_print[block_selected]->setNext1(blocks_list_to_print[i]);
-                                blocks_list_to_print[i]->setPrevious2(blocks_list_to_print[block_selected]);
-                                //teste se não está setando o mesmo bloco nas duas saídas
-                                if(blocks_list_to_print[block_selected]->getNext1() == blocks_list_to_print[block_selected]->getNext2()) {
-                                    blocks_list_to_print[block_selected]->getNext2()->setPrevious1(NULL);
-                                    blocks_list_to_print[block_selected]->setNext2(NULL);
-                                }
-                            } else {
-                                //testa se não havia alguma ligação antes
-                                if(blocks_list_to_print[block_selected]->getNext2() != NULL) {
-                                    //descobre se é o previous1 ou o 2
-                                    if(blocks_list_to_print[block_selected]->getNext2()->getPrevious1() == blocks_list_to_print[block_selected]) {
-                                        blocks_list_to_print[block_selected]->getNext2()->setPrevious1(NULL);
-                                    } else {
-                                        blocks_list_to_print[block_selected]->getNext2()->setPrevious2(NULL);
-                                    }
-                                }
-                                blocks_list_to_print[block_selected]->setNext2(blocks_list_to_print[i]);
-                                blocks_list_to_print[i]->setPrevious2(blocks_list_to_print[block_selected]);
-                                //teste se não está setando o mesmo bloco nas duas saídas
-                                if(blocks_list_to_print[block_selected]->getNext1() == blocks_list_to_print[block_selected]->getNext2()) {
-                                    blocks_list_to_print[block_selected]->getNext1()->setPrevious1(NULL);
-                                    blocks_list_to_print[block_selected]->setNext1(NULL);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        bool line_test = drawing_line;
-        //testa se pressionou o mouse sobre algum bloco existente,
-        //se sim seta a variável dizendo que o bloco está selecionado para poder arrastá-lo
-        for(int i=0; i<valor_maximo_blocos; i++) {
-            if(blocks_list_to_print[i] != NULL) {
-
-                check_mouse_on_points(blocks_list_to_print[i]);
-                //checa se clicou nas bolinhas de saida dos blocos, se sim, seta as variáveis para desenhar as linhas de ligação
-                if(blocks_list_to_print[i]->getOut1Selected() == true) {
-                    temporary_line_X = mouseX;
-                    temporary_line_Y = mouseY;
-                    drawing_line = true;
-                    block_selected = i;
-                    number_of_selected_out = 1;
-                } else if(blocks_list_to_print[i]->getOut2Selected() == true) {
-                    temporary_line_X = mouseX;
-                    temporary_line_Y = mouseY;
-                    drawing_line = true;
-                    block_selected = i;
-                    number_of_selected_out = 2;
-                } else if(drawing_line == line_test) {
-                    temporary_line_X = 0;
-                    temporary_line_Y = 0;
-                    drawing_line = false;
-                }
-                //checa se clicou sobre os blocos, se sim, seta as variáveis de seleção e seta as variáveis para poder arrastar
-                if(black_sensor_menu_selected || color_sensor_menu_selected || ultrasonic_sensor_menu_selected || number_menu_selected) {
-
-                } else if((mouseX > blocks_list_to_print[i]->getX()) && (mouseX < (blocks_list_to_print[i]->getX()+blocks_list_to_print[i]->getWidth())) && (mouseY > blocks_list_to_print[i]->getY()) && (mouseY < (blocks_list_to_print[i]->getY()+blocks_list_to_print[i]->getHeight()))) {
-                    if((blocks_list_to_print[i]->getIn1Selected() == false) && (blocks_list_to_print[i]->getOut1Selected() == false) && (blocks_list_to_print[i]->getIn2Selected() == false) && (blocks_list_to_print[i]->getOut2Selected() == false)) {
-                        blocks_list_to_print[i]->setDragging(true);
-                        blocks_list_to_print[i]->setSelected(true);
-                        mouse_aux_x = mouseX-blocks_list_to_print[i]->getX();
-                        mouse_aux_y = mouseY-blocks_list_to_print[i]->getY();
-                    }
-                } else {
-                    blocks_list_to_print[i]->setSelected(false);
-                }
-            }
-        }
-
-        // caso tenha clicado sobre um dos menus de ação ou sensor, seta as variáveis para arrastar com o mouse.
-        switch(menu_selected) {
-            case 18:
-                dragging_walk_foward = true;
-                break;
-            case 19:
-                dragging_turn_left = true;
-                break;
-            case 20:
-                dragging_turn_right = true;
-                break;
-            case 24:
-                dragging_black_sensor1 = true;
-                break;
-            case 25:
-                dragging_black_sensor2 = true;
-                break;
-            case 26:
-                dragging_black_sensor3 = true;
-                break;
-            case 27:
-                dragging_black_sensor4 = true;
-                break;
-            case 28:
-                dragging_black_sensor5 = true;
-                break;
-            case 29:
-                dragging_color_sensor1 = true;
-                break;
-            case 30:
-                dragging_color_sensor2 = true;
-                break;
-            case 31:
-                dragging_ultrasonic_sensor1 = true;
-                break;
-            case 32:
-                dragging_ultrasonic_sensor2 = true;
-                break;
-            case 33:
-                dragging_ultrasonic_sensor3 = true;
-                break;
-            case 34:
-                dragging_number_0 = true;
-                break;
-            case 35:
-                dragging_number_1 = true;
-                break;
-            case 36:
-                dragging_number_2 = true;
-                break;
-            case 37:
-                dragging_number_3 = true;
-                break;
-            case 38:
-                dragging_number_4 = true;
-                break;
-            case 39:
-                dragging_number_5 = true;
-                break;
-            case 40:
-                dragging_number_6 = true;
-                break;
-            case 41:
-                dragging_number_7 = true;
-                break;
-            case 42:
-                dragging_number_8 = true;
-                break;
-            case 43:
-                dragging_number_9 = true;
-                break;
-        }
-        if(menu_selected == CONDITIONAL_BLOCK) {
-            mouse_aux_x = 60;
-            mouse_aux_y = 35;
-            menu_click = CONDITIONAL_BLOCK;
-        }
-        if(menu_selected == ACTION_BLOCK) {
-            mouse_aux_x = 45;
-            mouse_aux_y = 20;
-            menu_click = ACTION_BLOCK;
-        }
-        if(menu_selected == START_BLOCK) {
-            mouse_aux_x = 40;
-            mouse_aux_y = 15;
-            menu_click = START_BLOCK;
-        }
-        if(menu_selected == END_BLOCK) {
-            mouse_aux_x = 40;
-            mouse_aux_y = 15;
-            menu_click = END_BLOCK;
-        }
-        if(menu_selected == MERGE_BLOCK) {
-            mouse_aux_x = 15;
-            mouse_aux_y = 10;
-            menu_click = MERGE_BLOCK;
-        }
-        if(menu_selected == LOOP_BLOCK) {
-            mouse_aux_x = 30;
-            mouse_aux_y = 40;
-            menu_click = LOOP_BLOCK;
-        }
-
-        //se o sub menu estava aberto e clicou fora, fecha o sub menu
-        if(menu_selected != BLACK_TAPE_SENSOR_MENU) {
-            black_sensor_menu_selected = false;
-        }
-        if(menu_selected != SENSOR_COLOR_MENU) {
-            color_sensor_menu_selected = false;
-        }
-        if(menu_selected != ULTRASONIC_SENSOR_MENU) {
-            ultrasonic_sensor_menu_selected = false;
-        }
-        if(menu_selected != N_LOOP_BLOCK) {
-            number_menu_selected = false;
+            check_menu_selected();
         }
     }
 
     if(events.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP) {
-        if(check_enable_menu() == true) {
-            if(menu_selected == PLAY) {
-                //cout<<"play"<<endl;
-                menu_click = PLAY;
+        if(events.mouse.button == 1) {
+            if(check_enable_menu() == true) {
+                if(menu_selected == PLAY) {
+                    //cout<<"play"<<endl;
+                    menu_click = PLAY;
+                }
+                if(menu_selected == PAUSE) {
+                    //cout<<"pause"<<endl;
+                    menu_click = PAUSE;
+                }
+                if(menu_selected == STOP) {
+                    //cout<<"stop"<<endl;
+                    menu_click = STOP;
+                }
+                if(menu_selected == SAVE) {
+                    cout<<"save"<<endl;
+                    menu_click = SAVE;
+                }
+                if(menu_selected == LOAD) {
+                    cout<<"load"<<endl;
+                    menu_click = LOAD;
+                }
+                if(menu_selected == SAVE_AS) {
+                    cout<<"save_as"<<endl;
+                    menu_click = SAVE_AS;
+                }
+                if(menu_selected == PHYSICAL_ROBOT) {
+                    //cout<<"bluetooth"<<endl;
+                    menu_click = PHYSICAL_ROBOT;
+                }
+                if(menu_selected == VIRTUAL_ROBOT) {
+                    //cout<<"vrep"<<endl;
+                    menu_click = VIRTUAL_ROBOT;
+                }
+                if(menu_selected == BLACK_TAPE_SENSOR_MENU) {
+                    black_sensor_menu_selected = true;
+                }
+                if(menu_selected == SENSOR_COLOR_MENU) {
+                    color_sensor_menu_selected = true;
+                }
+                if(menu_selected == ULTRASONIC_SENSOR_MENU) {
+                    ultrasonic_sensor_menu_selected = true;
+                }
+                if(menu_selected == N_LOOP_BLOCK) {
+                    number_menu_selected = true;
+                }
+                if(menu_selected == T_LOGIC_BLOCK) {
+                    cout<<"verdadeiro"<<endl;
+                }
+                if(menu_selected == F_LOGIC_BLOCK) {
+                    cout<<"falso"<<endl;
+                }
             }
-            if(menu_selected == PAUSE) {
-                //cout<<"pause"<<endl;
-                menu_click = PAUSE;
-            }
-            if(menu_selected == STOP) {
-                //cout<<"stop"<<endl;
-                menu_click = STOP;
-            }
-            if(menu_selected == SAVE) {
-                cout<<"save"<<endl;
-                menu_click = SAVE;
-            }
-            if(menu_selected == LOAD) {
-                cout<<"load"<<endl;
-                menu_click = LOAD;
-            }
-            if(menu_selected == SAVE_AS) {
-                cout<<"save_as"<<endl;
-                menu_click = SAVE_AS;
-            }
-            if(menu_selected == PHYSICAL_ROBOT) {
-                //cout<<"bluetooth"<<endl;
-                menu_click = PHYSICAL_ROBOT;
-            }
-            if(menu_selected == VIRTUAL_ROBOT) {
-                //cout<<"vrep"<<endl;
-                menu_click = VIRTUAL_ROBOT;
-            }
-            if(menu_selected == BLACK_TAPE_SENSOR_MENU) {
-                black_sensor_menu_selected = true;
-            }
-            if(menu_selected == SENSOR_COLOR_MENU) {
-                color_sensor_menu_selected = true;
-            }
-            if(menu_selected == ULTRASONIC_SENSOR_MENU) {
-                ultrasonic_sensor_menu_selected = true;
-            }
-            if(menu_selected == N_LOOP_BLOCK) {
-                number_menu_selected = true;
-            }
-            if(menu_selected == T_LOGIC_BLOCK) {
-                cout<<"verdadeiro"<<endl;
-            }
-            if(menu_selected == F_LOGIC_BLOCK) {
-                cout<<"falso"<<endl;
-            }
-        }
-        //testa se soltou o bloco na lixeira
-        for(int i=0; i<valor_maximo_blocos; i++) {
-            if(blocks_list_to_print[i] != NULL) {
-                if(blocks_list_to_print[i]->getDragging() == true) {
-                    if((mouseX > (al_get_display_width(display)-al_get_bitmap_width(trash))) && (mouseX < al_get_display_width(display)) && (mouseY > (al_get_display_height(display)-al_get_bitmap_height(trash))) && (mouseY < al_get_display_height(display))) {
-                        //remove_block(blocks_list_to_print[i]);
-                        blocks_list_to_print[i]->setDelete(true);
-                    } else {
-                        blocks_list_to_print[i]->setDragging(false);
+            //testa se soltou o bloco na lixeira
+            for(int i=0; i<valor_maximo_blocos; i++) {
+                if(blocks_list_to_print[i] != NULL) {
+                    if(blocks_list_to_print[i]->getDragging() == true) {
+                        if((mouseX > (al_get_display_width(display)-al_get_bitmap_width(trash))) && (mouseX < al_get_display_width(display)) && (mouseY > (al_get_display_height(display)-al_get_bitmap_height(trash))) && (mouseY < al_get_display_height(display))) {
+                            //remove_block(blocks_list_to_print[i]);
+                            blocks_list_to_print[i]->setDelete(true);
+                        } else {
+                            blocks_list_to_print[i]->setDragging(false);
+                        }
                     }
                 }
             }
-        }
-        //checa se soltou alguma funçao ou sensor
-        check_dragging();
+            //checa se soltou alguma funçao ou sensor
+            check_dragging();
 
-        reset_dragging_variables();
+            reset_dragging_variables();
+        }
 
     }
 
@@ -1879,6 +1646,253 @@ void Interface :: draw_lines() {
                 }
             }
         }
+    }
+}
+void Interface :: check_drop_arrow() {
+    //checa se a flecha foi solta na entrada de algum bloco
+    if(drawing_line == true) {
+        for(int i=0; i<valor_maximo_blocos; i++) {
+            if((blocks_list_to_print[i] != NULL) && (block_selected != i)){
+
+                check_mouse_on_points(blocks_list_to_print[i]);
+                if(blocks_list_to_print[block_selected] != NULL) {
+                    if(blocks_list_to_print[i]->getIn1Selected() == true) {
+                        if(number_of_selected_out == 1) {
+                            //testa se não havia alguma ligação antes
+                            if(blocks_list_to_print[block_selected]->getNext1() != NULL) {
+                                //descobre se é o previous1 ou o 2
+                                if(blocks_list_to_print[block_selected]->getNext1()->getPrevious1() == blocks_list_to_print[block_selected]) {
+                                    blocks_list_to_print[block_selected]->getNext1()->setPrevious1(NULL);
+                                } else {
+                                    blocks_list_to_print[block_selected]->getNext1()->setPrevious2(NULL);
+                                }
+                            }
+                            blocks_list_to_print[block_selected]->setNext1(blocks_list_to_print[i]);
+                            blocks_list_to_print[i]->setPrevious1(blocks_list_to_print[block_selected]);
+                            //teste se não está setando o mesmo bloco nas duas saídas
+                            if(blocks_list_to_print[block_selected]->getNext1() == blocks_list_to_print[block_selected]->getNext2()) {
+                                blocks_list_to_print[block_selected]->getNext2()->setPrevious2(NULL);
+                                blocks_list_to_print[block_selected]->setNext2(NULL);
+                            }
+                        } else {
+                            //testa se não havia alguma ligação antes
+                            if(blocks_list_to_print[block_selected]->getNext2() != NULL) {
+                                //descobre se é o previous1 ou o 2
+                                if(blocks_list_to_print[block_selected]->getNext2()->getPrevious1() == blocks_list_to_print[block_selected]) {
+                                    blocks_list_to_print[block_selected]->getNext2()->setPrevious1(NULL);
+                                } else {
+                                    blocks_list_to_print[block_selected]->getNext2()->setPrevious2(NULL);
+                                }
+                            }
+                            blocks_list_to_print[block_selected]->setNext2(blocks_list_to_print[i]);
+                            blocks_list_to_print[i]->setPrevious1(blocks_list_to_print[block_selected]);
+                            //teste se não está setando o mesmo bloco nas duas saídas
+                            if(blocks_list_to_print[block_selected]->getNext1() == blocks_list_to_print[block_selected]->getNext2()) {
+                                blocks_list_to_print[block_selected]->getNext1()->setPrevious2(NULL);
+                                blocks_list_to_print[block_selected]->setNext1(NULL);
+                            }
+                        }
+
+                    } else if(blocks_list_to_print[i]->getIn2Selected() == true) {
+                        if(number_of_selected_out == 1) {
+                            //testa se não havia alguma ligação antes
+                            if(blocks_list_to_print[block_selected]->getNext1() != NULL) {
+                                //descobre se é o previous1 ou o 2
+                                if(blocks_list_to_print[block_selected]->getNext1()->getPrevious1() == blocks_list_to_print[block_selected]) {
+                                    blocks_list_to_print[block_selected]->getNext1()->setPrevious1(NULL);
+                                } else {
+                                    blocks_list_to_print[block_selected]->getNext1()->setPrevious2(NULL);
+                                }
+                            }
+                            blocks_list_to_print[block_selected]->setNext1(blocks_list_to_print[i]);
+                            blocks_list_to_print[i]->setPrevious2(blocks_list_to_print[block_selected]);
+                            //teste se não está setando o mesmo bloco nas duas saídas
+                            if(blocks_list_to_print[block_selected]->getNext1() == blocks_list_to_print[block_selected]->getNext2()) {
+                                blocks_list_to_print[block_selected]->getNext2()->setPrevious1(NULL);
+                                blocks_list_to_print[block_selected]->setNext2(NULL);
+                            }
+                        } else {
+                            //testa se não havia alguma ligação antes
+                            if(blocks_list_to_print[block_selected]->getNext2() != NULL) {
+                                //descobre se é o previous1 ou o 2
+                                if(blocks_list_to_print[block_selected]->getNext2()->getPrevious1() == blocks_list_to_print[block_selected]) {
+                                    blocks_list_to_print[block_selected]->getNext2()->setPrevious1(NULL);
+                                } else {
+                                    blocks_list_to_print[block_selected]->getNext2()->setPrevious2(NULL);
+                                }
+                            }
+                            blocks_list_to_print[block_selected]->setNext2(blocks_list_to_print[i]);
+                            blocks_list_to_print[i]->setPrevious2(blocks_list_to_print[block_selected]);
+                            //teste se não está setando o mesmo bloco nas duas saídas
+                            if(blocks_list_to_print[block_selected]->getNext1() == blocks_list_to_print[block_selected]->getNext2()) {
+                                blocks_list_to_print[block_selected]->getNext1()->setPrevious1(NULL);
+                                blocks_list_to_print[block_selected]->setNext1(NULL);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+void Interface :: check_drag_block_or_begin_arrow() {
+    bool line_test = drawing_line;
+    //testa se pressionou o mouse sobre algum bloco existente,
+    //se sim seta a variável dizendo que o bloco está selecionado para poder arrastá-lo
+    for(int i=0; i<valor_maximo_blocos; i++) {
+        if(blocks_list_to_print[i] != NULL) {
+
+            check_mouse_on_points(blocks_list_to_print[i]);
+            //checa se clicou nas bolinhas de saida dos blocos, se sim, seta as variáveis para desenhar as linhas de ligação
+            if(blocks_list_to_print[i]->getOut1Selected() == true) {
+                temporary_line_X = mouseX;
+                temporary_line_Y = mouseY;
+                drawing_line = true;
+                block_selected = i;
+                number_of_selected_out = 1;
+            } else if(blocks_list_to_print[i]->getOut2Selected() == true) {
+                temporary_line_X = mouseX;
+                temporary_line_Y = mouseY;
+                drawing_line = true;
+                block_selected = i;
+                number_of_selected_out = 2;
+            } else if(drawing_line == line_test) {
+                temporary_line_X = 0;
+                temporary_line_Y = 0;
+                drawing_line = false;
+            }
+            //checa se clicou sobre os blocos, se sim, seta as variáveis de seleção e seta as variáveis para poder arrastar
+            if(black_sensor_menu_selected || color_sensor_menu_selected || ultrasonic_sensor_menu_selected || number_menu_selected) {
+
+            } else if((mouseX > blocks_list_to_print[i]->getX()) && (mouseX < (blocks_list_to_print[i]->getX()+blocks_list_to_print[i]->getWidth())) && (mouseY > blocks_list_to_print[i]->getY()) && (mouseY < (blocks_list_to_print[i]->getY()+blocks_list_to_print[i]->getHeight()))) {
+                if((blocks_list_to_print[i]->getIn1Selected() == false) && (blocks_list_to_print[i]->getOut1Selected() == false) && (blocks_list_to_print[i]->getIn2Selected() == false) && (blocks_list_to_print[i]->getOut2Selected() == false)) {
+                    blocks_list_to_print[i]->setDragging(true);
+                    blocks_list_to_print[i]->setSelected(true);
+                    mouse_aux_x = mouseX-blocks_list_to_print[i]->getX();
+                    mouse_aux_y = mouseY-blocks_list_to_print[i]->getY();
+                }
+            } else {
+                blocks_list_to_print[i]->setSelected(false);
+            }
+        }
+    }
+}
+void Interface :: check_menu_selected() {
+    // caso tenha clicado sobre um dos menus de ação ou sensor, seta as variáveis para arrastar com o mouse.
+    switch(menu_selected) {
+        case 18:
+            dragging_walk_foward = true;
+            break;
+        case 19:
+            dragging_turn_left = true;
+            break;
+        case 20:
+            dragging_turn_right = true;
+            break;
+        case 24:
+            dragging_black_sensor1 = true;
+            break;
+        case 25:
+            dragging_black_sensor2 = true;
+            break;
+        case 26:
+            dragging_black_sensor3 = true;
+            break;
+        case 27:
+            dragging_black_sensor4 = true;
+            break;
+        case 28:
+            dragging_black_sensor5 = true;
+            break;
+        case 29:
+            dragging_color_sensor1 = true;
+            break;
+        case 30:
+            dragging_color_sensor2 = true;
+            break;
+        case 31:
+            dragging_ultrasonic_sensor1 = true;
+            break;
+        case 32:
+            dragging_ultrasonic_sensor2 = true;
+            break;
+        case 33:
+            dragging_ultrasonic_sensor3 = true;
+            break;
+        case 34:
+            dragging_number_0 = true;
+            break;
+        case 35:
+            dragging_number_1 = true;
+            break;
+        case 36:
+            dragging_number_2 = true;
+            break;
+        case 37:
+            dragging_number_3 = true;
+            break;
+        case 38:
+            dragging_number_4 = true;
+            break;
+        case 39:
+            dragging_number_5 = true;
+            break;
+        case 40:
+            dragging_number_6 = true;
+            break;
+        case 41:
+            dragging_number_7 = true;
+            break;
+        case 42:
+            dragging_number_8 = true;
+            break;
+        case 43:
+            dragging_number_9 = true;
+            break;
+    }
+    if(menu_selected == CONDITIONAL_BLOCK) {
+        mouse_aux_x = 60;
+        mouse_aux_y = 35;
+        menu_click = CONDITIONAL_BLOCK;
+    }
+    if(menu_selected == ACTION_BLOCK) {
+        mouse_aux_x = 45;
+        mouse_aux_y = 20;
+        menu_click = ACTION_BLOCK;
+    }
+    if(menu_selected == START_BLOCK) {
+        mouse_aux_x = 40;
+        mouse_aux_y = 15;
+        menu_click = START_BLOCK;
+    }
+    if(menu_selected == END_BLOCK) {
+        mouse_aux_x = 40;
+        mouse_aux_y = 15;
+        menu_click = END_BLOCK;
+    }
+    if(menu_selected == MERGE_BLOCK) {
+        mouse_aux_x = 15;
+        mouse_aux_y = 10;
+        menu_click = MERGE_BLOCK;
+    }
+    if(menu_selected == LOOP_BLOCK) {
+        mouse_aux_x = 30;
+        mouse_aux_y = 40;
+        menu_click = LOOP_BLOCK;
+    }
+
+    //se o sub menu estava aberto e clicou fora, fecha o sub menu
+    if(menu_selected != BLACK_TAPE_SENSOR_MENU) {
+        black_sensor_menu_selected = false;
+    }
+    if(menu_selected != SENSOR_COLOR_MENU) {
+        color_sensor_menu_selected = false;
+    }
+    if(menu_selected != ULTRASONIC_SENSOR_MENU) {
+        ultrasonic_sensor_menu_selected = false;
+    }
+    if(menu_selected != N_LOOP_BLOCK) {
+        number_menu_selected = false;
     }
 }
 int Interface :: getMenuClick() {

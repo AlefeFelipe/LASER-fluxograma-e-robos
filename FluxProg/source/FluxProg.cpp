@@ -75,23 +75,18 @@ void FluxProg :: start() {
             }
         }
         if(interface->getMenuClick() == PAUSE) {
-            //std::cout<<"pause"<<std::endl;
             executing_fluxogram = false;
             paused = true;
         }
         if(interface->getMenuClick() == STOP) {
-            //std::cout<<"stop"<<std::endl;
             executing_fluxogram = false;
             reset_fluxogram_execution();
         }
         if(interface->getMenuClick() == SAVE) {
-            std::cout<<"save"<<std::endl;
         }
         if(interface->getMenuClick() == LOAD) {
-            std::cout<<"load"<<std::endl;
         }
         if(interface->getMenuClick() == SAVE_AS) {
-            std::cout<<"save_as"<<std::endl;
         }
         if(interface->getMenuClick() == PHYSICAL_ROBOT) {
             if((program_connected == true) && (simulator_connected == false)){
