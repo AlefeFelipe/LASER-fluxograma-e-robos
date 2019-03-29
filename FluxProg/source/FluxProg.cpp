@@ -582,13 +582,13 @@ void FluxProg :: connect_robot() {
     simulator_connected = false;
 }
 void FluxProg :: connect() {
-    int feedback = 0;
+    int feedback = 0, error = -1;
     string address = program_path;
     address = address + "../../../FluxProgBackend/build/bin/FluxProgBackend &";
-    system(address.c_str());
+    error = system(address.c_str());
     sleep(2);
     feedback = communication->getFeedback();
-    if(feedback != 0) {
+    if(feedback != 0 && error == 0) {
 
         communication->upadateReadings();
         //std::cout<<"abriu o programa"<<std::endl;
