@@ -8,18 +8,19 @@ SCRIPTPATH=$(dirname "$SCRIPT")
 cd $SCRIPTPATH
 
 #make the FluxProgBackend if build don't exists
-BACK_END_PATH=$SCRIPTPATH$"/../FluxProgBackend/build"
+BACK_END_PATH=$SCRIPTPATH$"/../FluxProgBackend/build/bin"
 if [ ! -d "$BACK_END_PATH" ]; then
-    cd ../FluxProgBackend && mkdir build && cd build
-    cmake .. && make
+    cd ../FluxProgBackend && mkdir build
+    cd build  &&  cmake .. && make
 fi
 
+cd $SCRIPTPATH
 #make the FluxProg if build don't exists
-FRONT_END_PATH=$SCRIPTPATH$"/build"
+FRONT_END_PATH=$SCRIPTPATH$"/build/bin"
 if [ ! -d "$FRONT_END_PATH" ]; then
-    cd ../../FluxProg && mkdir build && cd build
-    cmake .. && make
+    mkdir build
+    cd build  &&  cmake .. && make
 fi
 
 #execute
-$FRONT_END_PATH$"/bin/FluxProg"
+$FRONT_END_PATH$"/FluxProg"
