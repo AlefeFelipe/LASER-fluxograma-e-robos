@@ -83,8 +83,8 @@ void FluxProg :: start() {
             reset_fluxogram_execution();
         }
         if(interface->getMenuClick() == SAVE) {
-            SaveFile s = new SaveFile();
-            s.save();
+            SaveFile* s = new SaveFile(); //Se fazer new tem que deletar depois
+            s->save();
         }
         if(interface->getMenuClick() == LOAD) {
         }
