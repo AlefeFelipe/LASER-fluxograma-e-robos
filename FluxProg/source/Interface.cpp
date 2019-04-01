@@ -78,7 +78,6 @@ Interface :: Interface(Block** _blocks_list_to_print, string _program_path) {
     inicialize_mouseZ = false;
     scroll_bar_x = al_get_display_width(display)-roll_bar_width;
     scroll_bar_y = 80;
-    scroll_bar_size = roll_bar_height_begin;
 
     // checa se o display foi inicializado corretamente, se não foi dá msg de erro
     if(!display) {
@@ -156,48 +155,41 @@ void Interface :: draw() {
         mouseX = events.mouse.x;
         mouseY = events.mouse.y;
 
-        if(inicialize_mouseZ == false) {
-            mouseZ = events.mouse.z;
-            mouseZaux = events.mouse.z;
-            inicialize_mouseZ = true;
-        }
-        if(mouseZaux == events.mouse.z) {
-            mouseZ = 0;
-        }
-        if(mouseZaux > events.mouse.z) {
-                mouseZ = -8;
+        if(mouseY > al_get_bitmap_height(play_button)) {
+            if(inicialize_mouseZ == false) {
+                mouseZ = events.mouse.z;
                 mouseZaux = events.mouse.z;
-        }
-        if (mouseZaux < events.mouse.z){
-            mouseZ = 8;
-            mouseZaux = events.mouse.z;
-        }
+                inicialize_mouseZ = true;
+            }
+            if(mouseZaux == events.mouse.z) {
+                mouseZ = 0;
+            }
+            if(mouseZaux > events.mouse.z) {
+                    mouseZ = -8;
+                    mouseZaux = events.mouse.z;
+            }
+            if (mouseZaux < events.mouse.z){
+                mouseZ = 8;
+                mouseZaux = events.mouse.z;
+            }
 
-        bool superior_limit = false;
-        bool at_limit = false;
-        cout<<"mouseZ: "<<mouseZ<<endl;
-        if(scroll_bar_y >= 80) {
-            scroll_bar_y = scroll_bar_y - mouseZ;
-            superior_limit = false;
-            at_limit = false;
-        }
-        if(scroll_bar_y < 80) {
-            scroll_bar_y = 80;
-            superior_limit = true;
-        }
-        if((at_limit == true) && (mouseZ == 8)) {
-            scroll_bar_size = scroll_bar_size+1;
-            superior_limit = false;
-            at_limit = false;
-        }
-        if(scroll_bar_y > (al_get_display_height(display)-al_get_bitmap_height(trash) - scroll_bar_size)) {
-            scroll_bar_y = al_get_display_height(display)-al_get_bitmap_height(trash) - scroll_bar_size;
-            scroll_bar_size = scroll_bar_size-1;
-            superior_limit = false;
-            at_limit = true;
-        }
-        if(superior_limit == false) {
-            check_scrolling();
+            bool at_limit = false;
+            cout<<"mouseZ: "<<mouseZ<<endl;
+            if((scroll_bar_y >= 80) && (scroll_bar_y <= (al_get_display_height(display)-al_get_bitmap_height(trash) - roll_bar_height))){
+                scroll_bar_y = scroll_bar_y - (mouseZ/2);
+                at_limit = false;
+            }
+            if(scroll_bar_y < 80) {
+                scroll_bar_y = 80;
+                at_limit = true;
+            }
+            if(scroll_bar_y >= (al_get_display_height(display)-al_get_bitmap_height(trash) - roll_bar_height)) {
+                scroll_bar_y = al_get_display_height(display)-al_get_bitmap_height(trash) - roll_bar_height;
+                at_limit = true;
+            }
+            if(at_limit == false) {
+                check_scrolling();
+            }
         }
     }
 
@@ -2082,5 +2074,5 @@ void Interface :: check_scrolling() {
     }
 }
 void Interface :: draw_scroll_bar() {
-    al_draw_filled_rectangle(scroll_bar_x, scroll_bar_y, al_get_display_width(display), scroll_bar_y+scroll_bar_size, primary_menu_color);
+    al_draw_filled_rectangle(scroll_bar_x, scroll_bar_y, al_get_display_width(display), scroll_bar_y+roll_bar_height, primary_menu_color);
 }

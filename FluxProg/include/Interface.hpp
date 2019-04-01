@@ -22,7 +22,7 @@ using namespace std;
 #define display_width 670
 #define display_height 720
 #define roll_bar_width 20
-#define roll_bar_height_begin 50
+#define roll_bar_height 30
 #define valor_maximo_blocos 100
 
 class Interface {
@@ -87,7 +87,7 @@ class Interface {
     bool connected_robot;
     bool executing_fluxogram;
     string program_path;
-    int scroll_bar_x, scroll_bar_y, scroll_bar_size;
+    int scroll_bar_x, scroll_bar_y;
 
     void load_bitmap(ALLEGRO_BITMAP **bitmap, const char *adress);
     void print_primary_menu();

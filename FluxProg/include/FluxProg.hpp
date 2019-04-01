@@ -18,6 +18,7 @@
 #include "Communication.hpp"
 #include "fluxProgCte.h"
 #include "Interface.hpp"
+#include "SaveFile.hpp"
 #include <algorithm>
 using namespace std;
 
