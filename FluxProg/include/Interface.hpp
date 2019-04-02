@@ -23,7 +23,6 @@ using namespace std;
 #define display_height 720
 #define roll_bar_width 20
 #define roll_bar_height 30
-#define valor_maximo_blocos 100
 
 class Interface {
     ALLEGRO_COLOR black;

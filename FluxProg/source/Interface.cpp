@@ -174,7 +174,7 @@ void Interface :: draw() {
             }
 
             bool at_limit = false;
-            cout<<"mouseZ: "<<mouseZ<<endl;
+            //cout<<"mouseZ: "<<mouseZ<<endl;
             if((scroll_bar_y >= 80) && (scroll_bar_y <= (al_get_display_height(display)-al_get_bitmap_height(trash) - roll_bar_height))){
                 scroll_bar_y = scroll_bar_y - (mouseZ/2);
                 at_limit = false;
@@ -195,7 +195,6 @@ void Interface :: draw() {
 
     if(events.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN) {
 
-        cout<<"mouse: "<<events.mouse.button<<endl;
         if(events.mouse.button == 1) {
             check_drop_arrow();
 
@@ -1793,14 +1792,12 @@ void Interface :: check_drag_block_or_begin_arrow() {
             //checa se clicou sobre os blocos, se sim, seta as variáveis de seleção e seta as variáveis para poder arrastar
             if(black_sensor_menu_selected || color_sensor_menu_selected || ultrasonic_sensor_menu_selected || number_menu_selected) {
 
-            } else if(mouseY > menu1_Y_limit) {
-                if((mouseX > blocks_list_to_print[i]->getX()) && (mouseX < (blocks_list_to_print[i]->getX()+blocks_list_to_print[i]->getWidth())) && (mouseY > blocks_list_to_print[i]->getY()) && (mouseY < (blocks_list_to_print[i]->getY()+blocks_list_to_print[i]->getHeight()))) {
-                    if((blocks_list_to_print[i]->getIn1Selected() == false) && (blocks_list_to_print[i]->getOut1Selected() == false) && (blocks_list_to_print[i]->getIn2Selected() == false) && (blocks_list_to_print[i]->getOut2Selected() == false)) {
-                        blocks_list_to_print[i]->setDragging(true);
-                        blocks_list_to_print[i]->setSelected(true);
-                        mouse_aux_x = mouseX-blocks_list_to_print[i]->getX();
-                        mouse_aux_y = mouseY-blocks_list_to_print[i]->getY();
-                    }
+            } else if((mouseX > blocks_list_to_print[i]->getX()) && (mouseX < (blocks_list_to_print[i]->getX()+blocks_list_to_print[i]->getWidth())) && (mouseY > blocks_list_to_print[i]->getY()) && (mouseY < (blocks_list_to_print[i]->getY()+blocks_list_to_print[i]->getHeight()))) {
+                if((blocks_list_to_print[i]->getIn1Selected() == false) && (blocks_list_to_print[i]->getOut1Selected() == false) && (blocks_list_to_print[i]->getIn2Selected() == false) && (blocks_list_to_print[i]->getOut2Selected() == false)) {
+                    blocks_list_to_print[i]->setDragging(true);
+                    blocks_list_to_print[i]->setSelected(true);
+                    mouse_aux_x = mouseX-blocks_list_to_print[i]->getX();
+                    mouse_aux_y = mouseY-blocks_list_to_print[i]->getY();
                 }
             } else {
                 blocks_list_to_print[i]->setSelected(false);

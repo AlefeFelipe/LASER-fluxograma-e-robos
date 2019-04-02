@@ -19,6 +19,7 @@
 #include "fluxProgCte.h"
 #include "Interface.hpp"
 #include "SaveFile.hpp"
+#include "LoadFile.hpp"
 #include <algorithm>
 using namespace std;
 
@@ -34,6 +35,7 @@ class FluxProg {
     Interface* interface;
     bool paused;
     string program_path;
+    int ids;
 
     void add_block(Block* b);
     void remove_block(Block* b);

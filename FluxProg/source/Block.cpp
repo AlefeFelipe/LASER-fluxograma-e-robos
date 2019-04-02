@@ -211,3 +211,9 @@ int Block :: getUnit() {
 int Block :: getTen() {
     return 0;
 }
+void Block :: setID(int i) {
+    id = i;
+}
+int Block :: getID() {
+    return id;
+}

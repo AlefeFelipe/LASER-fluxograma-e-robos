@@ -21,6 +21,7 @@ class Block {
     bool out1_selected, out2_selected, in1_selected, in2_selected;
     const char* name;
     bool toDelete;
+    int id;
 
 protected:
     int type;
@@ -89,5 +90,7 @@ public:
     virtual void setValue(int v);
     virtual int getUnit();
     virtual int getTen();
+    void setID(int i);
+    int getID();
 };
 #endif

@@ -52,4 +52,7 @@
 #define N_ULTRASONIC 3
 #define N_BLACK_TAPE_SENSOR 5
 #define N_COLOR_SENSOR 2
+
+#define valor_maximo_blocos 100
+
 #endif

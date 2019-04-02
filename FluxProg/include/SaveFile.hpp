@@ -2,6 +2,8 @@
 #define SAVEFILE_HPP_
 
 #include <fstream>
+#include "fluxProgCte.h"
+#include "Block.hpp"
 
 using namespace std;
 
@@ -14,7 +16,7 @@ public:
 
     SaveFile();
     ~SaveFile();
-    void save();
+    void save(Block** _blocks_list_to_print);
 
 
 };

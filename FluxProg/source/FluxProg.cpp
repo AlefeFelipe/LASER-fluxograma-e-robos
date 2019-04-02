@@ -6,6 +6,7 @@ FluxProg :: FluxProg() {
     current_executing_block = NULL;
     program_connected = false;
     paused = false;
+    ids = 0;
 
     for(int i=0; i<valor_maximo_blocos; i++) {
         blocks_list_to_print[i] = NULL;
@@ -27,9 +28,9 @@ FluxProg :: FluxProg() {
 FluxProg :: ~FluxProg() {
 
     for(int i=0; i<valor_maximo_blocos; i++) {
-        if(blocks_list_to_print[i] != NULL) {
+        //if(blocks_list_to_print[i] != NULL) {
             delete blocks_list_to_print[i];
-        }
+        //}
     }
 
     delete interface;
@@ -84,9 +85,11 @@ void FluxProg :: start() {
         }
         if(interface->getMenuClick() == SAVE) {
             SaveFile* s = new SaveFile(); //Se fazer new tem que deletar depois
-            s->save();
+            s->save(blocks_list_to_print);
         }
         if(interface->getMenuClick() == LOAD) {
+            LoadFile* l = new LoadFile(); //Se fazer new tem que deletar depois
+            l->load();
         }
         if(interface->getMenuClick() == SAVE_AS) {
         }
@@ -139,6 +142,8 @@ void FluxProg :: start() {
             aux->setSelected(true);
             aux->setDragging(true);
             aux->setName("bloco condicional");
+            aux->setID(ids);
+            ids = ids + 1;
             add_block(aux);
         }
         if(interface->getMenuClick() == ACTION_BLOCK) {
@@ -151,6 +156,8 @@ void FluxProg :: start() {
             aux->setSelected(true);
             aux->setDragging(true);
             aux->setName("bloco de ação");
+            aux->setID(ids);
+            ids = ids + 1;
             add_block(aux);
         }
         if(interface->getMenuClick() == START_BLOCK) {
@@ -162,6 +169,8 @@ void FluxProg :: start() {
             aux->setY(interface->getMouseY()-15);
             aux->setSelected(true);
             aux->setDragging(true);
+            aux->setID(ids);
+            ids = ids + 1;
             add_block(aux);
         }
         if(interface->getMenuClick() == END_BLOCK) {
@@ -173,6 +182,8 @@ void FluxProg :: start() {
             aux->setName("bloco de fim");
             aux->setSelected(true);
             aux->setDragging(true);
+            aux->setID(ids);
+            ids = ids + 1;
             add_block(aux);
         }
         if(interface->getMenuClick() == MERGE_BLOCK) {
@@ -184,6 +195,8 @@ void FluxProg :: start() {
             aux->setName("bloco de junção");
             aux->setSelected(true);
             aux->setDragging(true);
+            aux->setID(ids);
+            ids = ids + 1;
             add_block(aux);
         }
         if(interface->getMenuClick() == LOOP_BLOCK) {
@@ -197,6 +210,8 @@ void FluxProg :: start() {
             aux->setValue(0);
             aux->setSelected(true);
             aux->setDragging(true);
+            aux->setID(ids);
+            ids = ids + 1;
             add_block(aux);
         }
         //executa o fluxograma
@@ -661,5 +676,4 @@ string FluxProg :: getExecutablePath() {
 /*
 1. Ler sensores
 2. Salvar
-3. Barra de rolagem
 */
