@@ -64,6 +64,7 @@ Interface :: Interface(Block** _blocks_list_to_print, string _program_path) {
     blocks_menu_color = al_map_rgb(255, 0, 0);
     functions_menu_color = al_map_rgb(255, 0, 0);
     sensors_menu_color = al_map_rgb(0, 0, 255);
+    scroll_bar_color = al_map_rgb(74, 62, 62);
 
     reset_dragging_variables();
 
@@ -77,7 +78,7 @@ Interface :: Interface(Block** _blocks_list_to_print, string _program_path) {
     temporary_line_Y = 0;
     inicialize_mouseZ = false;
     scroll_bar_x = al_get_display_width(display)-roll_bar_width;
-    scroll_bar_y = 80;
+    scroll_bar_y = scroll_bar_y_begin;
 
     // checa se o display foi inicializado corretamente, se não foi dá msg de erro
     if(!display) {
@@ -108,6 +109,8 @@ Interface :: ~Interface() {
 	destroy_program_images();
 
 	al_destroy_font(font);
+
+    al_destroy_timer(timer);
 
 	al_shutdown_image_addon();
 	al_shutdown_primitives_addon();
@@ -175,12 +178,12 @@ void Interface :: draw() {
 
             bool at_limit = false;
             //cout<<"mouseZ: "<<mouseZ<<endl;
-            if((scroll_bar_y >= 80) && (scroll_bar_y <= (al_get_display_height(display)-al_get_bitmap_height(trash) - roll_bar_height))){
+            if((scroll_bar_y >= scroll_bar_y_begin) && (scroll_bar_y <= (al_get_display_height(display)-al_get_bitmap_height(trash) - roll_bar_height))){
                 scroll_bar_y = scroll_bar_y - (mouseZ/2);
                 at_limit = false;
             }
-            if(scroll_bar_y < 80) {
-                scroll_bar_y = 80;
+            if(scroll_bar_y < scroll_bar_y_begin) {
+                scroll_bar_y = scroll_bar_y_begin;
                 at_limit = true;
             }
             if(scroll_bar_y >= (al_get_display_height(display)-al_get_bitmap_height(trash) - roll_bar_height)) {
@@ -295,6 +298,12 @@ void Interface :: draw() {
             }
             delete_connections();
         }
+    }
+
+    if(events.type == ALLEGRO_EVENT_MOUSE_LEAVE_DISPLAY) {
+        menu_selected = 0;
+        mouseX = 0;
+        mouseY = 0;
     }
 
     while(check_colisions());
@@ -921,26 +930,30 @@ void Interface :: destroy_program_images() {
     al_destroy_bitmap(MICRO_ULTRASONIC_SENSOR3);
 
     al_destroy_bitmap(trash);
-    for(int i=0; i<3; i++) {
+
+    for(int i=0; i<4; i++) {
         al_destroy_bitmap(DECISION_BLOCK[i]);
     }
-    for(int i=0; i<3; i++) {
+    for(int i=0; i<4; i++) {
         al_destroy_bitmap(END_BLOCK_IMG[i]);
     }
-    for(int i=0; i<3; i++) {
+    for(int i=0; i<4; i++) {
         al_destroy_bitmap(FUNCTION_BLOCK[i]);
     }
-    for(int i=0; i<3; i++) {
+    for(int i=0; i<4; i++) {
         al_destroy_bitmap(LOOP_BLOCK_IMG[i]);
     }
-    for(int i=0; i<3; i++) {
+    for(int i=0; i<4; i++) {
         al_destroy_bitmap(MERGE_BLOCK_IMG[i]);
     }
-    for(int i=0; i<3; i++) {
+    for(int i=0; i<4; i++) {
         al_destroy_bitmap(START_BLOCK_IMG[i]);
     }
     for(int i=0; i<10; i++) {
         al_destroy_bitmap(NUMBER[i]);
+    }
+    for(int i=0; i<10; i++) {
+        al_destroy_bitmap(MICRO_NUMBER[i]);
     }
 }
 void Interface :: reset_dragging_variables() {
@@ -1381,6 +1394,8 @@ void Interface :: draw_everything() {
     if(black_sensor_menu_selected || color_sensor_menu_selected || ultrasonic_sensor_menu_selected || number_menu_selected) {
         //percorre toda a lista de impressão dos blocos
         print_list_of_blocks();
+        //desenha ligações entre blocos
+        draw_lines();
         //imprime menu
         print_primary_menu();
         //imprime menu de blocos
@@ -1394,6 +1409,8 @@ void Interface :: draw_everything() {
         check_mouse_on_menus();
         //percorre toda a lista de impressão dos blocos
         print_list_of_blocks();
+        //desenha ligações entre blocos
+        draw_lines();
         //imprime menu
         print_primary_menu();
     }
@@ -1402,9 +1419,6 @@ void Interface :: draw_everything() {
     draw_dragging();
     //desenha linha de ligação
     draw_temporary_line();
-
-    //desenha ligações entre blocos
-    draw_lines();
 
     if(connected_simulator == true) {
         int x_init = al_get_display_width(display) + 10 - al_get_bitmap_width(vrep_button) - roll_bar_width;
@@ -1979,6 +1993,12 @@ void Interface :: callMessage(int i) {
         case 14:
             al_show_native_message_box(display, "Fluxprog", "ERRO", "O programa não está conectado.", "Ok", ALLEGRO_MESSAGEBOX_ERROR);
             break;
+        case 15:
+            al_show_native_message_box(display, "Fluxprog", " ", "Arquivo salvo com sucesso", "Ok", 0);
+            break;
+        case 16:
+            al_show_native_message_box(display, "Fluxprog", " ", "Falha ao carregar o fluxograma", "Ok", ALLEGRO_MESSAGEBOX_ERROR);
+            break;
     }
 }
 int Interface :: getImageHeight(int i) {
@@ -2071,5 +2091,33 @@ void Interface :: check_scrolling() {
     }
 }
 void Interface :: draw_scroll_bar() {
-    al_draw_filled_rectangle(scroll_bar_x, scroll_bar_y, al_get_display_width(display), scroll_bar_y+roll_bar_height, primary_menu_color);
+    al_draw_filled_rectangle(al_get_display_width(display)-roll_bar_width, scroll_bar_y, al_get_display_width(display), scroll_bar_y+roll_bar_height, scroll_bar_color);
+}
+void Interface :: reset_scrollbar() {
+    scroll_bar_x = al_get_display_width(display)-roll_bar_width;
+    scroll_bar_y = scroll_bar_y_begin;
+}
+char* Interface :: save_file_window() {
+    char* path = new char[100];
+    strcpy(path, ".fluxpg");
+    ALLEGRO_FILECHOOSER *select_file = al_create_native_file_dialog(path, "Salvar Fluxograma","*.fluxpg*" , ALLEGRO_FILECHOOSER_SAVE);
+    al_show_native_file_dialog(display, select_file);
+    if(al_get_native_file_dialog_path(select_file, 0) != NULL) {
+        strcpy(path, al_get_native_file_dialog_path(select_file, 0));
+        return path;
+    }
+
+    return NULL;
+}
+char* Interface :: open_file_window() {
+    char* path = new char[100];
+    strcpy(path, ".fluxpg");
+    ALLEGRO_FILECHOOSER *select_file = al_create_native_file_dialog(path, "Abrir Fluxograma","*.fluxpg*" , ALLEGRO_FILECHOOSER_FILE_MUST_EXIST);
+    al_show_native_file_dialog(display, select_file);
+    if(al_get_native_file_dialog_path(select_file, 0) != NULL) {
+        strcpy(path, al_get_native_file_dialog_path(select_file, 0));
+        return path;
+    }
+
+    return NULL;
 }

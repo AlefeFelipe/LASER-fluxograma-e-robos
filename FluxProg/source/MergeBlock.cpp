@@ -3,6 +3,8 @@
 MergeBlock :: MergeBlock() {
     type = MERGE_BLOCK;
     next = NULL;
+    previous1 = NULL;
+    previous2 = NULL;
 }
 
 

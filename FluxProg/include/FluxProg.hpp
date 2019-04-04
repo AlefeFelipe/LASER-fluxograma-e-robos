@@ -36,6 +36,10 @@ class FluxProg {
     bool paused;
     string program_path;
     int ids;
+    bool already_saved;
+    char* path;
+    SaveFile* save;
+    LoadFile* load;
 
     void add_block(Block* b);
     void remove_block(Block* b);

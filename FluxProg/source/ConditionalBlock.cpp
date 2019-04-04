@@ -10,6 +10,7 @@ ConditionalBlock :: ConditionalBlock() {
     pointOut2_y = y + 69;
     next_true = NULL;
     next_false = NULL;
+    previous = NULL;
     type_of_sensor = 0;
 }
 
@@ -31,9 +32,9 @@ int ConditionalBlock :: getParameter2() {
 
 bool ConditionalBlock :: getResponse() {
     if(parameter1 < parameter2) {
-        return true;
-    } else {
         return false;
+    } else {
+        return true;
     }
 }
 

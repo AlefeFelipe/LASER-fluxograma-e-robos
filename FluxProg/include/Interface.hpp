@@ -25,7 +25,7 @@ using namespace std;
 #define roll_bar_height 30
 
 class Interface {
-    ALLEGRO_COLOR black;
+    ALLEGRO_COLOR black, scroll_bar_color;
     ALLEGRO_COLOR backgroud_color;
     ALLEGRO_COLOR white, strange_color;
     ALLEGRO_COLOR primary_menu_color, blocks_menu_color, functions_menu_color, sensors_menu_color;
@@ -36,6 +36,7 @@ class Interface {
     ALLEGRO_BITMAP *load_button, *load_button_selected, *save_as_button, *save_as_button_selected;
     ALLEGRO_BITMAP *vrep_button, *vrep_button_selected, *bluetooth_button, *bluetooth_button_selected, *mini_menu[6];
     ALLEGRO_BITMAP *WALK_FOWARD_ACTION, *TURN_LEFT_ACTION, *TURN_RIGHT_ACTION;
+    ALLEGRO_BITMAP *MICRO_WALK_FOWARD, *MICRO_TURN_LEFT, *MICRO_TURN_RIGHT;
     ALLEGRO_BITMAP *NUMBER[10], *logic_true, *logic_false;
     ALLEGRO_BITMAP *MICRO_NUMBER[10];
     ALLEGRO_BITMAP *DECISION_BLOCK[4], *BLACK_SENSOR_FUNCTION, *BLACK_SENSOR_1_FUNCTION, *BLACK_SENSOR_2_FUNCTION, *BLACK_SENSOR_3_FUNCTION, *BLACK_SENSOR_4_FUNCTION;
@@ -43,7 +44,6 @@ class Interface {
     ALLEGRO_BITMAP *ULTRASONIC_SENSOR_1_FUNCTION, *ULTRASONIC_SENSOR_2_FUNCTION, *ULTRASONIC_SENSOR_3_FUNCTION;
     ALLEGRO_BITMAP *MICRO_BLACK_SENSOR1, *MICRO_BLACK_SENSOR2, *MICRO_BLACK_SENSOR3, *MICRO_BLACK_SENSOR4, *MICRO_BLACK_SENSOR5;
     ALLEGRO_BITMAP *MICRO_COLOR_SENSOR1, *MICRO_COLOR_SENSOR2, *MICRO_ULTRASONIC_SENSOR1, *MICRO_ULTRASONIC_SENSOR2, *MICRO_ULTRASONIC_SENSOR3;
-    ALLEGRO_BITMAP *MICRO_WALK_FOWARD, *MICRO_TURN_LEFT, *MICRO_TURN_RIGHT;
     ALLEGRO_BITMAP *END_BLOCK_IMG[4], *FUNCTION_BLOCK[4], *LOOP_BLOCK_IMG[4], *MERGE_BLOCK_IMG[4], *START_BLOCK_IMG[4];
     ALLEGRO_BITMAP *POINT[2];
     ALLEGRO_BITMAP *trash;
@@ -132,6 +132,9 @@ public:
     void setConnectedSimulator(bool c);
     void setConnectedRobot(bool c);
     void setExecutingFluxogram(bool e);
+    void reset_scrollbar();
+    char* save_file_window();
+    char* open_file_window();
 
 
 };

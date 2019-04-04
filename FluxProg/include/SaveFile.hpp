@@ -16,7 +16,7 @@ public:
 
     SaveFile();
     ~SaveFile();
-    void save(Block** _blocks_list_to_print);
+    void save(Block** _blocks_list_to_print, char* path);
 
 
 };

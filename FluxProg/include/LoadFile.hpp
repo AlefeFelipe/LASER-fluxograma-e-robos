@@ -14,12 +14,13 @@
 class LoadFile {
 
     ifstream in;
+    Block** blocks_list_to_print;
 
 public:
 
-    LoadFile();
+    LoadFile(Block** _blocks_list_to_print);
     ~LoadFile();
-    void load();
+    int load(char* path);
 
 
 };

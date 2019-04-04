@@ -7,6 +7,8 @@ FluxProg :: FluxProg() {
     program_connected = false;
     paused = false;
     ids = 0;
+    already_saved = false;
+    path = NULL;
 
     for(int i=0; i<valor_maximo_blocos; i++) {
         blocks_list_to_print[i] = NULL;
@@ -23,6 +25,8 @@ FluxProg :: FluxProg() {
         pos = program_path.find(" ", pos+2);
     }
     communication = new Communication();
+    save = new SaveFile();
+    load = new LoadFile(blocks_list_to_print);
 
 }
 FluxProg :: ~FluxProg() {
@@ -36,6 +40,10 @@ FluxProg :: ~FluxProg() {
     delete interface;
 
     delete communication;
+
+    delete save;
+
+    delete load;
 }
 
 void FluxProg :: start() {
@@ -84,14 +92,37 @@ void FluxProg :: start() {
             reset_fluxogram_execution();
         }
         if(interface->getMenuClick() == SAVE) {
-            SaveFile* s = new SaveFile(); //Se fazer new tem que deletar depois
-            s->save(blocks_list_to_print);
+            if(already_saved) {
+                save->save(blocks_list_to_print, path);
+                interface->callMessage(15);
+            } else {
+                path = interface->save_file_window();
+                cout<<"retorno "<<path<<endl;
+                if(path != NULL) {
+                    save->save(blocks_list_to_print, path);
+                    already_saved = true;
+                    interface->callMessage(15);
+                }
+            }
         }
         if(interface->getMenuClick() == LOAD) {
-            LoadFile* l = new LoadFile(); //Se fazer new tem que deletar depois
-            l->load();
+            path = interface->open_file_window();
+            if(path != NULL) {
+                interface->reset_scrollbar();
+                int t = load->load(path);
+                if(t == 1) {
+                    already_saved = true;
+
+                } else {
+                    interface->callMessage(16);
+                }
+            }
         }
         if(interface->getMenuClick() == SAVE_AS) {
+            path = interface->save_file_window();
+            save->save(blocks_list_to_print, path);
+            already_saved = true;
+            interface->callMessage(15);
         }
         if(interface->getMenuClick() == PHYSICAL_ROBOT) {
             if((program_connected == true) && (simulator_connected == false)){
@@ -334,19 +365,31 @@ void FluxProg :: execute() {
                         break;
                     case 8:
                         //ultrasonic sensor 1
-                        current_executing_block->setParameter1(ultrasonic_sensor_reading[0]);
+                        if((ultrasonic_sensor_reading[0] > 0) && (ultrasonic_sensor_reading[0] <= 20)) {
+                            current_executing_block->setParameter1(ultrasonic_sensor_reading[0]);
+                        } else {
+                            current_executing_block->setParameter1(0);
+                        }
                         current_executing_block->setParameter2(1);
                         cout<<"sensor: "<<ultrasonic_sensor_reading[0]<<endl;
                         break;
                     case 9:
                         //ultrasonic sensor 2
-                        current_executing_block->setParameter1(ultrasonic_sensor_reading[1]);
+                        if((ultrasonic_sensor_reading[1] > 0) && (ultrasonic_sensor_reading[1] <= 20)) {
+                            current_executing_block->setParameter1(ultrasonic_sensor_reading[1]);
+                        } else {
+                            current_executing_block->setParameter1(0);
+                        }
                         current_executing_block->setParameter2(1);
-                        cout<<"sensor: "<<ultrasonic_sensor_reading[1]<<endl;
+                        cout<<"sensor lido: "<<current_executing_block->getParameter1()<<endl;
                         break;
                     case 10:
                         //ultrasonic sensor 3
-                        current_executing_block->setParameter1(ultrasonic_sensor_reading[2]);
+                        if((ultrasonic_sensor_reading[2] > 0) && (ultrasonic_sensor_reading[2] <= 20)) {
+                            current_executing_block->setParameter1(ultrasonic_sensor_reading[2]);
+                        } else {
+                            current_executing_block->setParameter1(0);
+                        }
                         current_executing_block->setParameter2(1);
                         cout<<"sensor: "<<ultrasonic_sensor_reading[2]<<endl;
                         break;
@@ -373,74 +416,6 @@ void FluxProg :: execute() {
         } else {
             interface->callMessage(14);
             executing_fluxogram = false;
-            /*
-            //se for do tipo 8 = condicional
-            //tem q fazer leitura de sensores para setar as variáveis de comparação
-            if(current_executing_block->getType() == CONDITIONAL_BLOCK) {
-                //checa tipo de sensor
-                switch(current_executing_block->getTypeOfSensor()) {
-                    case 1:
-                        //black sensor 1
-                        current_executing_block->setParameter1(0);
-                        current_executing_block->setParameter2(1);
-                        break;
-
-                    case 2:
-                        //black sensor 2
-                        current_executing_block->setParameter1(1);
-                        current_executing_block->setParameter2(1);
-                        break;
-                    case 3:
-                        //black sensor 3
-                        current_executing_block->setParameter1(0);
-                        current_executing_block->setParameter2(1);
-                        break;
-                    case 4:
-                        //black sensor 4
-                        current_executing_block->setParameter1(1);
-                        current_executing_block->setParameter2(1);
-                        break;
-                    case 5:
-                        //black sensor 5
-                        current_executing_block->setParameter1(0);
-                        current_executing_block->setParameter2(1);
-                        break;
-                    case 6:
-                        //color sensor 1
-                        current_executing_block->setParameter1(1);
-                        current_executing_block->setParameter2(1);
-                        break;
-                    case 7:
-                        //color sensor 2
-                        current_executing_block->setParameter1(0);
-                        current_executing_block->setParameter2(1);
-                        break;
-                    case 8:
-                        //ultrasonic sensor 1
-                        current_executing_block->setParameter1(1);
-                        current_executing_block->setParameter2(1);
-                        break;
-                    case 9:
-                        //ultrasonic sensor 2
-                        current_executing_block->setParameter1(0);
-                        current_executing_block->setParameter2(1);
-                        break;
-                    case 10:
-                        //ultrasonic sensor 3
-                        current_executing_block->setParameter1(1);
-                        current_executing_block->setParameter2(1);
-                        break;
-                }
-            }
-            if(current_executing_block->getExecutingNext() != NULL) {
-                std::cout<<"executou bloco: "<<current_executing_block->getName()<<std::endl;
-                current_executing_block = current_executing_block->getExecutingNext();
-                refresh_executing_block();
-            } else {
-                std::cout<<"executou bloco: "<<current_executing_block->getName()<<std::endl;
-                executing_fluxogram = false;
-            }
-            */
         }
 
     }
@@ -674,6 +649,5 @@ string FluxProg :: getExecutablePath() {
 }
 
 /*
-1. Ler sensores
-2. Salvar
+1. Ler sensores (valores errados)
 */

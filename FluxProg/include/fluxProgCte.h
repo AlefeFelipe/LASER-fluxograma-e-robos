@@ -55,4 +55,6 @@
 
 #define valor_maximo_blocos 100
 
+#define scroll_bar_y_begin 84
+
 #endif

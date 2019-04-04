@@ -2,6 +2,7 @@
 
 EndBlock :: EndBlock() {
     type = END_BLOCK;
+    previous = NULL;
 }
 
 void EndBlock :: setNext1(Block *b) {

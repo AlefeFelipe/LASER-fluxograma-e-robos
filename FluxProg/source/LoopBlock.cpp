@@ -4,6 +4,8 @@ LoopBlock :: LoopBlock() {
     type = LOOP_BLOCK;
     next_loop = NULL;
     next_program = NULL;
+    previous_program = NULL;
+    previous_loop = NULL;
     number_of_loops = 1;
     limited_loop = false;
     unit = 0;
