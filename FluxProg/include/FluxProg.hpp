@@ -55,6 +55,7 @@ class FluxProg {
     void connect_robot();
     void connect();
     string getExecutablePath();
+    void reset_executing_block();
 
 public:
 

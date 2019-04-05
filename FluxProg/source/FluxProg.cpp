@@ -32,9 +32,7 @@ FluxProg :: FluxProg() {
 FluxProg :: ~FluxProg() {
 
     for(int i=0; i<valor_maximo_blocos; i++) {
-        //if(blocks_list_to_print[i] != NULL) {
-            delete blocks_list_to_print[i];
-        //}
+        delete blocks_list_to_print[i];
     }
 
     delete interface;
@@ -90,6 +88,7 @@ void FluxProg :: start() {
         if(interface->getMenuClick() == STOP) {
             executing_fluxogram = false;
             reset_fluxogram_execution();
+            reset_executing_block();
         }
         if(interface->getMenuClick() == SAVE) {
             if(already_saved) {
@@ -319,12 +318,14 @@ void FluxProg :: execute() {
                 if(simulator_connected)
                 {
                    interface->callMessage(17);
-                   //communication->inicialize();
                 } else {
                    interface->callMessage(18);
                 }
                 communication->setCommand(CLOSE_PROGRAM);
                 program_connected = false;
+                reset_executing_block();
+                interface->setConnectedRobot(false);
+                interface->setConnectedSimulator(false);
             }
             else {
                 //se for do tipo 8 = condicional
@@ -424,6 +425,7 @@ void FluxProg :: execute() {
                         executing_fluxogram = false;
                         //reseta as variáveis execução
                         reset_fluxogram_execution();
+                        reset_executing_block();
                     }
                 }
             }
@@ -606,7 +608,7 @@ void FluxProg :: connect() {
         //std::cout<<"abriu o programa"<<std::endl;
         clock_t t;
         t = clock();
-        while(feedback != ERROR && feedback != READY && (((float)(clock() - t))/CLOCKS_PER_SEC) < 5.0)
+        while(feedback != ERROR && feedback != READY && (((float)(clock() - t))/CLOCKS_PER_SEC) < TIMEOUT)
         {
             feedback = communication->getFeedback();
         }
@@ -621,7 +623,8 @@ void FluxProg :: connect() {
             }
             communication->setCommand(CLOSE_PROGRAM);
             program_connected = false;
-
+            interface->setConnectedRobot(false);
+            interface->setConnectedSimulator(false);
         } else if(feedback == READY) {
             if(simulator_connected == true) {
                 interface->callMessage(8);
@@ -642,10 +645,14 @@ void FluxProg :: connect() {
             }
             communication->setCommand(CLOSE_PROGRAM);
             program_connected = false;
+            interface->setConnectedRobot(false);
+            interface->setConnectedSimulator(false);
         }
     } else {
         interface->callMessage(5);
         program_connected = false;
+        interface->setConnectedRobot(false);
+        interface->setConnectedSimulator(false);
     }
 }
 void FluxProg :: refresh_executing_block() {
@@ -669,7 +676,13 @@ string FluxProg :: getExecutablePath() {
     }
     return path;
 }
-
+void FluxProg :: reset_executing_block() {
+    for(int i=0; i<valor_maximo_blocos; i++) {
+        if(blocks_list_to_print[i] != NULL) {
+            blocks_list_to_print[i]->setExecuting(false);
+        }
+    }
+}
 /*
 1. Ler sensores (valores errados)
 */

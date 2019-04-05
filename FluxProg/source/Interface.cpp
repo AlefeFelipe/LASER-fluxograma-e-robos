@@ -589,6 +589,8 @@ void Interface :: print_end_block(Block *b) {
         }
     } else if(b->getSelected() == true) {
         al_draw_bitmap(END_BLOCK_IMG[2], b->getX(), b->getY(), 0);
+    } else if(b->getExecuting() == true) {
+        al_draw_bitmap(END_BLOCK_IMG[3], b->getX(), b->getY(), 0);
     } else {
         al_draw_bitmap(END_BLOCK_IMG[0], b->getX(), b->getY(), 0);
     }
@@ -608,6 +610,8 @@ void Interface :: print_start_block(Block *b) {
         }
     } else if(b->getSelected() == true) {
         al_draw_bitmap(START_BLOCK_IMG[2], b->getX(), b->getY(), 0);
+    } else if(b->getExecuting() == true) {
+        al_draw_bitmap(START_BLOCK_IMG[3], b->getX(), b->getY(), 0);
     } else {
         al_draw_bitmap(START_BLOCK_IMG[0], b->getX(), b->getY(), 0);
     }
@@ -627,6 +631,8 @@ void Interface :: print_loop_block(Block *b) {
         }
     } else if(b->getSelected() == true) {
         al_draw_bitmap(LOOP_BLOCK_IMG[2], b->getX(), b->getY(), 0);
+    } else if(b->getExecuting() == true) {
+        al_draw_bitmap(LOOP_BLOCK_IMG[3], b->getX(), b->getY(), 0);
     } else {
         al_draw_bitmap(LOOP_BLOCK_IMG[0], b->getX(), b->getY(), 0);
     }
@@ -676,6 +682,8 @@ void Interface :: print_decision_block(Block *b) {
         }
     } else if(b->getSelected() == true) {
         al_draw_bitmap(DECISION_BLOCK[2], b->getX(), b->getY(), 0);
+    } else if(b->getExecuting() == true) {
+        al_draw_bitmap(DECISION_BLOCK[3], b->getX(), b->getY(), 0);
     } else {
         al_draw_bitmap(DECISION_BLOCK[0], b->getX(), b->getY(), 0);
     }
@@ -742,6 +750,8 @@ void Interface :: print_merge_block(Block *b) {
         }
     } else if(b->getSelected() == true) {
         al_draw_bitmap(MERGE_BLOCK_IMG[2], b->getX(), b->getY(), 0);
+    } else if(b->getExecuting() == true) {
+        al_draw_bitmap(MERGE_BLOCK_IMG[3], b->getX(), b->getY(), 0);
     } else {
         al_draw_bitmap(MERGE_BLOCK_IMG[0], b->getX(), b->getY(), 0);
     }

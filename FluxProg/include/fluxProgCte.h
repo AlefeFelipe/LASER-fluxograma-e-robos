@@ -57,4 +57,6 @@
 
 #define scroll_bar_y_begin 84
 
+#define TIMEOUT 5.0
+
 #endif
