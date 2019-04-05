@@ -599,13 +599,18 @@ void FluxProg :: connect() {
     string address = program_path;
     address = address + "../../../FluxProgBackend/build/bin/FluxProgBackend &";
     error = system(address.c_str());
-    sleep(3);
+    sleep(1);
     feedback = communication->getFeedback();
     if(feedback != 0 && error == 0) {
-
-        communication->upadateReadings();
+        //communication->upadateReadings();
         //std::cout<<"abriu o programa"<<std::endl;
-        feedback = communication->getFeedback();
+        clock_t t;
+        t = clock();
+        while(feedback != ERROR && feedback != READY && (((float)(clock() - t))/CLOCKS_PER_SEC) < 5.0)
+        {
+            feedback = communication->getFeedback();
+        }
+        //cout << "foram "<< ((float)(clock() - t))/CLOCKS_PER_SEC <<"segundos"<<endl;
         if(feedback == ERROR){
             //não abriu o v-rep ou não tem bluetooth
             //std::cout<<"não abriu o v-rep ou não tem bluetooth"<<std::endl;
