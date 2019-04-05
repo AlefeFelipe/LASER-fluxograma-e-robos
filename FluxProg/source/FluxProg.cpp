@@ -629,7 +629,6 @@ void FluxProg :: connect() {
             }
             program_connected = true;
         } else{
-            cout << feedback <<endl;
             if(simulator_connected == true) {
                 interface->callMessage(10);
                 //communication->inicialize();

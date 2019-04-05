@@ -9,103 +9,92 @@ VirtualRobot::VirtualRobot(int *error)
     }
     string serverIP = "127.0.0.1";
     int serverPort = 19999;
-    *error = 1;
-    try
+    client_id = 0;
+    //*error = 1;
+    client_id = simxStart((simxChar*)serverIP.c_str(),serverPort,true,true,2000,5);
+    if (client_id != -1)
+	{
+        bool conected = true;
+		//cout << "Servidor conectado!" << std::endl;
+
+        // inicializacao do robo
+        if(simxGetObjectHandle(client_id,"bubbleRob",&robot, simx_opmode_oneshot_wait)==simx_return_ok)
+        {
+            //cout << "conectado ao robot" <<endl;
+        }
+        else
+        {
+            conected = false;
+        }
+
+        //inicializacao dos motores
+        if(simxGetObjectHandle(client_id, "bubbleRob_leftMotor", &motors[0], simx_opmode_oneshot_wait) == simx_return_ok&&
+            simxGetObjectHandle(client_id, "bubbleRob_rightMotor", &motors[1], simx_opmode_oneshot_wait) == simx_return_ok)
+        {
+            //cout << "conectado aos motores" << std::endl;
+        }
+        else
+        {
+            conected = false;
+        }
+
+        //inicializacao dos sensores ultrassom
+        if( simxGetObjectHandle(client_id, "LM_ultrasonic", &ultrasonic_sensors[0], simx_opmode_oneshot_wait )==simx_return_ok&&
+            simxGetObjectHandle(client_id, "Middle_ultrasonic", &ultrasonic_sensors[1], simx_opmode_oneshot_wait )==simx_return_ok&&
+            simxGetObjectHandle(client_id, "RM_ultrasonic", &ultrasonic_sensors[2], simx_opmode_oneshot_wait )==simx_return_ok)
+        {
+                //cout << "conectado aos sensores ultrassom" <<endl;
+        }
+        else
+        {
+            conected = false;
+        }
+
+        //inicializacao dos sensores de visao
+        if(simxGetObjectHandle(client_id, "Left_Vision_sensor", &vision_sensors[0], simx_opmode_oneshot_wait)==simx_return_ok&&
+            simxGetObjectHandle(client_id, "LM_Vision_sensor", &vision_sensors[1], simx_opmode_oneshot_wait)==simx_return_ok&&
+            simxGetObjectHandle(client_id, "Middle_Vision_sensor", &vision_sensors[2], simx_opmode_oneshot_wait)==simx_return_ok&&
+            simxGetObjectHandle(client_id, "RM_Vision_sensor", &vision_sensors[3], simx_opmode_oneshot_wait)==simx_return_ok&&
+            simxGetObjectHandle(client_id, "Right_Vision_sensor", &vision_sensors[4], simx_opmode_oneshot_wait)==simx_return_ok)
+        {
+                //cout << "conectado aos sensores de visao" <<endl;
+        }
+        else
+        {
+            conected = false;
+        }
+
+        if(conected)
+        {
+            simxGetObjectPosition(client_id, robot, -1, robot_linear_position, simx_opmode_streaming);
+            simxGetObjectOrientation(client_id, robot, -1, robot_angle, simx_opmode_streaming);
+            int i;
+            for(i = 0; i < N_ULTRASONIC; i++)
+            {
+                simxReadProximitySensor(client_id, ultrasonic_sensors[i], &is_there_obstacle[i], detected_objet[i], &detected_object_handle[i], detected_surface[i], simx_opmode_streaming);
+                ultrasonic_sensor_reading[i] = detected_objet[i][1];
+            }
+            for(i = 0; i < N_BLACK_TAPE_SENSOR; i++)
+            {
+                simxReadVisionSensor(client_id, vision_sensors[i], &is_there_color[i], &vision_sensor_data[i], &aux_vision_sensor[i], simx_opmode_streaming);
+                black_type_sensor_reading[i] = vision_sensor_data[i][10] < MAX_INTE; //media da intensidade. No caso preto, sao todos 0
+            }
+        }
+        else
+        {
+            *error = 1;
+        }
+	}
+    else
     {
-        client_id = simxStart((simxChar*)serverIP.c_str(),serverPort,true,true,2000,5);
-        if (client_id != -1)
-    	{
-            cout << "qqqq?"<<endl;
-            bool conected = true;
-    		//cout << "Servidor conectado!" << std::endl;
-
-            // inicializacao do robo
-            if(simxGetObjectHandle(client_id,"bubbleRob",&robot, simx_opmode_oneshot_wait)==simx_return_ok)
-            {
-                //cout << "conectado ao robot" <<endl;
-            }
-            else
-            {
-                conected = false;
-            }
-
-            //inicializacao dos motores
-            if(simxGetObjectHandle(client_id, "bubbleRob_leftMotor", &motors[0], simx_opmode_oneshot_wait) == simx_return_ok&&
-                simxGetObjectHandle(client_id, "bubbleRob_rightMotor", &motors[1], simx_opmode_oneshot_wait) == simx_return_ok)
-            {
-                //cout << "conectado aos motores" << std::endl;
-            }
-            else
-            {
-                conected = false;
-            }
-
-            //inicializacao dos sensores ultrassom
-            if( simxGetObjectHandle(client_id, "LM_ultrasonic", &ultrasonic_sensors[0], simx_opmode_oneshot_wait )==simx_return_ok&&
-                simxGetObjectHandle(client_id, "Middle_ultrasonic", &ultrasonic_sensors[1], simx_opmode_oneshot_wait )==simx_return_ok&&
-                simxGetObjectHandle(client_id, "RM_ultrasonic", &ultrasonic_sensors[2], simx_opmode_oneshot_wait )==simx_return_ok)
-            {
-                    //cout << "conectado aos sensores ultrassom" <<endl;
-            }
-            else
-            {
-                conected = false;
-            }
-
-            //inicializacao dos sensores de visao
-            if(simxGetObjectHandle(client_id, "Left_Vision_sensor", &vision_sensors[0], simx_opmode_oneshot_wait)==simx_return_ok&&
-                simxGetObjectHandle(client_id, "LM_Vision_sensor", &vision_sensors[1], simx_opmode_oneshot_wait)==simx_return_ok&&
-                simxGetObjectHandle(client_id, "Middle_Vision_sensor", &vision_sensors[2], simx_opmode_oneshot_wait)==simx_return_ok&&
-                simxGetObjectHandle(client_id, "RM_Vision_sensor", &vision_sensors[3], simx_opmode_oneshot_wait)==simx_return_ok&&
-                simxGetObjectHandle(client_id, "Right_Vision_sensor", &vision_sensors[4], simx_opmode_oneshot_wait)==simx_return_ok)
-            {
-                    //cout << "conectado aos sensores de visao" <<endl;
-            }
-            else
-            {
-                conected = false;
-            }
-
-            if(conected)
-            {
-                simxGetObjectPosition(client_id, robot, -1, robot_linear_position, simx_opmode_streaming);
-                simxGetObjectOrientation(client_id, robot, -1, robot_angle, simx_opmode_streaming);
-                int i;
-                for(i = 0; i < N_ULTRASONIC; i++)
-                {
-                    simxReadProximitySensor(client_id, ultrasonic_sensors[i], &is_there_obstacle[i], detected_objet[i], &detected_object_handle[i], detected_surface[i], simx_opmode_streaming);
-                    ultrasonic_sensor_reading[i] = detected_objet[i][1];
-                }
-                for(i = 0; i < N_BLACK_TAPE_SENSOR; i++)
-                {
-                    simxReadVisionSensor(client_id, vision_sensors[i], &is_there_color[i], &vision_sensor_data[i], &aux_vision_sensor[i], simx_opmode_streaming);
-                    black_type_sensor_reading[i] = vision_sensor_data[i][10] < MAX_INTE; //media da intensidade. No caso preto, sao todos 0
-                }
-                *error = 0;
-            }
-            else
-            {
-                *error = 1;
-            }
-    	}
-    }
-    catch(...)
-    {
-        cout << "asdf"<<endl;
         *error = 1;
     }
+
 }
 
 VirtualRobot::~VirtualRobot()
 {
-    /*try
-    {
-        simxFinish(client_id);
-    }
-    catch(...)
-    {
-        cout<<"tetnou fecgar o qu emtemn"<<endl;
-    }*/
+    simxFinish(client_id);
 }
 
 void VirtualRobot::setCommand(int _command)

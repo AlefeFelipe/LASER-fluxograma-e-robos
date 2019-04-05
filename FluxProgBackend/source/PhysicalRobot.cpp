@@ -4,7 +4,7 @@ PhysicalRobot::PhysicalRobot(int *error)
 {
     if(RS232_OpenComport(CPORT_NR, BDRATE, "8N1"))
     {
-        printf("AVISO: NENHUMA serial encontrada!!\n");
+        //printf("AVISO: NENHUMA serial encontrada!!\n");
         *error = 1;
     }
     else

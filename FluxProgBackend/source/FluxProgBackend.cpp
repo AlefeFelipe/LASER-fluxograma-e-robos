@@ -35,17 +35,8 @@ void FluxProgBackend::connect()
     }
     if (error)//nao deu certo se conectar a porta ou a cena
     {
-        cout << "erro "<<endl;
         feedback = ERROR;
         communication->setFeedback(feedback);
-        if(virtual_robot)
-        {
-            delete virtual_robot;
-        }
-        else
-        {
-            delete physical_robot;
-        }
     }
     else
     {
@@ -112,5 +103,4 @@ void FluxProgBackend::start()
             communication->setFeedback(feedback);
         }
     }
-    cout << "saindo"<<endl;
 }
