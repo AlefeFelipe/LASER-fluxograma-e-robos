@@ -1999,6 +1999,12 @@ void Interface :: callMessage(int i) {
         case 16:
             al_show_native_message_box(display, "Fluxprog", " ", "Falha ao carregar o fluxograma", "Ok", ALLEGRO_MESSAGEBOX_ERROR);
             break;
+        case 17:
+            al_show_native_message_box(display, "Fluxprog", "ERRO", "Conexão Perdida.\n Reinicie a simulação do V-Rep e reconecte", "Ok", ALLEGRO_MESSAGEBOX_ERROR);
+            break;
+        case 18:
+            al_show_native_message_box(display, "Fluxprog", "ERRO", "Conexão Perdida.\n Verifique as condições do robô e reconecte", "Ok", ALLEGRO_MESSAGEBOX_ERROR);
+            break;
     }
 }
 int Interface :: getImageHeight(int i) {

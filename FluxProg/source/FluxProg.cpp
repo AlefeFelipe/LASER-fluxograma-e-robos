@@ -314,103 +314,117 @@ void FluxProg :: execute() {
     if(current_executing_block != NULL) {
 
         if(program_connected == true) {
-            //se for do tipo 8 = condicional
-            //tem q fazer leitura de sensores para setar as variáveis de comparação
-            if(current_executing_block->getType() == CONDITIONAL_BLOCK) {
-                communication->upadateReadings();
-                int* black_sensor_reading = communication->getBlackTypeReading();
-                int* ultrasonic_sensor_reading = communication->getUltrasonicReading();
-                //checa tipo de sensor
-                switch(current_executing_block->getTypeOfSensor()) {
-                    case 1:
-                        //black sensor 1
-                        current_executing_block->setParameter1(black_sensor_reading[0]);
-                        current_executing_block->setParameter2(1);
-                        cout<<"sensor: "<<black_sensor_reading[0]<<endl;
-                        break;
-
-                    case 2:
-                        //black sensor 2
-                        current_executing_block->setParameter1(black_sensor_reading[1]);
-                        current_executing_block->setParameter2(1);
-                        cout<<"sensor: "<<black_sensor_reading[1]<<endl;
-                        break;
-                    case 3:
-                        //black sensor 3
-                        current_executing_block->setParameter1(black_sensor_reading[2]);
-                        current_executing_block->setParameter2(1);
-                        cout<<"sensor: "<<black_sensor_reading[2]<<endl;
-                        break;
-                    case 4:
-                        //black sensor 4
-                        current_executing_block->setParameter1(black_sensor_reading[3]);
-                        current_executing_block->setParameter2(1);
-                        cout<<"sensor: "<<black_sensor_reading[3]<<endl;
-                        break;
-                    case 5:
-                        //black sensor 5
-                        current_executing_block->setParameter1(black_sensor_reading[4]);
-                        current_executing_block->setParameter2(1);
-                        cout<<"sensor: "<<black_sensor_reading[4]<<endl;
-                        break;
-                    case 6:
-                        //color sensor 1
-                        current_executing_block->setParameter1(1);
-                        current_executing_block->setParameter2(1);
-                        break;
-                    case 7:
-                        //color sensor 2
-                        current_executing_block->setParameter1(0);
-                        current_executing_block->setParameter2(1);
-                        break;
-                    case 8:
-                        //ultrasonic sensor 1
-                        if((ultrasonic_sensor_reading[0] > 0) && (ultrasonic_sensor_reading[0] <= 20)) {
-                            current_executing_block->setParameter1(ultrasonic_sensor_reading[0]);
-                        } else {
-                            current_executing_block->setParameter1(0);
-                        }
-                        current_executing_block->setParameter2(1);
-                        cout<<"sensor: "<<ultrasonic_sensor_reading[0]<<endl;
-                        break;
-                    case 9:
-                        //ultrasonic sensor 2
-                        if((ultrasonic_sensor_reading[1] > 0) && (ultrasonic_sensor_reading[1] <= 20)) {
-                            current_executing_block->setParameter1(ultrasonic_sensor_reading[1]);
-                        } else {
-                            current_executing_block->setParameter1(0);
-                        }
-                        current_executing_block->setParameter2(1);
-                        cout<<"sensor lido: "<<current_executing_block->getParameter1()<<endl;
-                        break;
-                    case 10:
-                        //ultrasonic sensor 3
-                        if((ultrasonic_sensor_reading[2] > 0) && (ultrasonic_sensor_reading[2] <= 20)) {
-                            current_executing_block->setParameter1(ultrasonic_sensor_reading[2]);
-                        } else {
-                            current_executing_block->setParameter1(0);
-                        }
-                        current_executing_block->setParameter2(1);
-                        cout<<"sensor: "<<ultrasonic_sensor_reading[2]<<endl;
-                        break;
-                }
-            }
-            //se for 1 significa que terminou execução ou está pronto para receber
-            if(communication->getFeedback() == READY) {
-                //testa se o próximo é não nulo
-                if(current_executing_block->getExecutingNext() != NULL) {
-                    std::cout<<"executou bloco: "<<current_executing_block->getName()<<std::endl;
-                    current_executing_block = current_executing_block->getExecutingNext();
-                    refresh_executing_block();
-                    //bloco de ação
-                    if(current_executing_block->getType() == ACTION_BLOCK) {
-                        communication->setCommand(current_executing_block->getCommand());
-                    }
+            if(communication->getFeedback() == ERROR)
+            {
+                if(simulator_connected)
+                {
+                   interface->callMessage(17);
+                   //communication->inicialize();
                 } else {
-                    std::cout<<"executou bloco: "<<current_executing_block->getName()<<std::endl;
-                    executing_fluxogram = false;
-                    //reseta as variáveis execução
-                    reset_fluxogram_execution();
+                   interface->callMessage(18);
+                }
+                communication->setCommand(CLOSE_PROGRAM);
+                program_connected = false;
+            }
+            else {
+                //se for do tipo 8 = condicional
+                //tem q fazer leitura de sensores para setar as variáveis de comparação
+                if(current_executing_block->getType() == CONDITIONAL_BLOCK) {
+                    communication->upadateReadings();
+                    int* black_sensor_reading = communication->getBlackTypeReading();
+                    int* ultrasonic_sensor_reading = communication->getUltrasonicReading();
+                    //checa tipo de sensor
+                    switch(current_executing_block->getTypeOfSensor()) {
+                        case 1:
+                            //black sensor 1
+                            current_executing_block->setParameter1(black_sensor_reading[0]);
+                            current_executing_block->setParameter2(1);
+                            cout<<"sensor: "<<black_sensor_reading[0]<<endl;
+                            break;
+
+                        case 2:
+                            //black sensor 2
+                            current_executing_block->setParameter1(black_sensor_reading[1]);
+                            current_executing_block->setParameter2(1);
+                            cout<<"sensor: "<<black_sensor_reading[1]<<endl;
+                            break;
+                        case 3:
+                            //black sensor 3
+                            current_executing_block->setParameter1(black_sensor_reading[2]);
+                            current_executing_block->setParameter2(1);
+                            cout<<"sensor: "<<black_sensor_reading[2]<<endl;
+                            break;
+                        case 4:
+                            //black sensor 4
+                            current_executing_block->setParameter1(black_sensor_reading[3]);
+                            current_executing_block->setParameter2(1);
+                            cout<<"sensor: "<<black_sensor_reading[3]<<endl;
+                            break;
+                        case 5:
+                            //black sensor 5
+                            current_executing_block->setParameter1(black_sensor_reading[4]);
+                            current_executing_block->setParameter2(1);
+                            cout<<"sensor: "<<black_sensor_reading[4]<<endl;
+                            break;
+                        case 6:
+                            //color sensor 1
+                            current_executing_block->setParameter1(1);
+                            current_executing_block->setParameter2(1);
+                            break;
+                        case 7:
+                            //color sensor 2
+                            current_executing_block->setParameter1(0);
+                            current_executing_block->setParameter2(1);
+                            break;
+                        case 8:
+                            //ultrasonic sensor 1
+                            if((ultrasonic_sensor_reading[0] > 0) && (ultrasonic_sensor_reading[0] <= 20)) {
+                                current_executing_block->setParameter1(ultrasonic_sensor_reading[0]);
+                            } else {
+                                current_executing_block->setParameter1(0);
+                            }
+                            current_executing_block->setParameter2(1);
+                            cout<<"sensor: "<<ultrasonic_sensor_reading[0]<<endl;
+                            break;
+                        case 9:
+                            //ultrasonic sensor 2
+                            if((ultrasonic_sensor_reading[1] > 0) && (ultrasonic_sensor_reading[1] <= 20)) {
+                                current_executing_block->setParameter1(ultrasonic_sensor_reading[1]);
+                            } else {
+                                current_executing_block->setParameter1(0);
+                            }
+                            current_executing_block->setParameter2(1);
+                            cout<<"sensor lido: "<<current_executing_block->getParameter1()<<endl;
+                            break;
+                        case 10:
+                            //ultrasonic sensor 3
+                            if((ultrasonic_sensor_reading[2] > 0) && (ultrasonic_sensor_reading[2] <= 20)) {
+                                current_executing_block->setParameter1(ultrasonic_sensor_reading[2]);
+                            } else {
+                                current_executing_block->setParameter1(0);
+                            }
+                            current_executing_block->setParameter2(1);
+                            cout<<"sensor: "<<ultrasonic_sensor_reading[2]<<endl;
+                            break;
+                    }
+                }
+                //se for 1 significa que terminou execução ou está pronto para receber
+                if(communication->getFeedback() == READY) {
+                    //testa se o próximo é não nulo
+                    if(current_executing_block->getExecutingNext() != NULL) {
+                        std::cout<<"executou bloco: "<<current_executing_block->getName()<<std::endl;
+                        current_executing_block = current_executing_block->getExecutingNext();
+                        refresh_executing_block();
+                        //bloco de ação
+                        if(current_executing_block->getType() == ACTION_BLOCK) {
+                            communication->setCommand(current_executing_block->getCommand());
+                        }
+                    } else {
+                        std::cout<<"executou bloco: "<<current_executing_block->getName()<<std::endl;
+                        executing_fluxogram = false;
+                        //reseta as variáveis execução
+                        reset_fluxogram_execution();
+                    }
                 }
             }
         } else {
@@ -585,7 +599,7 @@ void FluxProg :: connect() {
     string address = program_path;
     address = address + "../../../FluxProgBackend/build/bin/FluxProgBackend &";
     error = system(address.c_str());
-    sleep(2);
+    sleep(3);
     feedback = communication->getFeedback();
     if(feedback != 0 && error == 0) {
 
@@ -600,7 +614,9 @@ void FluxProg :: connect() {
             } else {
                 interface->callMessage(6);
             }
+            communication->setCommand(CLOSE_PROGRAM);
             program_connected = false;
+
         } else if(feedback == READY) {
             if(simulator_connected == true) {
                 interface->callMessage(8);
@@ -613,12 +629,14 @@ void FluxProg :: connect() {
             }
             program_connected = true;
         } else{
+            cout << feedback <<endl;
             if(simulator_connected == true) {
                 interface->callMessage(10);
-                communication->inicialize();
+                //communication->inicialize();
             } else {
                 interface->callMessage(11);
             }
+            communication->setCommand(CLOSE_PROGRAM);
             program_connected = false;
         }
     } else {

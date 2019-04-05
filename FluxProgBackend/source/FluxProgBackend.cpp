@@ -35,6 +35,7 @@ void FluxProgBackend::connect()
     }
     if (error)//nao deu certo se conectar a porta ou a cena
     {
+        cout << "erro "<<endl;
         feedback = ERROR;
         communication->setFeedback(feedback);
         if(virtual_robot)
@@ -57,19 +58,19 @@ void FluxProgBackend::start()
 {
     connect();
     int command = 0;
-    if(virtual_robot)
+    if(virtual_robot && feedback != ERROR)
     {
         virtual_robot->updateSensorsReading();
         communication->setUltrasonicReading(virtual_robot->getUltrasonicReading());
         communication->setBlackTypeReading(virtual_robot->getBlackTypeReading());
     }
-    else
+    else if (physical_robot && feedback != ERROR)
     {
         physical_robot->updateSensorsReading();
         communication->setUltrasonicReading(physical_robot->getUltrasonicReading());
         communication->setBlackTypeReading(physical_robot->getBlackTypeReading());
     }
-    while(feedback != ERROR && feedback != CLOSE_PROGRAM)
+    while(feedback != CLOSE_PROGRAM)
     {
         feedback = 0;
         command = communication->getCommand();
@@ -89,8 +90,8 @@ void FluxProgBackend::start()
                 }
                 else if(feedback == -1)
                 {
-                    feedback = CLOSE_PROGRAM;
-                    communication->setFeedback(feedback);
+                    //feedback = CLOSE_PROGRAM;
+                    communication->setFeedback(ERROR);
                 }
             }
             else
@@ -111,4 +112,5 @@ void FluxProgBackend::start()
             communication->setFeedback(feedback);
         }
     }
+    cout << "saindo"<<endl;
 }
