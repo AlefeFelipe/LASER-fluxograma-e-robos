@@ -2,3 +2,4 @@ build/
 *.fp
 *.gch
 *~
+*.fluxprog
