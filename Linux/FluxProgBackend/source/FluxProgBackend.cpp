@@ -67,26 +67,30 @@ void FluxProgBackend::start()
         command = communication->getCommand();
         if(command > 0)
         {
+            cout << "massa"<<endl;
             if(virtual_robot)
             {
+                virtual_robot->setAbstractionLevel(communication->getAbstractionLevel());
                 communication->setFeedback(EXECUTING);
                 virtual_robot->setCommand(command);
                 virtual_robot->updateSensorsReading();
                 feedback = virtual_robot->isFinished();
-                if(feedback > 0)
-                {
-                    communication->setFeedback(feedback);
+                //if(feedback > 0)
+                //{
+                    virtual_robot->updateSensorsReading();
                     communication->setUltrasonicReading(virtual_robot->getUltrasonicReading());
                     communication->setBlackTypeReading(virtual_robot->getBlackTypeReading());
-                }
-                else if(feedback == -1)
-                {
+                    communication->setFeedback(feedback);
+                //}
+                //else if(feedback == -1)
+                //{
                     //feedback = CLOSE_PROGRAM;
-                    communication->setFeedback(ERROR);
-                }
+                //    communication->setFeedback(ERROR);
+                //}
             }
             else
             {
+                cout << "ola"<<endl;
                 communication->setFeedback(EXECUTING);
                 physical_robot->setCommand(command);
                 physical_robot->updateSensorsReading();

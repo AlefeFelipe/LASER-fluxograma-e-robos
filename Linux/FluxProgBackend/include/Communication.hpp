@@ -17,6 +17,7 @@ class Communication{
     pair<int*, managed_shared_memory::size_type> command;
     pair<int*, managed_shared_memory::size_type> virtual_robot;
     pair<int*, managed_shared_memory::size_type> feedback;
+    pair<int*, managed_shared_memory::size_type> abstraction_level;
 
 public:
     Communication();
@@ -27,6 +28,7 @@ public:
     void setUltrasonicReading(int *ultrasonic_reading);
     void setBlackTypeReading(int *black_type_reading);
     void setColorReading(int **color_reading);
+    int getAbstractionLevel();
 };
 
 #endif

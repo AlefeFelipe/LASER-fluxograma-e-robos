@@ -52,7 +52,7 @@ void PhysicalRobot::receiveData()
     //while(there_is_packet != SIZEPACKET && ((float)(clock() - t))/CLOCKS_PER_SEC < 10.0)
     //{
         there_is_packet = RS232_PollComport(CPORT_NR, reading, SIZEPACKET);
-        sleep(10);
+        sleep(5);
         //std::cout << "recebendo"<<there_is_packet<<std::endl;
     //}
 

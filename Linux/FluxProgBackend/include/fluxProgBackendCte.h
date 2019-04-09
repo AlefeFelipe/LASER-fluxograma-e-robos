@@ -4,6 +4,7 @@
 //acesso de memoria
 #define MEMORY_BLOCK "memory"
 #define MEMORY_COMMAND "command"
+#define MEMORY_ABSTRACTION "abstraction_level"
 #define MEMORY_FEEDBACK "feedback"
 #define MEMORY_VISION_SENSOR "reading_VS"
 #define MEMORY_ULTRASONIC_SENSOR "readin_US"
@@ -29,6 +30,10 @@
 #define N_COLOR_SENSOR 2
 #define ULTRASONIC_SENSOR_COMPONENTS 3
 #define VISION_SENSOR_COMPONENTS 15
+#define HIGH_ABSTRACTION 0
+#define MID_ABSTRACTION 1
+#define LOW_ABSTRACTION 2
+#define COLISION -2
 
 //variaveis de communicacao entre back e front end
 #define CLOSE_PROGRAM -10

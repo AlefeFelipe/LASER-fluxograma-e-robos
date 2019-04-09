@@ -80,6 +80,8 @@ void FluxProg :: start() {
             if(paused == false) {
                 reset_fluxogram_execution();
             }
+            //seta o nível de abstração do simulador baseado nas leitura que o programa faz
+            communication->setAbstractionLevel(check_abstraction_level());
         }
         if(interface->getMenuClick() == PAUSE) {
             executing_fluxogram = false;
@@ -107,10 +109,18 @@ void FluxProg :: start() {
         if(interface->getMenuClick() == LOAD) {
             path = interface->open_file_window();
             if(path != NULL) {
+                reset_blocks_list();
                 interface->reset_scrollbar();
                 int t = load->load(path);
                 if(t == 1) {
                     already_saved = true;
+                    for(int i=0; i<valor_maximo_blocos; i++) {
+                        if(blocks_list_to_print[i] != NULL) {
+                            if(blocks_list_to_print[i]->getID() >= ids) {
+                                ids = blocks_list_to_print[i]->getID()+1;
+                            }
+                        }
+                    }
 
                 } else {
                     interface->callMessage(16);
@@ -334,6 +344,8 @@ void FluxProg :: execute() {
                     communication->upadateReadings();
                     int* black_sensor_reading = communication->getBlackTypeReading();
                     int* ultrasonic_sensor_reading = communication->getUltrasonicReading();
+                    int low_limit_ultrasonic = 19;
+                    int high_limit_ultrasonic = 21;
                     //checa tipo de sensor
                     switch(current_executing_block->getTypeOfSensor()) {
                         case 1:
@@ -379,7 +391,7 @@ void FluxProg :: execute() {
                             break;
                         case 8:
                             //ultrasonic sensor 1
-                            if((ultrasonic_sensor_reading[0] > 0) && (ultrasonic_sensor_reading[0] <= 20)) {
+                            if((ultrasonic_sensor_reading[0] > low_limit_ultrasonic) && (ultrasonic_sensor_reading[0] <= high_limit_ultrasonic)) {
                                 current_executing_block->setParameter1(ultrasonic_sensor_reading[0]);
                             } else {
                                 current_executing_block->setParameter1(0);
@@ -389,17 +401,17 @@ void FluxProg :: execute() {
                             break;
                         case 9:
                             //ultrasonic sensor 2
-                            if((ultrasonic_sensor_reading[1] > 0) && (ultrasonic_sensor_reading[1] <= 20)) {
+                            if((ultrasonic_sensor_reading[1] > low_limit_ultrasonic) && (ultrasonic_sensor_reading[1] <= high_limit_ultrasonic)) {
                                 current_executing_block->setParameter1(ultrasonic_sensor_reading[1]);
                             } else {
                                 current_executing_block->setParameter1(0);
                             }
                             current_executing_block->setParameter2(1);
-                            cout<<"sensor lido: "<<current_executing_block->getParameter1()<<endl;
+                            cout<<"sensor lido: "<<ultrasonic_sensor_reading[1]<<endl;
                             break;
                         case 10:
                             //ultrasonic sensor 3
-                            if((ultrasonic_sensor_reading[2] > 0) && (ultrasonic_sensor_reading[2] <= 20)) {
+                            if((ultrasonic_sensor_reading[2] > low_limit_ultrasonic) && (ultrasonic_sensor_reading[2] <= high_limit_ultrasonic)) {
                                 current_executing_block->setParameter1(ultrasonic_sensor_reading[2]);
                             } else {
                                 current_executing_block->setParameter1(0);
@@ -427,6 +439,12 @@ void FluxProg :: execute() {
                         reset_fluxogram_execution();
                         reset_executing_block();
                     }
+                } if(communication->getFeedback() == COLISION) {
+                    interface->callMessage(19);
+                    executing_fluxogram = false;
+                    reset_fluxogram_execution();
+                    reset_executing_block();
+
                 }
             }
         } else {
@@ -680,6 +698,32 @@ void FluxProg :: reset_executing_block() {
     for(int i=0; i<valor_maximo_blocos; i++) {
         if(blocks_list_to_print[i] != NULL) {
             blocks_list_to_print[i]->setExecuting(false);
+        }
+    }
+}
+int FluxProg :: check_abstraction_level() {
+    int level = HIGH_ABSTRACTION;
+    for(int i = 0; i<valor_maximo_blocos; i++) {
+        if(blocks_list_to_print[i] != NULL) {
+            if(blocks_list_to_print[i]->getType() == CONDITIONAL_BLOCK) {
+                if((blocks_list_to_print[i]->getTypeOfSensor() == BLACK_SENSOR_1) || (blocks_list_to_print[i]->getTypeOfSensor() == BLACK_SENSOR_2) || (blocks_list_to_print[i]->getTypeOfSensor() == BLACK_SENSOR_3)) {
+                    level = LOW_ABSTRACTION;
+                    break;
+                } else if((blocks_list_to_print[i]->getTypeOfSensor() == BLACK_SENSOR_4) || (blocks_list_to_print[i]->getTypeOfSensor() == BLACK_SENSOR_5)) {
+                    level = LOW_ABSTRACTION;
+                    break;
+                } else if((blocks_list_to_print[i]->getTypeOfSensor() == ULTRASONIC_SENSOR_1) || (blocks_list_to_print[i]->getTypeOfSensor() == ULTRASONIC_SENSOR_2) || (blocks_list_to_print[i]->getTypeOfSensor() == ULTRASONIC_SENSOR_3)) {
+                    level = MID_ABSTRACTION;
+                }
+            }
+        }
+    }
+    return level;
+}
+void FluxProg :: reset_blocks_list() {
+    for(int i=0; i<valor_maximo_blocos; i++) {
+        if(blocks_list_to_print[i] != NULL) {
+            blocks_list_to_print[i] = NULL;
         }
     }
 }

@@ -4,6 +4,7 @@ Robot::Robot()
 {
     updateSensorsReading();
     command = 0;
+    abstraction_level = HIGH_ABSTRACTION;
 }
 
 void Robot::setCommand(int _command)
@@ -49,4 +50,9 @@ void Robot::updateSensorsReading()
             color_sensor_reading[i][j] = 0
         }
     }*/
+}
+
+void Robot::setAbstractionLevel(int abstraction)
+{
+    abstraction_level = abstraction;
 }

@@ -20,6 +20,11 @@ void Communication::setCommand(int c)
     *command = c;
 }
 
+void Communication::setAbstractionLevel(int a)
+{
+    *abstraction_level = a;
+}
+
 void Communication::setIfVirtual(int i)
 {
     *virtual_robot = i;
@@ -80,9 +85,11 @@ void Communication :: inicialize() {
     }
     //color_sensor_reading = shared_memory->find'<unsigned short int >(POSICAO_DETECTADA).first;
     command = shared_memory->construct<int>(MEMORY_COMMAND)();
+    abstraction_level = shared_memory->construct<int>(MEMORY_ABSTRACTION)();
     virtual_robot = shared_memory->construct<int>(MEMORY_ROBOT_TYPE)();
     feedback = shared_memory->construct<int>(MEMORY_FEEDBACK)();
     *feedback = 0;
     *command = 0;
+    *abstraction_level = 0;
     *virtual_robot = 2;
 }

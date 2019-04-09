@@ -21,6 +21,7 @@ Communication::Communication()
     command = shared_memory->find<int>(MEMORY_COMMAND);
     virtual_robot = shared_memory->find<int>(MEMORY_ROBOT_TYPE);
     feedback = shared_memory->find<int>(MEMORY_FEEDBACK);
+    abstraction_level = shared_memory->find<int>(MEMORY_ABSTRACTION);
     setFeedback(CONNECT);
 }
 
@@ -71,3 +72,8 @@ void Communication::setBlackTypeReading(int *black_type_reading)
         color_sensor_reading[i] = color_reading[i];
     }
 }*/
+
+int Communication::getAbstractionLevel()
+{
+    return *abstraction_level.first;
+}

@@ -128,12 +128,13 @@ void VirtualRobot::moveForward()
 {
     if(simxGetConnectionId(client_id) == -1)
     {
-        command = -1;
+        command = ERROR;
     }
     else
     {
         int turning_tight = 0, turning_left = 0;
         float first_x, first_y, dx, dy;
+        //std::cout << (int)is_there_obstacle[1] <<std::endl;
         updateVirtualData();
         while(((black_type_sensor_reading[0]&&black_type_sensor_reading[2])||
                 (black_type_sensor_reading[2]&&black_type_sensor_reading[4])) &&
@@ -152,7 +153,7 @@ void VirtualRobot::moveForward()
             }
             if(simxGetConnectionId(client_id) == -1)
             {
-                command = -1;
+                command = ERROR;
             }
         }
         while(!((black_type_sensor_reading[0]&&black_type_sensor_reading[2])||
@@ -232,7 +233,7 @@ void VirtualRobot::moveForward()
             }
             if(simxGetConnectionId(client_id) == -1)
             {
-                command = -1;
+                command = ERROR;
             }
             extApi_sleepMs(5);
         }
@@ -257,11 +258,11 @@ void VirtualRobot::moveForward()
             }
             if(simxGetConnectionId(client_id) == -1)
             {
-                command = -1;
+                command = ERROR;
             }
         }
         stop();
-        if(command != -1)
+        if(command >= 0)
         {
             command = 1;
         }
@@ -272,7 +273,7 @@ void VirtualRobot::turnRight()
 {
     if(simxGetConnectionId(client_id) == -1)
     {
-        command = -1;
+        command = ERROR;
     }
     else
     {
@@ -295,7 +296,7 @@ void VirtualRobot::turnRight()
             }
             if(simxGetConnectionId(client_id) == -1)
             {
-                command = -1;
+                command = ERROR;
             }
             extApi_sleepMs(5);
         }
@@ -309,7 +310,7 @@ void VirtualRobot::turnRight()
             extApi_sleepMs(5);
             if(simxGetConnectionId(client_id) == -1)
             {
-                command = -1;
+                command = ERROR;
             }
         }
         while(!(black_type_sensor_reading[2])  && simxGetConnectionId(client_id) != -1)//gira ate os sensores captarem a linha
@@ -322,11 +323,11 @@ void VirtualRobot::turnRight()
             extApi_sleepMs(5);
             if(simxGetConnectionId(client_id) == -1)
             {
-                command = -1;
+                command = ERROR;
             }
         }
         stop();
-        if(command != -1)
+        if(command >= 0)
         {
             command = 1;
         }
@@ -337,7 +338,7 @@ void VirtualRobot::turnLeft()
 {
     if(simxGetConnectionId(client_id) == -1)
     {
-        command = -1;
+        command = ERROR;
     }
     else
     {
@@ -360,7 +361,7 @@ void VirtualRobot::turnLeft()
             }
             if(simxGetConnectionId(client_id) == -1)
             {
-                command = -1;
+                command = ERROR;
             }
             extApi_sleepMs(5);
         }
@@ -373,7 +374,7 @@ void VirtualRobot::turnLeft()
             updateVirtualData();
             if(simxGetConnectionId(client_id) == -1)
             {
-                command = -1;
+                command = ERROR;
             }
             extApi_sleepMs(5);
         }
@@ -386,12 +387,12 @@ void VirtualRobot::turnLeft()
             updateVirtualData();
             if(simxGetConnectionId(client_id) == -1)
             {
-                command = -1;
+                command = ERROR;
             }
             extApi_sleepMs(5);
         }
         stop();
-        if(command != -1)
+        if(command >= 0)
         {
             command = 1;
         }
@@ -402,7 +403,7 @@ void VirtualRobot::stop()
 {
     if(simxGetConnectionId(client_id) == -1)
     {
-        command = -1;
+        command = ERROR;
     }
     else
     {
@@ -422,7 +423,7 @@ void VirtualRobot::updateVirtualData()
 {
     if(simxGetConnectionId(client_id) == -1)
     {
-        command = -1;
+        command = ERROR;
     }
     else
     {
@@ -432,7 +433,20 @@ void VirtualRobot::updateVirtualData()
         for(i = 0; i < N_ULTRASONIC; i++)
         {
             simxReadProximitySensor(client_id, ultrasonic_sensors[i], &is_there_obstacle[i], detected_objet[i], &detected_object_handle[i], detected_surface[i], simx_opmode_buffer);
-            ultrasonic_sensor_reading[i] = detected_objet[i][2] * 100;
+            //ultrasonic_sensor_reading[i] = detected_objet[i][2] * 100;
+            ultrasonic_sensor_reading[i] = is_there_obstacle[i] * 20;
+            if(abstraction_level > HIGH_ABSTRACTION)
+            {
+                if(is_there_obstacle[i] && (detected_objet[i][2]*20 < 1))
+                {
+                    std::cout << "oh nao, valor "<<detected_objet[i][2]*20<<std::endl;
+                    command = COLISION;
+                }
+                else
+                {
+                    is_there_obstacle[i] = 0;
+                }
+            }
         }
         for(i = 0; i < N_BLACK_TAPE_SENSOR; i++)
         {

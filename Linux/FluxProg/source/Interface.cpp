@@ -689,35 +689,35 @@ void Interface :: print_decision_block(Block *b) {
     }
     //testa qual o tipo de sensor da comparação para imprimir a imagem certa
     switch(b->getTypeOfSensor()) {
-        case 1:
+        case BLACK_SENSOR_1:
             al_draw_bitmap(MICRO_BLACK_SENSOR1, b->getX()+47, b->getY()+19, 0);
             break;
 
-        case 2:
+        case BLACK_SENSOR_2:
             al_draw_bitmap(MICRO_BLACK_SENSOR2, b->getX()+47, b->getY()+19, 0);
             break;
-        case 3:
+        case BLACK_SENSOR_3:
             al_draw_bitmap(MICRO_BLACK_SENSOR3, b->getX()+47, b->getY()+19, 0);
             break;
-        case 4:
+        case BLACK_SENSOR_4:
             al_draw_bitmap(MICRO_BLACK_SENSOR4, b->getX()+47, b->getY()+19, 0);
             break;
-        case 5:
+        case BLACK_SENSOR_5:
             al_draw_bitmap(MICRO_BLACK_SENSOR5, b->getX()+47, b->getY()+19, 0);
             break;
-        case 6:
+        case COLOR_SENSOR_1:
             al_draw_bitmap(MICRO_COLOR_SENSOR1, b->getX()+47, b->getY()+19, 0);
             break;
-        case 7:
+        case COLOR_SENSOR_2:
             al_draw_bitmap(MICRO_COLOR_SENSOR2, b->getX()+47, b->getY()+19, 0);
             break;
-        case 8:
+        case ULTRASONIC_SENSOR_1:
             al_draw_bitmap(MICRO_ULTRASONIC_SENSOR1, b->getX()+47, b->getY()+19, 0);
             break;
-        case 9:
+        case ULTRASONIC_SENSOR_2:
             al_draw_bitmap(MICRO_ULTRASONIC_SENSOR2, b->getX()+47, b->getY()+19, 0);
             break;
-        case 10:
+        case ULTRASONIC_SENSOR_3:
             al_draw_bitmap(MICRO_ULTRASONIC_SENSOR3, b->getX()+47, b->getY()+19, 0);
             break;
     }
@@ -999,25 +999,25 @@ void Interface :: check_dragging() {
                 if((mouseX > blocks_list_to_print[i]->getX()) && (mouseX < (blocks_list_to_print[i]->getX() + blocks_list_to_print[i]->getWidth())) && (mouseY > blocks_list_to_print[i]->getY()) && (mouseY < (blocks_list_to_print[i]->getY() + blocks_list_to_print[i]->getHeight()))) {
                     //cout<<"soltou sobre o bloco certo"<<endl;
                     if(dragging_black_sensor1 == true) {
-                        blocks_list_to_print[i]->setTypeOfSensor(1);
+                        blocks_list_to_print[i]->setTypeOfSensor(BLACK_SENSOR_1);
                     } else if(dragging_black_sensor2 == true) {
-                        blocks_list_to_print[i]->setTypeOfSensor(2);
+                        blocks_list_to_print[i]->setTypeOfSensor(BLACK_SENSOR_2);
                     } else if(dragging_black_sensor3 == true) {
-                        blocks_list_to_print[i]->setTypeOfSensor(3);
+                        blocks_list_to_print[i]->setTypeOfSensor(BLACK_SENSOR_3);
                     } else if(dragging_black_sensor4 == true) {
-                        blocks_list_to_print[i]->setTypeOfSensor(4);
+                        blocks_list_to_print[i]->setTypeOfSensor(BLACK_SENSOR_4);
                     } else if(dragging_black_sensor5 == true) {
-                        blocks_list_to_print[i]->setTypeOfSensor(5);
+                        blocks_list_to_print[i]->setTypeOfSensor(BLACK_SENSOR_5);
                     } else if(dragging_color_sensor1 == true) {
-                        blocks_list_to_print[i]->setTypeOfSensor(6);
+                        blocks_list_to_print[i]->setTypeOfSensor(COLOR_SENSOR_1);
                     } else if(dragging_color_sensor2 == true) {
-                        blocks_list_to_print[i]->setTypeOfSensor(7);
+                        blocks_list_to_print[i]->setTypeOfSensor(COLOR_SENSOR_2);
                     } else if(dragging_ultrasonic_sensor1 == true) {
-                        blocks_list_to_print[i]->setTypeOfSensor(8);
+                        blocks_list_to_print[i]->setTypeOfSensor(ULTRASONIC_SENSOR_1);
                     } else if(dragging_ultrasonic_sensor2 == true) {
-                        blocks_list_to_print[i]->setTypeOfSensor(9);
+                        blocks_list_to_print[i]->setTypeOfSensor(ULTRASONIC_SENSOR_2);
                     } else if(dragging_ultrasonic_sensor3 == true) {
-                        blocks_list_to_print[i]->setTypeOfSensor(10);
+                        blocks_list_to_print[i]->setTypeOfSensor(ULTRASONIC_SENSOR_3);
                     } else if((dragging_walk_foward == true) || (dragging_turn_left == true) || (dragging_turn_right == true)) {
                         //erro
                         al_show_native_message_box(display, "Fluxprog", "ERRO", "Essa ação não pode ser usado como entrada no bloco de decisão", "Ok", ALLEGRO_MESSAGEBOX_ERROR);
@@ -2014,6 +2014,9 @@ void Interface :: callMessage(int i) {
             break;
         case 18:
             al_show_native_message_box(display, "Fluxprog", "ERRO", "Conexão Perdida.\n Verifique as condições do robô e reconecte", "Ok", ALLEGRO_MESSAGEBOX_ERROR);
+            break;
+        case 19:
+            al_show_native_message_box(display, "Fluxprog", "ERRO", "O Robô Colidiu!", "Ok", ALLEGRO_MESSAGEBOX_ERROR);
             break;
     }
 }

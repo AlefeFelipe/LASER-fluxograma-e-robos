@@ -10,6 +10,7 @@ protected:
     int black_type_sensor_reading [N_BLACK_TAPE_SENSOR];
     //int color_sensor_reading [N_COLOR_SENSOR][COLOR_SENSOR_COMPONENTS];
     int command;
+    int abstraction_level;
 
 public:
     Robot();
@@ -20,6 +21,7 @@ public:
     int *getBlackTypeReading();
     //int **getColorReading();
     void updateSensorsReading();
+    void setAbstractionLevel(int abstraction);
 };
 
 #endif

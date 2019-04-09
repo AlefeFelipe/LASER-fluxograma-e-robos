@@ -56,6 +56,8 @@ class FluxProg {
     void connect();
     string getExecutablePath();
     void reset_executing_block();
+    int check_abstraction_level();
+    void reset_blocks_list();
 
 public:
 

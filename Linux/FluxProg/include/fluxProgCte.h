@@ -5,6 +5,7 @@
 #define MEMORY_BLOCK "memory"
 #define MEMORY_BLOCK_SIZE 65536
 #define MEMORY_COMMAND "command"
+#define MEMORY_ABSTRACTION "abstraction_level"
 #define MEMORY_FEEDBACK "feedback"
 #define MEMORY_VISION_SENSOR "reading_VS"
 #define MEMORY_ULTRASONIC_SENSOR "readin_US"
@@ -40,6 +41,17 @@
 #define T_LOGIC_BLOCK 21
 #define F_LOGIC_BLOCK 22
 
+#define BLACK_SENSOR_1 1
+#define BLACK_SENSOR_2 2
+#define BLACK_SENSOR_3 3
+#define BLACK_SENSOR_4 4
+#define BLACK_SENSOR_5 5
+#define COLOR_SENSOR_1 6
+#define COLOR_SENSOR_2 7
+#define ULTRASONIC_SENSOR_1 8
+#define ULTRASONIC_SENSOR_2 9
+#define ULTRASONIC_SENSOR_3 10
+
 //communicacao entre back e front end
 #define CLOSE_PROGRAM -10
 #define ERROR -5
@@ -52,6 +64,10 @@
 #define N_ULTRASONIC 3
 #define N_BLACK_TAPE_SENSOR 5
 #define N_COLOR_SENSOR 2
+#define HIGH_ABSTRACTION 0
+#define MID_ABSTRACTION 1
+#define LOW_ABSTRACTION 2
+#define COLISION -2
 
 #define valor_maximo_blocos 100
 

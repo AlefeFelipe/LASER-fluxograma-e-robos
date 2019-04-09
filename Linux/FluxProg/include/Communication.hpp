@@ -15,6 +15,7 @@ class Communication{
     pair<int*, managed_shared_memory::size_type> black_type_sensor_reading;
     //pair<int*, managed_shared_memory::size_type> color_sensor_reading;
     int *command;
+    int *abstraction_level;
     int *virtual_robot;
     int *feedback;
 
@@ -22,6 +23,7 @@ public:
     Communication();
     ~Communication();
     void setCommand(int c);
+    void setAbstractionLevel(int a);
     void setIfVirtual(int i);
     int getFeedback();
     int* getUltrasonicReading();
