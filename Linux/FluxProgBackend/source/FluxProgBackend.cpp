@@ -91,9 +91,18 @@ void FluxProgBackend::start()
                 physical_robot->setCommand(command);
                 physical_robot->updateSensorsReading();
                 feedback = physical_robot->isFinished();
-                communication->setFeedback(feedback);
-                communication->setUltrasonicReading(physical_robot->getUltrasonicReading());
-                communication->setBlackTypeReading(physical_robot->getBlackTypeReading());
+                cout << "feedback eh "<<feedback<<endl;
+                if(feedback > 0)
+                {
+                    communication->setFeedback(feedback);
+                    communication->setUltrasonicReading(physical_robot->getUltrasonicReading());
+                    communication->setBlackTypeReading(physical_robot->getBlackTypeReading());
+                }
+                else if(feedback == -1)
+                {
+                    //feedback = CLOSE_PROGRAM;
+                    communication->setFeedback(ERROR);
+                }
             }
         }
         else if(command == CLOSE_PROGRAM)
