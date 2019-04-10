@@ -72,6 +72,11 @@
 #define valor_maximo_blocos 100
 
 #define scroll_bar_y_begin 84
+//#define display_width 670
+#define display_width 800
+#define display_height 720
+#define roll_bar_width 20
+#define roll_bar_height 30
 
 #define TIMEOUT 5.0
 

@@ -19,11 +19,6 @@
 
 using namespace std;
 
-#define display_width 670
-#define display_height 720
-#define roll_bar_width 20
-#define roll_bar_height 30
-
 class Interface {
     ALLEGRO_COLOR black, scroll_bar_color;
     ALLEGRO_COLOR backgroud_color;

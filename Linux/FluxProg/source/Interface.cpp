@@ -31,23 +31,27 @@ Interface :: Interface(Block** _blocks_list_to_print, string _program_path) {
         al_show_native_message_box(NULL, "Fluxprog", "ERRO", "Erro na inicializacao do Allegro_mouse", "Ok", ALLEGRO_MESSAGEBOX_ERROR);
         executing = false;;
     }
+    al_init_font_addon();
+    /*
     if(!al_init_font_addon()) {
         al_show_native_message_box(NULL, "Fluxprog", "ERRO", "Erro na inicializacao do Allegro_font", "Ok", ALLEGRO_MESSAGEBOX_ERROR);
         executing = false;;
     }
+    */
     if(!al_init_ttf_addon()) {
         al_show_native_message_box(NULL, "Fluxprog", "ERRO", "Erro na inicializacao do Allegro_ttf", "Ok", ALLEGRO_MESSAGEBOX_ERROR);
         executing = false;;
     }
 
     //CRIA A JANELA DO PROGRAMA E SETA AS VARIÁVEIS DA JANELA
-    al_set_new_display_flags(ALLEGRO_WINDOWED | ALLEGRO_RESIZABLE | ALLEGRO_MAXIMIZED);
+    //al_set_new_display_flags(ALLEGRO_WINDOWED | ALLEGRO_RESIZABLE | ALLEGRO_MAXIMIZED);
+    al_set_new_display_flags(ALLEGRO_WINDOWED);
     display = al_create_display(display_width, display_height);
     al_set_window_position(display, 40, 40);
     al_set_window_title(display, "Fluxprog_v2");
     al_clear_to_color(al_map_rgb(0, 0, 0));
-    al_set_window_constraints(display, 670, 720, 5000, 5000);
-    al_apply_window_constraints(display, true);
+    //al_set_window_constraints(display, 670, 720, 5000, 5000);
+    //al_apply_window_constraints(display, true);
 
     timer = al_create_timer(0.5);
     if(!timer) {
