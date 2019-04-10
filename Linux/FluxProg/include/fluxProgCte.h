@@ -37,9 +37,9 @@
 #define MOVE_FORWARD_BLOCK 18
 #define TURN_LEFT_BLOCK 19
 #define TURN_RIGHT_BLOCK 20
-#define N_LOOP_BLOCK 23
-#define T_LOGIC_BLOCK 21
-#define F_LOGIC_BLOCK 22
+#define N_LOOP_BLOCK 21
+#define T_LOGIC_BLOCK 22
+#define F_LOGIC_BLOCK 23
 
 #define BLACK_SENSOR_1 1
 #define BLACK_SENSOR_2 2
@@ -74,7 +74,7 @@
 #define scroll_bar_y_begin 84
 //#define display_width 670
 #define display_width 800
-#define display_height 720
+#define display_height 630
 #define roll_bar_width 20
 #define roll_bar_height 30
 

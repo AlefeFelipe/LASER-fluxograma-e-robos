@@ -45,12 +45,12 @@ Interface :: Interface(Block** _blocks_list_to_print, string _program_path) {
 
     //CRIA A JANELA DO PROGRAMA E SETA AS VARIÁVEIS DA JANELA
     //al_set_new_display_flags(ALLEGRO_WINDOWED | ALLEGRO_RESIZABLE | ALLEGRO_MAXIMIZED);
-    al_set_new_display_flags(ALLEGRO_WINDOWED);
+    al_set_new_display_flags(ALLEGRO_WINDOWED | ALLEGRO_RESIZABLE);
     display = al_create_display(display_width, display_height);
     al_set_window_position(display, 40, 40);
     al_set_window_title(display, "Fluxprog_v2");
     al_clear_to_color(al_map_rgb(0, 0, 0));
-    //al_set_window_constraints(display, 670, 720, 5000, 5000);
+    //al_set_window_constraints(display, 670, 630, 5000, 5000);
     //al_apply_window_constraints(display, true);
 
     timer = al_create_timer(0.5);
@@ -105,7 +105,6 @@ Interface :: Interface(Block** _blocks_list_to_print, string _program_path) {
 
     blocks_list_to_print = _blocks_list_to_print;
 
-
 }
 Interface :: ~Interface() {
 
@@ -140,16 +139,13 @@ void Interface :: draw() {
     al_flip_display();
 
     //cria a lista com eventos
-    ALLEGRO_EVENT_QUEUE *event_queue = al_create_event_queue();
+    event_queue = al_create_event_queue();
     al_register_event_source(event_queue, al_get_display_event_source(display));
     al_register_event_source(event_queue, al_get_mouse_event_source());
     al_register_event_source(event_queue, al_get_keyboard_event_source());
     al_register_event_source(event_queue, al_get_timer_event_source(timer));
-
     al_start_timer(timer);
-
     //espera pelo próximo evento
-    ALLEGRO_EVENT events;
     al_wait_for_event(event_queue, &events);
 
     if(events.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
@@ -197,6 +193,10 @@ void Interface :: draw() {
             if(at_limit == false) {
                 check_scrolling();
             }
+        }
+        //coxambre pra arrumar o tamanho da janela
+        if(al_get_display_width(display) < 670) {
+            al_resize_display(display, 670, al_get_display_height(display));
         }
     }
 
@@ -311,6 +311,8 @@ void Interface :: draw() {
     }
 
     while(check_colisions());
+
+    al_destroy_event_queue(event_queue);
 }
 
 void Interface :: load_bitmap(ALLEGRO_BITMAP **bitmap, const char *adress) {
@@ -358,16 +360,16 @@ void Interface :: print_primary_menu() {
         al_draw_bitmap(save_button, 14 + 3*al_get_bitmap_width(save_button), 2, 0);
     }
     if((mouseX < 14 + 5*al_get_bitmap_width(load_button)) && (mouseX > 14 + 4*al_get_bitmap_width(load_button)) && (mouseY >= 2) && (mouseY <= 2+ al_get_bitmap_height(load_button))) {
-        al_draw_bitmap(load_button_selected, 14 + 4*al_get_bitmap_width(load_button), 2, 0);
-        menu_selected = LOAD;
-    } else {
-        al_draw_bitmap(load_button, 14 + 4*al_get_bitmap_width(load_button), 2, 0);
-    }
-    if((mouseX < 14 + 6*al_get_bitmap_width(save_as_button)) && (mouseX > 14 + 5*al_get_bitmap_width(save_as_button)) && (mouseY >= 2) && (mouseY <= 2+ al_get_bitmap_height(save_as_button))) {
-        al_draw_bitmap(save_as_button_selected, 14 + 5*al_get_bitmap_width(save_as_button), 2, 0);
+        al_draw_bitmap(save_as_button_selected, 14 + 4*al_get_bitmap_width(save_as_button), 2, 0);
         menu_selected = SAVE_AS;
     } else {
-        al_draw_bitmap(save_as_button, 14 + 5*al_get_bitmap_width(save_as_button), 2, 0);
+        al_draw_bitmap(save_as_button, 14 + 4*al_get_bitmap_width(load_button), 2, 0);
+    }
+    if((mouseX < 14 + 6*al_get_bitmap_width(save_as_button)) && (mouseX > 14 + 5*al_get_bitmap_width(save_as_button)) && (mouseY >= 2) && (mouseY <= 2+ al_get_bitmap_height(save_as_button))) {
+        al_draw_bitmap(load_button_selected, 14 + 5*al_get_bitmap_width(load_button), 2, 0);
+        menu_selected = LOAD;
+    } else {
+        al_draw_bitmap(load_button, 14 + 5*al_get_bitmap_width(save_as_button), 2, 0);
     }
 
     //desenha o botão de conexão ao v-rep e bluetooth acompanhando o lado direito da tela
@@ -411,9 +413,9 @@ void Interface :: print_secondary_menu() {
     al_draw_bitmap(TURN_LEFT_ACTION, 0, actions_menu_Y + 1 * al_get_bitmap_height(WALK_FOWARD_ACTION) + 5, 0);
     al_draw_bitmap(TURN_RIGHT_ACTION, 0, actions_menu_Y + 2 * al_get_bitmap_height(WALK_FOWARD_ACTION) + 5, 0);
     //desenha botoes extras
-    al_draw_bitmap(logic_true, 0, extra_menu_Y + 0 * al_get_bitmap_height(WALK_FOWARD_ACTION) + 5, 0);
-    al_draw_bitmap(logic_false, 0, extra_menu_Y + 1 * al_get_bitmap_height(WALK_FOWARD_ACTION) + 5, 0);
-    al_draw_bitmap(NUMBER[2], 0, extra_menu_Y + 2 * al_get_bitmap_height(WALK_FOWARD_ACTION) + 5, 0);
+    al_draw_bitmap(NUMBER[2], 0, extra_menu_Y + 0 * al_get_bitmap_height(WALK_FOWARD_ACTION) + 5, 0);
+    //al_draw_bitmap(logic_true, 0, extra_menu_Y + 1 * al_get_bitmap_height(WALK_FOWARD_ACTION) + 5, 0);
+    //al_draw_bitmap(logic_false, 0, extra_menu_Y + 2 * al_get_bitmap_height(WALK_FOWARD_ACTION) + 5, 0);
 
     //variaveis usadas para facilitar a impressao das imagens
     int black_sensor_submenu_X = al_get_bitmap_width(mini_menu[0]) + 5;
@@ -503,7 +505,7 @@ void Interface :: print_secondary_menu() {
         }
     }
 
-    for(int i=12; i<15; i++) {
+    for(int i=12; i<13; i++) {
         // checa se o mouse está sobre o menu e desenha um retangulo selecionando o botao que o mouse está sobre
         if((mouseX > 0) && (mouseX < al_get_bitmap_width(WALK_FOWARD_ACTION))) {
             if((mouseY > al_get_bitmap_height(play_button) + 29 + i*al_get_bitmap_height(mini_menu[0])) && (mouseY < al_get_bitmap_height(play_button) + 29 + (i+1)*al_get_bitmap_height(mini_menu[0]))) {
@@ -515,7 +517,7 @@ void Interface :: print_secondary_menu() {
 
     //variaveis usadas para facilitar a impressao das imagens
     int number_submenu_X = al_get_bitmap_width(mini_menu[0]) + 5;
-    int number_submenu_Y = extra_menu_Y + 2 * al_get_bitmap_height(WALK_FOWARD_ACTION)+5;
+    int number_submenu_Y = extra_menu_Y + 0 * al_get_bitmap_height(WALK_FOWARD_ACTION)+5;
 
     //desenha submenu de numberos
     if(number_menu_selected == true) {
@@ -1180,7 +1182,7 @@ void Interface :: check_mouse_on_menus() {
     menu_actions_Y_limit = menu_actions_Y_begin + 3*al_get_bitmap_height(WALK_FOWARD_ACTION)+10;
 
     menu_extra_Y_begin = menu_actions_Y_limit;
-    menu_extra_Y_limit = menu_extra_Y_begin + 3*al_get_bitmap_height(WALK_FOWARD_ACTION)+10;
+    menu_extra_Y_limit = menu_extra_Y_begin + 1*al_get_bitmap_height(WALK_FOWARD_ACTION)+10;
 
     //se o mouse não está sobre os menus seta a variável de teste para zero
     if(mouseY < menu1_Y_limit) {
@@ -1209,8 +1211,8 @@ void Interface :: check_mouse_on_menus() {
         //submenu sensor de cor
     } else if((ultrasonic_sensor_menu_selected == true) && ((mouseX < 4*menu2_X_limit) && (mouseY > (menu_sensors_Y_begin+2*al_get_bitmap_width(WALK_FOWARD_ACTION))) && (mouseY < (menu_sensors_Y_begin+3*al_get_bitmap_height(WALK_FOWARD_ACTION))))) {
         //submenu sensor de ultrassom
-    } else if((number_menu_selected == true) && ((mouseX < 11*menu2_X_limit) && (mouseY > (menu_extra_Y_begin+2*al_get_bitmap_width(WALK_FOWARD_ACTION))) && (mouseY < (menu_extra_Y_begin+3*al_get_bitmap_height(WALK_FOWARD_ACTION))))) {
-        //submenu sensor de ultrassom
+    } else if((number_menu_selected == true) && ((mouseX < 11*menu2_X_limit) && (mouseY > (menu_extra_Y_begin+0*al_get_bitmap_width(WALK_FOWARD_ACTION))) && (mouseY < (menu_extra_Y_begin+1*al_get_bitmap_height(WALK_FOWARD_ACTION))))) {
+        //submenu sensor de numero
     } else {
         menu_selected = 0;
     }

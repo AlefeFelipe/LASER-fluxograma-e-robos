@@ -98,7 +98,6 @@ void FluxProg :: start() {
                 interface->callMessage(15);
             } else {
                 path = interface->save_file_window();
-                cout<<"retorno "<<path<<endl;
                 if(path != NULL) {
                     save->save(blocks_list_to_print, path);
                     already_saved = true;
@@ -129,9 +128,11 @@ void FluxProg :: start() {
         }
         if(interface->getMenuClick() == SAVE_AS) {
             path = interface->save_file_window();
-            save->save(blocks_list_to_print, path);
-            already_saved = true;
-            interface->callMessage(15);
+            if(path != NULL) {
+                save->save(blocks_list_to_print, path);
+                already_saved = true;
+                interface->callMessage(15);
+            }
         }
         if(interface->getMenuClick() == PHYSICAL_ROBOT) {
             if((program_connected == true) && (simulator_connected == false)){

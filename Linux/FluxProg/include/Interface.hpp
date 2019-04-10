@@ -44,6 +44,8 @@ class Interface {
     ALLEGRO_BITMAP *trash;
     ALLEGRO_BITMAP *arrow;
     ALLEGRO_FONT *font;
+    ALLEGRO_EVENT_QUEUE *event_queue;
+    ALLEGRO_EVENT events;
     int mouseX, mouseY, mouseZ, mouseZaux;
     bool inicialize_mouseZ;
     int menu_selected;
