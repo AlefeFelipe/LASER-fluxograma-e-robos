@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="FluxProgBackend" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/FluxProgBackend" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+					<Add option="-DNON_MATLAB_PARSING" />
+					<Add option="-DMAX_EXT_API_CONNECTIONS=255" />
+					<Add directory="include" />
+					<Add directory="include/remoteApi" />
+				</Compiler>
+				<Linker>
+					<Add directory="include" />
+					<Add directory="include/remoteApi" />
+				</Linker>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/FluxProgBackend" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-fexceptions" />
+		</Compiler>
+		<Unit filename="include/Communication.hpp" />
+		<Unit filename="include/FluxProgBackend.hpp" />
+		<Unit filename="include/PhysicalRobot.hpp" />
+		<Unit filename="include/Robot.hpp" />
+		<Unit filename="include/VirtualRobot.hpp" />
+		<Unit filename="include/fluxProgBackendCte.h" />
+		<Unit filename="include/remoteApi/extApi.h" />
+		<Unit filename="include/remoteApi/extApiInternal.h" />
+		<Unit filename="include/remoteApi/extApiPlatform.h" />
+		<Unit filename="include/remoteApi/v_repConst.h" />
+		<Unit filename="include/remoteApi/v_repLib.h" />
+		<Unit filename="include/remoteApi/v_repTypes.h" />
+		<Unit filename="include/rs232.h" />
+		<Unit filename="source/Communication.cpp" />
+		<Unit filename="source/FluxProgBackend.cpp" />
+		<Unit filename="source/PhysicalRobot.cpp" />
+		<Unit filename="source/Robot.cpp" />
+		<Unit filename="source/VirtualRobot.cpp" />
+		<Unit filename="source/main.cpp" />
+		<Unit filename="source/remoteApi/extApi.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="source/remoteApi/extApiPlatform.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="source/rs232.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

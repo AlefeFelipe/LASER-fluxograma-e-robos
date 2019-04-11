@@ -1,6 +1,138 @@
 # depslib dependency file v1.0
-1549304360 source:c:\users\robocup\desktop\laser-fluxograma-e-robos\windows\fluxprog\fluxprog.cpp
+1554947840 source:c:\users\alefe\desktop\laser-fluxograma-e-robos\windows\fluxprog\source\actionblock.cpp
+	"ActionBlock.hpp"
 
-1549392865 source:c:\users\robocup\desktop\laser-fluxograma-e-robos\windows\fluxprog\main.cpp
+1554947840 c:\users\alefe\desktop\laser-fluxograma-e-robos\windows\fluxprog\include\actionblock.hpp
+	"Block.hpp"
+
+1554947840 c:\users\alefe\desktop\laser-fluxograma-e-robos\windows\fluxprog\include\block.hpp
+	<allegro5/allegro.h>
+	<allegro5/allegro_image.h>
+	<iostream>
+	<math.h>
+	<fstream>
 	<cstring>
+	<iostream>
+	"fluxProgCte.h"
+
+1554947840 c:\users\alefe\desktop\laser-fluxograma-e-robos\windows\fluxprog\include\fluxprogcte.h
+
+1554947840 source:c:\users\alefe\desktop\laser-fluxograma-e-robos\windows\fluxprog\source\block.cpp
+	"Block.hpp"
+
+1554996424 source:c:\users\alefe\desktop\laser-fluxograma-e-robos\windows\fluxprog\source\communication.cpp
+	"Communication.hpp"
+
+1554947840 c:\users\alefe\desktop\laser-fluxograma-e-robos\windows\fluxprog\include\communication.hpp
+	"fluxProgCte.h"
+	<boost/interprocess/managed_shared_memory.hpp>
+	<boost/interprocess/offset_ptr.hpp>
+	<iostream>
+
+1554947840 source:c:\users\alefe\desktop\laser-fluxograma-e-robos\windows\fluxprog\source\conditionalblock.cpp
+	"ConditionalBlock.hpp"
+
+1554947840 c:\users\alefe\desktop\laser-fluxograma-e-robos\windows\fluxprog\include\conditionalblock.hpp
+	"ProgrammingBlock.hpp"
+
+1554947840 c:\users\alefe\desktop\laser-fluxograma-e-robos\windows\fluxprog\include\programmingblock.hpp
+	"Block.hpp"
+
+1554947840 source:c:\users\alefe\desktop\laser-fluxograma-e-robos\windows\fluxprog\source\endblock.cpp
+	"EndBlock.hpp"
+
+1554947840 c:\users\alefe\desktop\laser-fluxograma-e-robos\windows\fluxprog\include\endblock.hpp
+	"ProgrammingBlock.hpp"
+
+1554947840 source:c:\users\alefe\desktop\laser-fluxograma-e-robos\windows\fluxprog\source\interface.cpp
+	"Interface.hpp"
+
+1554947840 c:\users\alefe\desktop\laser-fluxograma-e-robos\windows\fluxprog\include\interface.hpp
+	<allegro5/allegro.h>
+	<allegro5/allegro_color.h>
+	<allegro5/allegro_primitives.h>
+	<allegro5/allegro_image.h>
+	<allegro5/allegro_native_dialog.h>
+	<allegro5/allegro_font.h>
+	<allegro5/allegro_ttf.h>
+	<iostream>
+	<cmath>
+	<fstream>
+	<cstring>
+	<signal.h>
+	"Block.hpp"
+	"fluxProgCte.h"
+	<libgen.h>
+
+1554947840 source:c:\users\alefe\desktop\laser-fluxograma-e-robos\windows\fluxprog\source\loadfile.cpp
+	"LoadFile.hpp"
+
+1554947840 c:\users\alefe\desktop\laser-fluxograma-e-robos\windows\fluxprog\include\loadfile.hpp
+	<fstream>
+	"fluxProgCte.h"
+	"Block.hpp"
+	"StartBlock.hpp"
+	"ActionBlock.hpp"
+	"ConditionalBlock.hpp"
+	"EndBlock.hpp"
+	"LoopBlock.hpp"
+	"MergeBlock.hpp"
+
+1554947840 c:\users\alefe\desktop\laser-fluxograma-e-robos\windows\fluxprog\include\startblock.hpp
+	"ProgrammingBlock.hpp"
+
+1554947840 c:\users\alefe\desktop\laser-fluxograma-e-robos\windows\fluxprog\include\loopblock.hpp
+	"ProgrammingBlock.hpp"
+
+1554947840 c:\users\alefe\desktop\laser-fluxograma-e-robos\windows\fluxprog\include\mergeblock.hpp
+	"ProgrammingBlock.hpp"
+
+1554947840 source:c:\users\alefe\desktop\laser-fluxograma-e-robos\windows\fluxprog\source\loopblock.cpp
+	"LoopBlock.hpp"
+
+1554947841 source:c:\users\alefe\desktop\laser-fluxograma-e-robos\windows\fluxprog\source\mergeblock.cpp
+	"MergeBlock.hpp"
+
+1554947841 source:c:\users\alefe\desktop\laser-fluxograma-e-robos\windows\fluxprog\source\programmingblock.cpp
+	"ProgrammingBlock.hpp"
+
+1554947841 source:c:\users\alefe\desktop\laser-fluxograma-e-robos\windows\fluxprog\source\savefile.cpp
+	"SaveFile.hpp"
+
+1554947840 c:\users\alefe\desktop\laser-fluxograma-e-robos\windows\fluxprog\include\savefile.hpp
+	<fstream>
+	"fluxProgCte.h"
+	"Block.hpp"
+
+1554947841 source:c:\users\alefe\desktop\laser-fluxograma-e-robos\windows\fluxprog\source\startblock.cpp
+	"StartBlock.hpp"
+
+1554996666 source:c:\users\alefe\desktop\laser-fluxograma-e-robos\windows\fluxprog\source\main.cpp
+	"FluxProg.hpp"
+
+1554995803 c:\users\alefe\desktop\laser-fluxograma-e-robos\windows\fluxprog\include\fluxprog.hpp
+	<iostream>
+	<cmath>
+	<fstream>
+	<string>
+	<iostream>
+	<signal.h>
+	<stdlib.h>
+	"Block.hpp"
+	"StartBlock.hpp"
+	"ActionBlock.hpp"
+	"ConditionalBlock.hpp"
+	"EndBlock.hpp"
+	"LoopBlock.hpp"
+	"MergeBlock.hpp"
+	"Communication.hpp"
+	"fluxProgCte.h"
+	"Interface.hpp"
+	"SaveFile.hpp"
+	"LoadFile.hpp"
+	<algorithm>
+	<windows.h>
+
+1554996485 source:c:\users\alefe\desktop\laser-fluxograma-e-robos\windows\fluxprog\source\fluxprog.cpp
+	"FluxProg.hpp"
 

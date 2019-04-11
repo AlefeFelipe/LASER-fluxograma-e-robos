@@ -72,3 +72,76 @@
 
 1532362475 c:\users\robocup\desktop\laser-fluxograma-e-robos\windows\remoteapi\remoteapi\v_reptypes.h
 
+1554947848 source:c:\users\alefe\desktop\laser-fluxograma-e-robos\windows\remoteapi\main.cpp
+	<cmath>
+	<iostream>
+	<time.h>
+	<string.h>
+	<boost/interprocess/managed_shared_memory.hpp>
+	<boost/interprocess/offset_ptr.hpp>
+	"rs232.h"
+	<windows.h>
+	"remoteApi/extApi.h"
+	"remoteApi/extApiPlatform.h"
+	"remoteApi/extApiInternal.h"
+	"remoteApi/v_repConst.h"
+	"remoteApi/v_repLib.h"
+
+1554947849 c:\users\alefe\desktop\laser-fluxograma-e-robos\windows\remoteapi\rs232.h
+	<stdio.h>
+	<string.h>
+	<termios.h>
+	<sys/ioctl.h>
+	<unistd.h>
+	<fcntl.h>
+	<sys/types.h>
+	<sys/stat.h>
+	<limits.h>
+	<sys/file.h>
+	<errno.h>
+	<windows.h>
+
+1554947849 c:\users\alefe\desktop\laser-fluxograma-e-robos\windows\remoteapi\remoteapi\extapi.h
+	"extApiPlatform.h"
+	"v_repConst.h"
+
+1554947849 c:\users\alefe\desktop\laser-fluxograma-e-robos\windows\remoteapi\remoteapi\extapiplatform.h
+	<stdint.h>
+
+1554947849 c:\users\alefe\desktop\laser-fluxograma-e-robos\windows\remoteapi\remoteapi\v_repconst.h
+
+1554947849 c:\users\alefe\desktop\laser-fluxograma-e-robos\windows\remoteapi\remoteapi\extapiinternal.h
+	"extApiPlatform.h"
+
+1554947849 c:\users\alefe\desktop\laser-fluxograma-e-robos\windows\remoteapi\remoteapi\v_replib.h
+	"v_repConst.h"
+	"v_repTypes.h"
+	<QLibrary>
+	<Windows.h>
+
+1554947849 c:\users\alefe\desktop\laser-fluxograma-e-robos\windows\remoteapi\remoteapi\v_reptypes.h
+
+1554947849 source:c:\users\alefe\desktop\laser-fluxograma-e-robos\windows\remoteapi\remoteapi\extapi.c
+	"extApi.h"
+	"extApiInternal.h"
+	<stdio.h>
+	"extApiJava.h"
+
+1554947849 source:c:\users\alefe\desktop\laser-fluxograma-e-robos\windows\remoteapi\remoteapi\extapiplatform.c
+	"extApiPlatform.h"
+	<stdio.h>
+	<Windows.h>
+	<process.h>
+	<pthread.h>
+	<stdlib.h>
+	<unistd.h>
+	<string.h>
+	<netinet/in.h>
+	<sys/time.h>
+	<sys/socket.h>
+	<arpa/inet.h>
+	<netdb.h>
+
+1554947849 source:c:\users\alefe\desktop\laser-fluxograma-e-robos\windows\remoteapi\rs232.c
+	"rs232.h"
+
