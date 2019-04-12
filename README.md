@@ -2,8 +2,9 @@
 O projeto INCLUSÃO DIGITAL DE JOVENS PELO ESTUDO DA ROBÓTICA tem por objetivo ensinar a lógica de programação para jovens por meio de fluxograma próprio, usando para ver o resultado da programação robôs simulados e reais
 
 O projeto pertence ao LASER - Laboratório Avançado de Sistemas Embarcados e Robótica, da UTFPR - Universidade Tecnológica Federal do Paraná
-Se estiver no Linux, intalar as dependências e executar o script flux_prog.sh, que está dentro de Linux/FluxProg. As cenas estão na pasta Linux/scenes
-Se estiver no Windows, basta executar o arquivo fluxprog.exe, na pasta Windows/executables. A cena do V-REP nesse mesmo diretório
+Se estiver no Linux, intalar as dependências e executar o script flux_prog.sh, que está dentro de Linux/FluxProg.
+Se estiver no Windows, basta executar o arquivo fluxprog.exe, na pasta Windows/executables. 
+As cenas do V-REP estão na pasta Scene
 A programação do robô físico está na pasta Físico/robo0
  
 
