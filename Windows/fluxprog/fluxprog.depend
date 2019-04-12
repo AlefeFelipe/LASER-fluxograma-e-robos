@@ -15,7 +15,7 @@
 	<iostream>
 	"fluxProgCte.h"
 
-1555029140 c:\users\alefe\desktop\laser-fluxograma-e-robos\windows\fluxprog\include\fluxprogcte.h
+1555075146 c:\users\alefe\desktop\laser-fluxograma-e-robos\windows\fluxprog\include\fluxprogcte.h
 
 1554947840 source:c:\users\alefe\desktop\laser-fluxograma-e-robos\windows\fluxprog\source\block.cpp
 	"Block.hpp"
@@ -44,7 +44,7 @@
 1554947840 c:\users\alefe\desktop\laser-fluxograma-e-robos\windows\fluxprog\include\endblock.hpp
 	"ProgrammingBlock.hpp"
 
-1555028355 source:c:\users\alefe\desktop\laser-fluxograma-e-robos\windows\fluxprog\source\interface.cpp
+1555074995 source:c:\users\alefe\desktop\laser-fluxograma-e-robos\windows\fluxprog\source\interface.cpp
 	"Interface.hpp"
 
 1555024907 c:\users\alefe\desktop\laser-fluxograma-e-robos\windows\fluxprog\include\interface.hpp
@@ -110,7 +110,7 @@
 1555015358 source:c:\users\alefe\desktop\laser-fluxograma-e-robos\windows\fluxprog\source\main.cpp
 	"FluxProg.hpp"
 
-1554995803 c:\users\alefe\desktop\laser-fluxograma-e-robos\windows\fluxprog\include\fluxprog.hpp
+1555071938 c:\users\alefe\desktop\laser-fluxograma-e-robos\windows\fluxprog\include\fluxprog.hpp
 	<iostream>
 	<cmath>
 	<fstream>
@@ -133,6 +133,6 @@
 	<algorithm>
 	<windows.h>
 
-1555029734 source:c:\users\alefe\desktop\laser-fluxograma-e-robos\windows\fluxprog\source\fluxprog.cpp
+1555072220 source:c:\users\alefe\desktop\laser-fluxograma-e-robos\windows\fluxprog\source\fluxprog.cpp
 	"FluxProg.hpp"
 

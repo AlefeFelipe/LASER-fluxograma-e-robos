@@ -5,6 +5,9 @@ Interface :: Interface(Block** _blocks_list_to_print, string _program_path) {
     //variavel que diz se o programa ainda está executando ou não
     executing = true;
     program_path = _program_path;
+    connected_robot = false;
+    connected_simulator = false;
+    executing_fluxogram = false;
 
     //inicializa o allegro, dá msg de erro caso falhe alguma inicializacao
     if(!al_init()) {
@@ -48,7 +51,7 @@ Interface :: Interface(Block** _blocks_list_to_print, string _program_path) {
     al_set_new_display_flags(ALLEGRO_WINDOWED | ALLEGRO_RESIZABLE);
     display = al_create_display(display_width, display_height);
     al_set_window_position(display, 40, 40);
-    al_set_window_title(display, "Fluxprog_v2");
+    al_set_window_title(display, "Fluxprog");
     al_clear_to_color(al_map_rgb(0, 0, 0));
     //al_set_window_constraints(display, 670, 630, 5000, 5000);
     //al_apply_window_constraints(display, true);
@@ -92,14 +95,15 @@ Interface :: Interface(Block** _blocks_list_to_print, string _program_path) {
     }
 
     // carrega todas as imagens usadas no programa, se alguma não for carregada dá msg de erro
+    al_set_new_bitmap_flags(ALLEGRO_MEMORY_BITMAP);
     load_program_images();
 
     //carrega a fonte, dá msg de erro caso não consiga ser carregada
     string address = program_path;
     #ifdef WINDOWS_USER
-        #ifdef WIN32
+        #ifdef _WIN32
             address = address + "GUI_files/OpenSans-Regular.ttf";
-        #endif // WIN32
+        #endif // _WIN32
     #else
         address = address + "/../../GUI_files/OpenSans-Regular.ttf";
     #endif
@@ -326,14 +330,14 @@ void Interface :: load_bitmap(ALLEGRO_BITMAP **bitmap, const char *adress) {
     string address = program_path;
     address = address + adress;
     #ifdef WINDOWS_USER
-        #ifdef WIN32
+        #ifdef _WIN32
             size_t pos = address.find("../", 0);
             while(pos != string::npos)
             {
                 address.replace(pos, 3, "");
                 pos = address.find("../", pos);
             }
-        #endif // WIN32
+        #endif // _WIN32
     #endif
     //se não achar a imagem no diretorio especificado dá msg de erro e para a execução
     if(!al_load_bitmap(address.c_str())) {

@@ -22,9 +22,9 @@
 #include "LoadFile.hpp"
 #include <algorithm>
 using namespace std;
-#ifdef WIN32
+#ifdef _WIN32
     #include <windows.h>
-#endif // WIN32
+#endif // _WIN32
 
 #define valor_maximo_blocos 100
 

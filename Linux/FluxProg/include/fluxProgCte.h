@@ -1,6 +1,7 @@
 #ifndef _FLUX_PROG_CTE_H_
 #define _FLUX_PROG_CTE_H_
 
+#define WINDOWS_USER //comentar se estiver desenvolvendo no windows
 //acesso e criacao de memoria
 #define MEMORY_BLOCK "memory"
 #define MEMORY_BLOCK_SIZE 65536

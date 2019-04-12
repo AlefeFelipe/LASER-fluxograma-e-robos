@@ -3,7 +3,9 @@
 #ifndef _ROBOT_HPP_
 #define _ROBOT_HPP_
 #include "fluxProgBackendCte.h"
-
+#ifdef _WIN32
+#include <windows.h>
+#endif // _WIN32
 class Robot{
 protected:
     int ultrasonic_sensor_reading [N_ULTRASONIC];

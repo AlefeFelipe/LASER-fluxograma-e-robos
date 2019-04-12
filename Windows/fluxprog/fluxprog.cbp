@@ -16,6 +16,8 @@
 					<Add directory="include" />
 				</Compiler>
 				<Linker>
+					<Add option="-static-libstdc++" />
+					<Add option="-static-libgcc" />
 					<Add directory="include" />
 				</Linker>
 			</Target>

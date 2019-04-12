@@ -15,8 +15,7 @@ FluxProg :: FluxProg() {
     }
     program_path = getExecutablePath();
     program_path += "/";
-
-    interface = new Interface(blocks_list_to_print, program_path);
+    gui = new Interface(blocks_list_to_print, program_path);
 
     size_t pos = program_path.find(" ", 0);
     while(pos != string::npos)
@@ -35,7 +34,7 @@ FluxProg :: ~FluxProg() {
         delete blocks_list_to_print[i];
     }
 
-    delete interface;
+    delete gui;
 
     delete communication;
 
@@ -46,35 +45,35 @@ FluxProg :: ~FluxProg() {
 
 void FluxProg :: start() {
 
-    while(interface->getExecuting()) {
+    while(gui->getExecuting()) {
 
-        interface->draw();
+        gui->draw();
 
-        if(interface->getMenuClick() == PLAY) {
+        if(gui->getMenuClick() == PLAY) {
             //std::cout<<"play"<<std::endl;
             executing_fluxogram = true;
             //teste bloco de inicio
             if(check_if_only_one_startblock_exists() == false) {
                 //erro blocos de inicio
-                interface->callMessage(1);
+                gui->callMessage(1);
                 executing_fluxogram = false;
             }
             //teste blocos de fim
             if(check_if_at_least_one_endblock_exist() == false) {
                 //erro blocos de fim
-                interface->callMessage(2);
+                gui->callMessage(2);
                 executing_fluxogram = false;
             }
             //teste se todos os blocos estão ligados
             if(check_if_all_the_blocks_have_connections() == false) {
                 //erro blocos de fim
-                interface->callMessage(3);
+                gui->callMessage(3);
                 executing_fluxogram = false;
             }
             //teste se todos os blocos estão com as funções setadas
             if(check_if_all_blocks_have_functions_or_sensors() == false) {
                 //erro blocos de fim
-                interface->callMessage(4);
+                gui->callMessage(4);
                 executing_fluxogram = false;
             }
             if(paused == false) {
@@ -83,33 +82,33 @@ void FluxProg :: start() {
             //seta o nível de abstração do simulador baseado nas leitura que o programa faz
             communication->setAbstractionLevel(check_abstraction_level());
         }
-        if(interface->getMenuClick() == PAUSE) {
+        if(gui->getMenuClick() == PAUSE) {
             executing_fluxogram = false;
             paused = true;
         }
-        if(interface->getMenuClick() == STOP) {
+        if(gui->getMenuClick() == STOP) {
             executing_fluxogram = false;
             reset_fluxogram_execution();
             reset_executing_block();
         }
-        if(interface->getMenuClick() == SAVE) {
+        if(gui->getMenuClick() == SAVE) {
             if(already_saved) {
                 save->save(blocks_list_to_print, path);
-                interface->callMessage(15);
+                gui->callMessage(15);
             } else {
-                path = interface->save_file_window();
+                path = gui->save_file_window();
                 if(path != NULL) {
                     save->save(blocks_list_to_print, path);
                     already_saved = true;
-                    interface->callMessage(15);
+                    gui->callMessage(15);
                 }
             }
         }
-        if(interface->getMenuClick() == LOAD) {
-            path = interface->open_file_window();
+        if(gui->getMenuClick() == LOAD) {
+            path = gui->open_file_window();
             if(path != NULL) {
                 reset_blocks_list();
-                interface->reset_scrollbar();
+                gui->reset_scrollbar();
                 int t = load->load(path);
                 if(t == 1) {
                     already_saved = true;
@@ -122,28 +121,28 @@ void FluxProg :: start() {
                     }
 
                 } else {
-                    interface->callMessage(16);
+                    gui->callMessage(16);
                 }
             }
         }
-        if(interface->getMenuClick() == SAVE_AS) {
-            path = interface->save_file_window();
+        if(gui->getMenuClick() == SAVE_AS) {
+            path = gui->save_file_window();
             if(path != NULL) {
                 save->save(blocks_list_to_print, path);
                 already_saved = true;
-                interface->callMessage(15);
+                gui->callMessage(15);
             }
         }
-        if(interface->getMenuClick() == PHYSICAL_ROBOT) {
+        if(gui->getMenuClick() == PHYSICAL_ROBOT) {
             if((program_connected == true) && (simulator_connected == false)){
                 communication->setCommand(CLOSE_PROGRAM);
-                interface->setConnectedRobot(false);
+                gui->setConnectedRobot(false);
                 program_connected = false;
-                interface->callMessage(13);
+                gui->callMessage(13);
 
             } else if((program_connected == true) && (simulator_connected == true)){
                 communication->setCommand(CLOSE_PROGRAM);
-                interface->setConnectedSimulator(false);
+                gui->setConnectedSimulator(false);
                 communication->inicialize();
                 connect_robot();
                 connect();
@@ -153,17 +152,17 @@ void FluxProg :: start() {
                 connect();
             }
         }
-        if(interface->getMenuClick() == VIRTUAL_ROBOT) {
+        if(gui->getMenuClick() == VIRTUAL_ROBOT) {
             //std::cout<<"vrep"<<std::endl;
             if((program_connected == true) && (simulator_connected == true)){
                 communication->setCommand(CLOSE_PROGRAM);
-                interface->setConnectedSimulator(false);
+                gui->setConnectedSimulator(false);
                 program_connected = false;
-                interface->callMessage(12);
+                gui->callMessage(12);
 
             } else if((program_connected == true) && (simulator_connected == false)){
                 communication->setCommand(CLOSE_PROGRAM);
-                interface->setConnectedRobot(false);
+                gui->setConnectedRobot(false);
                 communication->inicialize();
                 connect_simulator();
                 connect();
@@ -173,13 +172,13 @@ void FluxProg :: start() {
                 connect();
             }
         }
-        if(interface->getMenuClick() == CONDITIONAL_BLOCK) {
+        if(gui->getMenuClick() == CONDITIONAL_BLOCK) {
             ConditionalBlock *aux = new ConditionalBlock();
-            aux->setWidth(interface->getImageWidth(1));
-            aux->setHeight(interface->getImageHeight(1));
+            aux->setWidth(gui->getImageWidth(1));
+            aux->setHeight(gui->getImageHeight(1));
             aux->setTypeOfSensor(0);
-            aux->setX(interface->getMouseX()-60);
-            aux->setY(interface->getMouseY()-35);
+            aux->setX(gui->getMouseX()-60);
+            aux->setY(gui->getMouseY()-35);
             aux->setSelected(true);
             aux->setDragging(true);
             aux->setName("bloco condicional");
@@ -187,13 +186,13 @@ void FluxProg :: start() {
             ids = ids + 1;
             add_block(aux);
         }
-        if(interface->getMenuClick() == ACTION_BLOCK) {
+        if(gui->getMenuClick() == ACTION_BLOCK) {
             ActionBlock *aux = new ActionBlock();
-            aux->setWidth(interface->getImageWidth(2));
-            aux->setHeight(interface->getImageHeight(2));
+            aux->setWidth(gui->getImageWidth(2));
+            aux->setHeight(gui->getImageHeight(2));
             aux->setFunction(0);
-            aux->setX(interface->getMouseX()-45);
-            aux->setY(interface->getMouseY()-20);
+            aux->setX(gui->getMouseX()-45);
+            aux->setY(gui->getMouseY()-20);
             aux->setSelected(true);
             aux->setDragging(true);
             aux->setName("bloco de ação");
@@ -201,25 +200,25 @@ void FluxProg :: start() {
             ids = ids + 1;
             add_block(aux);
         }
-        if(interface->getMenuClick() == START_BLOCK) {
+        if(gui->getMenuClick() == START_BLOCK) {
             StartBlock *aux = new StartBlock();
-            aux->setWidth(interface->getImageWidth(3));
-            aux->setHeight(interface->getImageHeight(3));
+            aux->setWidth(gui->getImageWidth(3));
+            aux->setHeight(gui->getImageHeight(3));
             aux->setName("bloco inicio");
-            aux->setX(interface->getMouseX()-40);
-            aux->setY(interface->getMouseY()-15);
+            aux->setX(gui->getMouseX()-40);
+            aux->setY(gui->getMouseY()-15);
             aux->setSelected(true);
             aux->setDragging(true);
             aux->setID(ids);
             ids = ids + 1;
             add_block(aux);
         }
-        if(interface->getMenuClick() == END_BLOCK) {
+        if(gui->getMenuClick() == END_BLOCK) {
             EndBlock *aux = new EndBlock();
-            aux->setWidth(interface->getImageWidth(4));
-            aux->setHeight(interface->getImageHeight(4));
-            aux->setX(interface->getMouseX()-40);
-            aux->setY(interface->getMouseY()-15);
+            aux->setWidth(gui->getImageWidth(4));
+            aux->setHeight(gui->getImageHeight(4));
+            aux->setX(gui->getMouseX()-40);
+            aux->setY(gui->getMouseY()-15);
             aux->setName("bloco de fim");
             aux->setSelected(true);
             aux->setDragging(true);
@@ -227,12 +226,12 @@ void FluxProg :: start() {
             ids = ids + 1;
             add_block(aux);
         }
-        if(interface->getMenuClick() == MERGE_BLOCK) {
+        if(gui->getMenuClick() == MERGE_BLOCK) {
             MergeBlock *aux = new MergeBlock();
-            aux->setWidth(interface->getImageWidth(5));
-            aux->setHeight(interface->getImageHeight(5));
-            aux->setX(interface->getMouseX()-15);
-            aux->setY(interface->getMouseY()-10);
+            aux->setWidth(gui->getImageWidth(5));
+            aux->setHeight(gui->getImageHeight(5));
+            aux->setX(gui->getMouseX()-15);
+            aux->setY(gui->getMouseY()-10);
             aux->setName("bloco de junção");
             aux->setSelected(true);
             aux->setDragging(true);
@@ -240,12 +239,12 @@ void FluxProg :: start() {
             ids = ids + 1;
             add_block(aux);
         }
-        if(interface->getMenuClick() == LOOP_BLOCK) {
+        if(gui->getMenuClick() == LOOP_BLOCK) {
             LoopBlock *aux = new LoopBlock();
-            aux->setWidth(interface->getImageWidth(6));
-            aux->setHeight(interface->getImageHeight(6));
-            aux->setX(interface->getMouseX()-30);
-            aux->setY(interface->getMouseY()-40);
+            aux->setWidth(gui->getImageWidth(6));
+            aux->setHeight(gui->getImageHeight(6));
+            aux->setX(gui->getMouseX()-30);
+            aux->setY(gui->getMouseY()-40);
             aux->setName("bloco de loop");
             aux->setLimitedLoop(true);
             aux->setValue(0);
@@ -268,7 +267,7 @@ void FluxProg :: start() {
             }
         }
 
-        interface->setExecutingFluxogram(executing_fluxogram);
+        gui->setExecutingFluxogram(executing_fluxogram);
 
     }
 
@@ -328,15 +327,15 @@ void FluxProg :: execute() {
             {
                 if(simulator_connected)
                 {
-                   interface->callMessage(17);
+                   gui->callMessage(17);
                 } else {
-                   interface->callMessage(18);
+                   gui->callMessage(18);
                 }
                 communication->setCommand(CLOSE_PROGRAM);
                 program_connected = false;
                 reset_executing_block();
-                interface->setConnectedRobot(false);
-                interface->setConnectedSimulator(false);
+                gui->setConnectedRobot(false);
+                gui->setConnectedSimulator(false);
             }
             else {
                 //se for do tipo 8 = condicional
@@ -441,7 +440,7 @@ void FluxProg :: execute() {
                         reset_executing_block();
                     }
                 } if(communication->getFeedback() == COLISION) {
-                    interface->callMessage(19);
+                    gui->callMessage(19);
                     executing_fluxogram = false;
                     reset_fluxogram_execution();
                     reset_executing_block();
@@ -449,7 +448,7 @@ void FluxProg :: execute() {
                 }
             }
         } else {
-            interface->callMessage(14);
+            gui->callMessage(14);
             executing_fluxogram = false;
         }
 
@@ -616,11 +615,30 @@ void FluxProg :: connect_robot() {
     simulator_connected = false;
 }
 void FluxProg :: connect() {
-    int feedback = 0, error = -1;
+    int feedback = 0, error = 0;
     string address = program_path;
-    address = address + "../../../FluxProgBackend/build/bin/FluxProgBackend &";
-    error = system(address.c_str());
-    sleep(1);
+    #ifdef _WIN32
+        #ifdef WINDOWS_USER
+            address = address + "FluxProgBackend";
+        #else
+            address = address + "../../../FluxProgBackend/bin/Debug/FluxProgBackend";
+        #endif
+        STARTUPINFO si;
+        PROCESS_INFORMATION p;
+        ZeroMemory(&si, sizeof(si));
+        si.cb = sizeof(si);
+        ZeroMemory(&p, sizeof(p));
+        char *path_ = (char*)address.c_str();
+        if( !CreateProcessA( NULL, path_, NULL, NULL, FALSE, 0, NULL, NULL, &si, &p))
+        {
+            error = 1;
+        }
+        Sleep(1000);
+    #else
+        address = address + "../../../FluxProgBackend/build/bin/FluxProgBackend &";
+        error = system(address.c_str());
+        sleep(1);
+    #endif // _WIN32
     feedback = communication->getFeedback();
     if(feedback != 0 && error == 0) {
         //communication->upadateReadings();
@@ -636,42 +654,42 @@ void FluxProg :: connect() {
             //não abriu o v-rep ou não tem bluetooth
             //std::cout<<"não abriu o v-rep ou não tem bluetooth"<<std::endl;
             if(simulator_connected == true) {
-                interface->callMessage(7);
+                gui->callMessage(7);
             } else {
-                interface->callMessage(6);
+                gui->callMessage(6);
             }
             communication->setCommand(CLOSE_PROGRAM);
             program_connected = false;
-            interface->setConnectedRobot(false);
-            interface->setConnectedSimulator(false);
+            gui->setConnectedRobot(false);
+            gui->setConnectedSimulator(false);
         } else if(feedback == READY) {
             if(simulator_connected == true) {
-                interface->callMessage(8);
-                interface->setConnectedSimulator(true);
-                interface->setConnectedRobot(false);
+                gui->callMessage(8);
+                gui->setConnectedSimulator(true);
+                gui->setConnectedRobot(false);
             } else {
-                interface->callMessage(9);
-                interface->setConnectedSimulator(false);
-                interface->setConnectedRobot(true);
+                gui->callMessage(9);
+                gui->setConnectedSimulator(false);
+                gui->setConnectedRobot(true);
             }
             program_connected = true;
         } else{
             if(simulator_connected == true) {
-                interface->callMessage(10);
+                gui->callMessage(10);
                 //communication->inicialize();
             } else {
-                interface->callMessage(11);
+                gui->callMessage(11);
             }
             communication->setCommand(CLOSE_PROGRAM);
             program_connected = false;
-            interface->setConnectedRobot(false);
-            interface->setConnectedSimulator(false);
+            gui->setConnectedRobot(false);
+            gui->setConnectedSimulator(false);
         }
     } else {
-        interface->callMessage(5);
+        gui->callMessage(5);
         program_connected = false;
-        interface->setConnectedRobot(false);
-        interface->setConnectedSimulator(false);
+        gui->setConnectedRobot(false);
+        gui->setConnectedSimulator(false);
     }
 }
 void FluxProg :: refresh_executing_block() {
@@ -687,12 +705,26 @@ void FluxProg :: refresh_executing_block() {
 }
 string FluxProg :: getExecutablePath() {
     char result[ PATH_MAX ];
-    ssize_t count = readlink("/proc/self/exe", result, PATH_MAX);
     string path;
+    #ifdef _WIN32
+        ssize_t count = GetModuleFileName( NULL, result, MAX_PATH );
+    #else
+        ssize_t count = readlink("/proc/self/exe", result, PATH_MAX);
+        cout << "como assim"<<endl;
+    #endif // _WIN32
     if (count != -1)
     {
         path = dirname(result);
     }
+    #ifdef _WIN32
+        size_t pos = path.find("\\", 0);
+        while(pos != string::npos)
+        {
+            path.replace(pos, 1, "/");
+            pos = path.find("\\", pos);
+        }
+    #endif
+
     return path;
 }
 void FluxProg :: reset_executing_block() {

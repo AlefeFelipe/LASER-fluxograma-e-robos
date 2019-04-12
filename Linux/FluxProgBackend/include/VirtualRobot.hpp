@@ -5,6 +5,7 @@
 #include <cmath>
 #include <iostream>
 #include "Robot.hpp"
+#define M_PI       3.14159265358979323846
 extern "C" {
     #include "extApi.h"
     #include "extApiPlatform.h"

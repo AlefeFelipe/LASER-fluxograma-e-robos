@@ -22,6 +22,9 @@
 #include "LoadFile.hpp"
 #include <algorithm>
 using namespace std;
+#ifdef _WIN32
+    #include <windows.h>
+#endif // _WIN32
 
 #define valor_maximo_blocos 100
 
@@ -32,7 +35,7 @@ class FluxProg {
     Block* current_executing_block;
     bool simulator_connected, program_connected;
     Communication* communication;
-    Interface* interface;
+    Interface* gui;
     bool paused;
     string program_path;
     int ids;

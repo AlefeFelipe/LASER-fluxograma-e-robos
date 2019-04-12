@@ -617,7 +617,7 @@ void FluxProg :: connect_robot() {
 void FluxProg :: connect() {
     int feedback = 0, error = 0;
     string address = program_path;
-    #ifdef WIN32
+    #ifdef _WIN32
         #ifdef WINDOWS_USER
             address = address + "FluxProgBackend";
         #else
@@ -638,7 +638,7 @@ void FluxProg :: connect() {
         address = address + "../../../FluxProgBackend/build/bin/FluxProgBackend &";
         error = system(address.c_str());
         sleep(1);
-    #endif // WIN32
+    #endif // _WIN32
     feedback = communication->getFeedback();
     if(feedback != 0 && error == 0) {
         //communication->upadateReadings();
@@ -706,16 +706,17 @@ void FluxProg :: refresh_executing_block() {
 string FluxProg :: getExecutablePath() {
     char result[ PATH_MAX ];
     string path;
-    #ifdef WIN32
+    #ifdef _WIN32
         ssize_t count = GetModuleFileName( NULL, result, MAX_PATH );
     #else
         ssize_t count = readlink("/proc/self/exe", result, PATH_MAX);
-    #endif // WIN32
+        cout << "como assim"<<endl;
+    #endif // _WIN32
     if (count != -1)
     {
         path = dirname(result);
     }
-    #ifdef WIN32
+    #ifdef _WIN32
         size_t pos = path.find("\\", 0);
         while(pos != string::npos)
         {
