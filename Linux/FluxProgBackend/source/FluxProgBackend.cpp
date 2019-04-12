@@ -96,7 +96,7 @@ void FluxProgBackend::start()
                 physical_robot->setCommand(command);
                 physical_robot->updateSensorsReading();
                 feedback = physical_robot->isFinished();
-                cout << "feedback eh "<<feedback<<endl;
+                //cout << "feedback eh "<<feedback<<endl;
                 if(feedback > 0)
                 {
                     communication->setFeedback(feedback);
@@ -106,7 +106,7 @@ void FluxProgBackend::start()
                 else if(feedback == -1)
                 {
                     //feedback = CLOSE_PROGRAM;
-                    communication->setFeedback(ERROR);
+                    communication->setFeedback(CONNECT_ERROR);
                 }
             }
         }
