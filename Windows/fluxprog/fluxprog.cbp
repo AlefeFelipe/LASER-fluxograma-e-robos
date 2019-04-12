@@ -13,12 +13,12 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-g" />
-					<Add directory="include" />
+					<Add directory="../../Linux/FluxProg/include" />
 				</Compiler>
 				<Linker>
 					<Add option="-static-libstdc++" />
 					<Add option="-static-libgcc" />
-					<Add directory="include" />
+					<Add directory="../../Linux/FluxProg/include" />
 				</Linker>
 			</Target>
 			<Target title="Release">
@@ -38,34 +38,34 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
-		<Unit filename="include/ActionBlock.hpp" />
-		<Unit filename="include/Block.hpp" />
-		<Unit filename="include/Communication.hpp" />
-		<Unit filename="include/ConditionalBlock.hpp" />
-		<Unit filename="include/EndBlock.hpp" />
-		<Unit filename="include/FluxProg.hpp" />
-		<Unit filename="include/Interface.hpp" />
-		<Unit filename="include/LoadFile.hpp" />
-		<Unit filename="include/LoopBlock.hpp" />
-		<Unit filename="include/MergeBlock.hpp" />
-		<Unit filename="include/ProgrammingBlock.hpp" />
-		<Unit filename="include/SaveFile.hpp" />
-		<Unit filename="include/StartBlock.hpp" />
-		<Unit filename="include/fluxProgCte.h" />
-		<Unit filename="source/ActionBlock.cpp" />
-		<Unit filename="source/Block.cpp" />
-		<Unit filename="source/Communication.cpp" />
-		<Unit filename="source/ConditionalBlock.cpp" />
-		<Unit filename="source/EndBlock.cpp" />
-		<Unit filename="source/FluxProg.cpp" />
-		<Unit filename="source/Interface.cpp" />
-		<Unit filename="source/LoadFile.cpp" />
-		<Unit filename="source/LoopBlock.cpp" />
-		<Unit filename="source/MergeBlock.cpp" />
-		<Unit filename="source/ProgrammingBlock.cpp" />
-		<Unit filename="source/SaveFile.cpp" />
-		<Unit filename="source/StartBlock.cpp" />
-		<Unit filename="source/main.cpp" />
+		<Unit filename="../../Linux/FluxProg/include/ActionBlock.hpp" />
+		<Unit filename="../../Linux/FluxProg/include/Block.hpp" />
+		<Unit filename="../../Linux/FluxProg/include/Communication.hpp" />
+		<Unit filename="../../Linux/FluxProg/include/ConditionalBlock.hpp" />
+		<Unit filename="../../Linux/FluxProg/include/EndBlock.hpp" />
+		<Unit filename="../../Linux/FluxProg/include/FluxProg.hpp" />
+		<Unit filename="../../Linux/FluxProg/include/Interface.hpp" />
+		<Unit filename="../../Linux/FluxProg/include/LoadFile.hpp" />
+		<Unit filename="../../Linux/FluxProg/include/LoopBlock.hpp" />
+		<Unit filename="../../Linux/FluxProg/include/MergeBlock.hpp" />
+		<Unit filename="../../Linux/FluxProg/include/ProgrammingBlock.hpp" />
+		<Unit filename="../../Linux/FluxProg/include/SaveFile.hpp" />
+		<Unit filename="../../Linux/FluxProg/include/StartBlock.hpp" />
+		<Unit filename="../../Linux/FluxProg/include/fluxProgCte.h" />
+		<Unit filename="../../Linux/FluxProg/source/ActionBlock.cpp" />
+		<Unit filename="../../Linux/FluxProg/source/Block.cpp" />
+		<Unit filename="../../Linux/FluxProg/source/Communication.cpp" />
+		<Unit filename="../../Linux/FluxProg/source/ConditionalBlock.cpp" />
+		<Unit filename="../../Linux/FluxProg/source/EndBlock.cpp" />
+		<Unit filename="../../Linux/FluxProg/source/FluxProg.cpp" />
+		<Unit filename="../../Linux/FluxProg/source/Interface.cpp" />
+		<Unit filename="../../Linux/FluxProg/source/LoadFile.cpp" />
+		<Unit filename="../../Linux/FluxProg/source/LoopBlock.cpp" />
+		<Unit filename="../../Linux/FluxProg/source/MergeBlock.cpp" />
+		<Unit filename="../../Linux/FluxProg/source/ProgrammingBlock.cpp" />
+		<Unit filename="../../Linux/FluxProg/source/SaveFile.cpp" />
+		<Unit filename="../../Linux/FluxProg/source/StartBlock.cpp" />
+		<Unit filename="../../Linux/FluxProg/source/main.cpp" />
 		<Extensions>
 			<code_completion />
 			<envvars />

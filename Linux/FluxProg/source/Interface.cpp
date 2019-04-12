@@ -95,7 +95,9 @@ Interface :: Interface(Block** _blocks_list_to_print, string _program_path) {
     }
 
     // carrega todas as imagens usadas no programa, se alguma não for carregada dá msg de erro
-    al_set_new_bitmap_flags(ALLEGRO_MEMORY_BITMAP);
+    #ifdef _WIN32
+        al_set_new_bitmap_flags(ALLEGRO_MEMORY_BITMAP);
+    #endif // _WIN32
     load_program_images();
 
     //carrega a fonte, dá msg de erro caso não consiga ser carregada

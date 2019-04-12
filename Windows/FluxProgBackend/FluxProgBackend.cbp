@@ -15,12 +15,12 @@
 					<Add option="-g" />
 					<Add option="-DNON_MATLAB_PARSING" />
 					<Add option="-DMAX_EXT_API_CONNECTIONS=255" />
-					<Add directory="include" />
-					<Add directory="include/remoteApi" />
+					<Add directory="../../Linux/FluxProgBackend/include" />
+					<Add directory="../../Linux/FluxProgBackend/include/remoteApi" />
 				</Compiler>
 				<Linker>
-					<Add directory="include" />
-					<Add directory="include/remoteApi" />
+					<Add directory="../../Linux/FluxProgBackend/include" />
+					<Add directory="../../Linux/FluxProgBackend/include/remoteApi" />
 				</Linker>
 			</Target>
 			<Target title="Release">
@@ -40,32 +40,32 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
-		<Unit filename="include/Communication.hpp" />
-		<Unit filename="include/FluxProgBackend.hpp" />
-		<Unit filename="include/PhysicalRobot.hpp" />
-		<Unit filename="include/Robot.hpp" />
-		<Unit filename="include/VirtualRobot.hpp" />
-		<Unit filename="include/fluxProgBackendCte.h" />
-		<Unit filename="include/remoteApi/extApi.h" />
-		<Unit filename="include/remoteApi/extApiInternal.h" />
-		<Unit filename="include/remoteApi/extApiPlatform.h" />
-		<Unit filename="include/remoteApi/v_repConst.h" />
-		<Unit filename="include/remoteApi/v_repLib.h" />
-		<Unit filename="include/remoteApi/v_repTypes.h" />
-		<Unit filename="include/rs232.h" />
-		<Unit filename="source/Communication.cpp" />
-		<Unit filename="source/FluxProgBackend.cpp" />
-		<Unit filename="source/PhysicalRobot.cpp" />
-		<Unit filename="source/Robot.cpp" />
-		<Unit filename="source/VirtualRobot.cpp" />
-		<Unit filename="source/main.cpp" />
-		<Unit filename="source/remoteApi/extApi.c">
+		<Unit filename="../../Linux/FluxProgBackend/include/Communication.hpp" />
+		<Unit filename="../../Linux/FluxProgBackend/include/FluxProgBackend.hpp" />
+		<Unit filename="../../Linux/FluxProgBackend/include/PhysicalRobot.hpp" />
+		<Unit filename="../../Linux/FluxProgBackend/include/Robot.hpp" />
+		<Unit filename="../../Linux/FluxProgBackend/include/VirtualRobot.hpp" />
+		<Unit filename="../../Linux/FluxProgBackend/include/fluxProgBackendCte.h" />
+		<Unit filename="../../Linux/FluxProgBackend/include/remoteApi/extApi.h" />
+		<Unit filename="../../Linux/FluxProgBackend/include/remoteApi/extApiInternal.h" />
+		<Unit filename="../../Linux/FluxProgBackend/include/remoteApi/extApiPlatform.h" />
+		<Unit filename="../../Linux/FluxProgBackend/include/remoteApi/v_repConst.h" />
+		<Unit filename="../../Linux/FluxProgBackend/include/remoteApi/v_repLib.h" />
+		<Unit filename="../../Linux/FluxProgBackend/include/remoteApi/v_repTypes.h" />
+		<Unit filename="../../Linux/FluxProgBackend/include/rs232.h" />
+		<Unit filename="../../Linux/FluxProgBackend/source/Communication.cpp" />
+		<Unit filename="../../Linux/FluxProgBackend/source/FluxProgBackend.cpp" />
+		<Unit filename="../../Linux/FluxProgBackend/source/PhysicalRobot.cpp" />
+		<Unit filename="../../Linux/FluxProgBackend/source/Robot.cpp" />
+		<Unit filename="../../Linux/FluxProgBackend/source/VirtualRobot.cpp" />
+		<Unit filename="../../Linux/FluxProgBackend/source/main.cpp" />
+		<Unit filename="../../Linux/FluxProgBackend/source/remoteApi/extApi.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="source/remoteApi/extApiPlatform.c">
+		<Unit filename="../../Linux/FluxProgBackend/source/remoteApi/extApiPlatform.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="source/rs232.c">
+		<Unit filename="../../Linux/FluxProgBackend/source/rs232.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Extensions>

@@ -99,3 +99,103 @@
 1554947841 source:c:\users\alefe\desktop\laser-fluxograma-e-robos\windows\fluxprogbackend\source\virtualrobot.cpp
 	"VirtualRobot.hpp"
 
+1554947841 source:c:\users\alefe\desktop\laser-fluxograma-e-robos\linux\fluxprogbackend\source\fluxprogbackend.cpp
+	"FluxProgBackend.hpp"
+
+1554947841 c:\users\alefe\desktop\laser-fluxograma-e-robos\linux\fluxprogbackend\include\fluxprogbackend.hpp
+	"Communication.hpp"
+	"VirtualRobot.hpp"
+	"PhysicalRobot.hpp"
+	"fluxProgBackendCte.h"
+
+1554947841 c:\users\alefe\desktop\laser-fluxograma-e-robos\linux\fluxprogbackend\include\communication.hpp
+	"fluxProgBackendCte.h"
+	<boost/interprocess/managed_shared_memory.hpp>
+	<boost/interprocess/offset_ptr.hpp>
+	<iostream>
+
+1554947841 c:\users\alefe\desktop\laser-fluxograma-e-robos\linux\fluxprogbackend\include\fluxprogbackendcte.h
+
+1554990716 c:\users\alefe\desktop\laser-fluxograma-e-robos\linux\fluxprogbackend\include\virtualrobot.hpp
+	<cmath>
+	<iostream>
+	"Robot.hpp"
+	"extApi.h"
+	"extApiPlatform.h"
+
+1554992326 c:\users\alefe\desktop\laser-fluxograma-e-robos\linux\fluxprogbackend\include\robot.hpp
+	"fluxProgBackendCte.h"
+	<windows.h>
+
+1554947841 c:\users\alefe\desktop\laser-fluxograma-e-robos\linux\fluxprogbackend\include\remoteapi\extapi.h
+	"extApiPlatform.h"
+	"v_repConst.h"
+
+1554947841 c:\users\alefe\desktop\laser-fluxograma-e-robos\linux\fluxprogbackend\include\remoteapi\extapiplatform.h
+	<stdint.h>
+
+1554947841 c:\users\alefe\desktop\laser-fluxograma-e-robos\linux\fluxprogbackend\include\remoteapi\v_repconst.h
+
+1554947841 c:\users\alefe\desktop\laser-fluxograma-e-robos\linux\fluxprogbackend\include\physicalrobot.hpp
+	"fluxProgBackendCte.h"
+	"rs232.h"
+	"Robot.hpp"
+	<iostream>
+	<ctime>
+
+1554947841 c:\users\alefe\desktop\laser-fluxograma-e-robos\linux\fluxprogbackend\include\rs232.h
+	<stdio.h>
+	<string.h>
+	<termios.h>
+	<sys/ioctl.h>
+	<unistd.h>
+	<fcntl.h>
+	<sys/types.h>
+	<sys/stat.h>
+	<limits.h>
+	<sys/file.h>
+	<errno.h>
+	<windows.h>
+
+1555028221 source:c:\users\alefe\desktop\laser-fluxograma-e-robos\linux\fluxprogbackend\source\main.cpp
+	"FluxProgBackend.hpp"
+
+1554992475 source:c:\users\alefe\desktop\laser-fluxograma-e-robos\linux\fluxprogbackend\source\physicalrobot.cpp
+	"PhysicalRobot.hpp"
+
+1554947841 source:c:\users\alefe\desktop\laser-fluxograma-e-robos\linux\fluxprogbackend\source\remoteapi\extapi.c
+	"extApi.h"
+	"extApiInternal.h"
+	<stdio.h>
+	"extApiJava.h"
+
+1554947841 c:\users\alefe\desktop\laser-fluxograma-e-robos\linux\fluxprogbackend\include\remoteapi\extapiinternal.h
+	"extApiPlatform.h"
+
+1554947841 source:c:\users\alefe\desktop\laser-fluxograma-e-robos\linux\fluxprogbackend\source\remoteapi\extapiplatform.c
+	"extApiPlatform.h"
+	<stdio.h>
+	<Windows.h>
+	<process.h>
+	<pthread.h>
+	<stdlib.h>
+	<unistd.h>
+	<string.h>
+	<netinet/in.h>
+	<sys/time.h>
+	<sys/socket.h>
+	<arpa/inet.h>
+	<netdb.h>
+
+1554947841 source:c:\users\alefe\desktop\laser-fluxograma-e-robos\linux\fluxprogbackend\source\robot.cpp
+	"Robot.hpp"
+
+1554947841 source:c:\users\alefe\desktop\laser-fluxograma-e-robos\linux\fluxprogbackend\source\rs232.c
+	"rs232.h"
+
+1554947841 source:c:\users\alefe\desktop\laser-fluxograma-e-robos\linux\fluxprogbackend\source\virtualrobot.cpp
+	"VirtualRobot.hpp"
+
+1555078879 source:c:\users\alefe\desktop\laser-fluxograma-e-robos\linux\fluxprogbackend\source\communication.cpp
+	"Communication.hpp"
+
