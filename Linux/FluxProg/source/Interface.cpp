@@ -100,12 +100,11 @@ Interface :: Interface(Block** _blocks_list_to_print, string _program_path) {
 
     //carrega a fonte, dá msg de erro caso não consiga ser carregada
     string address = program_path;
-    #ifdef WINDOWS_USER
-        #ifdef _WIN32
-            address = address + "GUI_files/OpenSans-Regular.ttf";
+    address = address + "/../../GUI_files/OpenSans-Regular.ttf";
+    #ifdef _WIN32
+        #ifdef WINDOWS_USER
+            address = program_path + "GUI_files/OpenSans-Regular.ttf";
         #endif // _WIN32
-    #else
-        address = address + "/../../GUI_files/OpenSans-Regular.ttf";
     #endif
     //cout << address <<endl;
     font = al_load_font(address.c_str(), 10, 0);
@@ -329,16 +328,16 @@ void Interface :: draw() {
 void Interface :: load_bitmap(ALLEGRO_BITMAP **bitmap, const char *adress) {
     string address = program_path;
     address = address + adress;
-    #ifdef WINDOWS_USER
-        #ifdef _WIN32
+    #ifdef _WIN32
+        #ifdef WINDOWS_USER
             size_t pos = address.find("../", 0);
             while(pos != string::npos)
             {
                 address.replace(pos, 3, "");
                 pos = address.find("../", pos);
             }
-        #endif // _WIN32
-    #endif
+        #endif
+    #endif //_WIN32
     //se não achar a imagem no diretorio especificado dá msg de erro e para a execução
     if(!al_load_bitmap(address.c_str())) {
         const char* str1 = "Não encontrou imagem: ";

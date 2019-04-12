@@ -710,7 +710,6 @@ string FluxProg :: getExecutablePath() {
         ssize_t count = GetModuleFileName( NULL, result, MAX_PATH );
     #else
         ssize_t count = readlink("/proc/self/exe", result, PATH_MAX);
-        cout << "como assim"<<endl;
     #endif // _WIN32
     if (count != -1)
     {
