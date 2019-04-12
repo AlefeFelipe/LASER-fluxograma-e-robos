@@ -69,6 +69,7 @@ Interface :: Interface(Block** _blocks_list_to_print, string _program_path) {
     functions_menu_color = al_map_rgb(255, 0, 0);
     sensors_menu_color = al_map_rgb(0, 0, 255);
     scroll_bar_color = al_map_rgb(74, 62, 62);
+    numbers_menu_color = al_map_rgb(255, 124, 71);
 
     reset_dragging_variables();
 
@@ -95,7 +96,13 @@ Interface :: Interface(Block** _blocks_list_to_print, string _program_path) {
 
     //carrega a fonte, dá msg de erro caso não consiga ser carregada
     string address = program_path;
-    address = address + "/../../GUI_files/OpenSans-Regular.ttf";
+    #ifdef WINDOWS_USER
+        #ifdef WIN32
+            address = address + "GUI_files/OpenSans-Regular.ttf";
+        #endif // WIN32
+    #else
+        address = address + "/../../GUI_files/OpenSans-Regular.ttf";
+    #endif
     //cout << address <<endl;
     font = al_load_font(address.c_str(), 10, 0);
     if(!font) {
@@ -318,6 +325,16 @@ void Interface :: draw() {
 void Interface :: load_bitmap(ALLEGRO_BITMAP **bitmap, const char *adress) {
     string address = program_path;
     address = address + adress;
+    #ifdef WINDOWS_USER
+        #ifdef WIN32
+            size_t pos = address.find("../", 0);
+            while(pos != string::npos)
+            {
+                address.replace(pos, 3, "");
+                pos = address.find("../", pos);
+            }
+        #endif // WIN32
+    #endif
     //se não achar a imagem no diretorio especificado dá msg de erro e para a execução
     if(!al_load_bitmap(address.c_str())) {
         const char* str1 = "Não encontrou imagem: ";
@@ -398,6 +415,7 @@ void Interface :: print_secondary_menu() {
     al_draw_filled_rectangle(0, blocks_menu_Y, al_get_bitmap_width(mini_menu[0])+5, blocks_menu_Y + 6*al_get_bitmap_height(mini_menu[0])+5, primary_menu_color);
     al_draw_filled_rectangle(0, sensors_menu_Y, al_get_bitmap_width(mini_menu[0])+5, sensors_menu_Y + 3 * al_get_bitmap_height(WALK_FOWARD_ACTION)+10, sensors_menu_color);
     al_draw_filled_rectangle(0, actions_menu_Y, al_get_bitmap_width(mini_menu[0])+5, actions_menu_Y + 3 * al_get_bitmap_height(WALK_FOWARD_ACTION)+10, functions_menu_color);
+    al_draw_filled_rectangle(0, extra_menu_Y, al_get_bitmap_width(mini_menu[0])+5, extra_menu_Y + 1 * al_get_bitmap_height(WALK_FOWARD_ACTION)+10, numbers_menu_color);
 
 
     //desenha todos os botões que criam blocos
@@ -1027,6 +1045,12 @@ void Interface :: check_dragging() {
                     } else if((dragging_walk_foward == true) || (dragging_turn_left == true) || (dragging_turn_right == true)) {
                         //erro
                         al_show_native_message_box(display, "Fluxprog", "ERRO", "Essa ação não pode ser usado como entrada no bloco de decisão", "Ok", ALLEGRO_MESSAGEBOX_ERROR);
+                    }  else if((dragging_number_0 == true) || (dragging_number_1 == true) || (dragging_number_2 == true) || (dragging_number_3 == true) || (dragging_number_4 == true) || (dragging_number_5 == true)) {
+                        //erro
+                        al_show_native_message_box(display, "Fluxprog", "ERRO", "Um numero não pode ser usado como entrada no bloco de decisão", "Ok", ALLEGRO_MESSAGEBOX_ERROR);
+                    } else if((dragging_number_6 == true) || (dragging_number_7 == true) || (dragging_number_8 == true) || (dragging_number_9 == true)) {
+                        //erro
+                        al_show_native_message_box(display, "Fluxprog", "ERRO", "Um numero não pode ser usado como entrada no bloco de decisão", "Ok", ALLEGRO_MESSAGEBOX_ERROR);
                     }
                 }
             }
@@ -1042,6 +1066,12 @@ void Interface :: check_dragging() {
                     } else if((dragging_ultrasonic_sensor1 == true) || (dragging_ultrasonic_sensor2 == true) || (dragging_ultrasonic_sensor3 == true)) {
                         //erro
                         al_show_native_message_box(display, "Fluxprog", "ERRO", "O sensor de ultrassom não pode ser usado como entrada no bloco de função", "Ok", ALLEGRO_MESSAGEBOX_ERROR);
+                    } else if((dragging_number_0 == true) || (dragging_number_1 == true) || (dragging_number_2 == true) || (dragging_number_3 == true) || (dragging_number_4 == true) || (dragging_number_5 == true)) {
+                        //erro
+                        al_show_native_message_box(display, "Fluxprog", "ERRO", "Um numero não pode ser usado como entrada no bloco de função", "Ok", ALLEGRO_MESSAGEBOX_ERROR);
+                    } else if((dragging_number_6 == true) || (dragging_number_7 == true) || (dragging_number_8 == true) || (dragging_number_9 == true)) {
+                        //erro
+                        al_show_native_message_box(display, "Fluxprog", "ERRO", "Um numero não pode ser usado como entrada no bloco de função", "Ok", ALLEGRO_MESSAGEBOX_ERROR);
                     } else if(dragging_walk_foward == true) {
                         blocks_list_to_print[i]->setFunction(MOVE_FORWARD);
                     } else if(dragging_turn_left == true) {

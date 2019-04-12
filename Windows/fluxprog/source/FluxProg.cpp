@@ -15,7 +15,6 @@ FluxProg :: FluxProg() {
     }
     program_path = getExecutablePath();
     program_path += "/";
-
     gui = new Interface(blocks_list_to_print, program_path);
 
     size_t pos = program_path.find(" ", 0);
@@ -616,13 +615,28 @@ void FluxProg :: connect_robot() {
     simulator_connected = false;
 }
 void FluxProg :: connect() {
-    int feedback = 0, error = -1;
+    int feedback = 0, error = 0;
     string address = program_path;
-    address = address + "../../../FluxProgBackend/build/bin/FluxProgBackend &";
-    error = system(address.c_str());
     #ifdef WIN32
+        #ifdef WINDOWS_USER
+            address = address + "FluxProgBackend";
+        #else
+            address = address + "../../../FluxProgBackend/bin/Debug/FluxProgBackend";
+        #endif
+        STARTUPINFO si;
+        PROCESS_INFORMATION p;
+        ZeroMemory(&si, sizeof(si));
+        si.cb = sizeof(si);
+        ZeroMemory(&p, sizeof(p));
+        char *path_ = (char*)address.c_str();
+        if( !CreateProcessA( NULL, path_, NULL, NULL, FALSE, 0, NULL, NULL, &si, &p))
+        {
+            error = 1;
+        }
         Sleep(1000);
     #else
+        address = address + "../../../FluxProgBackend/build/bin/FluxProgBackend &";
+        error = system(address.c_str());
         sleep(1);
     #endif // WIN32
     feedback = communication->getFeedback();
@@ -691,16 +705,25 @@ void FluxProg :: refresh_executing_block() {
 }
 string FluxProg :: getExecutablePath() {
     char result[ PATH_MAX ];
+    string path;
     #ifdef WIN32
         ssize_t count = GetModuleFileName( NULL, result, MAX_PATH );
     #else
         ssize_t count = readlink("/proc/self/exe", result, PATH_MAX);
     #endif // WIN32
-    string path;
     if (count != -1)
     {
         path = dirname(result);
     }
+    #ifdef WIN32
+        size_t pos = path.find("\\", 0);
+        while(pos != string::npos)
+        {
+            path.replace(pos, 1, "/");
+            pos = path.find("\\", pos);
+        }
+    #endif
+
     return path;
 }
 void FluxProg :: reset_executing_block() {

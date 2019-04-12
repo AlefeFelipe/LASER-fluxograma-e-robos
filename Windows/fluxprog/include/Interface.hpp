@@ -17,13 +17,14 @@
 #include "fluxProgCte.h"
 #include <libgen.h>
 
+
 using namespace std;
 
 class Interface {
     ALLEGRO_COLOR black, scroll_bar_color;
     ALLEGRO_COLOR backgroud_color;
     ALLEGRO_COLOR white, strange_color;
-    ALLEGRO_COLOR primary_menu_color, blocks_menu_color, functions_menu_color, sensors_menu_color;
+    ALLEGRO_COLOR primary_menu_color, blocks_menu_color, functions_menu_color, sensors_menu_color, numbers_menu_color;
     ALLEGRO_DISPLAY *display;
     ALLEGRO_TIMER *timer;
     ALLEGRO_BITMAP *play_button, *play_button_selected, *pause_button, *pause_button_selected;

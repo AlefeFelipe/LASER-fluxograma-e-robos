@@ -2,7 +2,6 @@
 
 int main()
 {
-    cout << "ola"<<endl;
     FluxProg fluxprog = FluxProg();
     fluxprog.start();
 
