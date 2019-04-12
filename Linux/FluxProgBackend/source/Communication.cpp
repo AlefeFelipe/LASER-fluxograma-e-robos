@@ -47,6 +47,7 @@ void Communication::setFeedback(int _feedback)
 {
     *feedback.first = _feedback;
     *command.first = 0;
+    cout << "mandei "<<_feedback<<endl;
 }
 
 void Communication::setUltrasonicReading(int *ultrasonic_reading)

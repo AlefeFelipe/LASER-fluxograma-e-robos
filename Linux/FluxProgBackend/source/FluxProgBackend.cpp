@@ -35,7 +35,7 @@ void FluxProgBackend::connect()
     }
     if (error)//nao deu certo se conectar a porta ou a cena
     {
-        feedback = ERROR;
+        feedback = CONNECT_ERROR;
         communication->setFeedback(feedback);
     }
     else
@@ -49,13 +49,13 @@ void FluxProgBackend::start()
 {
     connect();
     int command = 0;
-    if(virtual_robot && feedback != ERROR)
+    if(virtual_robot && feedback != CONNECT_ERROR)
     {
         virtual_robot->updateSensorsReading();
         communication->setUltrasonicReading(virtual_robot->getUltrasonicReading());
         communication->setBlackTypeReading(virtual_robot->getBlackTypeReading());
     }
-    else if (physical_robot && feedback != ERROR)
+    else if (physical_robot && feedback != CONNECT_ERROR)
     {
         physical_robot->updateSensorsReading();
         communication->setUltrasonicReading(physical_robot->getUltrasonicReading());
@@ -67,7 +67,7 @@ void FluxProgBackend::start()
         command = communication->getCommand();
         if(command > 0)
         {
-            cout << "massa"<<endl;
+            //cout << "massa"<<endl;
             if(virtual_robot)
             {
                 virtual_robot->setAbstractionLevel(communication->getAbstractionLevel());
@@ -75,6 +75,7 @@ void FluxProgBackend::start()
                 virtual_robot->setCommand(command);
                 virtual_robot->updateSensorsReading();
                 feedback = virtual_robot->isFinished();
+                //cout << "feedback eh "<<feedback <<endl;
                 //if(feedback > 0)
                 //{
                     virtual_robot->updateSensorsReading();
@@ -90,7 +91,7 @@ void FluxProgBackend::start()
             }
             else
             {
-                cout << "ola"<<endl;
+                //cout << "ola"<<endl;
                 communication->setFeedback(EXECUTING);
                 physical_robot->setCommand(command);
                 physical_robot->updateSensorsReading();

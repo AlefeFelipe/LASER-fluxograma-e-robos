@@ -37,7 +37,7 @@
 
 //variaveis de communicacao entre back e front end
 #define CLOSE_PROGRAM -10
-#define ERROR -5
+#define CONNECT_ERROR -5
 #define CONNECT -1
 #define READY 1
 #define EXECUTING 0

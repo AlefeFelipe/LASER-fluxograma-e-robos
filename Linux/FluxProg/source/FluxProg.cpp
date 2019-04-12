@@ -323,7 +323,7 @@ void FluxProg :: execute() {
     if(current_executing_block != NULL) {
 
         if(program_connected == true) {
-            if(communication->getFeedback() == ERROR)
+            if(communication->getFeedback() == CONNECT_ERROR)
             {
                 if(simulator_connected)
                 {
@@ -645,12 +645,12 @@ void FluxProg :: connect() {
         //std::cout<<"abriu o programa"<<std::endl;
         clock_t t;
         t = clock();
-        while(feedback != ERROR && feedback != READY && (((float)(clock() - t))/CLOCKS_PER_SEC) < TIMEOUT)
+        while(feedback != CONNECT_ERROR && feedback != READY && (((float)(clock() - t))/CLOCKS_PER_SEC) < TIMEOUT)
         {
             feedback = communication->getFeedback();
         }
         //cout << "foram "<< ((float)(clock() - t))/CLOCKS_PER_SEC <<"segundos"<<endl;
-        if(feedback == ERROR){
+        if(feedback == CONNECT_ERROR){
             //não abriu o v-rep ou não tem bluetooth
             //std::cout<<"não abriu o v-rep ou não tem bluetooth"<<std::endl;
             if(simulator_connected == true) {

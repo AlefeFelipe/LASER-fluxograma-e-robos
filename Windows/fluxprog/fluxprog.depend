@@ -154,7 +154,7 @@
 1555076580 source:c:\users\alefe\desktop\laser-fluxograma-e-robos\linux\fluxprog\source\fluxprog.cpp
 	"FluxProg.hpp"
 
-1555076495 source:c:\users\alefe\desktop\laser-fluxograma-e-robos\linux\fluxprog\source\interface.cpp
+1555078966 source:c:\users\alefe\desktop\laser-fluxograma-e-robos\linux\fluxprog\source\interface.cpp
 	"Interface.hpp"
 
 1554947840 source:c:\users\alefe\desktop\laser-fluxograma-e-robos\linux\fluxprog\source\loadfile.cpp
@@ -191,7 +191,7 @@
 	<iostream>
 	"fluxProgCte.h"
 
-1555075468 c:\users\alefe\desktop\laser-fluxograma-e-robos\linux\fluxprog\include\fluxprogcte.h
+1555081147 c:\users\alefe\desktop\laser-fluxograma-e-robos\linux\fluxprog\include\fluxprogcte.h
 
 1554947840 c:\users\alefe\desktop\laser-fluxograma-e-robos\linux\fluxprog\include\communication.hpp
 	"fluxProgCte.h"

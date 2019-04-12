@@ -128,7 +128,8 @@ void VirtualRobot::moveForward()
 {
     if(simxGetConnectionId(client_id) == -1)
     {
-        command = ERROR;
+
+        command = CONNECT_ERROR;
     }
     else
     {
@@ -153,7 +154,8 @@ void VirtualRobot::moveForward()
             }
             if(simxGetConnectionId(client_id) == -1)
             {
-                command = ERROR;
+
+                command = CONNECT_ERROR;
             }
         }
         while(!((black_type_sensor_reading[0]&&black_type_sensor_reading[2])||
@@ -233,7 +235,8 @@ void VirtualRobot::moveForward()
             }
             if(simxGetConnectionId(client_id) == -1)
             {
-                command = ERROR;
+
+                command = CONNECT_ERROR;
             }
             extApi_sleepMs(5);
         }
@@ -258,7 +261,8 @@ void VirtualRobot::moveForward()
             }
             if(simxGetConnectionId(client_id) == -1)
             {
-                command = ERROR;
+
+                command = CONNECT_ERROR;
             }
         }
         stop();
@@ -273,7 +277,7 @@ void VirtualRobot::turnRight()
 {
     if(simxGetConnectionId(client_id) == -1)
     {
-        command = ERROR;
+        command = CONNECT_ERROR;
     }
     else
     {
@@ -296,7 +300,8 @@ void VirtualRobot::turnRight()
             }
             if(simxGetConnectionId(client_id) == -1)
             {
-                command = ERROR;
+                //
+                command = CONNECT_ERROR;
             }
             extApi_sleepMs(5);
         }
@@ -310,7 +315,8 @@ void VirtualRobot::turnRight()
             extApi_sleepMs(5);
             if(simxGetConnectionId(client_id) == -1)
             {
-                command = ERROR;
+
+                command = CONNECT_ERROR;
             }
         }
         while(!(black_type_sensor_reading[2])  && simxGetConnectionId(client_id) != -1)//gira ate os sensores captarem a linha
@@ -323,7 +329,8 @@ void VirtualRobot::turnRight()
             extApi_sleepMs(5);
             if(simxGetConnectionId(client_id) == -1)
             {
-                command = ERROR;
+                //
+                command = CONNECT_ERROR;
             }
         }
         stop();
@@ -338,7 +345,7 @@ void VirtualRobot::turnLeft()
 {
     if(simxGetConnectionId(client_id) == -1)
     {
-        command = ERROR;
+        command = CONNECT_ERROR;
     }
     else
     {
@@ -361,7 +368,7 @@ void VirtualRobot::turnLeft()
             }
             if(simxGetConnectionId(client_id) == -1)
             {
-                command = ERROR;
+                command = CONNECT_ERROR;
             }
             extApi_sleepMs(5);
         }
@@ -374,7 +381,7 @@ void VirtualRobot::turnLeft()
             updateVirtualData();
             if(simxGetConnectionId(client_id) == -1)
             {
-                command = ERROR;
+                command = CONNECT_ERROR;
             }
             extApi_sleepMs(5);
         }
@@ -387,7 +394,7 @@ void VirtualRobot::turnLeft()
             updateVirtualData();
             if(simxGetConnectionId(client_id) == -1)
             {
-                command = ERROR;
+                command = CONNECT_ERROR;
             }
             extApi_sleepMs(5);
         }
@@ -403,7 +410,7 @@ void VirtualRobot::stop()
 {
     if(simxGetConnectionId(client_id) == -1)
     {
-        command = ERROR;
+        command = CONNECT_ERROR;
     }
     else
     {
@@ -423,7 +430,7 @@ void VirtualRobot::updateVirtualData()
 {
     if(simxGetConnectionId(client_id) == -1)
     {
-        command = ERROR;
+        command = CONNECT_ERROR;
     }
     else
     {
