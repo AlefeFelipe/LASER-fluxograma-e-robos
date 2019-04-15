@@ -131,6 +131,17 @@ void VirtualRobot::moveForward()
 
         command = CONNECT_ERROR;
     }
+    else if(abstraction_level == LOW_ABSTRACTION)
+    {
+        motor_speed[0] = VEL_MOT;
+        motor_speed[1] = VEL_MOT;
+        simxSetJointTargetVelocity(client_id, motors[0], (simxFloat) motor_speed[0], simx_opmode_streaming);
+        simxSetJointTargetVelocity(client_id, motors[1], (simxFloat) motor_speed[1], simx_opmode_streaming);
+        updateVirtualData();
+        extApi_sleepMs(5);
+        command = 1;
+        stop();
+    }
     else
     {
         int turning_tight = 0, turning_left = 0;
@@ -279,6 +290,17 @@ void VirtualRobot::turnRight()
     {
         command = CONNECT_ERROR;
     }
+    else if(abstraction_level == LOW_ABSTRACTION)
+    {
+        motor_speed[0] = VEL_MOT/1.5;
+        motor_speed[1] = -VEL_MOT/1.5;
+        simxSetJointTargetVelocity(client_id, motors[0], (simxFloat) motor_speed[0], simx_opmode_streaming);
+        simxSetJointTargetVelocity(client_id, motors[1], (simxFloat) motor_speed[1], simx_opmode_streaming);
+        updateVirtualData();
+        extApi_sleepMs(5);
+        command = 1;
+        stop();
+    }
     else
     {
         float first_ang = 0, d_ang = 0;
@@ -346,6 +368,17 @@ void VirtualRobot::turnLeft()
     if(simxGetConnectionId(client_id) == -1)
     {
         command = CONNECT_ERROR;
+    }
+    else if(abstraction_level == LOW_ABSTRACTION)
+    {
+        motor_speed[0] = -VEL_MOT/1.5;
+        motor_speed[1] = VEL_MOT/1.5;
+        simxSetJointTargetVelocity(client_id, motors[0], (simxFloat) motor_speed[0], simx_opmode_streaming);
+        simxSetJointTargetVelocity(client_id, motors[1], (simxFloat) motor_speed[1], simx_opmode_streaming);
+        updateVirtualData();
+        extApi_sleepMs(5);
+        command = 1;
+        stop();
     }
     else
     {
