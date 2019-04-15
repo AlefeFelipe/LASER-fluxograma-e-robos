@@ -124,7 +124,7 @@ public:
     int getMouseX();
     int getMouseY();
     bool getExecuting();
-    void callMessage(int i);
+    int callMessage(int i);
     int getImageHeight(int i);
     int getImageWidth(int i);
     void setConnectedSimulator(bool c);

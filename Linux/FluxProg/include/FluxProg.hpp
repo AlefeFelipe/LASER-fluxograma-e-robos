@@ -61,6 +61,7 @@ class FluxProg {
     void reset_executing_block();
     int check_abstraction_level();
     void reset_blocks_list();
+    void delete_blocks_with_no_connections_function();
 
 public:
 

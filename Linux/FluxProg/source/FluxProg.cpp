@@ -53,31 +53,37 @@ void FluxProg :: start() {
             //std::cout<<"play"<<std::endl;
             executing_fluxogram = true;
             //teste bloco de inicio
-            if(check_if_only_one_startblock_exists() == false) {
+            if((check_if_only_one_startblock_exists() == false) && (executing_fluxogram == true)) {
                 //erro blocos de inicio
                 gui->callMessage(1);
                 executing_fluxogram = false;
             }
             //teste blocos de fim
-            if(check_if_at_least_one_endblock_exist() == false) {
+            if((check_if_at_least_one_endblock_exist() == false) && (executing_fluxogram == true)) {
                 //erro blocos de fim
                 gui->callMessage(2);
                 executing_fluxogram = false;
             }
             //teste se todos os blocos estão ligados
-            if(check_if_all_the_blocks_have_connections() == false) {
+            if((check_if_all_the_blocks_have_connections() == false) && (executing_fluxogram == true)) {
                 //erro blocos de fim
                 gui->callMessage(3);
                 executing_fluxogram = false;
+                int delete_blocks_with_no_connections = gui->callMessage(20);
+                if(delete_blocks_with_no_connections == 0) {
+                    delete_blocks_with_no_connections_function();
+                }
             }
             //teste se todos os blocos estão com as funções setadas
-            if(check_if_all_blocks_have_functions_or_sensors() == false) {
+            if((check_if_all_blocks_have_functions_or_sensors() == false) && (executing_fluxogram == true)) {
                 //erro blocos de fim
                 gui->callMessage(4);
                 executing_fluxogram = false;
             }
             if(paused == false) {
                 reset_fluxogram_execution();
+            } else {
+                paused = false;
             }
             //seta o nível de abstração do simulador baseado nas leitura que o programa faz
             communication->setAbstractionLevel(check_abstraction_level());
@@ -88,6 +94,7 @@ void FluxProg :: start() {
         }
         if(gui->getMenuClick() == STOP) {
             executing_fluxogram = false;
+            paused = false;
             reset_fluxogram_execution();
             reset_executing_block();
         }
@@ -759,6 +766,56 @@ void FluxProg :: reset_blocks_list() {
         }
     }
 }
-/*
-1. Ler sensores (valores errados)
-*/
+void FluxProg :: delete_blocks_with_no_connections_function() {
+    for(int i=0; i<valor_maximo_blocos; i++) {
+        if(blocks_list_to_print[i] != NULL) {
+            if(blocks_list_to_print[i]->getType() == ACTION_BLOCK) {
+                //function
+                if(blocks_list_to_print[i]->getNext1() == NULL) {
+                    remove_block(blocks_list_to_print[i]);
+                } else if(blocks_list_to_print[i]->getPrevious1() == NULL) {
+                    remove_block(blocks_list_to_print[i]);
+                }
+            } else if(blocks_list_to_print[i]->getType() == END_BLOCK) {
+                //end
+                if(blocks_list_to_print[i]->getPrevious1() == NULL) {
+                    remove_block(blocks_list_to_print[i]);
+                }
+            } else if(blocks_list_to_print[i]->getType() == START_BLOCK) {
+                //start
+                if(blocks_list_to_print[i]->getNext1() == NULL) {
+                    remove_block(blocks_list_to_print[i]);
+                }
+            } else if(blocks_list_to_print[i]->getType() == LOOP_BLOCK) {
+                //loop
+                if(blocks_list_to_print[i]->getNext1() == NULL) {
+                    remove_block(blocks_list_to_print[i]);
+                } else if(blocks_list_to_print[i]->getNext2() == NULL) {
+                    remove_block(blocks_list_to_print[i]);
+                } else if(blocks_list_to_print[i]->getPrevious1() == NULL) {
+                    remove_block(blocks_list_to_print[i]);
+                } else if(blocks_list_to_print[i]->getPrevious2() == NULL) {
+                    remove_block(blocks_list_to_print[i]);
+                }
+            } else if(blocks_list_to_print[i]->getType() == CONDITIONAL_BLOCK) {
+                //decision
+                if(blocks_list_to_print[i]->getNext1() == NULL) {
+                    remove_block(blocks_list_to_print[i]);
+                } else if(blocks_list_to_print[i]->getNext2() == NULL) {
+                    remove_block(blocks_list_to_print[i]);
+                } else if(blocks_list_to_print[i]->getPrevious1() == NULL) {
+                    remove_block(blocks_list_to_print[i]);
+                }
+            } else if(blocks_list_to_print[i]->getType() == MERGE_BLOCK) {
+                //merge
+                if(blocks_list_to_print[i]->getNext1() == NULL) {
+                    remove_block(blocks_list_to_print[i]);
+                } else if(blocks_list_to_print[i]->getPrevious1() == NULL) {
+                    remove_block(blocks_list_to_print[i]);
+                } else if(blocks_list_to_print[i]->getPrevious2() == NULL) {
+                    remove_block(blocks_list_to_print[i]);
+                }
+            }
+        }
+    }
+}

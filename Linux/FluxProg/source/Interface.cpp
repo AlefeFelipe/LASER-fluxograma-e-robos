@@ -2000,7 +2000,7 @@ int Interface :: getMouseY() {
 bool Interface :: getExecuting() {
     return executing;
 }
-void Interface :: callMessage(int i) {
+int Interface :: callMessage(int i) {
     switch(i) {
         case 1:
             al_show_native_message_box(display, "Fluxprog", "ERRO", "Deve existir um, e apenas um, bloco de início.", "Ok", ALLEGRO_MESSAGEBOX_WARN);
@@ -2059,7 +2059,17 @@ void Interface :: callMessage(int i) {
         case 19:
             al_show_native_message_box(display, "Fluxprog", "ERRO", "O Robô Colidiu!", "Ok", ALLEGRO_MESSAGEBOX_ERROR);
             break;
+        case 20:
+            int k = al_show_native_message_box(display, "Fluxprog", "ERRO", "Deseja que os blocos que não estão interligados sejam excluídos?", NULL, ALLEGRO_MESSAGEBOX_YES_NO);
+            if(k == 1) {
+                return 0;
+            } else if(k == 2) {
+                return 1;
+            }
+
+            break;
     }
+    return 1;
 }
 int Interface :: getImageHeight(int i) {
     int height = 0;
