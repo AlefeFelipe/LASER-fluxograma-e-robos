@@ -16,13 +16,14 @@ FluxProg :: FluxProg() {
     program_path = getExecutablePath();
     program_path += "/";
     gui = new Interface(blocks_list_to_print, program_path);
-
-    size_t pos = program_path.find(" ", 0);
-    while(pos != string::npos)
-    {
-        program_path.replace(pos, 1, "\\ ");
-        pos = program_path.find(" ", pos+2);
-    }
+    #ifndef _WIN32
+        size_t pos = program_path.find(" ", 0);
+        while(pos != string::npos)
+        {
+            program_path.replace(pos, 1, "\\ ");
+            pos = program_path.find(" ", pos+2);
+        }
+    #endif
     communication = new Communication();
     save = new SaveFile();
     load = new LoadFile(blocks_list_to_print);
