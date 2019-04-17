@@ -5,7 +5,7 @@ SCRIPT=$(readlink -f "$0")
 # Absolute path this script is in, thus /home/user/bin
 SCRIPTPATH=$(dirname "$SCRIPT")
 
-cd $SCRIPTPATH
+cd "$SCRIPTPATH"
 
 #make the FluxProgBackend if build don't exists
 BACK_END_PATH=$SCRIPTPATH$"/../FluxProgBackend/build/bin"
@@ -14,7 +14,7 @@ if [ ! -d "$BACK_END_PATH" ]; then
     cd build  &&  cmake .. && make
 fi
 
-cd $SCRIPTPATH
+cd "$SCRIPTPATH"
 #make the FluxProg if build don't exists
 FRONT_END_PATH=$SCRIPTPATH$"/build/bin"
 if [ ! -d "$FRONT_END_PATH" ]; then
@@ -23,4 +23,4 @@ if [ ! -d "$FRONT_END_PATH" ]; then
 fi
 
 #execute
-$FRONT_END_PATH$"/FluxProg"
+"$FRONT_END_PATH/FluxProg"
